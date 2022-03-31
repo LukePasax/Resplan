@@ -11,3 +11,4 @@ app/.classpath
 app/.settings
 app/bin
 .idea
+.settings/
