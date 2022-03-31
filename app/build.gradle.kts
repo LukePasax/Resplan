@@ -15,7 +15,6 @@ plugins {
 }
 
 repositories {
-    // Use Maven Central for resolving dependencies.
     mavenCentral()
     maven(url = "https://clojars.org/repo")
 }
@@ -29,33 +28,30 @@ val javaFXModules = listOf(
 )
 
 val supportedPlatforms = listOf("linux", "mac", "win") // All required for OOP
-val jUnitVersion = "5.8.1"
+val jUnitVersion = "5.7.1"
 val javaFxVersion = 15
 
 dependencies {
+    implementation("com.google.guava:guava:28.1-jre")
     // JavaFX: comment out if you do not need them
     for (platform in supportedPlatforms) {
         for (module in javaFXModules) {
             implementation("org.openjfx:javafx-$module:$javaFxVersion:$platform")
         }
     }
-    // Use JUnit Jupiter for testing.
-    testImplementation("org.junit.jupiter:junit-jupiter:$jUnitVersion")
+    implementation("com.google.code.gson:gson:2.9.0")
+    implementation("net.beadsproject:beads:3.2")
     // JUnit API and testing engine
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")
-    // This dependency is used by the application.
-    implementation("com.google.guava:guava:30.1.1-jre")
-    implementation("com.google.code.gson:gson:2.9.0")
-    implementation("net.beadsproject:beads:3.2")
 }
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
-tasks.named<Test>("test") {
-    // Use JUnit Platform for unit tests.
+tasks.withType<Test> {
+    // Enables JUnit 5 Jupiter module
     useJUnitPlatform()
 }
 
