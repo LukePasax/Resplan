@@ -16,6 +16,7 @@ plugins {
 
 repositories {
     mavenCentral()
+    maven(url = "https://clojars.org/repo")
 }
 
 val javaFXModules = listOf(
@@ -31,9 +32,7 @@ val jUnitVersion = "5.7.1"
 val javaFxVersion = 15
 
 dependencies {
-    // Example library: Guava. Add what you need (and remove Guava if you don't use it)
-    // implementation("com.google.guava:guava:28.1-jre")
-
+    implementation("com.google.guava:guava:28.1-jre")
     // JavaFX: comment out if you do not need them
     for (platform in supportedPlatforms) {
         for (module in javaFXModules) {
@@ -41,6 +40,7 @@ dependencies {
         }
     }
     implementation("com.google.code.gson:gson:2.9.0")
+    implementation("net.beadsproject:beads:3.2")
     // JUnit API and testing engine
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")
