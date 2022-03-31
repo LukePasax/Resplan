@@ -10,9 +10,13 @@ public class BasicVolume implements Volume {
         this.volume = DEFAULT_VOL;
     }
 
+    public BasicVolume(final int vol) {
+        this.volume = vol;
+    }
+
     @Override
-    public void setVolume(int vol) {
-        if (vol<0 || vol>MAX_VOL) {
+    public void setVolume(final int vol) {
+        if (vol>0 && vol<MAX_VOL) {
             this.volume = vol;
         }
     }
