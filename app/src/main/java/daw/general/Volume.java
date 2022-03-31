@@ -9,4 +9,5 @@ public interface Volume {
     void decrement();
 
     int getVolume();
+
 }

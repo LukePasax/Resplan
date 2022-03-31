@@ -3,7 +3,7 @@ package daw.core.channel;
 import net.beadsproject.beads.ugens.Gain;
 
 /**
- * This interface models a channel, that is a...
+ * This interface models a channel, which is a representation of sound coming from an input and going to an output.
  */
 public interface RSChannel {
 
