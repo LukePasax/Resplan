@@ -7,39 +7,40 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestVolume {
 
-    private Volume volume = new BasicVolume(15);
-
-    @Test
-    public void initial() {
-        assertEquals(15, this.volume.getVolume());
-    }
-
     @Test
     public void testSetVolume() {
-        this.volume.setVolume(50);
-        assertEquals(50, this.volume.getVolume());
-        this.volume.setVolume(200);
-        assertEquals(50, this.volume.getVolume());
+        final Volume vol = new BasicVolume();
+        vol.setVolume(50);
+        assertEquals(50, vol.getVolume());
+        vol.setVolume(200);
+        assertEquals(50, vol.getVolume());
     }
 
     @Test
     public void testIncrement() {
-        this.volume.increment();
-        assertEquals(16, this.volume.getVolume());
-        while (this.volume.getVolume() <= 100) {
-            this.volume.increment();
+        final Volume vol = new BasicVolume(15, 50);
+        vol.increment();
+        assertEquals(16, vol.getVolume());
+        while (vol.getVolume() < 50) {
+            vol.increment();
         }
-        assertEquals(100, this.volume.getVolume());
+        assertEquals(50, vol.getVolume());
+        vol.increment();
+        assertEquals(50, vol.getVolume());
     }
 
     @Test
     public void testDecrement() {
-        this.volume.setVolume(110);
-        this.volume.decrement();
-        assertEquals(99, this.volume.getVolume());
-        while (this.volume.getVolume() >= 0) {
-            this.volume.decrement();
+        final Volume vol = new BasicVolume();
+        final int current = vol.getVolume();
+        vol.decrement();
+        assertEquals(current-1, vol.getVolume());
+        while (vol.getVolume() > 0) {
+            vol.decrement();
         }
-        assertEquals(0, this.volume.getVolume());
+        assertEquals(0, vol.getVolume());
+        vol.decrement();
+        assertEquals(0, vol.getVolume());
     }
+    
 }
