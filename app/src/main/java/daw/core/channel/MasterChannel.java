@@ -6,7 +6,7 @@ public class MasterChannel implements RPChannel {
 
     @Override
     public void addInput(Gain g) {
-        
+
     }
 
     @Override
