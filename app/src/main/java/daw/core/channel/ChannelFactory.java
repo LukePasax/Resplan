@@ -9,6 +9,14 @@ package daw.core.channel;
 public interface ChannelFactory {
 
     /**
+     * Creates a {@link RPChannel} that does not possess a {@link ProcessingUnit}.
+     * This is channel represents the most modular choice when creating a channel,
+     * as no built-in structure is provided.
+     * @return the {@link RPChannel}.
+     */
+    RPChannel basic();
+
+    /**
      * Creates a gated {@link RPChannel}.
      * @return the {@link RPChannel}.
      */

@@ -10,7 +10,7 @@ import java.util.Optional;
  * This class represents a basic implementation of {@link RPChannel}, which may be extended if needed.
  * This implementation initializes a channel so that it does not possess an input -
  * the only way to plug in an input is to call the method which does that.
- * Note that the presence of a {@link ProcessingUnit} is merely optional,as a channel is functionally
+ * Note that the presence of a {@link ProcessingUnit} is merely optional, as a channel is functionally
  * just a pipe through which an audio stream flows.
  * A channel can be of one and only one Type, which is immutable and must be declared upon initialization.
  */
@@ -25,7 +25,7 @@ public class BasicChannel implements RPChannel {
     protected BasicChannel(final Volume vol, final Type type, ProcessingUnit pu) {
         this.vol = vol;
         this.type = type;
-        this.pu = Optional.of(Objects.requireNonNull(pu));
+        this.pu = (pu == null) ? Optional.of(pu) : Optional.empty();
         this.inputGain = Optional.empty();
     }
 
