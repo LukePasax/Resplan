@@ -4,7 +4,7 @@ import net.beadsproject.beads.ugens.Gain;
 
 /**
  * This interface models a channel, which is a representation of sound coming from an input and going to an output.
- * Different forms of channel need to be supported.
+ * Different forms of channel need to be supported by this interface.
  */
 public interface RPChannel {
 
@@ -52,4 +52,7 @@ public interface RPChannel {
      * @return the type of the channel.
      */
     RPChannel.Type getType();
+
+    boolean isProcessingUnitPresent();
+
 }
