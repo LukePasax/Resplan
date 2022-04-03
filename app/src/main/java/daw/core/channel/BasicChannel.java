@@ -7,12 +7,14 @@ public class BasicChannel implements RPChannel {
 
     private final Volume vol;
     private final Type type;
+    private final ProcessingUnit pu;
     private Gain inputGain;
     private boolean enabled;
 
-    public BasicChannel(final Volume vol, final Type type) {
+    private BasicChannel(final Volume vol, final Type type, ProcessingUnit pu) {
         this.vol = vol;
         this.type = type;
+        this.pu = pu;
     }
 
     @Override
