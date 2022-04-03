@@ -14,6 +14,19 @@ import java.util.Optional;
 public interface ProcessingUnit {
 
     /**
+     * Adds the audio that must be processed.
+     * @param g the source.
+     */
+    void addInput(Gain g);
+
+    /**
+     * Allows the client to receive the output of the whole processing.
+     * @return a Gain which the represents the processed audio if any effect has been added,
+     * otherwise an empty {@link Optional}.
+     */
+    Optional<Gain> getOutput();
+
+    /**
      *
      * @return the current {@link List} of effects.
      */
@@ -51,10 +64,10 @@ public interface ProcessingUnit {
 
     /**
      * Swaps two effects, while maintaining every other effect intact.
-     * @param firstIndex
-     * @param secondIndex
+     * @param index1 the position of an effect that has to be swapped.
+     * @param index2 the position of the other effect that has to be swapped.
      */
-    void swapEffects(int firstIndex, int secondIndex);
+    void swapEffects(int index1, int index2);
 
     /**
      * Replaces the effect at a certain position of the sequence with the given effect.
@@ -63,16 +76,4 @@ public interface ProcessingUnit {
      */
     void replace(int index, UGen u);
 
-    /**
-     * Adds the audio that must be processed.
-     * @param g the source.
-     */
-    void addInput(Gain g);
-
-    /**
-     * Allows the client to receive the output of the whole processing.
-     * @return a Gain which the represents the processed audio if any effect has been added,
-     * otherwise an empty {@link Optional}.
-     */
-    Optional<Gain> getOutput();
 }
