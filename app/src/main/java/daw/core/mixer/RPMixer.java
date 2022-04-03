@@ -1,8 +1,6 @@
 package daw.core.mixer;
 
-import daw.core.channel.MasterChannel;
 import daw.core.channel.RPChannel;
-import daw.core.channel.ReturnChannel;
 import daw.core.clip.RPClip;
 import net.beadsproject.beads.core.AudioContext;
 
@@ -35,7 +33,7 @@ public interface RPMixer {
 
     /**
      * A method to create a {@link RPChannel} in the mixer
-     * and links its output to the {@link MasterChannel}.
+     * and links its output to the Master channel.
      */
     void createChannel();
 
@@ -47,21 +45,21 @@ public interface RPMixer {
     RPChannel getChannel(RPClip clip);
 
     /**
-     * A method that returns the {@link MasterChannel} of the mixer.
-     * @return {@link MasterChannel} contained in the mixer
+     * A method that returns the Master channel of the mixer.
+     * @return the Master channel contained in the mixer
      */
-    MasterChannel getMasterChannel();
+    RPChannel getMasterChannel();
 
     /**
      * A method to link the output of a {@link RPChannel}
-     * to the Input of a {@link ReturnChannel}.
+     * to the Input of a Return channel.
      * @param channel the {@link RPChannel} which output is to be linked
-     * @param returnChannel the {@link ReturnChannel} which receives the input
+     * @param returnChannel the Return channel which receives the input
      */
-    void linkChannel(RPChannel channel, ReturnChannel returnChannel);
+    void linkChannel(RPChannel channel, RPChannel returnChannel);
 
     /**
-     * A method to create {@link ReturnChannel} in the mixer.
+     * A method to create a Return channel in the mixer.
      */
     void createReturnChannel();
 }

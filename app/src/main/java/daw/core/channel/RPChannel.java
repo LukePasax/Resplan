@@ -9,6 +9,13 @@ import net.beadsproject.beads.ugens.Gain;
 public interface RPChannel {
 
     /**
+     * Identifies different forms of channels.
+     */
+    enum Type {
+        AUDIO, RETURN, MASTER;
+    }
+
+    /**
      * Adds an input.
      */
     void addInput(Gain g);
@@ -40,4 +47,9 @@ public interface RPChannel {
      */
     boolean isEnabled();
 
+    /**
+     *
+     * @return the type of the channel.
+     */
+    RPChannel.Type getType();
 }
