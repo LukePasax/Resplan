@@ -53,6 +53,10 @@ public interface RPChannel {
      */
     RPChannel.Type getType();
 
+    /**
+     * Returns whether the channel has a {@link ProcessingUnit} attached or not.
+     * @return true if the channel contains a {@link ProcessingUnit}.
+     */
     boolean isProcessingUnitPresent();
 
 }
