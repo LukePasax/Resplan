@@ -30,7 +30,7 @@ public class BasicChannelFactory implements ChannelFactory {
     @Override
     public RPChannel returnChannel() {
         return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.RETURN,
-                new BasicProcessingUnitBuilder().delay().filter().build());
+                new BasicProcessingUnitBuilder().filter().build());
     }
 
     @Override

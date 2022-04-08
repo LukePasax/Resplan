@@ -2,7 +2,6 @@ package daw.core.channel;
 
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,21 +10,22 @@ import java.util.stream.Collectors;
 public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
 
     private Optional<UGen> filter;
-    private Optional<UGen> delay;
     private Optional<UGen> compressor;
     private Optional<UGen> reverb;
     private Optional<UGen> sidechain;
     private Optional<UGen> gate;
 
-    @Override
-    public ProcessingUnitBuilder filter() {
-        this.filter = Optional.ofNullable(new CrossoverFilter());
-        return this;
+    public BasicProcessingUnitBuilder() {
+        this.filter = Optional.empty();
+        this.compressor = Optional.empty();
+        this.reverb = Optional.empty();
+        this.sidechain = Optional.empty();
+        this.gate = Optional.empty();
     }
 
     @Override
-    public ProcessingUnitBuilder delay() {
-        this.filter = Optional.ofNullable(null);
+    public ProcessingUnitBuilder filter() {
+        this.filter = Optional.of(new CrossoverFilter());
         return this;
     }
 
@@ -43,22 +43,25 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
 
     @Override
     public ProcessingUnitBuilder sidechain() {
-        return null;
+        // TO DO: make Sidechain instantiable
+        this.sidechain = Optional.empty();
+        return this;
     }
 
     @Override
     public ProcessingUnitBuilder gate() {
+        // TO DO: make Gate instantiable
+        this.gate = Optional.empty();
         return null;
     }
 
     @Override
     public ProcessingUnit build() throws IllegalStateException {
-        final List<Optional<UGen>> list = new ArrayList<>(List.of(this.filter, this.delay, this.compressor,
-                this.gate, this.reverb, this.sidechain));
-        if (list.stream().filter(x -> x.isPresent()).count() != 0) {
-            return new BasicProcessingUnit(list.stream().map(x -> x.get()).collect(Collectors.toList()));
-        } else {
-            throw new IllegalStateException();
+        final List<Optional<UGen>> effects = new ArrayList<>(List.of(
+                this.filter, this.compressor, this.gate, this.reverb, this.sidechain));
+        if (effects.stream().filter(Optional::isPresent).count() != 0) {
+            return new BasicProcessingUnit(effects.stream().map(Optional::get).collect(Collectors.toList()));
         }
+        throw new IllegalStateException();
     }
 }

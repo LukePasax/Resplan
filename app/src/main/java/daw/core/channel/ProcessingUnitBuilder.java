@@ -10,8 +10,6 @@ public interface ProcessingUnitBuilder {
 
     ProcessingUnitBuilder filter();
 
-    ProcessingUnitBuilder delay();
-
     ProcessingUnitBuilder compressor();
 
     ProcessingUnitBuilder reverb();
