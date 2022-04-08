@@ -1,5 +1,6 @@
 package daw.core.channel;
 
+import daw.core.effect.Sidechain;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.*;
 import java.util.ArrayList;
@@ -25,19 +26,25 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
 
     @Override
     public ProcessingUnitBuilder filter() {
-        this.filter = Optional.of(new CrossoverFilter());
+        if (this.filter.isEmpty()) {
+            this.filter = Optional.of(new CrossoverFilter());
+        }
         return this;
     }
 
     @Override
     public ProcessingUnitBuilder compressor() {
-        this.compressor = Optional.of(new Compressor());
+        if (this.compressor.isEmpty()) {
+            this.compressor = Optional.of(new Compressor());
+        }
         return this;
     }
 
     @Override
     public ProcessingUnitBuilder reverb() {
-        this.reverb = Optional.of(new Reverb());
+        if (this.reverb.isEmpty()) {
+            this.reverb = Optional.of(new Reverb());
+        }
         return this;
     }
 
