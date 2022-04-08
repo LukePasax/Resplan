@@ -10,8 +10,6 @@ public interface ProcessingUnitBuilder {
 
     ProcessingUnitBuilder filter();
 
-    ProcessingUnitBuilder panner();
-
     ProcessingUnitBuilder delay();
 
     ProcessingUnitBuilder compressor();

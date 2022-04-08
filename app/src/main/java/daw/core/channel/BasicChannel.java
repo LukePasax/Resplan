@@ -2,6 +2,7 @@ package daw.core.channel;
 
 import daw.general.Volume;
 import net.beadsproject.beads.ugens.Gain;
+import net.beadsproject.beads.ugens.Panner;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -17,13 +18,15 @@ import java.util.Optional;
 public class BasicChannel implements RPChannel {
 
     private final Volume vol;
+    private final Panner pan;
     private final Type type;
     private final Optional<ProcessingUnit> pu;
     private Optional<Gain> inputGain;
     private boolean enabled;
 
-    protected BasicChannel(final Volume vol, final Type type, ProcessingUnit pu) {
+    protected BasicChannel(final Volume vol, Panner pan, final Type type, ProcessingUnit pu) {
         this.vol = vol;
+        this.pan = pan;
         this.type = type;
         this.pu = (pu == null) ? Optional.of(pu) : Optional.empty();
         this.inputGain = Optional.empty();

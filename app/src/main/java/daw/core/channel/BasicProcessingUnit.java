@@ -8,7 +8,11 @@ import java.util.Optional;
 
 public class BasicProcessingUnit implements ProcessingUnit {
 
-    private final List<UGen> effects = new LinkedList<>();
+    private final List<UGen> effects;
+
+    public BasicProcessingUnit(final List<UGen> effects) {
+        this.effects = new LinkedList<>(effects);
+    }
 
     @Override
     public List<UGen> getEffects() {
