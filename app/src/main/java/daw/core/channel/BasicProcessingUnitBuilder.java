@@ -60,8 +60,10 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
         final List<Optional<UGen>> effects = new ArrayList<>(List.of(
                 this.filter, this.compressor, this.gate, this.reverb, this.sidechain));
         if (effects.stream().filter(Optional::isPresent).count() != 0) {
-            return new BasicProcessingUnit(effects.stream().map(Optional::get).collect(Collectors.toList()));
+            return new BasicProcessingUnit(effects.stream().filter(Optional::isPresent).map(Optional::get)
+                    .collect(Collectors.toList()));
         }
         throw new IllegalStateException();
     }
+
 }

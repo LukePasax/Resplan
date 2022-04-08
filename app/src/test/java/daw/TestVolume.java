@@ -1,4 +1,4 @@
-package daw.core;
+package daw;
 
 import daw.general.BasicVolume;
 import daw.general.Volume;

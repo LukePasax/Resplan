@@ -2,6 +2,8 @@ package daw.core.channel;
 
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
+
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -11,12 +13,16 @@ public class BasicProcessingUnit implements ProcessingUnit {
     private final List<UGen> effects;
 
     public BasicProcessingUnit(final List<UGen> effects) {
+        /*
+         * TO DO: constructor should call the addEffect method for every element in the given list,
+         * so as to connect the inputs and outputs of the UGens.
+         */
         this.effects = new LinkedList<>(effects);
     }
 
     @Override
     public List<UGen> getEffects() {
-        return null;
+        return Collections.unmodifiableList(this.effects);
     }
 
     @Override
