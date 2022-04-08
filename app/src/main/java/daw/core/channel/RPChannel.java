@@ -12,7 +12,7 @@ public interface RPChannel {
      * Identifies different forms of channels.
      */
     enum Type {
-        AUDIO, RETURN, MASTER;
+        GATED, SIDECHAINED, RETURN, MASTER;
     }
 
     /**

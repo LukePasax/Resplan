@@ -4,6 +4,7 @@ import daw.core.channel.RPChannel;
 import daw.core.clip.RPClip;
 import net.beadsproject.beads.core.AudioContext;
 
+import java.nio.channels.Channel;
 import java.util.List;
 
 /**
@@ -14,18 +15,6 @@ import java.util.List;
 public interface RPMixer {
 
     /**
-     * Sets the {@link AudioContext} for the mixer.
-     * @param context the {@link AudioContext} used in the mixer
-     */
-    void setAudioContext(AudioContext context);
-
-    /**
-     * Returns the {@link AudioContext} of the mixer.
-     * @return the {@link AudioContext} for the mixer.
-     */
-    AudioContext getAudioContext();
-
-    /**
      * Returns the list of {@link RPChannel} contained in the mixer.
      * @return a list of {@link RPChannel} in the mixer
      */
@@ -34,8 +23,9 @@ public interface RPMixer {
     /**
      * A method to create a {@link RPChannel} in the mixer
      * and links its output to the Master channel.
+     * @param type the {@link RPChannel} type that will be created
      */
-    void createChannel();
+    void createChannel(RPChannel.Type type);
 
     /**
      * Return a {@link RPChannel} that contains the specified {@link RPClip}.
@@ -57,9 +47,5 @@ public interface RPMixer {
      * @param returnChannel the Return channel which receives the input
      */
     void linkChannel(RPChannel channel, RPChannel returnChannel);
-
-    /**
-     * A method to create a Return channel in the mixer.
-     */
-    void createReturnChannel();
+    
 }
