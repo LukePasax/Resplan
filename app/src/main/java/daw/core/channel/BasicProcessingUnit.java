@@ -13,8 +13,12 @@ public class BasicProcessingUnit implements ProcessingUnit {
     private final LinkedList<UGen> effects = new LinkedList<>();
 
     public BasicProcessingUnit(final List<UGen> effects) {
-        for (final var elem: effects) {
-            this.addEffect(elem);
+        if (!effects.isEmpty()) {
+            for (final var elem : effects) {
+                this.addEffect(elem);
+            }
+        } else {
+            throw new IllegalArgumentException("Cannot instantiate with an empty sequence");
         }
     }
 
