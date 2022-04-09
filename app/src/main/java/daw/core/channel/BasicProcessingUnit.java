@@ -13,7 +13,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
     private final LinkedList<UGen> effects = new LinkedList<>();
 
     public BasicProcessingUnit(final List<UGen> effects) {
-        if (!effects.isEmpty()) {
+        if (effects != null && !effects.isEmpty()) {
             for (final var elem : effects) {
                 this.addEffect(elem);
             }
@@ -65,27 +65,49 @@ public class BasicProcessingUnit implements ProcessingUnit {
     @Override
     public void removeEffectAtPosition(int index) {
         if (this.effects.size()>1) {
+            if (index != this.effects.size()-1) {
+                this.effects.get(index + 1).clearInputConnections();
+                if (index != 0) {
+                    this.effects.get(index+1).addInput(this.effects.get(index-1));
+                }
+            }
             this.effects.remove(index);
+        } else {
+            throw new IllegalStateException("Cannot perform this operation when there is only one effect stored");
         }
     }
 
     @Override
     public void moveEffect(int currentIndex, int newIndex) {
-        final var temp = this.effects.get(currentIndex);
-        this.effects.remove(currentIndex);
-        this.addEffectAtPosition(temp, newIndex);
+        if (currentIndex >= 0 && newIndex >= 0 && currentIndex <= this.effects.size()-1 &&
+                newIndex <= this.effects.size()-1) {
+            final var temp = this.effects.get(currentIndex);
+            this.effects.remove(currentIndex);
+            this.addEffectAtPosition(temp, newIndex);
+        } else {
+            throw new IllegalArgumentException("The given indexes are not legal");
+        }
     }
 
     @Override
     public void swapEffects(int firstIndex, int secondIndex) {
-        this.moveEffect(firstIndex, secondIndex);
-        this.moveEffect(secondIndex+1, firstIndex);
+        if (firstIndex >= 0 && secondIndex >= 0 && firstIndex <= this.effects.size()-1 &&
+                secondIndex <= this.effects.size()-1) {
+            this.moveEffect(firstIndex, secondIndex);
+            this.moveEffect(secondIndex - 1, firstIndex);
+        } else {
+            throw new IllegalArgumentException("The given indexes are not legal");
+        }
     }
 
     @Override
     public void replace(int index, UGen u) {
-        this.effects.remove(index);
-        this.effects.add(index, u);
+        try {
+            this.removeEffectAtPosition(index);
+            this.addEffectAtPosition(u, index);
+        } catch (IllegalStateException ex) {
+            throw new IllegalArgumentException("The given index is not legal");
+        }
     }
 
 }

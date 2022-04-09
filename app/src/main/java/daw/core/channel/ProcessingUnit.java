@@ -3,7 +3,6 @@ package daw.core.channel;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Manages the sequence of effects that manipulate an audio source.
@@ -34,7 +33,8 @@ public interface ProcessingUnit {
     /**
      * Allows finding which effect is stored in a certain position of the sequence.
      * @param index a position in the sequence.
-     * @return the effect that is placed at the given index.
+     * @return the effect that is placed at the given position.
+     * @throws IllegalArgumentException if the given position is out of bounds.
      */
     UGen getEffectAtPosition(int index);
 
@@ -59,8 +59,8 @@ public interface ProcessingUnit {
 
     /**
      * Removes the effect at the given position from the sequence.
-     * This operation cannot be performed if there is only one effect stored.
      * @param index a position in the sequence.
+     * @throws IllegalStateException if there is only one effect stored when this method is called.
      */
     void removeEffectAtPosition(int index);
 
@@ -74,6 +74,8 @@ public interface ProcessingUnit {
 
     /**
      * Swaps two effects, while maintaining every other effect intact.
+     * This method does not work well when index1 and index2 are the same,
+     * so it is strongly suggested not use it that way.
      * @param index1 the position of an effect that must be swapped.
      * @param index2 the position of the other effect that must be swapped.
      */
@@ -83,6 +85,7 @@ public interface ProcessingUnit {
      * Replaces the effect at a certain position of the sequence with the given effect.
      * @param index the index of the effect that must be replaced.
      * @param u the effect that serves as a replacement.
+     * @throws IllegalArgumentException if the given position is out of bounds.
      */
     void replace(int index, UGen u);
 
