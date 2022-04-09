@@ -10,14 +10,24 @@ import java.util.Optional;
 
 public class BasicProcessingUnit implements ProcessingUnit {
 
-    private final List<UGen> effects;
+    private final LinkedList<UGen> effects = new LinkedList<>();
 
     public BasicProcessingUnit(final List<UGen> effects) {
-        /*
-         * TO DO: constructor should call the addEffect method for every element in the given list,
-         * so as to connect the inputs and outputs of the UGens.
-         */
-        this.effects = new LinkedList<>(effects);
+        for (final var elem: effects) {
+            this.addEffect(elem);
+        }
+    }
+
+    @Override
+    public void addInput(Gain g) {
+        this.effects.peek().addInput(g);
+    }
+
+    @Override
+    public void connect(UGen u) {
+        if (this.effects.size()>0) {
+            this.effects.peekLast().connectTo(u);
+        }
     }
 
     @Override
@@ -27,42 +37,51 @@ public class BasicProcessingUnit implements ProcessingUnit {
 
     @Override
     public UGen getEffectAtPosition(int index) {
-        return null;
+        return this.effects.get(index);
     }
 
     @Override
     public void addEffect(UGen u) {
-
+        this.addEffectAtPosition(u, this.effects.size());
     }
 
     @Override
     public void addEffectAtPosition(UGen u, int index) {
+        if (index >= 0 && index <= this.effects.size()) {
+            this.effects.add(index, u);
+            if (index > 0) {
+                u.addInput(this.effects.get(index-1));
+            }
+            if (index < this.effects.size()-1) {
+                this.effects.get(index+1).addInput(u);
+            }
+        }
+    }
 
+    @Override
+    public void removeEffectAtPosition(int index) {
+        if (this.effects.size()>1) {
+            this.effects.remove(index);
+        }
     }
 
     @Override
     public void moveEffect(int currentIndex, int newIndex) {
-
+        final var temp = this.effects.get(currentIndex);
+        this.effects.remove(currentIndex);
+        this.addEffectAtPosition(temp, newIndex);
     }
 
     @Override
     public void swapEffects(int firstIndex, int secondIndex) {
-
+        this.moveEffect(firstIndex, secondIndex);
+        this.moveEffect(secondIndex+1, firstIndex);
     }
 
     @Override
     public void replace(int index, UGen u) {
-
-    }
-
-    @Override
-    public void addInput(Gain g) {
-
-    }
-
-    @Override
-    public Optional<Gain> getOutput() {
-        return Optional.empty();
+        this.effects.remove(index);
+        this.effects.add(index, u);
     }
 
 }
