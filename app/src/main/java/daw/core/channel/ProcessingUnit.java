@@ -69,6 +69,7 @@ public interface ProcessingUnit {
      * If the newIndex position is out of bounds for the current sequence, this method does nothing.
      * @param currentIndex the position of the effect to be moved.
      * @param newIndex the position to which the effect must be moved.
+     * @throws IllegalArgumentException if one or both of the given positions are out of bounds.
      */
     void moveEffect(int currentIndex, int newIndex);
 
@@ -78,6 +79,7 @@ public interface ProcessingUnit {
      * so it is strongly suggested not use it that way.
      * @param index1 the position of an effect that must be swapped.
      * @param index2 the position of the other effect that must be swapped.
+     * @throws IllegalArgumentException if one or both of the given positions are out of bounds.
      */
     void swapEffects(int index1, int index2);
 
