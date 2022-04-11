@@ -2,9 +2,6 @@ package daw.core.mixer;
 
 import daw.core.channel.RPChannel;
 import daw.core.clip.RPClip;
-import net.beadsproject.beads.core.AudioContext;
-
-import java.nio.channels.Channel;
 import java.util.List;
 
 /**
