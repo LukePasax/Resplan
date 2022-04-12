@@ -6,6 +6,4 @@ package planning;
 public interface Element {
 	String getTitle();
 	String getDescription();
-	void setTitle(final String title);
-	void setDescription(final String description);
 }
