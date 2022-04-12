@@ -4,69 +4,65 @@ public class ColorFactoryImpl implements ColorFactory {
 
 	@Override
 	public Color createColorFromRGB(int cRed, int cGreen, int cBlue) throws IllegalColorException {
+		
+		if(cRed < 0 || cRed > 255 || cGreen < 0 || cGreen > 255 || cBlue < 0 || cBlue > 255) {
+			throw new IllegalColorException("Wrong parameter");
+		}
+		
 		return new Color() {
 			
 			private String red;
 			private String green;
 			private String blue;
 			
-			private boolean verify() {
-				if(cRed < 0 || cRed > 255 || cGreen < 0 || cGreen > 255 || cBlue < 0 || cBlue > 255) {
-					return false;
-				}
-				this.red = Integer.toHexString(cRed);
-				this.green = Integer.toHexString(cGreen);
-				this.blue = Integer.toHexString(cBlue);
-				return true;
-			}
-			
 			@Override
 			public String getColorString() {
-				if(verify()) {
-					red = red.toUpperCase();
-					green = green.toUpperCase();
-					blue = blue.toUpperCase();
-					if(red.length() == 1) {
-						red = "0" + red;
-					}
-					if(green.length() == 1) {
-						red = "0" + green;
-					}
-					if(blue.length() == 1) {
-						red = "0" + blue;
-					}
-					
-					return red + green + blue;
+				
+				this.red = Integer.toHexString(cRed).toUpperCase();
+				this.green = Integer.toHexString(cGreen).toUpperCase();
+				this.blue = Integer.toHexString(cBlue).toUpperCase();
+				if(red.length() == 1) {
+					red = "0" + red;
 				}
-				
-				throw new IllegalColorException("Wrong parameter");
-				
+				if(green.length() == 1) {
+					red = "0" + green;
+				}
+				if(blue.length() == 1) {
+					red = "0" + blue;
+				}
+					
+				return red + green + blue;
 			}
 		};
 	}
 
 	@Override
-	public Color createColorFromHexadecimal(String hexaColor) {
+	public Color createColorFromHexadecimal(String hexaColor) throws IllegalColorException {
+		
+		final String color = hexaColor.toUpperCase();
+		boolean check = false;
+		
+		if(color.length() != 6) {
+			throw new IllegalColorException("Wrong parameter");								
+		}
+		if(color.length() == 6) {
+			for(int i = 1; i <= 6; i++) {
+				for(HexadecimalDigits d : HexadecimalDigits.values()) {
+					if(color.substring(i-1, i).equals(d.toString())) {
+						check = true;
+					}
+				}
+				if(!check) {
+					throw new IllegalColorException("Wrong parameter");								
+				}
+				check = false;
+			}
+		}
+		
 		return new Color() {
-			
-			private final String color = hexaColor.toUpperCase();
-			private boolean check = false;
 			
 			@Override
 			public String getColorString() {
-				if(color.length() == 6) {
-					for(int i = 1; i <= 6; i++) {
-						for(HexadecimalDigits d : HexadecimalDigits.values()) {
-							if(color.substring(i-1, i).equals(d.toString())) {
-								check = true;
-							}
-						}
-						if(!check) {
-							throw new IllegalColorException("Wrong parameter");								
-						}
-						check = false;
-					}
-				}
 				return color;
 			}
 		};
