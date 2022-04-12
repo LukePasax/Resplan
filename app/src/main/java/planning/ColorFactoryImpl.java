@@ -25,10 +25,10 @@ public class ColorFactoryImpl implements ColorFactory {
 					red = "0" + red;
 				}
 				if(green.length() == 1) {
-					red = "0" + green;
+					green = "0" + green;
 				}
 				if(blue.length() == 1) {
-					red = "0" + blue;
+					blue = "0" + blue;
 				}
 					
 				return red + green + blue;
@@ -43,7 +43,7 @@ public class ColorFactoryImpl implements ColorFactory {
 		boolean check = false;
 		
 		if(color.length() != 6) {
-			throw new IllegalColorException("Wrong parameter");								
+			throw new IllegalColorException("Wrong length");								
 		}
 		if(color.length() == 6) {
 			for(int i = 1; i <= 6; i++) {
