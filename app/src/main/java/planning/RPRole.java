@@ -5,4 +5,9 @@ package planning;
  */
 public interface RPRole extends Element {
 	
+	public enum RoleType{
+		SPEECH, SOUNDTRACK, EFFECTS
+	}
+	
+	RoleType getType();
 }
