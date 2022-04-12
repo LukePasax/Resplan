@@ -22,16 +22,13 @@ public class TextFromFile extends TextImpl {
 
 	@Override
 	protected String generateContent() throws IOException {
-		try {
-			br = new BufferedReader(new FileReader(this.fileName));
-			String line = null;
-			while((line = br.readLine()) != null) {
-				this.content = this.content + line;
-			}
-			return this.content;
-		} catch(IOException e) {
-			throw e;
+
+		br = new BufferedReader(new FileReader(this.fileName));
+		String line = null;
+		while((line = br.readLine()) != null) {
+			this.content = this.content + line;
 		}
+		return this.content;
 	}
 
 }

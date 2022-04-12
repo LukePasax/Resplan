@@ -10,12 +10,16 @@ public abstract class TextImpl implements Text {
 	private String content;
 
 	public TextImpl(final int red, final int green, final int blue, final double size) {
-		this.color = cf.createColorFromRGB(red, green, blue);
+		try {
+			this.color = cf.createColorFromRGB(red, green, blue);
+		} catch (IllegalColorException e) {}
 		this.size = size;
 	}
 	
 	public TextImpl(final String hexaColor, final double size) {
-		this.color = cf.createColorFromHexadecimal(hexaColor);
+		try {
+			this.color = cf.createColorFromHexadecimal(hexaColor);
+		} catch (IllegalColorException e) {}
 		this.size = size;
 	}
 	
