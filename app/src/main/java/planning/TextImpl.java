@@ -1,5 +1,7 @@
 package planning;
 
+import java.io.IOException;
+
 public abstract class TextImpl implements Text {
 	
 	private Color color;
@@ -17,11 +19,15 @@ public abstract class TextImpl implements Text {
 		this.size = size;
 	}
 	
-	protected abstract String generateContent();
+	protected abstract String generateContent() throws IOException;
 	
 	@Override
 	public void setContent() {
-		this.content = this.generateContent();
+		try {
+			this.content = this.generateContent();
+		} catch(IOException e) {
+			System.out.println(e.toString());
+		}
 	}
 	
 	@Override
