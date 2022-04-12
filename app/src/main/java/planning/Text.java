@@ -9,9 +9,8 @@ public interface Text {
 	public void setContent(final String content);
 	public void setContentFromFile(final String file);
 	*/
+	void setContent();
 	String getContent();
-	void setColor(Color color);
 	Color getColor();
-	void setSize(Double size);
 	Double getSize();
 }
