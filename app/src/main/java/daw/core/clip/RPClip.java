@@ -1,4 +1,36 @@
 package daw.core.clip;
 
+import java.io.File;
+
+/**
+ * @author alessandro
+ * This interface models a clip, that is a container for each audio/MIDI file you want to place in the timeline of some tape channel.
+ * A clip let you specify the audio content play-back starting point and its duration.
+ */
 public interface RPClip {
+	
+	/**
+	 * @param milliseconds
+	 */
+	void setDuration(double milliseconds);
+
+	/**
+	 * @param milliseconds
+	 */
+	void setContentPosition(double milliseconds);
+	
+	/**
+	 * @return
+	 */
+	double getDuration();
+
+	/**
+	 * @return
+	 */
+	double getContentPosition();
+	
+	/**
+	 * @return
+	 */
+	File getContent();
 }
