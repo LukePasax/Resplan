@@ -3,7 +3,7 @@ package planning;
 public class ColorFactoryImpl implements ColorFactory {
 
 	@Override
-	public Color createColorFromRGB(int cRed, int cGreen, int cBlue) throws IllegalColorException {
+	public Color createColorFromRGB(int cRed, int cGreen, int cBlue) {
 		
 		if(cRed < 0 || cRed > 255 || cGreen < 0 || cGreen > 255 || cBlue < 0 || cBlue > 255) {
 			throw new IllegalColorException("Wrong parameter");
@@ -37,7 +37,7 @@ public class ColorFactoryImpl implements ColorFactory {
 	}
 
 	@Override
-	public Color createColorFromHexadecimal(String hexaColor) throws IllegalColorException {
+	public Color createColorFromHexadecimal(String hexaColor) {
 		
 		final String color = hexaColor.toUpperCase();
 		boolean check = false;
