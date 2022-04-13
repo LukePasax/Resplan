@@ -10,15 +10,15 @@ public class TextFromFile extends TextImpl {
 	private String content = "";
 	private String fileName;
 	
-	public TextFromFile(final int red, final int green, final int blue, final double size, final String fileName) {
-		super(red, green, blue, size);
+	public TextFromFile(/*final int red, final int green, final int blue,*/ final double size, final String fileName) {
+		super(/*red, green, blue,*/ size);
 		this.fileName = fileName;
 	}
 
-	public TextFromFile(final String hexaColor, final double size, final String fileName) {
+	/*public TextFromFile(final String hexaColor, final double size, final String fileName) {
 		super(hexaColor, size);
 		this.fileName = fileName;
-	}
+	}*/
 
 	@Override
 	protected String generateContent() throws IOException {

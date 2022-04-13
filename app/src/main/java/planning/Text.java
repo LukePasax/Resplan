@@ -7,6 +7,6 @@ package planning;
 public interface Text {
 	void setContent();
 	String getContent();
-	Color getColor();
+	//Color getColor();
 	Double getSize();
 }

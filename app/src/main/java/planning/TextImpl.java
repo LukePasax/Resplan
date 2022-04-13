@@ -4,24 +4,24 @@ import java.io.IOException;
 
 public abstract class TextImpl implements Text {
 	
-	private Color color;
+	//private Color color;
 	private Double size;
 	private ColorFactory cf = new ColorFactoryImpl();
 	private String content;
 
-	public TextImpl(final int red, final int green, final int blue, final double size) {
-		try {
+	public TextImpl(/*final int red, final int green, final int blue,*/ final double size) {
+		/*try {
 			this.color = cf.createColorFromRGB(red, green, blue);
-		} catch (IllegalColorException e) {}
+		} catch (IllegalColorException e) {}*/
 		this.size = size;
 	}
 	
-	public TextImpl(final String hexaColor, final double size) {
+	/*public TextImpl(final String hexaColor, final double size) {
 		try {
 			this.color = cf.createColorFromHexadecimal(hexaColor);
 		} catch (IllegalColorException e) {}
 		this.size = size;
-	}
+	}*/
 	
 	protected abstract String generateContent() throws IOException;
 	
@@ -39,10 +39,10 @@ public abstract class TextImpl implements Text {
 		return this.content;
 	}
 
-	@Override
+	/*@Override
 	public Color getColor() {
 		return this.color;
-	}
+	}*/
 
 	@Override
 	public Double getSize() {
