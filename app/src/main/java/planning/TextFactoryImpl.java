@@ -1,9 +1,7 @@
 package planning;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 
 public class TextFactoryImpl implements TextFactory {
 
@@ -24,7 +22,7 @@ public class TextFactoryImpl implements TextFactory {
 	}
 
 	@Override
-	public Text createFromText(Double size, String fileName) {
+	public Text createFromFile(Double size, String fileName) {
 		return new Text() {
 			
 			@Override
