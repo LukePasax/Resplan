@@ -33,7 +33,7 @@ public class Mixer implements RPMixer{
         } else if (type == RPChannel.Type.SIDECHAINED) {
             channelList.add(channelFactory.sidechained());
         }
-        //this.masterChannel.addInput(channelList.get(channelList.size()-1));
+        this.masterChannel.addInput(channelList.get(channelList.size()-1).getOutput());
     }
 
     @Override
@@ -46,7 +46,7 @@ public class Mixer implements RPMixer{
         if (returnChannel.getType() != RPChannel.Type.RETURN) {
             throw new IllegalArgumentException();
         } else {
-            //returnChannel.addInput();
+            returnChannel.addInput(channel.getOutput());
         }
     }
 }
