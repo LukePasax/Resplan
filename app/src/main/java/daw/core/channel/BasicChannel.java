@@ -40,15 +40,16 @@ public class BasicChannel implements RPChannel {
 
     @Override
     public Gain getOutput() {
-        if (this.inputGain.isPresent()) {
+        if (this.isEnabled() && this.inputGain.isPresent()) {
+            final var g = new Gain(AudioContextManager.getAudioContext(), 1, this.getVolume());
             if (this.isProcessingUnitPresent()) {
-                final var g = new Gain(AudioContextManager.getAudioContext(), 1);
-                this.pu.get().connect(g);
-                return g;
+                this.pu.get().connect(this.pan);
+            } else {
+                this.pan.addInput(this.inputGain.get());
             }
-            return this.inputGain.get();
+            g.addInput(this.pan);
         }
-        throw new IllegalStateException("Cannot produce output if no input has been provided.");
+        throw new IllegalStateException("Cannot produce output.");
     }
 
     @Override

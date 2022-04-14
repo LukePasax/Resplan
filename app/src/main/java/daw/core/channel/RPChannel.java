@@ -16,13 +16,19 @@ public interface RPChannel {
     }
 
     /**
-     * Adds an input.
+     * Adds an audio input.
+     * For a channel to properly work, a client should not add two inputs before getting an output.
+     * This is because the {@link ProcessingUnit} manipulates audio on-the-fly, meaning that the processing
+     * of an input may not be finished when another input is added.
      */
     void addInput(Gain g);
 
     /**
      * Allows clients to obtain the audio coming from the channel.
+     * Channel parameters are used in order to set the volume and the pan of the output.
+     * Remember that the {@link ProcessingUnit} modifies the input data according to the sequence of the effects.
      * @return a {@link Gain} that represents the output.
+     * @throws IllegalStateException if the channel is not enabled or if no input has been provided.
      */
     Gain getOutput();
 
@@ -34,7 +40,7 @@ public interface RPChannel {
 
     /**
      * Gets the volume
-     * @return the volume that has been gotten.
+     * @return the volume.
      */
     int getVolume();
 
