@@ -31,7 +31,7 @@ public class Mixer implements RPMixer{
         } else if (type == RPChannel.Type.RETURN) {
            channelList.add(channelFactory.returnChannel());
         } else if (type == RPChannel.Type.SIDECHAINED) {
-            channelList.add(channelFactory.sidechained());
+            // channelList.add(channelFactory.sidechained());
         }
         this.masterChannel.addInput(channelList.get(channelList.size()-1).getOutput());
     }

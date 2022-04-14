@@ -1,6 +1,7 @@
 package daw.core.channel;
 
 import daw.general.BasicVolume;
+import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Panner;
 
 /**
@@ -22,9 +23,9 @@ public class BasicChannelFactory implements ChannelFactory {
     }
 
     @Override
-    public RPChannel sidechained() {
+    public RPChannel sidechained(UGen u) {
         return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.SIDECHAINED,
-                new BasicProcessingUnitBuilder().sidechain().build());
+                new BasicProcessingUnitBuilder().sidechain(u).build());
     }
 
     @Override

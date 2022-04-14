@@ -51,7 +51,7 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     }
 
     @Override
-    public ProcessingUnitBuilder sidechain() {
+    public ProcessingUnitBuilder sidechain(UGen u) {
         // TO DO: make Sidechain instantiable
         this.sidechain = Optional.empty();
         return this;

@@ -1,5 +1,7 @@
 package daw.core.channel;
 
+import net.beadsproject.beads.core.UGen;
+
 /**
  * Makes the creation of a {@link ProcessingUnit} interactive,
  * in that the client can specify any number of the following effects in any order.
@@ -14,7 +16,11 @@ public interface ProcessingUnitBuilder {
 
     ProcessingUnitBuilder reverb();
 
-    ProcessingUnitBuilder sidechain();
+    /**
+     * Allows to sidechain the {@link ProcessingUnit} to another {@link UGen}.
+     * @param u the {@link UGen} which this {@link ProcessingUnit} is sidechained to.
+     */
+    ProcessingUnitBuilder sidechain(UGen u);
 
     ProcessingUnitBuilder gate();
 

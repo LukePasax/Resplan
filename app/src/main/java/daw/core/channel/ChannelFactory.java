@@ -1,5 +1,7 @@
 package daw.core.channel;
 
+import net.beadsproject.beads.core.UGen;
+
 /**
  * This factory allows the client to acquire a particular form of {@link RPChannel}.
  * The channels are only distinguished by their {@link ProcessingUnit} (TO DO: their default Volume?).
@@ -26,7 +28,7 @@ public interface ChannelFactory {
      * Creates a sidechained {@link RPChannel}.
      * @return the {@link RPChannel}.
      */
-    RPChannel sidechained();
+    RPChannel sidechained(UGen u);
 
     /**
      * Creates a return channel. A return channel is... TO DO
