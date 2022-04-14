@@ -29,9 +29,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
 
     @Override
     public void connect(UGen u) {
-        if (this.effects.size()>0) {
-            this.effects.peekLast().connectTo(u);
-        }
+        this.effects.peekLast().connectTo(u);
     }
 
     @Override

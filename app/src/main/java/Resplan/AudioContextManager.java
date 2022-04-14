@@ -7,7 +7,7 @@ public class AudioContextManager {
 
     private AudioContextManager(){}
 
-    public AudioContext getAudioContext(){
+    public static AudioContext getAudioContext(){
         return AC;
     }
 

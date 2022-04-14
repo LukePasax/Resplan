@@ -21,6 +21,12 @@ public interface RPChannel {
     void addInput(Gain g);
 
     /**
+     * Allows clients to obtain the audio coming from the channel.
+     * @return a {@link Gain} that represents the output.
+     */
+    Gain getOutput();
+
+    /**
      * Sets the volume.
      * @param vol
      */

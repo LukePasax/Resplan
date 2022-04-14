@@ -11,19 +11,19 @@ public class BasicChannelFactory implements ChannelFactory {
 
     @Override
     public RPChannel basic() {
-        return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.AUDIO, null);
+        return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.GATED, null);
     }
 
     @Override
     public RPChannel gated() {
         // TO DO: make a Gate class, as there isn't in Beads.
-        return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.AUDIO,
+        return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.GATED,
                 new BasicProcessingUnitBuilder().gate().build());
     }
 
     @Override
     public RPChannel sidechained() {
-        return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.AUDIO,
+        return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.SIDECHAINED,
                 new BasicProcessingUnitBuilder().sidechain().build());
     }
 
