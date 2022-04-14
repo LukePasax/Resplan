@@ -1,7 +1,7 @@
 package daw.core.mixer;
 
 import daw.core.channel.RPChannel;
-import daw.core.clip.RPClip;
+
 import java.util.List;
 
 /**
@@ -23,13 +23,6 @@ public interface RPMixer {
      * @param type the {@link RPChannel} type that will be created
      */
     void createChannel(RPChannel.Type type);
-
-    /**
-     * Return a {@link RPChannel} that contains the specified {@link RPClip}.
-     * @param clip the {@link RPClip} contained in a {@link RPClip} in the mixer
-     * @return the {@link RPChannel} that contains the {@link  RPClip}
-     */
-    RPChannel getChannel(RPClip clip);
 
     /**
      * A method that returns the Master channel of the mixer.

@@ -3,42 +3,37 @@ package daw.core.mixer;
 import daw.core.channel.BasicChannelFactory;
 import daw.core.channel.ChannelFactory;
 import daw.core.channel.RPChannel;
-import daw.core.clip.RPClip;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Mixer implements RPMixer{
 
-    private Map<RPChannel, List<RPClip>> channelMap;
-    private ChannelFactory channelFactory;
-    private RPChannel masterChannel;
+    private final List<RPChannel> channelList;
+    private final ChannelFactory channelFactory;
+    private final RPChannel masterChannel;
 
     Mixer() {
-        channelMap = new HashMap<>();
+        channelList = new ArrayList<>();
         channelFactory = new BasicChannelFactory();
         masterChannel = channelFactory.masterChannel();
     }
 
     @Override
     public List<RPChannel> getChannels() {
-        return new ArrayList<>(channelMap.keySet());
+        return this.channelList;
     }
 
     @Override
     public void createChannel(RPChannel.Type type) {
         if (type == RPChannel.Type.GATED) {
-            channelMap.put(channelFactory.gated(),new ArrayList<>());
+            channelList.add(channelFactory.gated());
         } else if (type == RPChannel.Type.RETURN) {
-            channelMap.put(channelFactory.returnChannel(),new ArrayList<>());
+           channelList.add(channelFactory.returnChannel());
         } else if (type == RPChannel.Type.SIDECHAINED) {
-            channelMap.put(channelFactory.sidechained(),new ArrayList<>());
+            channelList.add(channelFactory.sidechained());
         }
-    }
-
-    @Override
-    public RPChannel getChannel(RPClip clip) {
-        return channelMap.entrySet().stream().filter(e -> e.getValue().contains(clip)).map(Map.Entry::getKey).findAny().get();
+        //this.masterChannel.addInput(channelList.get(channelList.size()-1));
     }
 
     @Override
@@ -50,6 +45,8 @@ public class Mixer implements RPMixer{
     public void linkChannel(RPChannel channel, RPChannel returnChannel) throws IllegalArgumentException {
         if (returnChannel.getType() != RPChannel.Type.RETURN) {
             throw new IllegalArgumentException();
+        } else {
+            //returnChannel.addInput();
         }
     }
 }
