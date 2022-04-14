@@ -2,6 +2,7 @@ package planning;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class RoleImpl implements RPRole {
 	
@@ -39,6 +40,23 @@ public abstract class RoleImpl implements RPRole {
 	@Override
 	public List<String> getNotes() {
 		return this.notesList;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(title, type);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RoleImpl other = (RoleImpl) obj;
+		return Objects.equals(title, other.title) && type == other.type;
 	}
 
 }
