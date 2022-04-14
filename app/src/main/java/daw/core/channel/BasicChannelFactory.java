@@ -18,7 +18,7 @@ public class BasicChannelFactory implements ChannelFactory {
     public RPChannel gated() {
         // TO DO: make a Gate class, as there isn't in Beads.
         return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.GATED,
-                new BasicProcessingUnitBuilder().gate().build());
+                new BasicProcessingUnitBuilder().gate().highPassFilter().build());
     }
 
     @Override
@@ -30,13 +30,13 @@ public class BasicChannelFactory implements ChannelFactory {
     @Override
     public RPChannel returnChannel() {
         return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.RETURN,
-                new BasicProcessingUnitBuilder().filter().build());
+                new BasicProcessingUnitBuilder().lowPassFilter().build());
     }
 
     @Override
     public RPChannel masterChannel() {
         // TO DO: initialize the ProcessingUnit via Builder
         return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.MASTER,
-                new BasicProcessingUnitBuilder().reverb().compressor().build());
+                new BasicProcessingUnitBuilder().reverb().highPassFilter().build());
     }
 }
