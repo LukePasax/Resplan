@@ -6,10 +6,12 @@ public class SectionImpl implements RPSection {
 	
 	private String title;
 	private String description;
+	private int duration;
 
-	public SectionImpl(final String title, final String description) {
+	public SectionImpl(final String title, final String description, final int duration) {
 		this.title = title;
 		this.description = description;
+		this.duration = duration;
 	}
 
 	@Override
@@ -22,6 +24,11 @@ public class SectionImpl implements RPSection {
 		return this.description;
 	}
 
+	@Override
+	public int getDuration() {
+		return this.duration;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(title);

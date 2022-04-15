@@ -4,6 +4,8 @@ package planning;
  * This interface represents the timeline at high level
  */
 public interface RPTimeline {
-	Double getDuration(RPSection section);
-	Double getOverallDuration();
+	void addSection(int initialTime, RPSection section);
+	void removeSection(RPSection section);
+	RPSection getSection(int initialTime);
+	int getOverallDuration();
 }

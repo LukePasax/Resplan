@@ -5,5 +5,5 @@ package planning;
  */
 
 public interface RPSection extends Element {
-	
+	int getDuration();
 }
