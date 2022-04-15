@@ -18,8 +18,8 @@ public class SpeechPart extends PartImpl {
 		return this.text.isPresent();
 	}
 	
-	public Text getText() {
-		return this.text.get();
+	public Optional<Text> getText() {
+		return this.text;
 	}
 
 }

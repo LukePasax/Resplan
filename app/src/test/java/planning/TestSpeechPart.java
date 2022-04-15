@@ -27,8 +27,8 @@ public class TestSpeechPart {
 		part.addText(testText);
 		assertTrue(part.isTextPresent());
 		try {
-			assertEquals("This is a text for test\n", part.getText().getContent());
+			assertEquals("This is a text for test\n", part.getText().get().getContent());
 		} catch (Exception e) {}
-		assertEquals(36, part.getText().getSize());
+		assertEquals(36, part.getText().get().getSize());
 	}
 }

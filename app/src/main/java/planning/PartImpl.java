@@ -3,6 +3,7 @@ package planning;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public abstract class PartImpl implements RPPart {
 	
@@ -54,7 +55,7 @@ public abstract class PartImpl implements RPPart {
 	public abstract boolean isTextPresent();
 	
 	@Override
-	public abstract Text getText();
+	public abstract Optional<Text> getText();
 	
 	@Override
 	public boolean equals(Object obj) {

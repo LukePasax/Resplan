@@ -1,5 +1,7 @@
 package planning;
 
+import java.util.Optional;
+
 public class EffectsPart extends PartImpl {
 
 	public EffectsPart(String title, String description) {
@@ -17,8 +19,8 @@ public class EffectsPart extends PartImpl {
 	}
 
 	@Override
-	public Text getText() {
-		return null;
+	public Optional<Text> getText() {
+		return Optional.empty();
 	}
 
 }

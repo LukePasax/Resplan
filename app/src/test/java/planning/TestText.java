@@ -15,7 +15,7 @@ public class TestText {
 		final TextFactory tf = new TextFactoryImpl();
 		
 		try {
-			tf.createFromFile(48.0, "C/Users/Test/test.txt").getContent();
+			tf.createFromFile(48, "C/Users/Test/test.txt").getContent();
 			fail();
 		} catch (Exception e) {
 			System.out.println(e);
