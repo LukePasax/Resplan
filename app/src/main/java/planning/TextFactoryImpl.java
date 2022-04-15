@@ -6,11 +6,11 @@ import java.io.FileReader;
 public class TextFactoryImpl implements TextFactory {
 
 	@Override
-	public Text createFromString(Double size, String content) {
+	public Text createFromString(final int size, final String content) {
 		return new Text() {
 			
 			@Override
-			public Double getSize() {
+			public int getSize() {
 				return size;
 			}
 			
@@ -22,11 +22,11 @@ public class TextFactoryImpl implements TextFactory {
 	}
 
 	@Override
-	public Text createFromFile(Double size, String fileName) {
+	public Text createFromFile(final int size, final String fileName) {
 		return new Text() {
 			
 			@Override
-			public Double getSize() {
+			public int getSize() {
 				return size;
 			}
 			

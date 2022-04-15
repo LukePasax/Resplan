@@ -5,5 +5,5 @@ package planning;
  */
 public interface Text {
 	String getContent() throws Exception;
-	Double getSize();
+	int getSize();
 }

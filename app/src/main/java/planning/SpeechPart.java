@@ -6,7 +6,7 @@ public class SpeechPart extends PartImpl {
 	
 	private Optional<Text> text = Optional.empty();
 
-	public SpeechPart(String title, String description, PartType type) {
+	public SpeechPart(String title, String description) {
 		super(title, description, PartType.SPEECH);
 	}
 	

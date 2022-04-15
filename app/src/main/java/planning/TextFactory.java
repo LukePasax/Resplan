@@ -1,6 +1,6 @@
 package planning;
 
 public interface TextFactory {
-	Text createFromString(Double size, String content);
-	Text createFromFile(Double size, String fileName);
+	Text createFromString(int size, String content);
+	Text createFromFile(int size, String fileName);
 }

@@ -30,7 +30,6 @@ public abstract class PartImpl implements RPPart {
 	@Override
 	public void addNote(String note) {
 		this.notes.add(note);
-
 	}
 
 	@Override
@@ -47,7 +46,16 @@ public abstract class PartImpl implements RPPart {
 	public int hashCode() {
 		return Objects.hash(title, type);
 	}
-
+	
+	@Override
+	public abstract void addText(final Text text);
+	
+	@Override
+	public abstract boolean isTextPresent();
+	
+	@Override
+	public abstract Text getText();
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

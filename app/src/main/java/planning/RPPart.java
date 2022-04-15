@@ -14,4 +14,7 @@ public interface RPPart extends Element{
 	void addNote(String note);
 	List<String> getNotes();
 	PartType getType();
+	void addText(final Text text);
+	boolean isTextPresent();
+	Text getText();
 }
