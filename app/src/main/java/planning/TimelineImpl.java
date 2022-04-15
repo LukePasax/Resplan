@@ -7,13 +7,23 @@ public class TimelineImpl implements RPTimeline{
 	
 	private Map<Integer, RPSection> sections = new HashMap<>();
 
-	private boolean isAddValid() {
-		return false;
+	private boolean isAddValid(int initialTime, RPSection section) {
+		for(Integer i : this.sections.keySet()) {
+			if(i.equals(initialTime)) {
+				return false;
+			}
+		}
+		for(RPSection s : this.sections.values()) {
+			if(s.equals(section)) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	@Override
 	public void addSection(int initialTime, RPSection section) {
-		if(this.isAddValid()) {
+		if(this.isAddValid(initialTime, section)) {
 			this.sections.put(initialTime, section);
 		}
 	}
@@ -44,5 +54,4 @@ public class TimelineImpl implements RPTimeline{
 		}
 		return totalDuration;
 	}
-
 }
