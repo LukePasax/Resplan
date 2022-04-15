@@ -13,10 +13,10 @@ public class SpeechPart extends PartImpl {
 	 * Builds a part of type "SPEECH"
 	 * 
 	 * @param title
-	 * 			the title of the part
+	 * the title of the part
 	 * 
 	 * @param description
-	 * 			the description of the part
+	 * the description of the part
 	 */
 	public SpeechPart(String title, String description) {
 		super(title, description, PartType.SPEECH);

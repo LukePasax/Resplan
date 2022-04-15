@@ -19,11 +19,13 @@ public abstract class PartImpl implements RPPart {
 	 * It is used to build a new Object of type RPPart, but it can't be istantieted
 	 * 
 	 * @param title
-	 * 			the title of the part
+	 * the title of the part
+	 * 
 	 * @param description
-	 * 			the description of the part
+	 * the description of the part
+	 * 
 	 * @param type
-	 * 			the type of the part
+	 * the type of the part
 	 */
 	public PartImpl(final String title, final String description, final PartType type) {
 		this.title = title;

@@ -11,10 +11,10 @@ public class SoundtrackPart extends PartImpl {
 	 * Builds a part of type "SOUNDTRACK"
 	 * 
 	 * @param title
-	 * 			the title of the part
+	 * the title of the part
 	 * 
 	 * @param description
-	 * 			the description of the part
+	 * the description of the part
 	 */
 	public SoundtrackPart(String title, String description) {
 		super(title, description, PartType.SOUNDTRACK);
