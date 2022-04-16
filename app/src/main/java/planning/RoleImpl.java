@@ -3,6 +3,7 @@ package planning;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public abstract class RoleImpl implements RPRole {
 	
@@ -41,6 +42,12 @@ public abstract class RoleImpl implements RPRole {
 	public List<String> getNotes() {
 		return this.notesList;
 	}
+	
+	@Override
+	public abstract void addSpeaker(Speaker speaker);
+	
+	@Override
+	public abstract Optional<Speaker> getSpeaker();
 
 	@Override
 	public int hashCode() {
