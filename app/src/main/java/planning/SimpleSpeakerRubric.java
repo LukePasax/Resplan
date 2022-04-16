@@ -32,8 +32,9 @@ public class SimpleSpeakerRubric implements SpeakerRubric {
 	@Override
 	public boolean removeSpeaker(Speaker speaker) {
 		for(Speaker s : this.rubric) {
-			if(speaker.equals(s)) {
-				return this.rubric.remove(speaker);
+			if(speaker.equals(s) && speaker.getFirstName().equals(s.getFirstName()) && speaker.getLastName().equals(s.getLastName())) {
+				this.rubric.remove(speaker);
+				return true;
 			}
 		}
 		return false;
