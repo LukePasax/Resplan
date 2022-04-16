@@ -13,6 +13,33 @@ public class SimpleSpeaker implements Speaker {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
+	
+	public static class Builder {
+		private Integer speakerCode;
+		private String firstName;
+		private String lastName;
+		
+		public Builder(final int speakerCode) {
+			this.speakerCode = speakerCode;
+		}
+		
+		public Builder firstName(final String firstName) {
+			this.firstName = firstName;
+			return this;
+		}
+		
+		public Builder lastName(final String lastName) {
+			this.lastName = lastName;
+			return this;
+		}
+		
+		public Speaker build() throws IllegalStateException {
+			if(this.speakerCode == null || this.firstName == null || this.lastName == null) {
+				throw new IllegalStateException();
+			}
+			return new SimpleSpeaker(this.speakerCode, this.firstName, this.lastName);
+		}
+	}
 
 	@Override
 	public int getSpeakerCode() {
