@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 public interface SpeakerRubric {
 	List<Speaker> getSpeakers();
 	boolean addSpeaker(Speaker speaker);
-	void removeSpeaker(Speaker speaker);
+	boolean removeSpeaker(Speaker speaker);
 	Optional<Speaker> searchSpeaker(int speakerCode);
 	List<Speaker> getFilteredSpeakers(Predicate<? super Speaker> filter);
 }
