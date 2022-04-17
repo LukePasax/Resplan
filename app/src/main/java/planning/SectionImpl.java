@@ -2,38 +2,68 @@ package planning;
 
 import java.util.Objects;
 
+/**
+ * It's the implementation of a {@link planning.RPSection}
+ */
 public class SectionImpl implements RPSection {
 	
 	private String title;
 	private String description;
 	private int duration;
-
+	
+	/**
+	 * It is used to build a new Object of type RPSection
+	 * 
+	 * @param title
+	 * the title of the section
+	 * 
+	 * @param description
+	 * the description of the section
+	 * 
+	 * @param duration
+	 * the duration of the section
+	 */
 	public SectionImpl(final String title, final String description, final int duration) {
 		this.title = title;
 		this.description = description;
 		this.duration = duration;
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getTitle() {
 		return this.title;
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getDescription() {
 		return this.description;
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getDuration() {
 		return this.duration;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(title);
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
