@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * It's the implementation of a {@link planning.RPTimeline}
+ */
 public class TimelineImpl implements RPTimeline{
 	
 	private Map<Integer, RPSection> sections = new HashMap<>();
@@ -27,6 +30,9 @@ public class TimelineImpl implements RPTimeline{
 		return true;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean addSection(int initialTime, RPSection section) {
 		if(this.isAddValid(initialTime, section)) {
@@ -35,7 +41,10 @@ public class TimelineImpl implements RPTimeline{
 		}
 		return false;
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void removeSection(RPSection section) {
 		this.sections.forEach((i, s) -> {
@@ -44,7 +53,10 @@ public class TimelineImpl implements RPTimeline{
 			}
 		});
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Optional<RPSection> getSection(int initialTime) {
 		for(Integer i : this.sections.keySet()) {
@@ -54,7 +66,10 @@ public class TimelineImpl implements RPTimeline{
 		}
 		return Optional.empty();
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int getOverallDuration() {
 		int totalDuration = 0;
