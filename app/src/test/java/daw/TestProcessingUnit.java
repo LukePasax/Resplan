@@ -1,5 +1,6 @@
 package daw;
 
+import Resplan.AudioContextManager;
 import daw.core.channel.BasicProcessingUnit;
 import daw.core.channel.ProcessingUnit;
 import net.beadsproject.beads.core.AudioContext;
@@ -8,6 +9,7 @@ import net.beadsproject.beads.ugens.*;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,10 +22,8 @@ public class TestProcessingUnit {
                 new CrossoverFilter(), new Reverb()));
         assertEquals(List.of(Panner.class, Compressor.class, CrossoverFilter.class, Reverb.class),
                 this.reflection(pu.getEffects()));
-        /*
-        assertEquals(List.of(Compressor.class), this.reflection(new ArrayList<>(
-                pu.getEffectAtPosition(2).getConnectedInputs())));
-         */
+        assertEquals(Set.of(Compressor.class), pu.getEffectAtPosition(2)
+                .getConnectedInputs().stream().map(Object::getClass).collect(Collectors.toSet()));
         // initializing with no UGens
         try {
             new BasicProcessingUnit(List.of());
@@ -41,29 +41,28 @@ public class TestProcessingUnit {
     @Test
     public void testAdding() {
         final ProcessingUnit pu = new BasicProcessingUnit(List.of(new Compressor()));
+        // adding an illegal UGen
+        try {
+            pu.addEffect(new Glide(AudioContextManager.getAudioContext()));
+            fail();
+        } catch (IllegalArgumentException ignored) {
+        }
         // adding at the last position using addEffect
-        pu.addEffect(new Glide());
-        assertEquals(List.of(Compressor.class, Glide.class), this.reflection(pu.getEffects()));
-        /*
-        assertEquals(List.of(Compressor.class), this.reflection(new ArrayList<>(
-                pu.getEffectAtPosition(1).getConnectedInputs())));
-         */
+        pu.addEffect(new Plug(AudioContextManager.getAudioContext()));
+        assertEquals(List.of(Compressor.class, Plug.class), this.reflection(pu.getEffects()));
         // adding at a given position
         pu.addEffectAtPosition(new Maximum(), 1);
-        final var list = List.of(Compressor.class, Maximum.class, Glide.class);
+        final var list = List.of(Compressor.class, Maximum.class, Plug.class);
         assertEquals(list, this.reflection(pu.getEffects()));
-        System.out.println(pu.getEffects());
-        /*
-        assertEquals(List.of(Maximum.class), this.reflection(new ArrayList<>(
-                pu.getEffectAtPosition(2).getConnectedInputs())));
-         */
+        assertEquals(Set.of(Maximum.class, Compressor.class), pu.getEffectAtPosition(2)
+                .getConnectedInputs().stream().map(Object::getClass).collect(Collectors.toSet()));
         // adding at an out-of-bound position
-        pu.addEffectAtPosition(new Plug(new AudioContext()), -1);
+        pu.addEffectAtPosition(new Reverb(AudioContextManager.getAudioContext()), -1);
         pu.addEffectAtPosition(new Reverb(), 4);
         assertEquals(list, this.reflection(pu.getEffects()));
         // adding at the last position using addEffectAtPosition
         pu.addEffectAtPosition(new Reverb(), 3);
-        assertEquals(List.of(Compressor.class, Maximum.class, Glide.class, Reverb.class),
+        assertEquals(List.of(Compressor.class, Maximum.class, Plug.class, Reverb.class),
                 this.reflection(pu.getEffects()));
     }
 
@@ -85,25 +84,19 @@ public class TestProcessingUnit {
         // replacing
         pu.replace(1, new MonoPlug());
         assertEquals(List.of(Reverb.class, MonoPlug.class, Minimum.class), this.reflection(pu.getEffects()));
-        /*
         assertEquals(List.of(Reverb.class), this.reflection(new ArrayList<>(
                 pu.getEffectAtPosition(1).getConnectedInputs())));
         assertEquals(List.of(MonoPlug.class), this.reflection(new ArrayList<>(
                 pu.getEffectAtPosition(2).getConnectedInputs())));
-         */
         // removing
         pu.removeEffectAtPosition(1);
         assertEquals(List.of(Reverb.class, Minimum.class), this.reflection(pu.getEffects()));
-        /*
         assertEquals(List.of(Reverb.class), this.reflection(new ArrayList<>(
                 pu.getEffectAtPosition(1).getConnectedInputs())));
-         */
         pu.removeEffectAtPosition(0);
         assertEquals(List.of(Minimum.class), this.reflection(pu.getEffects()));
-        /*
         assertEquals(List.of(), this.reflection(new ArrayList<>(
                 pu.getEffectAtPosition(0).getConnectedInputs())));
-         */
         // removing when there is only one effect
         try {
             pu.removeEffectAtPosition(0);
