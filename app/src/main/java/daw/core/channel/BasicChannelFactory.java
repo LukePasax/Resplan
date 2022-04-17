@@ -12,7 +12,7 @@ public class BasicChannelFactory implements ChannelFactory {
 
     @Override
     public RPChannel basic() {
-        return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.GATED, null);
+        return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.BASIC, null);
     }
 
     @Override

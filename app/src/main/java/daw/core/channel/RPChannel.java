@@ -12,7 +12,7 @@ public interface RPChannel {
      * Identifies different forms of channels.
      */
     enum Type {
-        GATED, SIDECHAINED, RETURN, MASTER;
+        BASIC, GATED, SIDECHAINED, RETURN, MASTER;
     }
 
     /**
@@ -22,6 +22,12 @@ public interface RPChannel {
      * of an input may not be finished when another input is added.
      */
     void addInput(Gain g);
+
+    /**
+     * Makes the channel have no input, meaning that if the channel already didn't have an input,
+     * this method does nothing.
+     */
+    void removeInput();
 
     /**
      * Allows clients to obtain the audio coming from the channel.

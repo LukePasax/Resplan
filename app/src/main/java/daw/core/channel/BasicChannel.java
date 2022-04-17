@@ -39,6 +39,11 @@ public class BasicChannel implements RPChannel {
     }
 
     @Override
+    public void removeInput() {
+        this.inputGain = Optional.empty();
+    }
+
+    @Override
     public Gain getOutput() {
         if (this.isEnabled() && this.inputGain.isPresent()) {
             final var g = new Gain(AudioContextManager.getAudioContext(), 1, this.getVolume());
