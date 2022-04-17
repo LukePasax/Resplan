@@ -4,7 +4,7 @@ import java.util.Optional;
 
 public class SpeechRole extends RoleImpl {
 	
-	private Optional<Speaker> speaker;
+	private Optional<Speaker> speaker = Optional.empty();
 
 	public SpeechRole(final String title, final String description) {
 		super(title, description, RoleType.SPEECH);
@@ -17,9 +17,6 @@ public class SpeechRole extends RoleImpl {
 
 	@Override
 	public Optional<Speaker> getSpeaker() {
-		if(!this.speaker.isPresent()) {
-			return Optional.empty();
-		}
-		return this.speaker;			
+		return this.speaker;	
 	}
 }
