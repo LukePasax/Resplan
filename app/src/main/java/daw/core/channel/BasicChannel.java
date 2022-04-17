@@ -73,6 +73,10 @@ public class BasicChannel implements RPChannel {
         return this.vol.getVolume();
     }
 
+    public Panner getPanner() {
+        return this.pan;
+    }
+
     @Override
     public void enable() {
         this.enabled = true;
@@ -88,12 +92,13 @@ public class BasicChannel implements RPChannel {
         return this.enabled;
     }
 
+    public boolean isProcessingUnitPresent() {
+        return this.pu.isPresent();
+    }
+
     @Override
     public Type getType() {
         return this.type;
     }
 
-    public boolean isProcessingUnitPresent() {
-        return this.pu.isPresent();
-    }
 }

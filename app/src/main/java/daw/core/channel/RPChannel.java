@@ -2,6 +2,7 @@ package daw.core.channel;
 
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
+import net.beadsproject.beads.ugens.Panner;
 
 /**
  * This interface models a channel, which is a representation of sound coming from an input and going to an output.
@@ -46,10 +47,16 @@ public interface RPChannel {
     void setVolume(int vol);
 
     /**
-     * Gets the volume
-     * @return the volume.
+     * Gets the volume.
+     * @return a {@link daw.general.Volume}.
      */
     int getVolume();
+
+    /**
+     * Gets the panner.
+     * @return a {@link Panner}.
+     */
+    Panner getPanner();
 
     /**
      * Enables the audio of the channel.
@@ -67,15 +74,15 @@ public interface RPChannel {
     boolean isEnabled();
 
     /**
-     *
-     * @return the type of the channel.
-     */
-    RPChannel.Type getType();
-
-    /**
      * Returns whether the channel has a {@link ProcessingUnit} attached or not.
      * @return true if the channel contains a {@link ProcessingUnit}.
      */
     boolean isProcessingUnitPresent();
+
+    /**
+     *
+     * @return the type of the channel.
+     */
+    RPChannel.Type getType();
 
 }
