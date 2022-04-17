@@ -14,7 +14,7 @@ public class Mixer implements RPMixer{
     private final ChannelFactory channelFactory;
     private final RPChannel masterChannel;
 
-    Mixer() {
+    public Mixer() {
         channelFactory = new BasicChannelFactory();
         masterChannel = channelFactory.masterChannel();
     }
