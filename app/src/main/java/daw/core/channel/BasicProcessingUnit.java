@@ -49,19 +49,30 @@ public class BasicProcessingUnit implements ProcessingUnit {
 
     @Override
     public void addEffectAtPosition(UGen u, int index) {
-        if (u.getIns() >= 1 && u.getOuts() >= 1) {
+        if (this.checkInsAndOuts(u, index)) {
             if (index >= 0 && index <= this.effects.size()) {
                 this.effects.add(index, u);
                 if (index > 0) {
-                    u.addInput(this.effects.get(index-1));
+                    u.addInput(this.effects.get(index - 1));
                 }
-                if (index < this.effects.size()-1) {
-                    this.effects.get(index+1).addInput(u);
+                if (index < this.effects.size() - 1) {
+                    this.effects.get(index + 1).addInput(u);
                 }
             }
         } else {
-            throw new IllegalArgumentException("This UGen cannot be added to the sequence.");
+            throw new IllegalArgumentException("This UGen cannot be added to the sequence at this position");
         }
+    }
+
+    private boolean checkInsAndOuts(UGen u, int index) {
+        boolean flag = true;
+        if (index > 0 && u.getIns()!=this.effects.get(index-1).getOuts()) {
+            flag = false;
+        }
+        if (index < this.effects.size()-1 && u.getOuts()!=this.effects.get(index+1).getIns()) {
+            flag = false;
+        }
+        return flag;
     }
 
     @Override
