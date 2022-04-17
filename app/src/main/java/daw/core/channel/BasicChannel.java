@@ -2,6 +2,7 @@ package daw.core.channel;
 
 import Resplan.AudioContextManager;
 import daw.general.Volume;
+import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.Panner;
 
@@ -29,18 +30,23 @@ public class BasicChannel implements RPChannel {
         this.vol = vol;
         this.pan = pan;
         this.type = type;
-        this.pu = (pu == null) ? Optional.of(pu) : Optional.empty();
+        this.pu = Optional.ofNullable(pu);
         this.inputGain = Optional.empty();
     }
 
     @Override
     public void addInput(Gain g) {
         this.inputGain = Optional.of(Objects.requireNonNull(g));
+        if (this.pu.isPresent()) {
+            this.pu.get().addInput(g);
+        }
     }
 
     @Override
-    public void removeInput() {
-        this.inputGain = Optional.empty();
+    public void removeInput(int inputChannel, UGen u) {
+        if (this.inputGain.isPresent()) {
+            this.inputGain.get().removeConnection(inputChannel, u, inputChannel);
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package daw.core.channel;
 
+import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
 
 /**
@@ -24,10 +25,10 @@ public interface RPChannel {
     void addInput(Gain g);
 
     /**
-     * Makes the channel have no input, meaning that if the channel already didn't have an input,
-     * this method does nothing.
+     * If the channel has any input, it tries to remove the connection to the specified {@link UGen},
+     * otherwise it does nothing.
      */
-    void removeInput();
+    void removeInput(int inputChannel, UGen u);
 
     /**
      * Allows clients to obtain the audio coming from the channel.

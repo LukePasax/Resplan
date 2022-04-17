@@ -42,6 +42,8 @@ public interface ProcessingUnit {
      * Adds a new effect in the last position of the sequence.
      * Note that this method also match the preceding effect output to the given effect input.
      * @param u the {@link UGen} that represents the effect to be added.
+     * @throws IllegalArgumentException if the {@link UGen} does not have the ability to be connected
+     * to at least one input and one output, since then the sequence would be interrupted.
      */
     void addEffect(UGen u);
 
@@ -54,6 +56,8 @@ public interface ProcessingUnit {
      * and the output of the latter to the following effect input (if present).
      * @param u the {@link UGen} that represents the effect to be added.
      * @param index a position in the sequence.
+     * @throws IllegalArgumentException if the {@link UGen} does not have the ability to be connected
+     * to at least one input and one output, since then the sequence would be interrupted.
      */
     void addEffectAtPosition(UGen u, int index);
 
