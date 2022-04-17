@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * It's an interface that represents a clip in high level which could belong to a guest or a soundtrack
+ * It's an interface that represents a clip in high level which could belong to a guest, a soundtrack or to effects
  */
 public interface RPPart extends Element{
 	
@@ -57,7 +57,7 @@ public interface RPPart extends Element{
 	 * Returns the text belonging to a part
 	 * 
 	 * @return the optional text of a part, always 
-	 * Optional.empty() if type part isn't
+	 * Optional.empty() if part type isn't
 	 * "SPEECH"
 	 */
 	Optional<Text> getText();

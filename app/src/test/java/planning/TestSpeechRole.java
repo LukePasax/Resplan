@@ -22,13 +22,16 @@ public class TestSpeechRole {
 	@Test
 	public void testSpeaker() {
 		final Speaker s = new SimpleSpeaker(1, "Mario", "Bianchi");
+		assertFalse(this.role.isSpeakerPresent());
 		this.role.addSpeaker(s);
+		assertTrue(this.role.isSpeakerPresent());
 		assertEquals(Optional.of(s), this.role.getSpeaker());
 		
 		final RPRole role2 = new SpeechRole("Role2", "This is the second role");
 		assertEquals(Optional.empty(), role2.getSpeaker());
 		
 		final RPRole role3 = new SoundtrackRole("Role3", "This is the third role");
+		assertFalse(role3.isSpeakerPresent());
 		assertEquals(Optional.empty(), role3.getSpeaker());
 	}
 }
