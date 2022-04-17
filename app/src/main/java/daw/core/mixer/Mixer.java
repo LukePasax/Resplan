@@ -3,37 +3,34 @@ package daw.core.mixer;
 import daw.core.channel.BasicChannelFactory;
 import daw.core.channel.ChannelFactory;
 import daw.core.channel.RPChannel;
+import net.beadsproject.beads.ugens.Gain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Mixer implements RPMixer{
 
-    private final List<RPChannel> channelList;
     private final ChannelFactory channelFactory;
     private final RPChannel masterChannel;
 
-    Mixer() {
-        channelList = new ArrayList<>();
+    public Mixer() {
         channelFactory = new BasicChannelFactory();
         masterChannel = channelFactory.masterChannel();
     }
 
     @Override
-    public List<RPChannel> getChannels() {
-        return this.channelList;
-    }
-
-    @Override
-    public void createChannel(RPChannel.Type type) {
+    public RPChannel createChannel(RPChannel.Type type, Optional<Gain> gain) {
+        RPChannel channel = null;
         if (type == RPChannel.Type.GATED) {
-            channelList.add(channelFactory.gated());
+            channel = channelFactory.gated();
         } else if (type == RPChannel.Type.RETURN) {
-           channelList.add(channelFactory.returnChannel());
+            channel = channelFactory.returnChannel();
         } else if (type == RPChannel.Type.SIDECHAINED) {
-            // channelList.add(channelFactory.sidechained());
+            channel = channelFactory.sidechained(gain.get());
         }
-        this.masterChannel.addInput(channelList.get(channelList.size()-1).getOutput());
+        masterChannel.addInput(channel.getOutput());
+        return channel;
     }
 
     @Override
@@ -48,5 +45,16 @@ public class Mixer implements RPMixer{
         } else {
             returnChannel.addInput(channel.getOutput());
         }
+    }
+
+    /**
+     * A method to add a {@link RPChannel} to a group
+     *
+     * @param channel the {@link RPChannel} to be added
+     * @param group  the Group
+     */
+    @Override
+    public void linkToGroup(RPChannel channel, RPChannel group) {
+        group.addInput(channel.getOutput());
     }
 }

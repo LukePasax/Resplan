@@ -1,28 +1,26 @@
 package daw.core.mixer;
 
 import daw.core.channel.RPChannel;
+import net.beadsproject.beads.ugens.Gain;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This interface models a mixer,
- * which is a container and controller for {@link RPChannel}.
+ * which is a controller for {@link RPChannel}.
  */
 
 public interface RPMixer {
 
     /**
-     * Returns the list of {@link RPChannel} contained in the mixer.
-     * @return a list of {@link RPChannel} in the mixer
-     */
-    List<RPChannel> getChannels();
-
-    /**
      * A method to create a {@link RPChannel} in the mixer
      * and links its output to the Master channel.
      * @param type the {@link RPChannel} type that will be created
+     * @param gain the optional {@link Gain} to link with a sidechained {@link RPChannel}
+     * @return the {@link RPChannel} that is created
      */
-    void createChannel(RPChannel.Type type);
+    RPChannel createChannel(RPChannel.Type type, Optional<Gain> gain);
 
     /**
      * A method that returns the Master channel of the mixer.
@@ -37,5 +35,12 @@ public interface RPMixer {
      * @param returnChannel the Return channel which receives the input
      */
     void linkChannel(RPChannel channel, RPChannel returnChannel);
+
+    /**
+     * A method to add a {@link RPChannel} to a group
+     * @param channel the {@link RPChannel} to be added
+     * @param group the Group
+     */
+    void linkToGroup(RPChannel channel, RPChannel group);
     
 }
