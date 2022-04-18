@@ -4,7 +4,7 @@ import java.io.File;
 
 public class EmptyClip implements RPClip {
 
-	private double duration;
+	private double duration = 0;
 	
 	@Override
 	public void setContentPosition(double milliseconds) {
