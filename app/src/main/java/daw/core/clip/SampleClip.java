@@ -14,22 +14,30 @@ import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
  */
 public class SampleClip implements RPClip {
 	
-	private final RPClip fileClip;
+	private final RPClip clip;
 	
 	private final Sample sample;
-
-	public SampleClip(File file) throws IOException, OperationUnsupportedException, FileFormatException {
-		this.fileClip = new FileClip(file);
-		this.sample = new Sample(fileClip.getContent().getAbsolutePath());
+	
+	private SampleClip(FileClip fileClip) throws IOException, OperationUnsupportedException, FileFormatException {
+		this.clip = fileClip;
+		this.sample = new Sample(clip.getContent().getAbsolutePath());
 		this.setDuration(sample.getLength());
 	}
 
+	protected SampleClip(File file, RPClip emptyClip) throws IOException, OperationUnsupportedException, FileFormatException {
+		this(new FileClip(file, emptyClip));
+	}
+	
+	public SampleClip(File file) throws IOException, OperationUnsupportedException, FileFormatException {
+		this(new FileClip(file));
+	}
+	
 	@Override
 	public void setDuration(double milliseconds) {
 		if(sample.getLength()<milliseconds) {
 			throw new IllegalArgumentException("the new clip duration can't be bigger than the content duration");
 		}
-		this.fileClip.setDuration(milliseconds);
+		this.clip.setDuration(milliseconds);
 	}
 
 	@Override
@@ -37,22 +45,26 @@ public class SampleClip implements RPClip {
 		if(sample.getLength()<=milliseconds) {
 			throw new IllegalArgumentException("the new content position can't be bigger or equal than the content duration");
 		}
-		this.fileClip.setContentPosition(milliseconds);
+		this.clip.setContentPosition(milliseconds);
 	}
 
 	@Override
 	public double getDuration() {
-		return this.fileClip.getDuration();
+		return this.clip.getDuration();
 	}
 
 	@Override
 	public double getContentPosition() {
-		return this.fileClip.getContentPosition();
+		return this.clip.getContentPosition();
 	}
 
 	@Override
 	public File getContent() {
-		return this.fileClip.getContent();
+		return this.clip.getContent();
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return false;
+	}
 }

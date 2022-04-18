@@ -32,5 +32,10 @@ public interface RPClip {
 	/**
 	 * @return
 	 */
+	boolean isEmpty();
+	
+	/**
+	 * @return
+	 */
 	File getContent();
 }
