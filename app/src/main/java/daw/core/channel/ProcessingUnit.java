@@ -41,9 +41,12 @@ public interface ProcessingUnit {
     /**
      * Adds a new effect in the last position of the sequence.
      * Note that this method also match the preceding effect output to the given effect input.
+     * If the number of outputs of the preceding {@link UGen} is greater than the number of inputs of the given
+     * {@link UGen} then the extra outputs are not connected.
+     * If the number of inputs of the given {@link UGen} is greater than the number of outputs of the preceding
+     * {@link UGen} then the outputs are cycled to fill all inputs.
      * @param u the {@link UGen} that represents the effect to be added.
-     * @throws IllegalArgumentException if the {@link UGen}'s inputs are not as many as the preceding
-     * (if there is one) {@link UGen}'s outputs.
+     * @throws IllegalArgumentException if the {@link UGen} has either no input or no output.
      */
     void addEffect(UGen u);
 
@@ -54,11 +57,11 @@ public interface ProcessingUnit {
      * In this case, this method has the exact same behavior of the addEffect method.
      * Note that this method also match the preceding effect output (if present) to the given effect input
      * and the output of the latter to the following effect input (if present).
+     * The same policies of the addEffect method are used when the number of inputs and outputs of
+     * two consecutive {@link UGen} is different.
      * @param u the {@link UGen} that represents the effect to be added.
      * @param index a position in the sequence.
-     * @throws IllegalArgumentException if the {@link UGen}'s inputs are not as many as the preceding
-     * (if there is one) {@link UGen}'s outputs and its output are not as many as the following
-     * (if there is one) {@link UGen}'s inputs.
+     * @throws IllegalArgumentException if the {@link UGen} has either no input or no output.
      */
     void addEffectAtPosition(UGen u, int index);
 

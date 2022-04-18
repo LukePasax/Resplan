@@ -1,7 +1,9 @@
 package daw.core.channel;
 
+import Resplan.AudioContextManager;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
+import net.beadsproject.beads.ugens.Plug;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -53,26 +55,25 @@ public class BasicProcessingUnit implements ProcessingUnit {
             if (index >= 0 && index <= this.effects.size()) {
                 this.effects.add(index, u);
                 if (index > 0) {
-                    u.addInput(this.effects.get(index - 1));
+                    this.connectEffects(this.effects.get(index-1), u);
                 }
                 if (index < this.effects.size() - 1) {
-                    this.effects.get(index + 1).addInput(u);
+                    this.connectEffects(u, this.effects.get(index+1));
                 }
             }
         } else {
-            throw new IllegalArgumentException("This UGen cannot be added to the sequence at this position");
+            throw new IllegalArgumentException("UGen " + u.getClass() +
+                    " has either 0 inputs or 0 outputs, therefore it cannot be added to the sequence");
         }
     }
 
     private boolean checkInsAndOuts(UGen u, int index) {
-        boolean flag = true;
-        if (index > 0 && u.getIns()!=this.effects.get(index-1).getOuts()) {
-            flag = false;
-        }
-        if (index < this.effects.size()-1 && u.getOuts()!=this.effects.get(index+1).getIns()) {
-            flag = false;
-        }
-        return flag;
+        return u.getOuts() != 0 && u.getIns() != 0;
+    }
+
+    private void connectEffects(UGen from, UGen to) {
+        to.clearInputConnections();
+        to.addInput(from);
     }
 
     @Override
