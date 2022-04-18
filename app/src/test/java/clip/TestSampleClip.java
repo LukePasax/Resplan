@@ -1,30 +1,35 @@
 package clip;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.File;
-
 import org.junit.jupiter.api.Test;
-
 import daw.core.clip.*;
+import net.beadsproject.beads.data.Sample;
 
-class TestFileClip {
-	
+class TestSampleClip {
+
 	static final String SEP = System.getProperty("file.separator");
 
 	@Test
-	void testFileClipCreation() {
+	void testSampleClipCreation() {
 		File content = new File(System.getProperty("user.dir") + SEP + "src" +
 				SEP + "test" + SEP + "resources"+ SEP + "Alergy - Brain in the Jelly.wav");
-		RPClip fileClip = new FileClip(content);
-		assertFalse(fileClip.isEmpty());
-		assertEquals(fileClip.getDuration(), 0);
+		RPClip sampleClip;
+		try {
+			sampleClip = new SampleClip(content);
+			assertFalse(sampleClip.isEmpty());
+			assertEquals(sampleClip.getDuration(), new Sample(content.getAbsolutePath()).getLength());
+		} catch (Exception e) {
+			fail();
+		}
+		
 	}
 	
 	@Test
 	void testFileClipCreationExceptions() {
 		File content = new File(System.getProperty("user.dir") + SEP + "src" +
-				SEP + "test" + SEP + "resources"+ SEP + "NotARealFile.wav");
-		assertThrows(IllegalArgumentException.class, ()->new FileClip(content));
+				SEP + "test" + SEP + "resources"+ SEP + "NotAnAudioFile.txt");
+		assertThrows(Exception.class, ()->new SampleClip(content));
 	}
+
 }
