@@ -5,19 +5,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+/**
+ * This is the implementation of a {@link planning.SpeakerRubric}
+ */
 public class SimpleSpeakerRubric implements SpeakerRubric {
 	
 	private List<Speaker> rubric = new ArrayList<>();
-
-	public SimpleSpeakerRubric() {
-		// TODO Auto-generated constructor stub
-	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<Speaker> getSpeakers() {
 		return this.rubric;
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean addSpeaker(Speaker speaker) {
 		for(Speaker s : this.rubric) {
@@ -28,7 +33,10 @@ public class SimpleSpeakerRubric implements SpeakerRubric {
 		this.rubric.add(speaker);
 		return true;
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean removeSpeaker(Speaker speaker) {
 		for(Speaker s : this.rubric) {
@@ -39,7 +47,10 @@ public class SimpleSpeakerRubric implements SpeakerRubric {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Optional<Speaker> searchSpeaker(int speakerCode) {
 		for(Speaker s : this.rubric) {
@@ -49,7 +60,10 @@ public class SimpleSpeakerRubric implements SpeakerRubric {
 		}
 		return Optional.empty();
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<Speaker> getFilteredSpeakers(Predicate<? super Speaker> filter) {
 		List<Speaker> filteredRubric = new ArrayList<>();
