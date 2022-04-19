@@ -12,7 +12,7 @@ class TestEmptyClip {
 	void testEmptyClipCreation() {
 		RPClip emptyClip = new EmptyClip();
 		assertTrue(emptyClip.isEmpty());
-		assertEquals(emptyClip.getDuration(), 0);
+		assertEquals(emptyClip.getDuration(), RPClip.DEFAULT_DURATION);
 	}
 	
 	@Test

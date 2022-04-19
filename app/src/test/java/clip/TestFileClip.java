@@ -18,7 +18,7 @@ class TestFileClip {
 				SEP + "test" + SEP + "resources"+ SEP + "Alergy - Brain in the Jelly.wav");
 		RPClip fileClip = new FileClip(content);
 		assertFalse(fileClip.isEmpty());
-		assertEquals(fileClip.getDuration(), 0);
+		assertEquals(fileClip.getDuration(), RPClip.DEFAULT_DURATION);
 	}
 	
 	@Test
