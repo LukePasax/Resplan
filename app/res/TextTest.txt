@@ -1,0 +1,6 @@
+Questa e'
+una prova di
+file di testo
+per inserire test
+in una TextArea da
+file
