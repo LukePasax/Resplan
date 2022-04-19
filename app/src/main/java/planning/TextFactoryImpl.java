@@ -1,7 +1,7 @@
 package planning;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * This is the implementation of a {@link planning.TextFactory}
@@ -37,13 +37,8 @@ public class TextFactoryImpl implements TextFactory {
 			 */
 			@Override
 			public String getContent() throws Exception {
-				String content = "";
-				String line = null;
-				final BufferedReader br = new BufferedReader(new FileReader(fileName));
-				while((line = br.readLine()) != null) {
-					content = content + line;
-				}
-				br.close();
+				Path filePath = Path.of(fileName);
+				String content = Files.readString(filePath);
 				return content;
 			}
 		};
