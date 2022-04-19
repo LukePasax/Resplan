@@ -3,33 +3,38 @@ package planning;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+/**
+ * This is the implementation of a {@link planning.TextFactory}
+ */
 public class TextFactoryImpl implements TextFactory {
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public Text createFromString(final int size, final String content) {
+	public Text createFromString(final String content) {
 		return new Text() {
 			
-			@Override
-			public int getSize() {
-				return size;
-			}
-			
+			/**
+			 * {@inheritDoc}
+			 */
 			@Override
 			public String getContent() {
 				return content;
 			}
 		};
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public Text createFromFile(final int size, final String fileName) {
+	public Text createFromFile(final String fileName) {
 		return new Text() {
 			
-			@Override
-			public int getSize() {
-				return size;
-			}
-			
+			/**
+			 * {@inheritDoc}
+			 */
 			@Override
 			public String getContent() throws Exception {
 				String content = "";

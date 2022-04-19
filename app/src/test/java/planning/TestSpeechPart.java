@@ -22,13 +22,12 @@ public class TestSpeechPart {
 		assertFalse(part.isTextPresent());
 		
 		final TextFactory tf = new TextFactoryImpl();
-		final Text testText = tf.createFromString(36, "This is a text for test\n");
+		final Text testText = tf.createFromString("This is a text for test\n");
 		
 		part.addText(testText);
 		assertTrue(part.isTextPresent());
 		try {
 			assertEquals("This is a text for test\n", part.getText().get().getContent());
 		} catch (Exception e) {}
-		assertEquals(36, part.getText().get().getSize());
 	}
 }
