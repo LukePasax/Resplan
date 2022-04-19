@@ -67,4 +67,11 @@ public class FileClip implements RPClip {
 	public boolean isEmpty() {
 		return false;
 	}
+
+	@Override
+	public RPClip duplicate() {
+		RPClip newClip = new FileClip(this.content, this.clip);
+		newClip.setContentPosition(this.contentPosition);
+		return newClip;
+	}
 }

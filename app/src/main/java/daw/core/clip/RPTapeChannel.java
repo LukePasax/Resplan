@@ -22,6 +22,12 @@ public interface RPTapeChannel {
 	void insertRPClip(RPClip clip, double time);
 	
 	/**
+	 * Remove the specified RPClip in the timeline of this tape channel.
+	 * @param clipTimeIn
+	 */
+	void removeRPClip(double clipTimeIn);
+	
+	/**
 	 * Get the Optional<Entry<Double, RPClip>> placed at a specified time in the timeline of this tape channel.
 	 * If there's no RPClip placed in the specified time this method must return an Optional.empty().
 	 * @param time
@@ -50,7 +56,7 @@ public interface RPTapeChannel {
 	 * @param clip
 	 * @param duration
 	 */
-	void setTimeOut(double initialClipTimeIn, double duration);
+	void setTimeOut(double initialClipTimeIn, double finalClipTimeOut);
 	
 	/**
 	 * Move the clip starting point over the timeline without move the clip.
@@ -58,7 +64,7 @@ public interface RPTapeChannel {
 	 * @param clip
 	 * @param time
 	 */
-	void SetTimeIn(double initialClipTimeIn, double finalClipTimeIn);
+	void setTimeIn(double initialClipTimeIn, double finalClipTimeIn);
 	
 	/**
 	 * Split a clip in two different RPClips.

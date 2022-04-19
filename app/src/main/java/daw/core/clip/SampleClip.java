@@ -25,10 +25,12 @@ public class SampleClip implements RPClip {
 	 * @throws OperationUnsupportedException
 	 * @throws FileFormatException
 	 */
-	private SampleClip(FileClip fileClip) throws IOException, OperationUnsupportedException, FileFormatException {
+	private SampleClip(RPClip fileClip) throws IOException, OperationUnsupportedException, FileFormatException {
+		if(fileClip.getClass()!=FileClip.class) {
+			throw new IllegalArgumentException("The supplied fileClip must be a FileClip class object");
+		}
 		this.clip = fileClip;
 		this.sample = new Sample(clip.getContent().getAbsolutePath());
-		this.setDuration(sample.getLength());
 	}
 
 	/**
@@ -44,14 +46,27 @@ public class SampleClip implements RPClip {
 	}
 	
 	/**
-	 * Constructor for client. Just specify an audio File.
+	 * Constructor for client. Just specify an audio File. The duration will be fitted to the audio file duration.
 	 * @param file
 	 * @throws IOException
 	 * @throws OperationUnsupportedException
 	 * @throws FileFormatException
 	 */
-	public SampleClip(File file) throws IOException, OperationUnsupportedException, FileFormatException {
-		this(new FileClip(file));
+	public SampleClip(File content) throws IOException, OperationUnsupportedException, FileFormatException {
+		this(new FileClip(content));
+		this.setDuration(sample.getLength());
+	}
+	
+	/**
+	 * Constructor for client. Just specify an audio File and a duration.
+	 * @param duration
+	 * @param content
+	 * @throws IOException
+	 * @throws OperationUnsupportedException
+	 * @throws FileFormatException
+	 */
+	public SampleClip(double duration, File content) throws IOException, OperationUnsupportedException, FileFormatException {
+		this(new FileClip(duration, content));
 	}
 	
 	@Override
@@ -88,5 +103,15 @@ public class SampleClip implements RPClip {
 	@Override
 	public boolean isEmpty() {
 		return false;
+	}
+
+	@Override
+	public RPClip duplicate() {
+		try {
+			return new SampleClip(this.clip);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

@@ -50,4 +50,9 @@ public class EmptyClip implements RPClip {
 		return this.duration;
 	}
 
+	@Override
+	public RPClip duplicate() {
+		return new EmptyClip(this.duration);
+	}
+
 }

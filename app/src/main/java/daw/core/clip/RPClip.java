@@ -40,4 +40,10 @@ public interface RPClip {
 	 * @return
 	 */
 	File getContent();
+	
+	/**
+	 * Return a duplicate object of this RPClip.
+	 * @return
+	 */
+	RPClip duplicate();
 }
