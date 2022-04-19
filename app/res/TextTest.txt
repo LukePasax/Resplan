@@ -1,6 +1,4 @@
-Questa e'
-una prova di
-file di testo
-per inserire test
-in una TextArea da
-file
+File di testo di
+esempio, per prova di 
+apertura di testo
+da file
