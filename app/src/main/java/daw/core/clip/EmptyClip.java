@@ -4,7 +4,18 @@ import java.io.File;
 
 public class EmptyClip implements RPClip {
 
-	private double duration = 0;
+	private double duration;
+	
+	public EmptyClip() {
+		this.duration = RPClip.DEFAULT_DURATION;
+	}
+	
+	public EmptyClip(double duration) {
+		if(duration <= 0) {
+			throw new IllegalArgumentException("The duration of a clip must be a positive value");
+		}
+		this.duration = duration;
+	}
 	
 	@Override
 	public void setContentPosition(double milliseconds) {
@@ -28,6 +39,9 @@ public class EmptyClip implements RPClip {
 
 	@Override
 	public void setDuration(double milliseconds) {
+		if(duration <= 0) {
+			throw new IllegalArgumentException("The duration of a clip must be a positive value");
+		}
 		this.duration = milliseconds;
 	}
 

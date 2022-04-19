@@ -22,7 +22,6 @@ class TestSampleClip {
 		} catch (Exception e) {
 			fail();
 		}
-		
 	}
 	
 	@Test
@@ -31,5 +30,4 @@ class TestSampleClip {
 				SEP + "test" + SEP + "resources"+ SEP + "NotAnAudioFile.txt");
 		assertThrows(Exception.class, ()->new SampleClip(content));
 	}
-
 }

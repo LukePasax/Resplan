@@ -1,6 +1,8 @@
 package daw.core.clip;
 
 import java.util.Iterator;
+import java.util.Optional;
+import javafx.util.Pair;
 
 /**
  * Place and Manage RSClips in the Timeline of a tape channel.
@@ -13,24 +15,25 @@ public interface RPTapeChannel {
 	
 	/**
 	 * Add an RPClip in the timeline of this tape channel. 
+	 * If another RPClip is present at the specified time the new clip will be placed over the already present RPClip.
 	 * @param clip
 	 * @param time
 	 */
 	void insertRPClip(RPClip clip, double time);
 	
 	/**
-	 * Get the RPClip placed at a specified time in the timeline of this tape channel.
+	 * Get the Optional<Entry<Double, RPClip>> placed at a specified time in the timeline of this tape channel.
 	 * If there's no RPClip placed in the specified time this method must return an Optional.empty().
 	 * @param time
 	 * @return
 	 */
-	RPClip getClipAt(double time);
+	Optional<Pair<Double, RPClip>> getClipAt(double time);
 	
 	/**
 	 * Get an Iterator which iterate all the RPClips of the tape channel ordered by time.
 	 * @return
 	 */
-	Iterator<RPClip> getClipIterator();
+	Iterator<Pair<Double, RPClip>> getClipWithTimeIterator();
 	
 	/**
 	 * Move the specified clip at the specified time in the timeline. 
@@ -38,7 +41,7 @@ public interface RPTapeChannel {
 	 * @param clip
 	 * @param time
 	 */
-	void move(RPClip clip, double time);
+	void move(double initialClipTimeIn, double finalClipTimeIn);
 	
 	/**
 	 * Set the duration of the specified clip.
@@ -47,7 +50,7 @@ public interface RPTapeChannel {
 	 * @param clip
 	 * @param duration
 	 */
-	void setTimeOut(RPClip clip, double duration);
+	void setTimeOut(double initialClipTimeIn, double duration);
 	
 	/**
 	 * Move the clip starting point over the timeline without move the clip.
@@ -55,7 +58,7 @@ public interface RPTapeChannel {
 	 * @param clip
 	 * @param time
 	 */
-	void SetTimeIn(RPClip clip, double time);
+	void SetTimeIn(double initialClipTimeIn, double finalClipTimeIn);
 	
 	/**
 	 * Split a clip in two different RPClips.
@@ -63,6 +66,6 @@ public interface RPTapeChannel {
 	 * @param clip
 	 * @param time
 	 */
-	void split(RPClip clip, double time);
+	void split(double initialClipTimeIn, double SplittingTime);
 
 }

@@ -34,6 +34,10 @@ public class FileClip implements RPClip {
 		this(content, new EmptyClip());
 	}
 	
+	public FileClip(double duration, File content) {
+		this(content, new EmptyClip(duration));
+	}
+	
 	@Override
 	public void setDuration(double milliseconds) {
 		this.clip.setDuration(milliseconds);
