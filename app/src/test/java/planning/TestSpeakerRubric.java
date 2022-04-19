@@ -10,9 +10,18 @@ import org.junit.jupiter.api.Test;
 public class TestSpeakerRubric {
 	
 	private final Speaker s1 = new SimpleSpeaker(1, "Gabriele", "Menghi");
-	private final Speaker s2 = new SimpleSpeaker(2, "Giacomo", "Sirri");
+	
+	private final Speaker s2 = new SimpleSpeaker.Builder(2)
+												.firstName("Giacomo")
+												.lastName("Sirri")
+												.build();
+	
 	private final Speaker s3 = new SimpleSpeaker(3, "Alessandro", "Antonini");
-	private final Speaker s4 = new SimpleSpeaker(4, "Luca", "Pasini");
+	
+	private final Speaker s4 = new SimpleSpeaker.Builder(4)
+												.firstName("Luca")
+												.lastName("Pasini")
+												.build();
 	
 	private final Speaker s5 = new SimpleSpeaker(1, "Marco", "Verdi");
 	
