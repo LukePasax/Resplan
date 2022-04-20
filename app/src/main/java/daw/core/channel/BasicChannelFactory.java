@@ -7,37 +7,46 @@ import net.beadsproject.beads.ugens.Panner;
 /**
  * Implements a {@link ChannelFactory}.
  */
-// TO DO: these are just random examples of ProcessingUnits for testing purposes.
 public class BasicChannelFactory implements ChannelFactory {
+
+    private static final int DEFAULT_VOLUME = 40;
+    private static final int DEFAULT_MAX_VOLUME = 100;
 
     @Override
     public RPChannel basic() {
-        return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.BASIC, null);
+        return new BasicChannel(new BasicVolume(DEFAULT_VOLUME, DEFAULT_MAX_VOLUME),
+                new Panner(), RPChannel.Type.AUDIO);
     }
 
     @Override
     public RPChannel gated() {
-        // TO DO: make a Gate class, as there isn't in Beads.
-        return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.GATED,
-                new BasicProcessingUnitBuilder().gate().highPassFilter().build());
+        final var bc = new BasicChannel(new BasicVolume(DEFAULT_VOLUME, DEFAULT_MAX_VOLUME),
+                new Panner(), RPChannel.Type.AUDIO);
+        bc.addProcessingUnit(new BasicProcessingUnitBuilder().gate().build());
+        return bc;
     }
 
     @Override
     public RPChannel sidechained(UGen u) {
-        return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.SIDECHAINED,
-                new BasicProcessingUnitBuilder().sidechain(u).build());
+        final var bc = new BasicChannel(new BasicVolume(DEFAULT_VOLUME, DEFAULT_MAX_VOLUME),
+                new Panner(), RPChannel.Type.AUDIO);
+        bc.addProcessingUnit(new BasicProcessingUnitBuilder().sidechain(u).build());
+        return bc;
     }
 
     @Override
     public RPChannel returnChannel() {
-        return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.RETURN,
-                new BasicProcessingUnitBuilder().lowPassFilter().build());
+        final var bc = new BasicChannel(new BasicVolume(DEFAULT_VOLUME, DEFAULT_MAX_VOLUME),
+                new Panner(), RPChannel.Type.RETURN);
+        bc.addProcessingUnit(new BasicProcessingUnitBuilder().build());
+        return bc;
     }
 
     @Override
     public RPChannel masterChannel() {
-        // TO DO: initialize the ProcessingUnit via Builder
-        return new BasicChannel(new BasicVolume(10, 100), new Panner(), RPChannel.Type.MASTER,
-                new BasicProcessingUnitBuilder().reverb().highPassFilter().build());
+        final var bc = new BasicChannel(new BasicVolume(DEFAULT_VOLUME, DEFAULT_MAX_VOLUME),
+                new Panner(), RPChannel.Type.MASTER);
+        bc.addProcessingUnit(new BasicProcessingUnitBuilder().build());
+        return bc;
     }
 }
