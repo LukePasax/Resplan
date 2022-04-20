@@ -6,10 +6,16 @@ import org.junit.jupiter.api.Test;
 
 import planning.RPPart.PartType;
 
+/**
+ * This class tests a {@link planning.SpeechPart}
+ */
 public class TestSpeechPart {
 
 	final RPPart part = new SpeechPart("Text", "This is a text speech part");
 	
+	/**
+	 * Tests basic elements of a speech part
+	 */
 	@Test
 	public void basicTest() {
 		assertEquals("Text", part.getTitle());
@@ -17,6 +23,9 @@ public class TestSpeechPart {
 		assertEquals(PartType.SPEECH, part.getType());
 	}
 	
+	/**
+	 * Tests text into a speech part
+	 */
 	@Test
 	public void testTextInSpeechRole() {
 		assertFalse(part.isTextPresent());
