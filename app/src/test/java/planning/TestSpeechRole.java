@@ -8,10 +8,16 @@ import org.junit.jupiter.api.Test;
 
 import planning.RPRole.RoleType;
 
+/**
+ * This class tests a {@link planning.SpeechRole}
+ */
 public class TestSpeechRole {
 	
 	private final RPRole role = new SpeechRole("Role1", "This is the first role");
 	
+	/**
+	 * Tests basic elements of a speech role
+	 */
 	@Test
 	public void basicTest() {
 		assertEquals("Role1", this.role.getTitle());
@@ -19,6 +25,9 @@ public class TestSpeechRole {
 		assertEquals(RoleType.SPEECH, this.role.getType());
 	}
 	
+	/**
+	 * Tests speaker into a speech role
+	 */
 	@Test
 	public void testSpeaker() {
 		final Speaker s = new SimpleSpeaker(1, "Mario", "Bianchi");
