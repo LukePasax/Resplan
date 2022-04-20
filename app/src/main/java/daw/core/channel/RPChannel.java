@@ -23,13 +23,13 @@ public interface RPChannel {
      * This is because the {@link ProcessingUnit} manipulates audio on-the-fly, meaning that the processing
      * of an input may not be finished when another input is added.
      */
-    void addInput(Gain g);
+    void connectSource(UGen g);
 
     /**
      * If the channel has any input, it tries to remove the connection to the specified {@link UGen},
      * otherwise it does nothing.
      */
-    void removeInput(int inputChannel, UGen u);
+    void disconnectSource(UGen u);
 
     /**
      * Allows clients to obtain the audio coming from the channel.

@@ -6,7 +6,6 @@ import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.Panner;
 
-import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -23,44 +22,42 @@ public class BasicChannel implements RPChannel {
     private final Panner pan;
     private final Type type;
     private final Optional<ProcessingUnit> pu;
-    private Optional<Gain> inputGain;
+    private final Gain gainIn;
+    private final Gain gainOut;
     private boolean enabled;
 
-    protected BasicChannel(final Volume vol, Panner pan, final Type type, ProcessingUnit pu) {
+    protected BasicChannel(final Volume vol, Panner pan, final Type type) {
         this.vol = vol;
         this.pan = pan;
         this.type = type;
-        this.pu = Optional.ofNullable(pu);
-        this.inputGain = Optional.empty();
+        this.pu = Optional.empty();
+        this.gainIn = new Gain(AudioContextManager.getAudioContext(), 2);
+        this.gainOut = new Gain(AudioContextManager.getAudioContext(), 2);
+        this.gainOut.addInput(pan);
+        this.pan.addInput(gainIn);
+    }
+
+    public void addProcessingUnit(ProcessingUnit pu){
+
     }
 
     @Override
-    public void addInput(Gain g) {
-        this.inputGain = Optional.of(Objects.requireNonNull(g));
-        if (this.pu.isPresent()) {
-            this.pu.get().addInput(g);
-        }
+    public void connectSource(UGen in) {
+        this.gainIn.addInput(in);
     }
 
     @Override
-    public void removeInput(int inputChannel, UGen u) {
-        if (this.inputGain.isPresent()) {
-            this.inputGain.get().removeConnection(inputChannel, u, inputChannel);
-        }
+    public void disconnectSource(UGen u) {
+        this.gainIn.removeAllConnections(u);
     }
 
     @Override
     public Gain getOutput() {
-        if (this.isEnabled() && this.inputGain.isPresent()) {
-            final var g = new Gain(AudioContextManager.getAudioContext(), 1, this.getVolume());
-            if (this.isProcessingUnitPresent()) {
-                this.pu.get().connect(this.pan);
-            } else {
-                this.pan.addInput(this.inputGain.get());
-            }
-            g.addInput(this.pan);
+        if (this.isEnabled()) {
+            return this.gainOut;
+        } else {
+            throw new IllegalStateException("Cannot produce output.");
         }
-        throw new IllegalStateException("Cannot produce output.");
     }
 
     @Override
@@ -92,6 +89,12 @@ public class BasicChannel implements RPChannel {
         return this.enabled;
     }
 
+    @Override
+    public ProcessingUnit getProcessingUnit() {
+
+    }
+
+    @Override
     public boolean isProcessingUnitPresent() {
         return this.pu.isPresent();
     }
