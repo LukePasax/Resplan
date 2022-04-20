@@ -45,5 +45,5 @@ public interface RPClip {
 	 * Return a duplicate object of this RPClip.
 	 * @return
 	 */
-	RPClip duplicate();
+	RPClip duplicate() throws Exception;
 }

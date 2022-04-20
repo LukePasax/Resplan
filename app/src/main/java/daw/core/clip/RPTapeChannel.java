@@ -28,6 +28,12 @@ public interface RPTapeChannel {
 	void removeRPClip(double clipTimeIn);
 	
 	/**
+	 * Return true if there's no clip in the tape channel
+	 * @return
+	 */
+	boolean isEmpty();
+	
+	/**
 	 * Get the Optional<Entry<Double, RPClip>> placed at a specified time in the timeline of this tape channel.
 	 * If there's no RPClip placed in the specified time this method must return an Optional.empty().
 	 * @param time
@@ -36,10 +42,11 @@ public interface RPTapeChannel {
 	Optional<Pair<Double, RPClip>> getClipAt(double time);
 	
 	/**
-	 * Get an Iterator which iterate all the RPClips of the tape channel ordered by time.
+	 * Get an Optional of Iterator which iterate all the Pair<Double, RPClip> of the tape channel ordered by time.
+	 * Return an Optional.empty() if the Tape Channel contains no clip.
 	 * @return
 	 */
-	Iterator<Pair<Double, RPClip>> getClipWithTimeIterator();
+	Optional<Iterator<Pair<Double, RPClip>>> getClipWithTimeIterator();
 	
 	/**
 	 * Move the specified clip at the specified time in the timeline. 

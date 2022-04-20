@@ -106,12 +106,7 @@ public class SampleClip implements RPClip {
 	}
 
 	@Override
-	public RPClip duplicate() {
-		try {
+	public RPClip duplicate() throws IOException, OperationUnsupportedException, FileFormatException {
 			return new SampleClip(this.clip);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
 	}
 }
