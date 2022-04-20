@@ -4,10 +4,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * This class tests a {@link plaing.Text}
+ */
 public class TestText {
 	
 	final static String SEPARATOR = System.getProperty("file.separator");
 	
+	/**
+	 * Tests the creation of a text starting from a wrong file
+	 */
 	@Test
 	public void testCreationFromWrongFile() {
 		final TextFactory tf = new TextFactoryImpl();
@@ -21,6 +27,9 @@ public class TestText {
 		
 	}
 	
+	/**
+	 * Tests the creation of a text starting from a right file
+	 */
 	@Test
 	public void testCreationFromRightFile() {
 		
