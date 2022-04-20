@@ -10,7 +10,7 @@ public class SpeechPart extends PartImpl {
 	private Optional<Text> text = Optional.empty();
 	
 	/**
-	 * Builds a part of type "SPEECH"
+	 * Builds a part of type "SPEECH" with a description
 	 * 
 	 * @param title
 	 * the title of the part
@@ -20,6 +20,16 @@ public class SpeechPart extends PartImpl {
 	 */
 	public SpeechPart(String title, String description) {
 		super(title, description, PartType.SPEECH);
+	}
+	
+	/**
+	 * Builds a part of type "SPEECH" without a description
+	 * 
+	 * @param title
+	 * the title of the part
+	 */
+	public SpeechPart(String title) {
+		super(title, PartType.SPEECH);
 	}
 	
 	/**

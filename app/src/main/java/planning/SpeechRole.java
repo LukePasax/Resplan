@@ -10,7 +10,7 @@ public class SpeechRole extends RoleImpl {
 	private Optional<Speaker> speaker = Optional.empty();
 	
 	/**
-	 * Builds a role of type "SPEECH"
+	 * Builds a role of type "SPEECH" with a description
 	 * 
 	 * @param title
 	 * the title of the role
@@ -20,6 +20,16 @@ public class SpeechRole extends RoleImpl {
 	 */
 	public SpeechRole(final String title, final String description) {
 		super(title, description, RoleType.SPEECH);
+	}
+	
+	/**
+	 * Builds a role of type "SPEECH" without a description
+	 * 
+	 * @param title
+	 * the title of the role
+	 */
+	public SpeechRole(final String title) {
+		super(title, RoleType.SPEECH);
 	}
 	
 	/**

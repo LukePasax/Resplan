@@ -11,12 +11,12 @@ import java.util.Optional;
 public abstract class PartImpl implements RPPart {
 	
 	private String title;
-	private String description;
+	private Optional<String> description = Optional.empty();
 	private PartType type;
 	private List<String> notes = new ArrayList<>();
 	
 	/**
-	 * It is used to build a new Object of type RPPart, but it can't be istantieted
+	 * It is used to build a new Object of type RPPart, with the description, but it can't be istantieted
 	 * 
 	 * @param title
 	 * the title of the part
@@ -29,7 +29,21 @@ public abstract class PartImpl implements RPPart {
 	 */
 	public PartImpl(final String title, final String description, final PartType type) {
 		this.title = title;
-		this.description = description;
+		this.description = Optional.of(description);
+		this.type = type;
+	}
+	
+	/**
+	 * It is used to build a new Object of type RPPart, without the description, but it can't be istantieted
+	 * 
+	 * @param title
+	 * the title of the part
+	 * 
+	 * @param type
+	 * the type of the part
+	 */
+	public PartImpl(final String title, final PartType type) {
+		this.title = title;
 		this.type = type;
 	}
 
@@ -45,7 +59,15 @@ public abstract class PartImpl implements RPPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getDescription() {
+	public void addDescription(final String description) {
+		this.description = Optional.of(description);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Optional<String> getDescription() {
 		return this.description;
 	}
 	
@@ -112,5 +134,13 @@ public abstract class PartImpl implements RPPart {
 			return false;
 		PartImpl other = (PartImpl) obj;
 		return Objects.equals(title, other.title) && type == other.type;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "PartImpl [title=" + title + ", description=" + description + ", type=" + type + "]";
 	}
 }

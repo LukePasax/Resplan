@@ -8,7 +8,7 @@ import java.util.Optional;
 public class SoundtrackPart extends PartImpl {
 	
 	/**
-	 * Builds a part of type "SOUNDTRACK"
+	 * Builds a part of type "SOUNDTRACK" with a description
 	 * 
 	 * @param title
 	 * the title of the part
@@ -18,6 +18,16 @@ public class SoundtrackPart extends PartImpl {
 	 */
 	public SoundtrackPart(String title, String description) {
 		super(title, description, PartType.SOUNDTRACK);
+	}
+	
+	/**
+	 * Builds a part of type "SOUNDTRACK" without a description
+	 * 
+	 * @param title
+	 * the title of the part
+	 */
+	public SoundtrackPart(String title) {
+		super(title, PartType.SOUNDTRACK);
 	}
 	
 	/**

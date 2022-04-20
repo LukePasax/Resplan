@@ -11,12 +11,12 @@ import java.util.Optional;
 public abstract class RoleImpl implements RPRole {
 	
 	private String title;
-	private String description;
+	private Optional<String> description = Optional.empty();
 	private RoleType type;
 	private final List<String> notesList = new ArrayList<>();
 	
 	/**
-	 * It is used to build a new Object of type RPRole, but it can't be istantieted
+	 * It is used to build a new Object of type RPRole, with description, but it can't be istantieted
 	 * 
 	 * @param title
 	 * the title of the role
@@ -29,7 +29,21 @@ public abstract class RoleImpl implements RPRole {
 	 */
 	public RoleImpl(final String title, final String description, final RoleType type) {
 		this.title = title;
-		this.description = description;
+		this.description = Optional.of(description);
+		this.type = type;
+	}
+	
+	/**
+	 * It is used to build a new Object of type RPRole, without description, but it can't be istantieted
+	 * 
+	 * @param title
+	 * the title of the role
+	 * 
+	 * @param type
+	 * the type of the role
+	 */
+	public RoleImpl(final String title, final RoleType type) {
+		this.title = title;
 		this.type = type;
 	}
 	
@@ -45,7 +59,15 @@ public abstract class RoleImpl implements RPRole {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getDescription() {
+	public void addDescription(final String description) {
+		this.description = Optional.of(description);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Optional<String> getDescription() {
 		return this.description;
 	}
 	
@@ -113,5 +135,12 @@ public abstract class RoleImpl implements RPRole {
 		RoleImpl other = (RoleImpl) obj;
 		return Objects.equals(title, other.title) && type == other.type;
 	}
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "RoleImpl [title=" + title + ", description=" + description + ", type=" + type + "]";
+	}
 }

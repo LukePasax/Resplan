@@ -8,7 +8,7 @@ import java.util.Optional;
 public class SoundtrackRole extends RoleImpl {
 	
 	/**
-	 * Builds a role of type "SOUNDTRACK"
+	 * Builds a role of type "SOUNDTRACK" with a description
 	 * 
 	 * @param title
 	 * the title of the role
@@ -18,6 +18,16 @@ public class SoundtrackRole extends RoleImpl {
 	 */
 	public SoundtrackRole(final String title, final String description) {
 		super(title, description, RoleType.SOUNDTRACK);
+	}
+	
+	/**
+	 * Builds a role of type "SOUNDTRACK" without a description
+	 * 
+	 * @param title
+	 * the title of the role
+	 */
+	public SoundtrackRole(final String title) {
+		super(title, RoleType.SOUNDTRACK);
 	}
 	
 	/**

@@ -8,7 +8,7 @@ import java.util.Optional;
 public class EffectsPart extends PartImpl {
 	
 	/**
-	 * Builds a part of type "EFFECTS"
+	 * Builds a part of type "EFFECTS" with a description
 	 * 
 	 * @param title
 	 * the title of the part
@@ -18,6 +18,16 @@ public class EffectsPart extends PartImpl {
 	 */
 	public EffectsPart(String title, String description) {
 		super(title, description, PartType.EFFECTS);
+	}
+	
+	/**
+	 * Builds a part of type "EFFECTS" without a description
+	 * 
+	 * @param title
+	 * the title of the part
+	 */
+	public EffectsPart(String title) {
+		super(title, PartType.EFFECTS);
 	}
 	
 	/**

@@ -1,6 +1,7 @@
 package planning;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * It's the implementation of a {@link planning.RPSection}
@@ -8,11 +9,11 @@ import java.util.Objects;
 public class SectionImpl implements RPSection {
 	
 	private String title;
-	private String description;
+	private Optional<String> description = Optional.empty();
 	private int duration;
 	
 	/**
-	 * It is used to build a new Object of type RPSection
+	 * It is used to build a new Object of type RPSection with a description
 	 * 
 	 * @param title
 	 * the title of the section
@@ -25,7 +26,21 @@ public class SectionImpl implements RPSection {
 	 */
 	public SectionImpl(final String title, final String description, final int duration) {
 		this.title = title;
-		this.description = description;
+		this.description = Optional.of(description);
+		this.duration = duration;
+	}
+	
+	/**
+	 * It is used to build a new Object of type RPSection without a description
+	 * 
+	 * @param title
+	 * the title of the section
+	 * 
+	 * @param duration
+	 * the duration of the section
+	 */
+	public SectionImpl(final String title, final int duration) {
+		this.title = title;
 		this.duration = duration;
 	}
 	
@@ -41,7 +56,15 @@ public class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getDescription() {
+	public void addDescription(final String description) {
+		this.description = Optional.of(description);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Optional<String> getDescription() {
 		return this.description;
 	}
 	
@@ -74,5 +97,13 @@ public class SectionImpl implements RPSection {
 			return false;
 		SectionImpl other = (SectionImpl) obj;
 		return Objects.equals(title, other.title);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return "SectionImpl [title=" + title + ", description=" + description + ", duration=" + duration + "]";
 	}
 }
