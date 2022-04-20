@@ -19,7 +19,7 @@ public class TestSpeechPart {
 	@Test
 	public void basicTest() {
 		assertEquals("Text", part.getTitle());
-		assertEquals("This is a text speech part", part.getDescription());
+		assertEquals("This is a text speech part", part.getDescription().get());
 		assertEquals(PartType.SPEECH, part.getType());
 	}
 	

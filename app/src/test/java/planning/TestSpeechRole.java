@@ -21,7 +21,7 @@ public class TestSpeechRole {
 	@Test
 	public void basicTest() {
 		assertEquals("Role1", this.role.getTitle());
-		assertEquals("This is the first role", this.role.getDescription());
+		assertEquals("This is the first role", this.role.getDescription().get());
 		assertEquals(RoleType.SPEECH, this.role.getType());
 	}
 	
