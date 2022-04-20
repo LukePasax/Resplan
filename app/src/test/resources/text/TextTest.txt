@@ -1,0 +1,4 @@
+File di testo di
+esempio, per prova di
+apertura di testo
+da file
