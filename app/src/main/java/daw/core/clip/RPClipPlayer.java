@@ -31,10 +31,5 @@ public interface RPClipPlayer {
 	 */
 	double getPlaybackPosition();
 	
-	/**
-	 * @return
-	 */
-	RPClip getRPClip();
-	
 	
 }
