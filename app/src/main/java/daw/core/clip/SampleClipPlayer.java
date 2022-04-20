@@ -12,10 +12,7 @@ public class SampleClipPlayer implements RPClipPlayer {
 	private final SamplePlayer player;
 	private final double contentPosition;
 	
-	public SampleClipPlayer(RPClip sampleClip) throws IOException, OperationUnsupportedException, FileFormatException {
-		if(sampleClip.getClass()!=SampleClip.class) {
-			throw new IllegalArgumentException("The supplied clip must be a SampleClip class object.");
-		}
+	public SampleClipPlayer(SampleClip sampleClip) throws IOException, OperationUnsupportedException, FileFormatException {
 		this.player = new SamplePlayer(new Sample(sampleClip.getContent().getAbsolutePath()));
 		this.contentPosition = sampleClip.getContentPosition();
 		this.player.setPosition(this.contentPosition);

@@ -16,6 +16,9 @@ public class TapeChannel implements RPTapeChannel {
 
 	@Override
 	public void insertRPClip(RPClip clip, double time) {
+		if(this.timeline.containsValue(clip)) {
+			throw new IllegalStateException("This clip already exists in this channel");
+		}
 		if(this.timeline.containsKey(time)) {
 			throw new IllegalStateException("Another clip is already present in the timeline at the given time. Choose another time or remove the other clip.");
 		} else if(time<0) {
@@ -125,7 +128,6 @@ public class TapeChannel implements RPTapeChannel {
 				}
 			}
 		});
-		
 	}
 
 	private Iterator<Pair<Double, RPClip>> getIteratorOfClipBetween(double initialTime, double finalTime) {
