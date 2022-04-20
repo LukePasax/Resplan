@@ -13,11 +13,11 @@ public interface RPManager {
     /**
      * This method creates a Channel of the given {@link daw.core.channel.RPChannel.Type} and all the corresponding
      * components
-     * @param type the {@link daw.core.channel.RPChannel.Type} of {@link RPChannel} to be created
+     * @param type the {@link planning.RPRole.RoleType} of {@link RPChannel} to be created
      * @param  title the Title to associate to the Channel
      * @param description the optional Description to associate to the Channel
      */
-    void addChannel(RPChannel.Type type, String title, Optional<String> description);
+    void addChannel(RPRole.RoleType type, String title, Optional<String> description);
 
     /**
      * This method creates a Sidechained Channel and all the corresponding components
@@ -38,7 +38,7 @@ public interface RPManager {
      * A method to create a group
      * @param groupName the name of the group to be created
      */
-    void createGroup(String groupName, RPChannel.Type type);
+    void createGroup(String groupName, RPRole.RoleType type);
 
     /**
      * A method to create a sidechained group

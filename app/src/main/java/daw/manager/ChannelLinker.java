@@ -7,6 +7,8 @@ import planning.RPRole;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class ChannelLinker implements RPChannelLinker {
@@ -46,5 +48,16 @@ public class ChannelLinker implements RPChannelLinker {
     @Override
     public RPTapeChannel getTapeChannel(RPRole role) {
         return channelMap.get(role).getValue();
+    }
+
+    /**
+     * This method returns all the {@link RPRole} of the type given present in the map
+     *
+     * @param type the type to search
+     * @return a set containing all the {@link  RPRole} of the type given
+     */
+    @Override
+    public Set<RPRole> getRoleSet(RPRole.RoleType type) {
+        return channelMap.keySet().stream().filter(k -> k.getType().equals(type)).collect(Collectors.toSet());
     }
 }

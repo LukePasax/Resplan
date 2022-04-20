@@ -4,6 +4,8 @@ import daw.core.channel.RPChannel;
 import daw.core.clip.RPTapeChannel;
 import planning.RPRole;
 
+import java.util.Set;
+
 /**
  * This interface represents a class to link a {@link RPRole} to its corresponding Pair of {@link RPChannel} and
  * {@link RPTapeChannel}
@@ -32,5 +34,12 @@ public interface RPChannelLinker {
 	 * @return the {@link RPTapeChannel} linked to the given {@link RPRole}
 	 */
 	RPTapeChannel getTapeChannel(RPRole role);
+
+	/**
+	 * This method returns all the {@link RPRole} of the type given present in the map
+	 * @param type the type to search
+	 * @return a set containing all the {@link  RPRole} of the type given
+	 */
+	Set<RPRole> getRoleSet(RPRole.RoleType type);
 
 }
