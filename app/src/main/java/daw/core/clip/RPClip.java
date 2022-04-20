@@ -9,6 +9,8 @@ import java.io.File;
  */
 public interface RPClip {
 	
+	public static final double DEFAULT_DURATION = 1000;
+	
 	/**
 	 * @param milliseconds
 	 */
@@ -32,5 +34,16 @@ public interface RPClip {
 	/**
 	 * @return
 	 */
+	boolean isEmpty();
+	
+	/**
+	 * @return
+	 */
 	File getContent();
+	
+	/**
+	 * Return a duplicate object of this RPClip.
+	 * @return
+	 */
+	RPClip duplicate() throws Exception;
 }
