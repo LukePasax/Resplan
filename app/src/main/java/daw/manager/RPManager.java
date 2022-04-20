@@ -1,7 +1,6 @@
 package daw.manager;
 
 import daw.core.channel.RPChannel;
-import net.beadsproject.beads.ugens.Gain;
 import planning.RPRole;
 
 import java.util.Optional;
@@ -15,9 +14,18 @@ public interface RPManager {
      * This method creates a Channel of the given {@link daw.core.channel.RPChannel.Type} and all the corresponding
      * components
      * @param type the {@link daw.core.channel.RPChannel.Type} of {@link RPChannel} to be created
-     * @param gain the optional {@link Gain} for a sidechained {@link RPChannel}
+     * @param  title the Title to associate to the Channel
+     * @param description the optional Description to associate to the Channel
      */
-    void addChannel(RPChannel.Type type, Optional<Gain> gain);
+    void addChannel(RPChannel.Type type, String title, Optional<String> description);
+
+    /**
+     * This method creates a Sidechained Channel and all the corresponding components
+     * @param channel the Channel to sidechain
+     * @param title the Title to associate to the Channel
+     * @param description the optional Description to associate to the Channel
+     */
+    void addSidechainedChannel(RPRole channel, String title, Optional<String> description);
 
     /**
      * This method adds a {@link RPChannel} to a group
@@ -30,7 +38,14 @@ public interface RPManager {
      * A method to create a group
      * @param groupName the name of the group to be created
      */
-    void createGroup(String groupName);
+    void createGroup(String groupName, RPChannel.Type type);
+
+    /**
+     * A method to create a sidechained group
+     * @param groupName the name of the group to be created
+     * @param channel the Channel to sidechain
+     */
+    void createSidechainedGroup(String groupName, RPRole channel);
 
     /**
      * This method creates a Clip and all the corresponding components

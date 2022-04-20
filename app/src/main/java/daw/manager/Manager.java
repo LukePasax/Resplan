@@ -5,8 +5,8 @@ import daw.core.clip.RPTapeChannel;
 import daw.core.mixer.Mixer;
 import daw.core.mixer.RPMixer;
 import javafx.util.Pair;
-import net.beadsproject.beads.ugens.Gain;
 import planning.RPRole;
+import planning.SpeechRole;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,13 +32,38 @@ public class Manager implements RPManager{
      * components
      *
      * @param type the {@link RPChannel.Type} of {@link RPChannel} to be created
-     * @param gain the optional {@link Gain} for a sidechained {@link RPChannel}
      */
     @Override
-    public void addChannel(RPChannel.Type type, Optional<Gain> gain) {
+    public void addChannel(RPChannel.Type type, String title, Optional<String> description) {
         RPChannel channel;
         RPRole role;
         RPTapeChannel tapeChannel;
+        channel = mixer.createChannel(type);
+        role = this.createRole(type, title, description);
+        }
+
+    private RPRole createRole(RPChannel.Type type, String title, Optional<String> description) {
+        if (type.equals(RPChannel.Type.BASIC)) {
+            return null;
+        } else if (type.equals(RPChannel.Type.GATED)) {
+            return  null;
+        } else if (type.equals(RPChannel.Type.RETURN)) {
+            return null;
+        }
+        return null;
+    }
+
+
+    /**
+     * This method creates a Sidechained Channel and all the corresponding components
+     *
+     * @param channel     the Channel to sidechain
+     * @param title       the Title to associate to the Channel
+     * @param description the optional Description to associate to the Channel
+     */
+    @Override
+    public void addSidechainedChannel(RPRole channel, String title, Optional<String> description) {
+
     }
 
     /**
@@ -58,7 +83,18 @@ public class Manager implements RPManager{
      * @param groupName the name of the group to be created
      */
     @Override
-    public void createGroup(String groupName) {
+    public void createGroup(String groupName, RPChannel.Type type) {
+
+    }
+
+    /**
+     * A method to create a sidechained group
+     *
+     * @param groupName the name of the group to be created
+     * @param channel   the Channel to sidechain
+     */
+    @Override
+    public void createSidechainedGroup(String groupName, RPRole channel) {
 
     }
 

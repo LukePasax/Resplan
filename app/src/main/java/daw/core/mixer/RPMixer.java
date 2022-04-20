@@ -17,10 +17,16 @@ public interface RPMixer {
      * A method to create a {@link RPChannel} in the mixer
      * and links its output to the Master channel.
      * @param type the {@link RPChannel} type that will be created
-     * @param gain the optional {@link Gain} to link with a sidechained {@link RPChannel}
      * @return the {@link RPChannel} that is created
      */
-    RPChannel createChannel(RPChannel.Type type, Optional<Gain> gain);
+    RPChannel createChannel(RPChannel.Type type);
+
+    /**
+     * This method is used to create a sidechained {@link RPChannel}
+     * @param channel the {@link RPChannel} to sidechain
+     * @return the sidechained {@link RPChannel}
+     */
+    RPChannel createSidechained(RPChannel channel);
 
     /**
      * A method that returns the Master channel of the mixer.
@@ -42,5 +48,12 @@ public interface RPMixer {
      * @param group the Group
      */
     void linkToGroup(RPChannel channel, RPChannel group);
+
+    /**
+     * A method to remove a {@link RPChannel} from a group
+     * @param channel the {@link RPChannel} to remove
+     * @param group the group to remove the {@link RPChannel} from
+     */
+    void removeFromGroup(RPChannel channel, RPChannel group);
     
 }
