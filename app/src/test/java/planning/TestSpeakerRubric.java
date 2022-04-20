@@ -7,6 +7,9 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * This class tests a {@link planning.SpeakerRubric} using some {@link planning.Speaker}
+ */
 public class TestSpeakerRubric {
 	
 	private final Speaker s1 = new SimpleSpeaker(1, "Gabriele", "Menghi");
@@ -25,6 +28,9 @@ public class TestSpeakerRubric {
 	
 	private final Speaker s5 = new SimpleSpeaker(1, "Marco", "Verdi");
 	
+	/**
+	 * Tests the addition of some speakers in the rubric
+	 */
 	@Test
 	public void testAdd() {
 		final SpeakerRubric sp = new SimpleSpeakerRubric();
@@ -37,6 +43,9 @@ public class TestSpeakerRubric {
 		assertFalse(sp.addSpeaker(s1));
 	}
 	
+	/**
+	 * Tests the removal of some speakers from the rubric
+	 */
 	@Test
 	public void testRemove() {
 		final SpeakerRubric sp = new SimpleSpeakerRubric();
@@ -48,6 +57,9 @@ public class TestSpeakerRubric {
 		assertFalse(sp.removeSpeaker(s5));
 	}
 	
+	/**
+	 * Tests the search of a speaker into the rubric
+	 */
 	@Test
 	public void testSearch() {
 		final SpeakerRubric sp = new SimpleSpeakerRubric();
@@ -59,6 +71,9 @@ public class TestSpeakerRubric {
 		assertEquals(Optional.of(s2), sp.searchSpeaker(2));
 	}
 	
+	/**
+	 * Tests the method of the rubric that allows to get all the speakers present
+	 */
 	@Test
 	public void testBasicGet() {
 		final SpeakerRubric sp = new SimpleSpeakerRubric();
@@ -71,6 +86,9 @@ public class TestSpeakerRubric {
 		assertEquals(List.of(s1, s2, s3, s4), sp.getSpeakers());
 	}
 	
+	/**
+	 * Tests the method of the rubric that allows to get all the speakers present and matching a filter
+	 */
 	@Test
 	public void testFilteredGet() {
 		final SpeakerRubric sp = new SimpleSpeakerRubric();
