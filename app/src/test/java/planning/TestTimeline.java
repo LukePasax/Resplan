@@ -6,6 +6,9 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * This class tests a {@link planning.RPTimeline} using some {@link plaig.RPSection}
+ */
 public class TestTimeline {
 	
 	private final RPTimeline timeline = new TimelineImpl();
@@ -13,7 +16,10 @@ public class TestTimeline {
 	final RPSection s2 = new SectionImpl("Section2", "This is the second section", 1600);
 	final RPSection s3 = new SectionImpl("Section3", "This is the third section", 1400);
 	final RPSection s4 = new SectionImpl("Section4", "This is the fourth section", 1300);
-
+	
+	/**
+	 * Tests the addition of some sections to the timeline
+	 */
 	@Test
 	public void testAdd() {
 		assertTrue(this.timeline.addSection(0, s1));
@@ -22,6 +28,9 @@ public class TestTimeline {
 		assertTrue(this.timeline.addSection(2501, s4));
 	}
 	
+	/**
+	 * Tests the removal of a section from a timeline
+	 */
 	@Test
 	public void testRemove() {
 		assertNotEquals(Optional.of(s4), timeline.getSection(2501));
@@ -29,6 +38,9 @@ public class TestTimeline {
 		assertEquals(Optional.empty(), timeline.getSection(2501));
 	}
 	
+	/**
+	 * Tests the method of a timeline that allows to get its total duration
+	 */
 	@Test
 	public void testOverallDuration() {
 		this.timeline.addSection(2501, new SectionImpl("Section5", "This is the fifth section", 1300));
