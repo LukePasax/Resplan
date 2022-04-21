@@ -1,4 +1,4 @@
-package daw.core.channel;
+package daw.core.audioprocessing;
 
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
@@ -28,7 +28,7 @@ public interface ProcessingUnit {
      *
      * @return the current {@link List} of effects.
      */
-    List<UGen> getEffects();
+    List<RPEffect> getEffects();
 
     /**
      * Allows finding which effect is stored in a certain position of the sequence.
@@ -48,7 +48,7 @@ public interface ProcessingUnit {
      * @param u the {@link UGen} that represents the effect to be added.
      * @throws IllegalArgumentException if the {@link UGen} has either no input or no output.
      */
-    void addEffect(UGen u);
+    void addEffect(RPEffect u);
 
     /**
      * Adds a new effect in the given position of the sequence. If the position is out of bounds
@@ -63,7 +63,7 @@ public interface ProcessingUnit {
      * @param index a position in the sequence.
      * @throws IllegalArgumentException if the {@link UGen} has either no input or no output.
      */
-    void addEffectAtPosition(UGen u, int index);
+    void addEffectAtPosition(RPEffect u, int index);
 
     /**
      * Removes the effect at the given position from the sequence.
@@ -97,6 +97,6 @@ public interface ProcessingUnit {
      * @param u the effect that serves as a replacement.
      * @throws IllegalArgumentException if the given position is out of bounds.
      */
-    void replace(int index, UGen u);
+    void replace(int index, RPEffect u);
 
 }

@@ -1,8 +1,10 @@
 package daw.core.channel;
 
+import daw.core.audioprocessing.ProcessingUnit;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.Panner;
+import java.util.Optional;
 
 /**
  * This interface models a channel, which is a representation of sound coming from an input and going to an output.
@@ -14,20 +16,18 @@ public interface RPChannel {
      * Identifies different forms of channels.
      */
     enum Type {
-        BASIC, GATED, SIDECHAINED, RETURN, MASTER;
+        AUDIO, RETURN, MASTER;
     }
 
     /**
-     * Adds an audio input.
-     * For a channel to properly work, a client should not add two inputs before getting an output.
-     * This is because the {@link ProcessingUnit} manipulates audio on-the-fly, meaning that the processing
-     * of an input may not be finished when another input is added.
+     * Connects the given source to the input of the channel.
+     * @param g the source to be connected.
      */
     void connectSource(UGen g);
 
     /**
-     * If the channel has any input, it tries to remove the connection to the specified {@link UGen},
-     * otherwise it does nothing.
+     * Disconnects the given source from the input of the channel.
+     * @param u the source to be disconnected.
      */
     void disconnectSource(UGen u);
 
@@ -72,6 +72,19 @@ public interface RPChannel {
      * Returns if the audio is enabled.
      */
     boolean isEnabled();
+
+    /**
+     * Adds the given {@link ProcessingUnit} to the channel.
+     * @param pu the {@link ProcessingUnit} to be added.
+     */
+    void addProcessingUnit(ProcessingUnit pu);
+
+    /**
+     *
+     * @return an {@link Optional} containing the {@link ProcessingUnit} if it is present,
+     * otherwise an empty {@link Optional}.
+     */
+    Optional<ProcessingUnit> getProcessingUnit();
 
     /**
      * Returns whether the channel has a {@link ProcessingUnit} attached or not.

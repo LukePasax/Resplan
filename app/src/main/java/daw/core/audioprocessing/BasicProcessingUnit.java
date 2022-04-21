@@ -1,20 +1,16 @@
-package daw.core.channel;
+package daw.core.audioprocessing;
 
-import Resplan.AudioContextManager;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
-import net.beadsproject.beads.ugens.Plug;
-
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 public class BasicProcessingUnit implements ProcessingUnit {
 
-    private final LinkedList<UGen> effects = new LinkedList<>();
+    private final LinkedList<RPEffect> effects = new LinkedList<>();
 
-    public BasicProcessingUnit(final List<UGen> effects) {
+    public BasicProcessingUnit(final List<RPEffect> effects) {
         if (effects != null && !effects.isEmpty()) {
             for (final var elem : effects) {
                 this.addEffect(elem);
@@ -35,7 +31,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
     }
 
     @Override
-    public List<UGen> getEffects() {
+    public List<RPEffect> getEffects() {
         return Collections.unmodifiableList(this.effects);
     }
 
@@ -45,12 +41,12 @@ public class BasicProcessingUnit implements ProcessingUnit {
     }
 
     @Override
-    public void addEffect(UGen u) {
+    public void addEffect(RPEffect u) {
         this.addEffectAtPosition(u, this.effects.size());
     }
 
     @Override
-    public void addEffectAtPosition(UGen u, int index) {
+    public void addEffectAtPosition(RPEffect u, int index) {
         if (this.checkInsAndOuts(u, index)) {
             if (index >= 0 && index <= this.effects.size()) {
                 this.effects.add(index, u);
@@ -67,11 +63,11 @@ public class BasicProcessingUnit implements ProcessingUnit {
         }
     }
 
-    private boolean checkInsAndOuts(UGen u, int index) {
+    private boolean checkInsAndOuts(RPEffect u, int index) {
         return u.getOuts() != 0 && u.getIns() != 0;
     }
 
-    private void connectEffects(UGen from, UGen to) {
+    private void connectEffects(RPEffect from, RPEffect to) {
         to.clearInputConnections();
         to.addInput(from);
     }
@@ -115,7 +111,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
     }
 
     @Override
-    public void replace(int index, UGen u) {
+    public void replace(int index, RPEffect u) {
         try {
             this.removeEffectAtPosition(index);
             this.addEffectAtPosition(u, index);

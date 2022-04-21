@@ -1,5 +1,6 @@
 package daw.core.channel;
 
+import daw.core.audioprocessing.ProcessingUnit;
 import net.beadsproject.beads.core.UGen;
 
 /**

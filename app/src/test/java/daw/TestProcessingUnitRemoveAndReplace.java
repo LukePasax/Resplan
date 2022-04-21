@@ -1,7 +1,7 @@
 package daw;
 
-import daw.core.channel.BasicProcessingUnit;
-import daw.core.channel.ProcessingUnit;
+import daw.core.audioprocessing.BasicProcessingUnit;
+import daw.core.audioprocessing.ProcessingUnit;
 import net.beadsproject.beads.ugens.Minimum;
 import net.beadsproject.beads.ugens.MonoPlug;
 import net.beadsproject.beads.ugens.Phasor;
