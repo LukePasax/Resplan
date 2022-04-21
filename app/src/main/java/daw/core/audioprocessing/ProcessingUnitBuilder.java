@@ -31,6 +31,19 @@ public interface ProcessingUnitBuilder {
     ProcessingUnitBuilder gate(int channels);
 
     /**
+     * Adds a {@link CompressorWithSidechaining} to the {@link ProcessingUnit}
+     * without connecting any sidechain to it.
+     * @param channels the number of input and output channels for this effect.
+     */
+    ProcessingUnitBuilder compressor(int channels);
+
+    /**
+     * Adds a {@link Limiter} to the {@link ProcessingUnit}.
+     * @param channels the number of input and output channels for this effect.
+     */
+    ProcessingUnitBuilder limiter(int channels);
+
+    /**
      * Allows to obtain the {@link ProcessingUnit}.
      * @return a {@link ProcessingUnit} with the ordered sequence of effects.
      * @throws IllegalStateException if no effects have been specified through this builder.

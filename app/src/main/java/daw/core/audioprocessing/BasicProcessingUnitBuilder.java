@@ -15,6 +15,7 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     private Optional<CompressorWithSidechaining> sidechain;
     private Optional<RPEffect> gate;
     private Optional<RPEffect> compressor;
+    private Optional<RPEffect> limiter;
 
     public BasicProcessingUnitBuilder() {
         this.lowPassFilter = Optional.empty();
@@ -60,12 +61,28 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     }
 
     @Override
+    public ProcessingUnitBuilder compressor(int channels) {
+        if (this.compressor.isEmpty()) {
+            this.compressor = Optional.of(new CompressorWithSidechaining(channels));
+        }
+        return this;
+    }
+
+    @Override
+    public ProcessingUnitBuilder limiter(int channels) {
+        if (this.compressor.isEmpty()) {
+            this.compressor = Optional.of(new Limiter(channels));
+        }
+        return this;
+    }
+
+    @Override
     public ProcessingUnit build() throws IllegalStateException {
-        final List<RPEffect> effects = new ArrayList<RPEffect>(List.of(this.gate.orElse(null),
+        final List<RPEffect> effects = new ArrayList<>(List.of(this.gate.orElse(null),
                 this.sidechain.orElse(null), this.compressor.orElse(null),
                 this.highPassFilter.orElse(null), this.lowPassFilter.orElse(null), this.reverb.orElse(null)));
-        if (effects.stream().filter(x -> x != null).count() != 0) {
-            return new BasicProcessingUnit(effects.stream().filter(x -> x != null).collect(Collectors.toList()));
+        if (effects.stream().anyMatch(Objects::nonNull)) {
+            return new BasicProcessingUnit(effects.stream().filter(Objects::nonNull).collect(Collectors.toList()));
         }
         throw new IllegalStateException();
     }
