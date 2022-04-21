@@ -26,14 +26,18 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     }
 
     @Override
-    public ProcessingUnitBuilder lowPassFilter() {
-        // TO DO
+    public ProcessingUnitBuilder lowPassFilter(int channels, float cutoffFrequency) {
+        if (this.lowPassFilter.isEmpty()) {
+            this.lowPassFilter = Optional.of(new LowPassFilter(channels, cutoffFrequency));
+        }
         return this;
     }
 
     @Override
-    public ProcessingUnitBuilder highPassFilter() {
-        // TO DO
+    public ProcessingUnitBuilder highPassFilter(int channels, float cutoffFrequency) {
+        if (this.highPassFilter.isEmpty()) {
+            this.highPassFilter = Optional.of(new HighPassFilter(channels, cutoffFrequency));
+        }
         return this;
     }
 
@@ -80,9 +84,14 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
 
     @Override
     public ProcessingUnit build() throws IllegalStateException {
-        final List<RPEffect> effects = new ArrayList<>(List.of(this.gate.orElse(null),
-                this.sidechain.orElse(null), this.compressor.orElse(null),
-                this.highPassFilter.orElse(null), this.lowPassFilter.orElse(null), this.reverb.orElse(null)));
+        final List<RPEffect> effects = new ArrayList<>(List.of(
+                this.gate.orElse(null),
+                this.sidechain.orElse(null),
+                this.limiter.orElse(null),
+                this.compressor.orElse(null),
+                this.highPassFilter.orElse(null),
+                this.lowPassFilter.orElse(null),
+                this.reverb.orElse(null)));
         if (effects.stream().anyMatch(Objects::nonNull)) {
             return new BasicProcessingUnit(effects.stream().filter(Objects::nonNull).collect(Collectors.toList()));
         }

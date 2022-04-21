@@ -10,9 +10,19 @@ import net.beadsproject.beads.core.UGen;
  */
 public interface ProcessingUnitBuilder {
 
-    ProcessingUnitBuilder lowPassFilter();
+    /**
+     * Adds a {@link LowPassFilter} to the {@link ProcessingUnit}.
+     * @param channels the number of input and output channels for this effect.
+     * @param cutoffFrequency the frequency over which sound gets attenuated or eliminated.
+     */
+    ProcessingUnitBuilder lowPassFilter(int channels, float cutoffFrequency);
 
-    ProcessingUnitBuilder highPassFilter();
+    /**
+     * Adds a {@link HighPassFilter} to the {@link ProcessingUnit}.
+     * @param channels the number of input and output channels for this effect.
+     * @param cutoffFrequency the frequency under which sound gets attenuated or eliminated.
+     */
+    ProcessingUnitBuilder highPassFilter(int channels, float cutoffFrequency);
 
     /**
      * Adds a {@link DigitalReverb} to the {@link ProcessingUnit}.
