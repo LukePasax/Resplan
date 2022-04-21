@@ -7,5 +7,11 @@ public interface RPEngine {
 	void pause();
 	
 	void stop();
+	
+	void setPlaybackTime(double time);
+	
+	double getPlaybackTime();
+	
+	boolean isPaused();
 
 }

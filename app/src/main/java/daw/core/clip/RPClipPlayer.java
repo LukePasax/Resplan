@@ -31,5 +31,9 @@ public interface RPClipPlayer {
 	 */
 	double getPlaybackPosition();
 	
+	void setCut(double time);
+	
+	void disableCut();
+	
 	
 }

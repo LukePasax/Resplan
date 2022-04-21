@@ -11,11 +11,14 @@ public class SampleClipPlayer implements RPClipPlayer {
 	
 	private final SamplePlayer player;
 	private final double contentPosition;
+	private double cutTime;
+	private boolean isCutActive;
 	
 	public SampleClipPlayer(SampleClip sampleClip) throws IOException, OperationUnsupportedException, FileFormatException {
 		this.player = new SamplePlayer(new Sample(sampleClip.getContent().getAbsolutePath()));
 		this.contentPosition = sampleClip.getContentPosition();
 		this.player.setPosition(this.contentPosition);
+		this.isCutActive = false;
 		this.stop();
 	}
 
@@ -32,7 +35,11 @@ public class SampleClipPlayer implements RPClipPlayer {
 	@Override
 	public void stop() {
 		this.pause();
-		this.setPlaybackPosition(contentPosition);
+		if(isCutActive) {
+			this.setPlaybackPosition(cutTime);
+		} else {
+			this.setPlaybackPosition(contentPosition);
+		}	
 	}
 
 	@Override
@@ -43,6 +50,17 @@ public class SampleClipPlayer implements RPClipPlayer {
 	@Override
 	public double getPlaybackPosition() {
 		return this.player.getPosition();
+	}
+
+	@Override
+	public void setCut(double time) {
+		this.cutTime = time;
+		this.isCutActive = true;
+	}
+
+	@Override
+	public void disableCut() {
+		this.isCutActive = false;
 	}
 
 }
