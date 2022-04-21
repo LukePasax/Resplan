@@ -15,6 +15,7 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     private Optional<RPEffect> reverb;
     private Optional<RPEffect> sidechain;
     private Optional<RPEffect> gate;
+    private Optional<RPEffect> compressor;
 
     public BasicProcessingUnitBuilder() {
         this.lowPassFilter = Optional.empty();
@@ -43,20 +44,25 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     }
 
     @Override
-    public ProcessingUnitBuilder sidechain(UGen u) {
-        // TO DO
+    public ProcessingUnitBuilder sidechain(UGen u, int channels) {
+        if (this.sidechain.isEmpty()) {
+            this.sidechain = Optional.of(new CompressorWithSidechaining(channels));
+        }
+        this.sidechain.get().connectSidechain(u);
         return this;
     }
 
     @Override
-    public ProcessingUnitBuilder gate() {
-        // TO DO
+    public ProcessingUnitBuilder gate(int channels) {
+        if (this.gate.isEmpty()) {
+            this.gate = Optional.of(new Gate(channels));
+        }
         return this;
     }
 
     @Override
     public ProcessingUnit build() throws IllegalStateException {
-        final List<Optional<RPEffect>> effects = new ArrayList<>(List.of(
+        final List<Optional<RPEffect>> effects = new ArrayList<RPEffect>(
                 this.lowPassFilter, this.highPassFilter, this.gate, this.reverb, this.sidechain));
         if (effects.stream().filter(Optional::isPresent).count() != 0) {
             return new BasicProcessingUnit(effects.stream().filter(Optional::isPresent).map(Optional::get)

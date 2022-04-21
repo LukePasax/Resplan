@@ -16,14 +16,13 @@ import net.beadsproject.beads.ugens.Compressor;
  * Actually, the constructor instantiates a compressor that produces its compression based on the input volume
  * of the source it is attached to, which means there is initially no sidechain.
  */
-public class CompressorWithSidechaining extends UGen implements DataBeadReceiver {
+public class CompressorWithSidechaining extends RPEffect {
 
     private Compressor compressor;
 
-    public CompressorWithSidechaining(float threshold, float attack, float decay, float ratio) {
-        super(AudioContextManager.getAudioContext());
-        this.compressor = new Compressor(AudioContext.getDefaultContext(), 2)
-                .setThreshold(threshold).setAttack(attack).setDecay(decay).setRatio(ratio);
+    public CompressorWithSidechaining(int channels) {
+        super(AudioContextManager.getAudioContext(),channels,channels);
+        this.compressor = new Compressor(AudioContext.getDefaultContext(), channels);
     }
 
     /**

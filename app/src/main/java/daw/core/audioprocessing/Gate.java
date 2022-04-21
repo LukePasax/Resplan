@@ -10,10 +10,9 @@ public class Gate extends RPEffect {
 
     private Compressor compressor;
 
-    public Gate(float threshold, float attack, float decay, float ratio) {
-        super(AudioContextManager.getAudioContext(), 1, 1);
-        this.compressor = new Compressor(AudioContextManager.getAudioContext()).setThreshold(threshold).
-                setAttack(attack).setDecay(decay).setRatio(ratio);
+    public Gate(int channels) {
+        super(AudioContextManager.getAudioContext(), channels, channels);
+        this.compressor = new Compressor(AudioContextManager.getAudioContext(), channels);
     }
 
     @Override

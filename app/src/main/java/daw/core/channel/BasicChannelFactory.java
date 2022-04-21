@@ -23,7 +23,7 @@ public class BasicChannelFactory implements ChannelFactory {
     public RPChannel gated() {
         final var bc = new BasicChannel(new BasicVolume(DEFAULT_VOLUME, DEFAULT_MAX_VOLUME),
                 new Panner(), RPChannel.Type.AUDIO);
-        bc.addProcessingUnit(new BasicProcessingUnitBuilder().gate().build());
+        bc.addProcessingUnit(new BasicProcessingUnitBuilder().gate(1).build());
         return bc;
     }
 
@@ -31,7 +31,7 @@ public class BasicChannelFactory implements ChannelFactory {
     public RPChannel sidechained(UGen u) {
         final var bc = new BasicChannel(new BasicVolume(DEFAULT_VOLUME, DEFAULT_MAX_VOLUME),
                 new Panner(), RPChannel.Type.AUDIO);
-        bc.addProcessingUnit(new BasicProcessingUnitBuilder().sidechain(u).build());
+        bc.addProcessingUnit(new BasicProcessingUnitBuilder().sidechain(u, 1).build());
         return bc;
     }
 

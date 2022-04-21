@@ -17,13 +17,25 @@ public interface ProcessingUnitBuilder {
     ProcessingUnitBuilder reverb();
 
     /**
-     * Allows to sidechain the {@link ProcessingUnit} to another {@link UGen}.
+     * Adds a {@link CompressorWithSidechaining} to the {@link ProcessingUnit} and immediately connects the
+     * given {@link UGen} as a sidechain.
      * @param u the {@link UGen} which this {@link ProcessingUnit} is sidechained to.
+     * @param channels the number of input and output channels for this effect.
      */
-    ProcessingUnitBuilder sidechain(UGen u);
+    ProcessingUnitBuilder sidechain(UGen u, int channels);
 
-    ProcessingUnitBuilder gate();
+    /**
+     * Adds a {@link Gate} to the {@link ProcessingUnit}.
+     * @param channels the number of input and output channels for this effect.
+     */
+    ProcessingUnitBuilder gate(int channels);
 
+    /**
+     * Allows to obtain the {@link ProcessingUnit}.
+     * @return a {@link ProcessingUnit} with the ordered sequence of effects.
+     * @throws IllegalStateException if no effects have been specified through this builder.
+     * Remember that a {@link ProcessingUnit} can never be empty.
+     */
     ProcessingUnit build() throws IllegalStateException;
 
 }
