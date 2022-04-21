@@ -20,9 +20,9 @@ public class CompressorWithSidechaining extends UGen implements DataBeadReceiver
 
     private Compressor compressor;
 
-    public CompressorWithSidechaining(float threshold, float attack, float decay, float ratio, UGen sidechained) {
+    public CompressorWithSidechaining(float threshold, float attack, float decay, float ratio) {
         super(AudioContextManager.getAudioContext());
-        this.compressor = new Compressor(AudioContext.getDefaultContext(), 2, sidechained)
+        this.compressor = new Compressor(AudioContext.getDefaultContext(), 2)
                 .setThreshold(threshold).setAttack(attack).setDecay(decay).setRatio(ratio);
     }
 
