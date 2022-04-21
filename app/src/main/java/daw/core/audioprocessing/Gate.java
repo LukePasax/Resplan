@@ -6,19 +6,19 @@ import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.data.DataBeadReceiver;
 import net.beadsproject.beads.ugens.Compressor;
 
-public class Gate extends UGen implements DataBeadReceiver {
+public class Gate extends RPEffect {
 
     private Compressor compressor;
 
     public Gate(float threshold, float attack, float decay, float ratio) {
-        super(AudioContextManager.getAudioContext());
+        super(AudioContextManager.getAudioContext(), 1, 1);
         this.compressor = new Compressor(AudioContextManager.getAudioContext()).setThreshold(threshold).
                 setAttack(attack).setDecay(decay).setRatio(ratio);
     }
 
     @Override
     public void calculateBuffer() {
-        this.compressor.calculateBuffer();
+        // TO DO
     }
 
     @Override

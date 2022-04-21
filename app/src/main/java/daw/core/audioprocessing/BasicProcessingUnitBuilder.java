@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 
 public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
 
-    private Optional<UGen> lowPassFilter;
-    private Optional<UGen> highPassFilter;
-    private Optional<UGen> reverb;
-    private Optional<UGen> sidechain;
-    private Optional<UGen> gate;
+    private Optional<RPEffect> lowPassFilter;
+    private Optional<RPEffect> highPassFilter;
+    private Optional<RPEffect> reverb;
+    private Optional<RPEffect> sidechain;
+    private Optional<RPEffect> gate;
 
     public BasicProcessingUnitBuilder() {
         this.lowPassFilter = Optional.empty();
@@ -26,45 +26,37 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
 
     @Override
     public ProcessingUnitBuilder lowPassFilter() {
-        if (this.lowPassFilter.isEmpty()) {
-            this.lowPassFilter = Optional.of(new OnePoleFilter(AudioContextManager.getAudioContext(), 100));
-        }
+        // TO DO
         return this;
     }
 
     @Override
     public ProcessingUnitBuilder highPassFilter() {
-        if (this.highPassFilter.isEmpty()) {
-            this.highPassFilter = Optional.of(new CrossoverFilter());
-        }
+        // TO DO
         return this;
     }
 
     @Override
     public ProcessingUnitBuilder reverb() {
-        if (this.reverb.isEmpty()) {
-            this.reverb = Optional.of(new Reverb());
-        }
+        // TO DO
         return this;
     }
 
     @Override
     public ProcessingUnitBuilder sidechain(UGen u) {
-        // TO DO: make Sidechain instantiable
-        this.sidechain = Optional.empty();
+        // TO DO
         return this;
     }
 
     @Override
     public ProcessingUnitBuilder gate() {
-        // TO DO: make Gate instantiable
-        this.gate = Optional.empty();
-        return null;
+        // TO DO
+        return this;
     }
 
     @Override
     public ProcessingUnit build() throws IllegalStateException {
-        final List<Optional<UGen>> effects = new ArrayList<>(List.of(
+        final List<Optional<RPEffect>> effects = new ArrayList<>(List.of(
                 this.lowPassFilter, this.highPassFilter, this.gate, this.reverb, this.sidechain));
         if (effects.stream().filter(Optional::isPresent).count() != 0) {
             return new BasicProcessingUnit(effects.stream().filter(Optional::isPresent).map(Optional::get)
