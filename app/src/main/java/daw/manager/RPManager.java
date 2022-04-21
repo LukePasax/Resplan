@@ -28,15 +28,31 @@ public interface RPManager {
     void addSidechainedChannel(RPRole channel, String title, Optional<String> description);
 
     /**
-     * This method adds a {@link RPChannel} to a group
-     * @param channel the {@link RPChannel} to add to a group
+     * This method adds a Channel to a group
+     * @param role the Channel to add to a group
      * @param groupName the name of the group
      */
-    void addToGroup(RPChannel channel, String groupName);
+    void addToGroup(RPRole role, String groupName);
+
+    /**
+     * This method removes a Channel from a group
+     * @param role the Channel to remove from a group
+     * @param groupName the name of the Group
+     */
+    void removeFromGroup(RPRole role, String groupName);
+
+    /**
+     * This method moves a Channel from a group to another
+     * @param role the Channel to move
+     * @param oldGroup the current group of the Channel
+     * @param newGroup the group where the Channel is going to be moved
+     */
+    void switchGroup(RPRole role, String oldGroup, String newGroup);
 
     /**
      * A method to create a group
      * @param groupName the name of the group to be created
+     * @param type the type of group to be created
      */
     void createGroup(String groupName, RPRole.RoleType type);
 

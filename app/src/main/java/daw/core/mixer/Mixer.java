@@ -82,6 +82,18 @@ public class Mixer implements RPMixer{
     /**
      * A method to remove a {@link RPChannel} from a group
      *
+     * @param channel the {@link RPChannel} to be removed
+     * @param group   the group to remove the {@link RPChannel} from
+     */
+    @Override
+    public void unlinkFromGroup(RPChannel channel, RPChannel group) {
+        group.disconnectSource(channel.getOutput());
+        masterChannel.connectSource(channel.getOutput());
+    }
+
+    /**
+     * A method to remove a {@link RPChannel} from a group
+     *
      * @param channel the {@link RPChannel} to remove
      * @param group   the group to remove the {@link RPChannel} from
      */

@@ -6,6 +6,7 @@ import javafx.util.Pair;
 import planning.RPRole;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -68,6 +69,6 @@ public class ChannelLinker implements RPChannelLinker {
      */
     @Override
     public Set<Pair<RPChannel, RPTapeChannel>> getAudioSet() {
-        return channelMap.entrySet().stream().map(e -> e.getValue()).collect(Collectors.toSet());
+        return new HashSet<>(channelMap.values());
     }
 }

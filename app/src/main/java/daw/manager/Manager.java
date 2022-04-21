@@ -10,8 +10,8 @@ import planning.EffectsRole;
 import planning.RPRole;
 import planning.SoundtrackRole;
 import planning.SpeechRole;
-
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Manager implements RPManager{
 
@@ -20,7 +20,7 @@ public class Manager implements RPManager{
     private final RPClipLinker clipLinker;
     private final Map<String, Pair<RPRole, List<RPRole>>> groupList;
 
-    Manager() {
+    public Manager() {
         mixer = new Mixer();
         channelLinker = new ChannelLinker();
         clipLinker = new ClipLinker();
@@ -47,24 +47,35 @@ public class Manager implements RPManager{
         this.automaticGrouping(role);
     }
 
-    //TODO
     private void automaticGrouping(RPRole role) {
         String name;
         if (role.getType().equals(RPRole.RoleType.SPEECH)) {
             name = "Speech";
+        } else if (role.getType().equals(RPRole.RoleType.EFFECTS)){
+            name = "Fx";
         } else {
-
+            name = "Soundtrack";
         }
-        if (this.verifyPresence(role.getType())) {
-
+        if (this.verifyPresence(role.getType()) && !this.groupExists(name)) {
+            this.createGroup(name,role.getType());
+            this.addToGroup(role, name);
+            this.addToGroup(channelLinker.getRoleSet(role.getType()).stream()
+                    .filter(e -> e.getType().equals(role.getType())).collect(Collectors.toList()).get(0),name);
+        } else if (this.groupExists(name)) {
+            this.addToGroup(role, name);
         }
-    }
-
-    private boolean verifyGroup(String name) {
-        return groupList.keySet().stream().anyMatch(k -> k.equals(name));
     }
 
     private boolean verifyPresence(RPRole.RoleType type) {
+        return channelLinker.getRoleSet(type).stream().filter(e -> !groupList.values().stream().map(Pair::getKey).
+                collect(Collectors.toSet()).contains(e)).anyMatch(e -> e.getType().equals(type));
+    }
+
+    private boolean groupExists(String name) {
+        return groupList.containsKey(name);
+    }
+
+    private boolean verifyForSidechain(RPRole.RoleType type) {
         return !channelLinker.getRoleSet(type).isEmpty() && groupList.entrySet().stream().map(e -> e.getValue().getKey())
                 .anyMatch(k -> k.getType().equals(type));
     }
@@ -94,10 +105,10 @@ public class Manager implements RPManager{
         RPRole role = this.createRole(RPRole.RoleType.SOUNDTRACK, title, description);
         RPTapeChannel tapeChannel = new TapeChannel();
         RPChannel Schannel;
-        if (!this.verifyPresence(RPRole.RoleType.SPEECH)) {
+        if (!this.verifyForSidechain(RPRole.RoleType.SPEECH)) {
             Schannel = mixer.createChannel(RPChannel.Type.BASIC);
         } else {
-            if (!verifyGroup("Speech")) {
+            if (!groupExists("Speech")) {
                 Schannel = mixer.createSidechained(channelLinker.getChannel(channelLinker.getRoleSet(RPRole.RoleType.SPEECH)
                         .stream().findAny().get()));
             } else {
@@ -106,23 +117,63 @@ public class Manager implements RPManager{
         }
     }
 
-    //TODO
     /**
-     * This method adds a {@link RPChannel} to a group
+     * This method adds a Channel to a group
      *
-     * @param channel   the {@link RPChannel} to add to a group
+     * @param role the Channel to add to a group
      * @param groupName the name of the group
      */
     @Override
-    public void addToGroup(RPChannel channel, String groupName) {
+    public void addToGroup(RPRole role, String groupName) {
+        if(!groupContains(role, groupName)) {
+            groupList.get(groupName).getValue().add(role);
+            mixer.linkToGroup(channelLinker.getChannel(role), channelLinker.getChannel(groupList.get(groupName).getKey()));
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
 
+    private boolean groupContains(RPRole role, String groupName) {
+        if (this.groupExists(groupName)) {
+            return groupList.get(groupName).getValue().contains(role);
+        }
+        throw new IllegalArgumentException();
+    }
+
+    /**
+     * This method removes a Channel from a group
+     *
+     * @param role      the Channel to remove from a group
+     * @param groupName the name of the Group
+     */
+    @Override
+    public void removeFromGroup(RPRole role, String groupName) {
+        if (groupContains(role, groupName)) {
+            groupList.get(groupName).getValue().remove(role);
+            mixer.unlinkFromGroup(channelLinker.getChannel(role), channelLinker.getChannel(groupList.get(groupName).getKey()));
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    /**
+     * This method moves a Channel from a group to another
+     *
+     * @param role     the Channel to move
+     * @param oldGroup the current group of the Channel
+     * @param newGroup the group where the Channel is going to be moved
+     */
+    @Override
+    public void switchGroup(RPRole role, String oldGroup, String newGroup) {
+        this.removeFromGroup(role, oldGroup);
+        this.addToGroup(role, newGroup);
     }
 
     /**
      * A method to create a group
      *
      * @param groupName the name of the group to be created
-     * @param type
+     * @param type the type of group to be created
      */
     @Override
     public void createGroup(String groupName, RPRole.RoleType type) throws IllegalArgumentException {
@@ -159,7 +210,7 @@ public class Manager implements RPManager{
      */
     @Override
     public void addClip() {
-
+        
     }
 
     /**

@@ -51,6 +51,13 @@ public interface RPMixer {
 
     /**
      * A method to remove a {@link RPChannel} from a group
+     * @param channel the {@link RPChannel} to be removed
+     * @param group the group to remove the {@link RPChannel} from
+     */
+    void unlinkFromGroup(RPChannel channel, RPChannel group);
+
+    /**
+     * A method to remove a {@link RPChannel} from a group
      * @param channel the {@link RPChannel} to remove
      * @param group the group to remove the {@link RPChannel} from
      */
