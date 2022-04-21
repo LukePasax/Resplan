@@ -3,6 +3,7 @@ package daw.engine;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 public class HashMapToSet<X, Y> implements MapToSet<X, Y> {
@@ -38,6 +39,11 @@ public class HashMapToSet<X, Y> implements MapToSet<X, Y> {
 	@Override
 	public boolean containsKey(X time) {
 		return this.map.containsKey(time);
+	}
+
+	@Override
+	public Set<Entry<X, Set<Y>>> entrySet() {
+		return this.map.entrySet();
 	}
 
 }
