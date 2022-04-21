@@ -20,7 +20,7 @@ public interface RPTimeline {
 	 * @return true if the addition is successful,
 	 * false if something goes wrong
 	 */
-	boolean addSection(int initialTime, RPSection section);
+	boolean addSection(double initialTime, RPSection section);
 	
 	/**
 	 * Allows to remove a section from the timeline
@@ -39,12 +39,12 @@ public interface RPTimeline {
 	 * @return the optional section, Optional.empty()
 	 * if the section doesn't exists
 	 */
-	Optional<RPSection> getSection(int initialTime);
+	Optional<RPSection> getSection(double initialTime);
 	
 	/**
 	 * Gets the total duration of the sections that make up the timeline
 	 * 
 	 * @return the overall duration of the timeline
 	 */
-	int getOverallDuration();
+	double getOverallDuration();
 }
