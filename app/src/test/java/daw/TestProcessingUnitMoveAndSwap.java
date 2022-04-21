@@ -1,9 +1,8 @@
 package daw;
 
 import Resplan.AudioContextManager;
-import daw.core.channel.BasicProcessingUnit;
-import daw.core.channel.ProcessingUnit;
-import net.beadsproject.beads.core.UGen;
+import daw.core.audioprocessing.BasicProcessingUnit;
+import daw.core.audioprocessing.ProcessingUnit;
 import net.beadsproject.beads.ugens.*;
 import org.junit.jupiter.api.Test;
 import java.util.List;

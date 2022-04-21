@@ -1,7 +1,6 @@
-package daw.core.effect;
+package daw.core.audioprocessing;
 
 import Resplan.AudioContextManager;
-import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.data.DataBeadReceiver;

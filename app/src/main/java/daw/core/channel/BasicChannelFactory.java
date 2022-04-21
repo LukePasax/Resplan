@@ -1,5 +1,6 @@
 package daw.core.channel;
 
+import daw.core.audioprocessing.BasicProcessingUnitBuilder;
 import daw.general.BasicVolume;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Panner;

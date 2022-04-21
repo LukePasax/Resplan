@@ -1,4 +1,4 @@
-package daw.core.channel;
+package daw.core.audioprocessing;
 
 import net.beadsproject.beads.core.UGen;
 

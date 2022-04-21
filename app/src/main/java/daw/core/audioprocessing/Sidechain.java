@@ -1,4 +1,4 @@
-package daw.core.effect;
+package daw.core.audioprocessing;
 
 import Resplan.AudioContextManager;
 import net.beadsproject.beads.core.AudioContext;

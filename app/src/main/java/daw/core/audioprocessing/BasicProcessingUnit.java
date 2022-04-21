@@ -1,14 +1,11 @@
-package daw.core.channel;
+package daw.core.audioprocessing;
 
-import Resplan.AudioContextManager;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
-import net.beadsproject.beads.ugens.Plug;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 public class BasicProcessingUnit implements ProcessingUnit {
 

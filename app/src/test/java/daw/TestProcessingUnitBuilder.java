@@ -1,9 +1,9 @@
 package daw;
 
-import daw.core.channel.BasicProcessingUnitBuilder;
-import daw.core.channel.ProcessingUnit;
-import daw.core.effect.Gate;
-import daw.core.effect.Sidechain;
+import daw.core.audioprocessing.BasicProcessingUnitBuilder;
+import daw.core.audioprocessing.ProcessingUnit;
+import daw.core.audioprocessing.Gate;
+import daw.core.audioprocessing.Sidechain;
 import net.beadsproject.beads.ugens.Compressor;
 import net.beadsproject.beads.ugens.CrossoverFilter;
 import net.beadsproject.beads.ugens.Reverb;

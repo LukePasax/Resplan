@@ -1,8 +1,6 @@
-package daw.core.channel;
+package daw.core.audioprocessing;
 
 import Resplan.AudioContextManager;
-import daw.core.effect.Sidechain;
-import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.*;
 import java.util.ArrayList;
