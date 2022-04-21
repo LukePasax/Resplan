@@ -13,8 +13,8 @@ import java.util.List;
 public interface ProcessingUnit {
 
     /**
-     * Adds the audio that must be processed.
-     * @param g the source.
+     * Adds the audio signal that needs to be processed.
+     * @param g the {@link Gain} that represents the audio source.
      */
     void addInput(Gain g);
 
@@ -25,7 +25,7 @@ public interface ProcessingUnit {
     void connect(UGen u);
 
     /**
-     *
+     * Allows getting the sequence of effects as they are stored when this method is called.
      * @return the current {@link List} of effects.
      */
     List<RPEffect> getEffects();
@@ -36,32 +36,30 @@ public interface ProcessingUnit {
      * @return the effect that is placed at the given position.
      * @throws IllegalArgumentException if the given position is out of bounds.
      */
-    UGen getEffectAtPosition(int index);
+    RPEffect getEffectAtPosition(int index);
 
     /**
      * Adds a new effect in the last position of the sequence.
      * Note that this method also match the preceding effect output to the given effect input.
-     * If the number of outputs of the preceding {@link UGen} is greater than the number of inputs of the given
-     * {@link UGen} then the extra outputs are not connected.
-     * If the number of inputs of the given {@link UGen} is greater than the number of outputs of the preceding
-     * {@link UGen} then the outputs are cycled to fill all inputs.
-     * @param u the {@link UGen} that represents the effect to be added.
-     * @throws IllegalArgumentException if the {@link UGen} has either no input or no output.
+     * If the number of outputs of the preceding {@link RPEffect} is greater than the number of inputs of the given
+     * {@link RPEffect} then the extra outputs are not connected.
+     * If the number of inputs of the given {@link RPEffect} is greater than the number of outputs of the preceding
+     * {@link RPEffect} then the outputs are cycled to fill all inputs.
+     * @param u the {@link RPEffect} that represents the effect to be added.
      */
     void addEffect(RPEffect u);
 
     /**
-     * Adds a new effect in the given position of the sequence. If the position is out of bounds
-     * for the current sequence, this method does nothing. The only exception is the first out-of-bound
-     * index to the right, for example if the sequence's last element is at index 3 and the given position is index 4.
-     * In this case, this method has the exact same behavior of the addEffect method.
+     * Adds a new effect in the given position of the sequence. If the position is the first out-of-bound
+     * index to the right this method has the exact same behavior of the addEffect method.
+     * For example, this occurs when the sequence's last element is at index 3 and the given position is index 4.
      * Note that this method also match the preceding effect output (if present) to the given effect input
      * and the output of the latter to the following effect input (if present).
      * The same policies of the addEffect method are used when the number of inputs and outputs of
-     * two consecutive {@link UGen} is different.
-     * @param u the {@link UGen} that represents the effect to be added.
+     * two consecutive {@link RPEffect} is different.
+     * @param u the {@link RPEffect} that represents the effect to be added.
      * @param index a position in the sequence.
-     * @throws IllegalArgumentException if the {@link UGen} has either no input or no output.
+     * @throws IllegalArgumentException if the given position is out of bounds.
      */
     void addEffectAtPosition(RPEffect u, int index);
 

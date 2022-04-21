@@ -36,7 +36,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
     }
 
     @Override
-    public UGen getEffectAtPosition(int index) {
+    public RPEffect getEffectAtPosition(int index) {
         return this.effects.get(index);
     }
 
@@ -47,24 +47,17 @@ public class BasicProcessingUnit implements ProcessingUnit {
 
     @Override
     public void addEffectAtPosition(RPEffect u, int index) {
-        if (this.checkInsAndOuts(u, index)) {
-            if (index >= 0 && index <= this.effects.size()) {
-                this.effects.add(index, u);
-                if (index > 0) {
-                    this.connectEffects(this.effects.get(index-1), u);
-                }
-                if (index < this.effects.size() - 1) {
-                    this.connectEffects(u, this.effects.get(index+1));
-                }
+        if (index >= 0 && index <= this.effects.size()) {
+            this.effects.add(index, u);
+            if (index > 0) {
+                this.connectEffects(this.effects.get(index-1), u);
+            }
+            if (index < this.effects.size() - 1) {
+                this.connectEffects(u, this.effects.get(index+1));
             }
         } else {
-            throw new IllegalArgumentException("UGen " + u.getClass() +
-                    " has either 0 inputs or 0 outputs, therefore it cannot be added to the sequence");
+            throw new IllegalArgumentException("The given index is not legal.");
         }
-    }
-
-    private boolean checkInsAndOuts(RPEffect u, int index) {
-        return u.getOuts() != 0 && u.getIns() != 0;
     }
 
     private void connectEffects(RPEffect from, RPEffect to) {
@@ -74,7 +67,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
 
     @Override
     public void removeEffectAtPosition(int index) {
-        if (this.effects.size()>1) {
+        if (this.effects.size() > 1) {
             if (index != this.effects.size()-1) {
                 this.effects.get(index + 1).clearInputConnections();
                 if (index != 0) {
