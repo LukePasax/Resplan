@@ -3,9 +3,8 @@ package daw.core.audioprocessing;
 import Resplan.AudioContextManager;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
@@ -13,7 +12,7 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     private Optional<RPEffect> lowPassFilter;
     private Optional<RPEffect> highPassFilter;
     private Optional<RPEffect> reverb;
-    private Optional<RPEffect> sidechain;
+    private Optional<CompressorWithSidechaining> sidechain;
     private Optional<RPEffect> gate;
     private Optional<RPEffect> compressor;
 
@@ -62,11 +61,11 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
 
     @Override
     public ProcessingUnit build() throws IllegalStateException {
-        final List<Optional<RPEffect>> effects = new ArrayList<RPEffect>(
-                this.lowPassFilter, this.highPassFilter, this.gate, this.reverb, this.sidechain));
-        if (effects.stream().filter(Optional::isPresent).count() != 0) {
-            return new BasicProcessingUnit(effects.stream().filter(Optional::isPresent).map(Optional::get)
-                    .collect(Collectors.toList()));
+        final List<RPEffect> effects = new ArrayList<RPEffect>(List.of(this.gate.orElse(null),
+                this.sidechain.orElse(null), this.compressor.orElse(null),
+                this.highPassFilter.orElse(null), this.lowPassFilter.orElse(null), this.reverb.orElse(null)));
+        if (effects.stream().filter(x -> x != null).count() != 0) {
+            return new BasicProcessingUnit(effects.stream().filter(x -> x != null).collect(Collectors.toList()));
         }
         throw new IllegalStateException();
     }
