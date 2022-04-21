@@ -60,4 +60,14 @@ public class ChannelLinker implements RPChannelLinker {
     public Set<RPRole> getRoleSet(RPRole.RoleType type) {
         return channelMap.keySet().stream().filter(k -> k.getType().equals(type)).collect(Collectors.toSet());
     }
+
+    /**
+     * This method returns a Set of Pairs of all the low-level parts of a Channel
+     *
+     * @return a set of pairs of {@link RPChannel} and {@link RPTapeChannel}
+     */
+    @Override
+    public Set<Pair<RPChannel, RPTapeChannel>> getAudioSet() {
+        return channelMap.entrySet().stream().map(e -> e.getValue()).collect(Collectors.toSet());
+    }
 }

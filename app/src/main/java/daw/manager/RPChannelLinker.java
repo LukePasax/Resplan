@@ -2,6 +2,7 @@ package daw.manager;
 
 import daw.core.channel.RPChannel;
 import daw.core.clip.RPTapeChannel;
+import javafx.util.Pair;
 import planning.RPRole;
 
 import java.util.Set;
@@ -41,5 +42,11 @@ public interface RPChannelLinker {
 	 * @return a set containing all the {@link  RPRole} of the type given
 	 */
 	Set<RPRole> getRoleSet(RPRole.RoleType type);
+
+	/**
+	 * This method returns a Set of Pairs of all the low-level parts of a Channel
+	 * @return a set of pairs of {@link RPChannel} and {@link RPTapeChannel}
+	 */
+	Set<Pair<RPChannel,RPTapeChannel>> getAudioSet();
 
 }
