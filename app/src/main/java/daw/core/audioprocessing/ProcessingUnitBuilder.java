@@ -14,7 +14,11 @@ public interface ProcessingUnitBuilder {
 
     ProcessingUnitBuilder highPassFilter();
 
-    ProcessingUnitBuilder reverb();
+    /**
+     * Adds a {@link DigitalReverb} to the {@link ProcessingUnit}.
+     * @param channels the number of input and output channels for this effect.
+     */
+    ProcessingUnitBuilder reverb(int channels);
 
     /**
      * Adds a {@link CompressorWithSidechaining} to the {@link ProcessingUnit} and immediately connects the

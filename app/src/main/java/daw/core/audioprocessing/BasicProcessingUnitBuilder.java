@@ -38,8 +38,10 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     }
 
     @Override
-    public ProcessingUnitBuilder reverb() {
-        // TO DO
+    public ProcessingUnitBuilder reverb(int channels) {
+        if (this.reverb.isEmpty()) {
+            this.reverb = Optional.of(new DigitalReverb(channels));
+        }
         return this;
     }
 
