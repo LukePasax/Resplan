@@ -2,7 +2,7 @@ package daw.engine;
 
 public class Clock implements RPClock {
 	
-	private double milliseconds = 0;
+	private long milliseconds = 0;
 
 	@Override
 	public void step() {
@@ -15,12 +15,12 @@ public class Clock implements RPClock {
 	}
 
 	@Override
-	public void setTime(double time) {
+	public void setTime(long time) {
 		this.milliseconds = time;
 	}
 
 	@Override
-	public double getTime() {
+	public long getTime() {
 		return this.milliseconds;
 	}
 

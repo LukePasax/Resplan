@@ -2,10 +2,12 @@ package daw.core.clip;
 
 import java.io.IOException;
 
+import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.data.Sample;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 import net.beadsproject.beads.ugens.SamplePlayer;
+import net.beadsproject.beads.ugens.SamplePlayer.LoopType;
 
 public class SampleClipPlayer implements RPClipPlayer {
 	
@@ -18,6 +20,7 @@ public class SampleClipPlayer implements RPClipPlayer {
 		this.player = new SamplePlayer(new Sample(sampleClip.getContent().getAbsolutePath()));
 		this.contentPosition = sampleClip.getContentPosition();
 		this.player.setPosition(this.contentPosition);
+		this.player.setLoopType(LoopType.NO_LOOP_FORWARDS);
 		this.isCutActive = false;
 		this.stop();
 	}
@@ -61,6 +64,11 @@ public class SampleClipPlayer implements RPClipPlayer {
 	@Override
 	public void disableCut() {
 		this.isCutActive = false;
+	}
+
+	@Override
+	public UGen getUGen() {
+		return this.player;
 	}
 
 }

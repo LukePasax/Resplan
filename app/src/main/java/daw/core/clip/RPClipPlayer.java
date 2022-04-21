@@ -1,5 +1,7 @@
 package daw.core.clip;
 
+import net.beadsproject.beads.core.UGen;
+
 /**
  * @author alessandro
  * This is a player for an RPClip.
@@ -34,6 +36,8 @@ public interface RPClipPlayer {
 	void setCut(double time);
 	
 	void disableCut();
+	
+	UGen getUGen();
 	
 	
 }

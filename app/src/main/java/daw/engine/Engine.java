@@ -9,7 +9,7 @@ import javafx.util.Pair;
 
 public class Engine implements RPEngine {
 	
-	protected final static double CLOCK_STEP_UNIT = 0.02;
+	protected final static long CLOCK_STEP_UNIT = 1;
 	
 	/**
 	 * The ChannelLinker to get the channels and clips from.
@@ -29,7 +29,7 @@ public class Engine implements RPEngine {
 	/**
 	 * The thread whitch updates clock ad notifier every CLOCK_STEP_UNIT.
 	 */
-	private Optional<RPConductor> conductor;
+	private Optional<Conductor> conductor;
 	
 	
 	public Engine(ChannelLinker channelLinker) {
@@ -40,14 +40,13 @@ public class Engine implements RPEngine {
 	@Override
 	public void start() {
 		this.updateNotifier();
-		// TODO 
-		// crea ed avvia il thread Conductor
+		this.conductor = Optional.of(new Conductor(notifier.get(), clock));
+		this.conductor.get().start();
 	}
 
 	@Override
 	public void pause() {
-		// TODO stoppa il thread Conductor
-
+		this.conductor.get().notifyStopped();
 	}
 
 	@Override
@@ -58,12 +57,12 @@ public class Engine implements RPEngine {
 
 
 	@Override
-	public void setPlaybackTime(double time) {
+	public void setPlaybackTime(long time) {
 		this.clock.setTime(time);
 	}
 
 	@Override
-	public double getPlaybackTime() {
+	public long getPlaybackTime() {
 		return this.clock.getTime();
 	}
 
@@ -74,7 +73,7 @@ public class Engine implements RPEngine {
 	}
 	
 	private void updateNotifier() {
-		MapToSet<Double, RPClipPlayer>  listeners = new HashMapToSet<>();
+		MapToSet<Long, RPClipPlayer>  listeners = new HashMapToSet<>();
 		//for each channel
 		this.channelLinker.getAudioSet().forEach(channel->{
 			//get SampleClips after actual playback time
@@ -91,9 +90,12 @@ public class Engine implements RPEngine {
 							if(clip.getKey()<this.getPlaybackTime()) {
 								var player = new SampleClipPlayer((SampleClip) clip.getValue());
 								player.setCut(this.getPlaybackTime()-clip.getKey());
-								listeners.put(0.0, player);
+								channel.getKey().connectSource(player.getUGen());
+								listeners.put(0l, player);
 							} else {
-								listeners.put(clip.getKey(), new SampleClipPlayer((SampleClip) clip.getValue()));
+								var player = new SampleClipPlayer((SampleClip) clip.getValue());
+								listeners.put(clip.getKey().longValue(), player);
+								channel.getKey().connectSource(player.getUGen());
 							}
 						} catch (Exception e) {
 							e.printStackTrace();

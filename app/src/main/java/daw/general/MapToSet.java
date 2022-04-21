@@ -1,4 +1,4 @@
-package daw.engine;
+package daw.general;
 
 import java.util.Set;
 import java.util.Map.Entry;
@@ -14,7 +14,7 @@ public interface MapToSet<X,Y> {
 	Set<Y> get(X key);
 
 	boolean containsKey(X time);
-
+	
 	Set<Entry<X,Set<Y>>> entrySet();
 
 }

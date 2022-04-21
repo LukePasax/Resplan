@@ -6,8 +6,8 @@ public interface RPClock {
 	
 	void reset();
 	
-	void setTime(double time);
+	void setTime(long time);
 	
-	double getTime();
+	long getTime();
 
 }
