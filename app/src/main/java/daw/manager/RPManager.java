@@ -1,8 +1,10 @@
 package daw.manager;
 
 import daw.core.channel.RPChannel;
+import planning.RPPart;
 import planning.RPRole;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -66,7 +68,7 @@ public interface RPManager {
     /**
      * This method creates a Clip and all the corresponding components
      */
-    void addClip();
+    void addClip(RPPart.PartType type);
 
     /**
      * A method to return the {@link RPRole} associated with a groupName
@@ -74,4 +76,11 @@ public interface RPManager {
      * @return the {@link RPRole}
      */
     RPRole getGroup(String groupName);
+
+    /**
+     * A method to return the list of Channel associated to a group
+     * @param groupName the name of the group
+     * @return a List of {@link RPRole}
+     */
+    List<RPRole> getGroupList(String groupName);
 }

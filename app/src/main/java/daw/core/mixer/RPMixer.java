@@ -57,10 +57,32 @@ public interface RPMixer {
     void unlinkFromGroup(RPChannel channel, RPChannel group);
 
     /**
-     * A method to remove a {@link RPChannel} from a group
-     * @param channel the {@link RPChannel} to remove
-     * @param group the group to remove the {@link RPChannel} from
+     * A method to link a sidechained {@link RPChannel}
+     * @param channel the {@link RPChannel} to sidechain
+     * @param sidechainedChannel the sidechained {@link RPChannel}
      */
-    void removeFromGroup(RPChannel channel, RPChannel group);
-    
+    void linkToSidechained(RPChannel channel, RPChannel sidechainedChannel);
+
+    /**
+     * A method to unlink a sidechained {@link RPChannel}
+     * @param channel the {@link RPChannel} to unlink
+     * @param sidechainedChannel the sidechained {@link RPChannel}
+     */
+    void unlinkFromSidechained(RPChannel channel, RPChannel sidechainedChannel);
+
+    /**
+     * A method to link a sidechained {@link RPChannel} to a sidechained group
+     * @param channel the {@link RPChannel} to link to the group
+     * @param group the group to link the {@link RPChannel} into
+     * @param sidechain the {@link RPChannel} sidechained by channel
+     */
+    void linkToSidechainedGroup(RPChannel channel, RPChannel group, RPChannel sidechain);
+
+    /**
+     * A method to unlink a sidechained {@link RPChannel} from a sidechained group
+     * @param channel the {@link RPChannel} to unlink from the group
+     * @param group the group to unlink the {@link RPChannel} from
+     * @param sidechain the {@link RPChannel} sidechained by group
+     */
+    void unlinkToSidechainedGroup(RPChannel channel, RPChannel group, RPChannel sidechain);
 }

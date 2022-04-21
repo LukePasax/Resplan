@@ -22,11 +22,13 @@ public class Mixer implements RPMixer{
      */
     @Override
     public RPChannel createChannel(RPChannel.Type type) {
-        RPChannel channel = null;
+        RPChannel channel;
         if (type == RPChannel.Type.GATED) {
             channel = channelFactory.gated();
         } else if (type == RPChannel.Type.RETURN) {
             channel = channelFactory.returnChannel();
+        } else {
+            channel = channelFactory.basic();
         }
         masterChannel.connectSource(channel.getOutput());
         return channel;
@@ -40,7 +42,9 @@ public class Mixer implements RPMixer{
      */
     @Override
     public RPChannel createSidechained(RPChannel channel) {
-        return null;
+        RPChannel Schannel = channelFactory.sidechained(channel.getOutput());
+        masterChannel.connectSource(channel.getOutput());
+        return Schannel;
     }
 
     /**
@@ -91,15 +95,56 @@ public class Mixer implements RPMixer{
         masterChannel.connectSource(channel.getOutput());
     }
 
+    //TODO
     /**
-     * A method to remove a {@link RPChannel} from a group
+     * A method to link a sidechained {@link RPChannel}
      *
-     * @param channel the {@link RPChannel} to remove
-     * @param group   the group to remove the {@link RPChannel} from
+     * @param channel            the {@link RPChannel} to sidechain
+     * @param sidechainedChannel the sidechained {@link RPChannel}
      */
     @Override
-    public void removeFromGroup(RPChannel channel, RPChannel group) {
-        group.disconnectSource(channel.getOutput());
-        masterChannel.connectSource(channel.getOutput());
+    public void linkToSidechained(RPChannel channel, RPChannel sidechainedChannel) {
+        if (sidechainedChannel.getType().equals(RPChannel.Type.SIDECHAINED)) {
+
+        }
     }
+
+    //TODO
+    /**
+     * A method to unlink a sidechained {@link RPChannel}
+     *
+     * @param channel            the {@link RPChannel} to unlink
+     * @param sidechainedChannel the sidechained {@link RPChannel}
+     */
+    @Override
+    public void unlinkFromSidechained(RPChannel channel, RPChannel sidechainedChannel) {
+
+    }
+
+    //TODO
+    /**
+     * A method to link a sidechained {@link RPChannel} to a sidechained group
+     *
+     * @param channel   the {@link RPChannel} to link to the group
+     * @param group     the group to link the {@link RPChannel} into
+     * @param sidechain the {@link RPChannel} sidechained by channel
+     */
+    @Override
+    public void linkToSidechainedGroup(RPChannel channel, RPChannel group, RPChannel sidechain) {
+
+    }
+
+    //TODO
+    /**
+     * A method to unlink a sidechained {@link RPChannel} from a sidechained group
+     *
+     * @param channel   the {@link RPChannel} to unlink from the group
+     * @param group     the group to unlink the {@link RPChannel} from
+     * @param sidechain the {@link RPChannel} sidechained by group
+     */
+    @Override
+    public void unlinkToSidechainedGroup(RPChannel channel, RPChannel group, RPChannel sidechain) {
+
+    }
+
 }
