@@ -5,10 +5,16 @@ import net.beadsproject.beads.ugens.Gain;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
+/**
+ * This class represents a basic implementation of {@link ProcessingUnit}.
+ * This particular implementation instantiates a {@link ProcessingUnit} so that it is not sidechained.
+ */
 public class BasicProcessingUnit implements ProcessingUnit {
 
     private final LinkedList<RPEffect> effects = new LinkedList<>();
+    private Optional<Sidechaining> sidechain;
 
     public BasicProcessingUnit(final List<RPEffect> effects) {
         if (effects != null && !effects.isEmpty()) {
@@ -22,12 +28,34 @@ public class BasicProcessingUnit implements ProcessingUnit {
 
     @Override
     public void addInput(Gain g) {
-        this.effects.peek().addInput(g);
+        if (this.isSidechainingPresent()) {
+            this.sidechain.get().addInput(g);
+        } else {
+            this.getEffectAtPosition(0).addInput(g);
+        }
     }
 
     @Override
     public void connect(UGen u) {
-        this.effects.peekLast().connectTo(u);
+        this.getEffectAtPosition(this.effects.size()-1).connectTo(u);
+    }
+
+    @Override
+    public void addSidechaining(Sidechaining s) {
+        if (!this.isSidechainingPresent()) {
+            this.sidechain = Optional.of(s);
+            this.getEffectAtPosition(0).addInput(this.sidechain.get());
+        }
+    }
+
+    @Override
+    public void removeSidechaining() {
+        this.sidechain = Optional.empty();
+    }
+
+    @Override
+    public boolean isSidechainingPresent() {
+        return this.sidechain.isPresent();
     }
 
     @Override
@@ -37,7 +65,11 @@ public class BasicProcessingUnit implements ProcessingUnit {
 
     @Override
     public RPEffect getEffectAtPosition(int index) {
-        return this.effects.get(index);
+        try {
+            return this.effects.get(index);
+        } catch (IndexOutOfBoundsException ex) {
+            throw new IllegalArgumentException("The given index is not currently legal.");
+        }
     }
 
     @Override

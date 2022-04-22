@@ -1,5 +1,6 @@
 package daw.core.audioprocessing;
 
+import daw.core.channel.RPChannel;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
 import java.util.List;
@@ -23,6 +24,27 @@ public interface ProcessingUnit {
      * @param u the {@link UGen} the UGen to which the output must be connected to.
      */
     void connect(UGen u);
+
+    /**
+     * Makes the processing unit sidechained to a specific source.
+     * To know what sidechaining is and when to use it, please read the documentation at {@link Sidechaining}.
+     * Note that if the processing unit is already sidechained, this method does nothing, as a processing
+     * unit cannot have two different sidechained sources at the same time.
+     * @param s the compressor that performs the sidechaining.
+     */
+    void addSidechaining(Sidechaining s);
+
+    /**
+     * Removes the {@link Sidechaining}.
+     */
+    void removeSidechaining();
+
+    /**
+     * Allows knowing whether the {@link ProcessingUnit} (and ultimately the {@link RPChannel} it is
+     * connected to) is sidechained or not.
+     * @return true if the {@link ProcessingUnit} is sidechained.
+     */
+    boolean isSidechainingPresent();
 
     /**
      * Allows getting the sequence of effects as they are stored when this method is called.

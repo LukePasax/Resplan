@@ -1,5 +1,6 @@
 package daw.core.audioprocessing;
 
+import Resplan.AudioContextManager;
 import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Compressor;
@@ -13,12 +14,17 @@ import net.beadsproject.beads.ugens.Compressor;
  * level of compression. This audio source cannot be changed after this class has been instantiated,
  * neither can it be removed.
  */
-public class Sidechaining {
+public class Sidechaining extends UGen {
 
     private final Compressor compressor;
 
     public Sidechaining(UGen u, int channels) {
+        super(AudioContextManager.getAudioContext(), channels, channels);
         this.compressor = new Compressor(AudioContext.getDefaultContext(), channels).setSideChain(u);
     }
 
+    @Override
+    public void calculateBuffer() {
+        this.compressor.calculateBuffer();
+    }
 }

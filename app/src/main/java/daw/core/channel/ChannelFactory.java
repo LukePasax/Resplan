@@ -2,7 +2,7 @@ package daw.core.channel;
 
 import daw.core.audioprocessing.ProcessingUnit;
 import net.beadsproject.beads.core.UGen;
-import daw.core.audioprocessing.CompressorWithSidechaining;
+import daw.core.audioprocessing.Sidechaining;
 import daw.core.audioprocessing.Gate;
 
 /**
@@ -30,7 +30,7 @@ public interface ChannelFactory {
 
     /**
      * Creates an {@link RPChannel} that possesses a sidechain. To know what a sidechain is and how to use it,
-     * please read the documentation at {@link CompressorWithSidechaining}.
+     * please read the documentation at {@link Sidechaining}.
      * @return the {@link RPChannel}.
      */
     RPChannel sidechained(UGen u);
