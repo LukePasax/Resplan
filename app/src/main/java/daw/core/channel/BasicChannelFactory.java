@@ -21,6 +21,7 @@ public class BasicChannelFactory implements ChannelFactory {
 
     @Override
     public RPChannel gated() {
+        // TODO: make ProcessingUnit have correct effects
         final var bc = new BasicChannel(new BasicVolume(DEFAULT_VOLUME, DEFAULT_MAX_VOLUME),
                 new Panner(), RPChannel.Type.AUDIO);
         bc.addProcessingUnit(new BasicProcessingUnitBuilder().gate(1).build());
@@ -29,6 +30,7 @@ public class BasicChannelFactory implements ChannelFactory {
 
     @Override
     public RPChannel sidechained(UGen u) {
+        // TODO: make ProcessingUnit have correct effects
         final var bc = new BasicChannel(new BasicVolume(DEFAULT_VOLUME, DEFAULT_MAX_VOLUME),
                 new Panner(), RPChannel.Type.AUDIO);
         bc.addProcessingUnit(new BasicProcessingUnitBuilder().sidechain(u, 1).build());
@@ -37,17 +39,19 @@ public class BasicChannelFactory implements ChannelFactory {
 
     @Override
     public RPChannel returnChannel() {
+        // TODO: make ProcessingUnit have correct effects
         final var bc = new BasicChannel(new BasicVolume(DEFAULT_VOLUME, DEFAULT_MAX_VOLUME),
                 new Panner(), RPChannel.Type.RETURN);
-        bc.addProcessingUnit(new BasicProcessingUnitBuilder().build());
+        bc.addProcessingUnit(new BasicProcessingUnitBuilder().highPassFilter(1, 100.0f).build());
         return bc;
     }
 
     @Override
     public RPChannel masterChannel() {
+        // TODO: make ProcessingUnit have correct effects
         final var bc = new BasicChannel(new BasicVolume(DEFAULT_VOLUME, DEFAULT_MAX_VOLUME),
                 new Panner(), RPChannel.Type.MASTER);
-        bc.addProcessingUnit(new BasicProcessingUnitBuilder().build());
+        bc.addProcessingUnit(new BasicProcessingUnitBuilder().compressor(1).build());
         return bc;
     }
 }
