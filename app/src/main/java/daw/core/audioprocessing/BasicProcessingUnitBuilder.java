@@ -1,9 +1,8 @@
 package daw.core.audioprocessing;
 
-import Resplan.AudioContextManager;
 import net.beadsproject.beads.core.UGen;
-import net.beadsproject.beads.ugens.*;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -12,10 +11,9 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     private Optional<RPEffect> lowPassFilter;
     private Optional<RPEffect> highPassFilter;
     private Optional<RPEffect> reverb;
-    private Optional<CompressorWithSidechaining> sidechain;
+    private Optional<Sidechaining> sidechain;
     private Optional<RPEffect> gate;
     private Optional<RPEffect> compressor;
-    private Optional<RPEffect> limiter;
 
     public BasicProcessingUnitBuilder() {
         this.lowPassFilter = Optional.empty();
@@ -52,9 +50,8 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     @Override
     public ProcessingUnitBuilder sidechain(UGen u, int channels) {
         if (this.sidechain.isEmpty()) {
-            this.sidechain = Optional.of(new CompressorWithSidechaining(channels));
+            this.sidechain = Optional.of(new Sidechaining(u, channels));
         }
-        this.sidechain.get().connectSidechain(u);
         return this;
     }
 
@@ -69,31 +66,18 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     @Override
     public ProcessingUnitBuilder compressor(int channels) {
         if (this.compressor.isEmpty()) {
-            this.compressor = Optional.of(new CompressorWithSidechaining(channels));
-        }
-        return this;
-    }
-
-    @Override
-    public ProcessingUnitBuilder limiter(int channels) {
-        if (this.compressor.isEmpty()) {
-            this.compressor = Optional.of(new Limiter(channels));
+            this.compressor = Optional.of(new Compression(channels));
         }
         return this;
     }
 
     @Override
     public ProcessingUnit build() throws IllegalStateException {
-        final List<RPEffect> effects = new ArrayList<>(List.of(
-                this.gate.orElse(null),
-                this.sidechain.orElse(null),
-                this.limiter.orElse(null),
-                this.compressor.orElse(null),
-                this.highPassFilter.orElse(null),
-                this.lowPassFilter.orElse(null),
-                this.reverb.orElse(null)));
-        if (effects.stream().anyMatch(Objects::nonNull)) {
-            return new BasicProcessingUnit(effects.stream().filter(Objects::nonNull).collect(Collectors.toList()));
+        final List<Optional<RPEffect>> effects = new ArrayList<>(List.of(this.lowPassFilter, this.highPassFilter,
+                this.compressor, this.gate, this.reverb));
+        if (effects.stream().anyMatch(Optional::isPresent)) {
+            final var bc = new BasicProcessingUnit(effects.stream().filter(Optional::isPresent).
+                    map(Optional::get).collect(Collectors.toList()));
         }
         throw new IllegalStateException();
     }

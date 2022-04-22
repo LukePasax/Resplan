@@ -31,10 +31,9 @@ public interface ProcessingUnitBuilder {
     ProcessingUnitBuilder reverb(int channels);
 
     /**
-     * Adds a {@link CompressorWithSidechaining} to the {@link ProcessingUnit} and immediately connects the
-     * given {@link UGen} as a sidechain.
+     * Makes the {@link ProcessingUnit} have a {@link Sidechaining} tied to the given {@link UGen}.
      * @param u the {@link UGen} which this {@link ProcessingUnit} is sidechained to.
-     * @param channels the number of input and output channels for this effect.
+     * @param channels the number of input and output channels for the underlying compressor.
      */
     ProcessingUnitBuilder sidechain(UGen u, int channels);
 
@@ -45,17 +44,10 @@ public interface ProcessingUnitBuilder {
     ProcessingUnitBuilder gate(int channels);
 
     /**
-     * Adds a {@link CompressorWithSidechaining} to the {@link ProcessingUnit}
-     * without connecting any sidechain to it.
+     * Adds a {@link Compression} to the {@link ProcessingUnit}.
      * @param channels the number of input and output channels for this effect.
      */
     ProcessingUnitBuilder compressor(int channels);
-
-    /**
-     * Adds a {@link Limiter} to the {@link ProcessingUnit}.
-     * @param channels the number of input and output channels for this effect.
-     */
-    ProcessingUnitBuilder limiter(int channels);
 
     /**
      * Allows to obtain the {@link ProcessingUnit}.
