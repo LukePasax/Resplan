@@ -46,5 +46,4 @@ public class HashMapToSet<X, Y> implements MapToSet<X, Y> {
 		return this.map.entrySet();
 	}
 	
-
 }

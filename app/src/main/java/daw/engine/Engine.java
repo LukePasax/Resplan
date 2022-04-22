@@ -6,6 +6,8 @@ import daw.core.clip.ClipPlayerFactory;
 import daw.core.clip.RPClipPlayer;
 import daw.core.clip.SampleClip;
 import daw.core.clip.SampleClipPlayerFactory;
+import daw.general.HashMapToSet;
+import daw.general.MapToSet;
 import daw.manager.ChannelLinker;
 import javafx.util.Pair;
 

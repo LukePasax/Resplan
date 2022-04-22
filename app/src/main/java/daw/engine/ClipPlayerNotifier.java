@@ -2,6 +2,7 @@ package daw.engine;
 
 import java.util.Set;
 import daw.core.clip.RPClipPlayer;
+import daw.general.MapToSet;
 
 public class ClipPlayerNotifier implements RPClipPlayerNotifier {
 	
