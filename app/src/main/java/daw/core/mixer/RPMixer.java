@@ -14,12 +14,22 @@ import java.util.Optional;
 public interface RPMixer {
 
     /**
-     * A method to create a {@link RPChannel} in the mixer
-     * and links its output to the Master channel.
-     * @param type the {@link RPChannel} type that will be created
+     * A method to create a Basic {@link RPChannel} in the mixer
      * @return the {@link RPChannel} that is created
      */
-    RPChannel createChannel(RPChannel.Type type);
+    RPChannel createBasicChannel();
+
+    /**
+     * A method to create a Gated {@link RPChannel} in the mixer
+     * @return the {@link RPChannel} that is created
+     */
+    RPChannel createGatedChannel();
+
+    /**
+     * A method to create a Return {@link RPChannel} in the mixer
+     * @return the {@link RPChannel} that is created
+     */
+    RPChannel createReturnChannel();
 
     /**
      * This method is used to create a sidechained {@link RPChannel}
@@ -63,26 +73,4 @@ public interface RPMixer {
      */
     void linkToSidechained(RPChannel channel, RPChannel sidechainedChannel);
 
-    /**
-     * A method to unlink a sidechained {@link RPChannel}
-     * @param channel the {@link RPChannel} to unlink
-     * @param sidechainedChannel the sidechained {@link RPChannel}
-     */
-    void unlinkFromSidechained(RPChannel channel, RPChannel sidechainedChannel);
-
-    /**
-     * A method to link a sidechained {@link RPChannel} to a sidechained group
-     * @param channel the {@link RPChannel} to link to the group
-     * @param group the group to link the {@link RPChannel} into
-     * @param sidechain the {@link RPChannel} sidechained by channel
-     */
-    void linkToSidechainedGroup(RPChannel channel, RPChannel group, RPChannel sidechain);
-
-    /**
-     * A method to unlink a sidechained {@link RPChannel} from a sidechained group
-     * @param channel the {@link RPChannel} to unlink from the group
-     * @param group the group to unlink the {@link RPChannel} from
-     * @param sidechain the {@link RPChannel} sidechained by group
-     */
-    void unlinkToSidechainedGroup(RPChannel channel, RPChannel group, RPChannel sidechain);
 }
