@@ -1,9 +1,11 @@
 package daw.engine;
 
 import java.util.Optional;
+
+import daw.core.clip.ClipPlayerFactory;
 import daw.core.clip.RPClipPlayer;
 import daw.core.clip.SampleClip;
-import daw.core.clip.SampleClipPlayer;
+import daw.core.clip.SampleClipPlayerFactory;
 import daw.manager.ChannelLinker;
 import javafx.util.Pair;
 
@@ -31,6 +33,11 @@ public class Engine implements RPEngine {
 	 */
 	private Optional<Conductor> conductor;
 	
+	/**
+	 * 
+	 */
+	private ClipPlayerFactory SamplePlayerFactory = new SampleClipPlayerFactory();
+	
 	
 	public Engine(ChannelLinker channelLinker) {
 		this.channelLinker = channelLinker;
@@ -47,12 +54,14 @@ public class Engine implements RPEngine {
 	@Override
 	public void pause() {
 		this.conductor.get().notifyStopped();
+		this.conductor = Optional.empty();
 	}
 
 	@Override
 	public void stop() {
-		// TODO stoppa il thread Conductor
-		// resetta il clock a zero
+		this.pause();
+		this.clock.reset();
+		this.conductor = Optional.empty();
 	}
 
 
@@ -68,8 +77,7 @@ public class Engine implements RPEngine {
 
 	@Override
 	public boolean isPaused() {
-		// TODO se il thread è attivo
-		return false;
+		return this.conductor.isPresent();
 	}
 	
 	private void updateNotifier() {
@@ -81,28 +89,24 @@ public class Engine implements RPEngine {
 				return x.getValue().getClass().equals(SampleClip.class) 
 						&& channel.getValue().getClipTimeOut(new Pair<>(x.getKey(), x.getValue()))>this.getPlaybackTime();
 			});
-			//if there are clips
-			if(clipIterator.isPresent()) {
-				//for each clip of the channel
-				channel.getValue().getClipWithTimeIterator().get().forEachRemaining(clip->{
-						try {
-							//gestisco eventuali clip che partono a metà
-							if(clip.getKey()<this.getPlaybackTime()) {
-								var player = new SampleClipPlayer((SampleClip) clip.getValue());
-								player.setCut(this.getPlaybackTime()-clip.getKey());
-								channel.getKey().connectSource(player.getUGen());
-								listeners.put(0l, player);
-							} else {
-								var player = new SampleClipPlayer((SampleClip) clip.getValue());
-								listeners.put(clip.getKey().longValue(), player);
-								channel.getKey().connectSource(player.getUGen());
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-				});
-			};
+			//for each clip of the channel
+			clipIterator.forEachRemaining(clip->{
+				try {
+					//gestisco eventuali clip che partono a metà
+					if(clip.getKey()<this.getPlaybackTime()) {
+						listeners.put(0l, this.SamplePlayerFactory.createSampleClipPlayerWithActiveCut(clip.getValue(), channel.getKey(), this.getPlaybackTime()-clip.getKey()));
+					} else {
+						listeners.put(this.clipKeyToClockUnit(clip.getKey()), this.SamplePlayerFactory.createSampleClipPlayer(clip.getValue(), channel.getKey()));
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
 		});
 		this.notifier = Optional.of(new ClipPlayerNotifier(this.clock, listeners));	
+	}
+	
+	private long clipKeyToClockUnit(Double time) {
+		return time.longValue()/Engine.CLOCK_STEP_UNIT;
 	}
 }

@@ -48,14 +48,14 @@ public interface RPTapeChannel {
 	 * Return an Optional.empty() if the Tape Channel contains no clip.
 	 * @return
 	 */
-	Optional<Iterator<Pair<Double, RPClip>>> getClipWithTimeIterator();
+	Iterator<Pair<Double, RPClip>> getClipWithTimeIterator();
 	
 	/**
 	 * Get an Optional of Iterator which iterate all the Pair<Double, RPClip> of the tape channel that match the predicate. All the items are ordered by time).
 	 * Return an Optional.empty() if the Tape Channel contains no clip matching the predicate.
 	 * @return
 	 */
-	Optional<Iterator<Pair<Double, RPClip>>> getClipWithTimeIteratorFiltered(Predicate<? super Entry<Double, RPClip>> predicate);
+	Iterator<Pair<Double, RPClip>> getClipWithTimeIteratorFiltered(Predicate<? super Entry<Double, RPClip>> predicate);
 	
 	/**
 	 * @param clip

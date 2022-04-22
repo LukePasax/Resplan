@@ -30,4 +30,8 @@ public class Conductor extends Thread {
 		this.interrupt();
 		stopped = true;		
 	}
+	
+	public boolean isStopped() {
+		return this.stopped;
+	}
 }

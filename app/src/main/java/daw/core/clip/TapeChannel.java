@@ -52,21 +52,17 @@ public class TapeChannel implements RPTapeChannel {
 	}
 
 	@Override
-	public Optional<Iterator<Pair<Double, RPClip>>> getClipWithTimeIterator() {	
+	public Iterator<Pair<Double, RPClip>> getClipWithTimeIterator() {	
 		return this.getClipWithTimeIteratorFiltered(x->true);
 	}
 
 	@Override
-	public Optional<Iterator<Pair<Double, RPClip>>> getClipWithTimeIteratorFiltered(Predicate<? super Entry<Double, RPClip>> predicate) {
-		if(this.isEmpty()) {
-			return Optional.empty();
-		}
-		Optional<Iterator<Pair<Double, RPClip>>> iterator = Optional.of(this.timeline.entrySet().stream()
+	public Iterator<Pair<Double, RPClip>> getClipWithTimeIteratorFiltered(Predicate<? super Entry<Double, RPClip>> predicate) {
+		return this.timeline.entrySet().stream()
 				.filter(predicate)
 				.sorted((x1, x2)->Double.compare(x1.getKey(), x2.getKey()))
 				.map(x->(new Pair<>(x.getKey(), x.getValue())))
-				.iterator());
-		return iterator.get().hasNext() ? iterator : Optional.empty();
+				.iterator();
 	}
 
 	@Override
@@ -119,8 +115,7 @@ public class TapeChannel implements RPTapeChannel {
 	
 	private void clearBetween(double initialTime, double finalTime) {
 		var iterator = this.getIteratorOfClipBetween(initialTime, finalTime);
-		if(iterator.isPresent()) {
-			iterator.get().forEachRemaining(x->{
+			iterator.forEachRemaining(x->{
 				if(x.getKey()<initialTime) {
 					if(this.getClipTimeOut(new Pair<>(x.getKey(),x.getValue()))<=finalTime) {
 						//case (in<initialTime and out<=finalTime) A
@@ -140,10 +135,9 @@ public class TapeChannel implements RPTapeChannel {
 					}
 				}
 			});
-		}
 	}
 
-	private Optional<Iterator<Pair<Double, RPClip>>> getIteratorOfClipBetween(double initialTime, double finalTime) {
+	private Iterator<Pair<Double, RPClip>> getIteratorOfClipBetween(double initialTime, double finalTime) {
 		return this.getClipWithTimeIteratorFiltered(x->{
 			return x.getKey()<finalTime && this.getClipTimeOut(new Pair<>(x.getKey(), x.getValue()))>initialTime;
 		});
