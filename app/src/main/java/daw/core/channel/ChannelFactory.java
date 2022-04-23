@@ -4,11 +4,12 @@ import daw.core.audioprocessing.ProcessingUnit;
 import net.beadsproject.beads.core.UGen;
 import daw.core.audioprocessing.Sidechaining;
 import daw.core.audioprocessing.Gate;
+import daw.core.audioprocessing.RPEffect;
 
 /**
  * This factory allows the client to acquire a particular form of {@link RPChannel}.
  * The channels are only distinguished by their {@link ProcessingUnit}.
- * Still, every form of built-in channel can be later modulated by adding {@link UGen}s
+ * Still, every form of built-in channel can be later modulated by adding {@link RPEffect}s
  * that serve as effects for sound processing.
  */
 public interface ChannelFactory {

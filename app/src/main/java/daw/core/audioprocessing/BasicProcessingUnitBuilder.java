@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 
 public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
 
+    private Optional<Sidechaining> sidechain;
     private Optional<RPEffect> lowPassFilter;
     private Optional<RPEffect> highPassFilter;
     private Optional<RPEffect> reverb;
-    private Optional<Sidechaining> sidechain;
     private Optional<RPEffect> gate;
     private Optional<RPEffect> compressor;
 
@@ -21,6 +21,14 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
         this.reverb = Optional.empty();
         this.sidechain = Optional.empty();
         this.gate = Optional.empty();
+    }
+
+    @Override
+    public ProcessingUnitBuilder sidechain(UGen u, int channels) {
+        if (this.sidechain.isEmpty()) {
+            this.sidechain = Optional.of(new Sidechaining(u, channels));
+        }
+        return this;
     }
 
     @Override
@@ -48,14 +56,6 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     }
 
     @Override
-    public ProcessingUnitBuilder sidechain(UGen u, int channels) {
-        if (this.sidechain.isEmpty()) {
-            this.sidechain = Optional.of(new Sidechaining(u, channels));
-        }
-        return this;
-    }
-
-    @Override
     public ProcessingUnitBuilder gate(int channels) {
         if (this.gate.isEmpty()) {
             this.gate = Optional.of(new Gate(channels));
@@ -76,8 +76,12 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
         final List<Optional<RPEffect>> effects = new ArrayList<>(List.of(this.lowPassFilter, this.highPassFilter,
                 this.compressor, this.gate, this.reverb));
         if (effects.stream().anyMatch(Optional::isPresent)) {
-            final var bc = new BasicProcessingUnit(effects.stream().filter(Optional::isPresent).
+            final var pu = new BasicProcessingUnit(effects.stream().filter(Optional::isPresent).
                     map(Optional::get).collect(Collectors.toList()));
+            if (this.sidechain.isPresent()) {
+                pu.addSidechaining(this.sidechain.get());
+            }
+            return pu;
         }
         throw new IllegalStateException();
     }
