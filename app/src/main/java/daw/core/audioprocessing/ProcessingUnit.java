@@ -103,9 +103,7 @@ public interface ProcessingUnit {
     void moveEffect(int currentIndex, int newIndex);
 
     /**
-     * Swaps two effects, while maintaining every other effect intact.
-     * This method does not work well when index1 and index2 are the same,
-     * so it is strongly suggested not use it that way.
+     * Swaps two effects, while leaving all the others at their current position.
      * @param index1 the position of an effect that must be swapped.
      * @param index2 the position of the other effect that must be swapped.
      * @throws IllegalArgumentException if one or both of the given positions are out of bounds.

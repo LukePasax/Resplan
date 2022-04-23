@@ -121,8 +121,8 @@ public class BasicProcessingUnit implements ProcessingUnit {
     public void moveEffect(int currentIndex, int newIndex) {
         if (currentIndex >= 0 && newIndex >= 0 && currentIndex <= this.effects.size()-1 &&
                 newIndex <= this.effects.size()-1) {
-            final var temp = this.effects.get(currentIndex);
-            this.effects.remove(currentIndex);
+            final var temp = this.getEffectAtPosition(currentIndex);
+            this.removeEffectAtPosition(currentIndex);
             this.addEffectAtPosition(temp, newIndex);
         } else {
             throw new IllegalArgumentException(ILLEGAL_INDEX_ERROR);
