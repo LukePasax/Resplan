@@ -8,22 +8,22 @@ public class ClipPlayerNotifier implements RPClipPlayerNotifier {
 	
 	private final RPClock clock;
 	
-	private final MapToSet<Long, RPClipPlayer> listeners;
+	private final MapToSet<Long, RPClipPlayer> observers;
 	
 	/**
 	 * @param clock
-	 * @param listeners
+	 * @param observers
 	 */
-	public ClipPlayerNotifier(RPClock clock, MapToSet<Long, RPClipPlayer> listeners) {
+	public ClipPlayerNotifier(RPClock clock, MapToSet<Long, RPClipPlayer> observers) {
 		this.clock = clock;
-		this.listeners = listeners;
+		this.observers = observers;
 	}
 
 	@Override
 	public void update() {
-		long time = this.clock.getTime();
-		if(listeners.containsKey(time)) {
-			this.play(this.listeners.get(time));
+		Long step = this.clock.getStep();
+		if(observers.containsKey(step)) {
+			this.play(this.observers.get(step));
 		}
 	}
 
@@ -35,7 +35,7 @@ public class ClipPlayerNotifier implements RPClipPlayerNotifier {
 
 	@Override
 	public void notifyStopped() {
-		this.listeners.entrySet().parallelStream().forEach(e->{
+		this.observers.entrySet().parallelStream().forEach(e->{
 			e.getValue().parallelStream().forEach(p->{
 				p.stop();
 			});

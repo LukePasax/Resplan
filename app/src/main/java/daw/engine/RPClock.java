@@ -2,12 +2,22 @@ package daw.engine;
 
 public interface RPClock {
 	
-	void step();
+	void step() throws ClockException;
 	
 	void reset();
 	
-	void setTime(long time);
+	void setTime(Double time);
 	
-	long getTime();
+	Long getStep();
+	
+	Double getTime();
+	
+	Long timeToClockSteps(Double time);
+	
+	Double clockStepToTime(Long clockStep);
+	
+	Double getClockStepUnit();
+	
+	Double getClockMaxTime();
 
 }

@@ -8,9 +8,9 @@ public interface RPEngine {
 	
 	void stop();
 	
-	void setPlaybackTime(long time);
+	void setPlaybackTime(Double time);
 	
-	long getPlaybackTime();
+	Double getPlaybackTime();
 	
 	boolean isPaused();
 

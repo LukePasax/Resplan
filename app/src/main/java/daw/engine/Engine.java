@@ -13,8 +13,6 @@ import javafx.util.Pair;
 
 public class Engine implements RPEngine {
 	
-	protected final static long CLOCK_STEP_UNIT = 1;
-	
 	/**
 	 * The ChannelLinker to get the channels and clips from.
 	 */
@@ -48,7 +46,7 @@ public class Engine implements RPEngine {
 
 	@Override
 	public void start() {
-		this.updateNotifier();
+		this.updateObservers();
 		this.conductor = Optional.of(new Conductor(notifier.get(), clock));
 		this.conductor.get().start();
 	}
@@ -68,12 +66,12 @@ public class Engine implements RPEngine {
 
 
 	@Override
-	public void setPlaybackTime(long time) {
+	public void setPlaybackTime(Double time) {
 		this.clock.setTime(time);
 	}
 
 	@Override
-	public long getPlaybackTime() {
+	public Double getPlaybackTime() {
 		return this.clock.getTime();
 	}
 
@@ -82,8 +80,8 @@ public class Engine implements RPEngine {
 		return this.conductor.isPresent();
 	}
 	
-	private void updateNotifier() {
-		MapToSet<Long, RPClipPlayer>  listeners = new HashMapToSet<>();
+	private void updateObservers() {
+		MapToSet<Long, RPClipPlayer>  observers = new HashMapToSet<>();
 		//for each channel
 		this.channelLinker.getAudioSet().forEach(channel->{
 			//get SampleClips after actual playback time
@@ -96,19 +94,15 @@ public class Engine implements RPEngine {
 				try {
 					//gestisco eventuali clip che partono a metà
 					if(clip.getKey()<this.getPlaybackTime()) {
-						listeners.put(0l, this.SamplePlayerFactory.createSampleClipPlayerWithActiveCut(clip.getValue(), channel.getKey(), this.getPlaybackTime()-clip.getKey()));
+						observers.put(0l, this.SamplePlayerFactory.createSampleClipPlayerWithActiveCut(clip.getValue(), channel.getKey(), this.getPlaybackTime()-clip.getKey()));
 					} else {
-						listeners.put(this.clipKeyToClockUnit(clip.getKey()), this.SamplePlayerFactory.createSampleClipPlayer(clip.getValue(), channel.getKey()));
+						observers.put(clock.timeToClockSteps(clip.getKey()), this.SamplePlayerFactory.createSampleClipPlayer(clip.getValue(), channel.getKey()));
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			});
 		});
-		this.notifier = Optional.of(new ClipPlayerNotifier(this.clock, listeners));	
-	}
-	
-	private long clipKeyToClockUnit(Double time) {
-		return time.longValue()/Engine.CLOCK_STEP_UNIT;
+		this.notifier = Optional.of(new ClipPlayerNotifier(this.clock, observers));	
 	}
 }
