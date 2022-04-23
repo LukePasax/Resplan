@@ -7,6 +7,7 @@ import java.util.*;
 /**
  * This class represents a basic implementation of {@link ProcessingUnit}.
  * This particular implementation instantiates a {@link ProcessingUnit} so that it is not sidechained.
+ * The only way to get an object of this class is to use the {@link ProcessingUnitBuilder}.
  */
 public class BasicProcessingUnit implements ProcessingUnit {
 
@@ -15,7 +16,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
     private final LinkedList<RPEffect> effects = new LinkedList<>();
     private Optional<Sidechaining> sidechain;
 
-    public BasicProcessingUnit(final List<RPEffect> effects) {
+    protected BasicProcessingUnit(final List<RPEffect> effects) {
         if (effects != null && !effects.isEmpty()) {
             for (final var elem : effects) {
                 this.addEffect(elem);

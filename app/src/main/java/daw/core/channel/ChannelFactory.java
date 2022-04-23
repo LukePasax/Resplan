@@ -8,7 +8,7 @@ import daw.core.audioprocessing.RPEffect;
 
 /**
  * This factory allows the client to acquire a particular form of {@link RPChannel}.
- * The channels are only distinguished by their {@link ProcessingUnit}.
+ * The channels are distinguished here only by their {@link ProcessingUnit}.
  * Still, every form of built-in channel can be later modulated by adding {@link RPEffect}s
  * that serve as effects for sound processing.
  */
