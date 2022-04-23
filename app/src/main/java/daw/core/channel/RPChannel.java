@@ -80,6 +80,11 @@ public interface RPChannel {
     void addProcessingUnit(ProcessingUnit pu);
 
     /**
+     * Removes the {@link ProcessingUnit} if it is present, otherwise it does nothing.
+     */
+    void removeProcessingUnit();
+
+    /**
      *
      * @return an {@link Optional} containing the {@link ProcessingUnit} if it is present,
      * otherwise an empty {@link Optional}.

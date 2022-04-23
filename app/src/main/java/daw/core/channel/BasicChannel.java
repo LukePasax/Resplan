@@ -34,6 +34,10 @@ public class BasicChannel implements RPChannel {
         this.pu = Optional.empty();
         this.gainIn = new Gain(AudioContextManager.getAudioContext(), 2);
         this.gainOut = new Gain(AudioContextManager.getAudioContext(), 2);
+        this.setStructure();
+    }
+
+    private void setStructure() {
         this.gainOut.addInput(pan);
         this.pan.addInput(gainIn);
     }
@@ -91,6 +95,14 @@ public class BasicChannel implements RPChannel {
         this.pu.get().addInput(gainIn);
         this.pan.clearInputConnections();
         this.pu.get().connect(this.pan);
+    }
+
+    @Override
+    public void removeProcessingUnit() {
+        if (this.isProcessingUnitPresent()) {
+            this.pu = Optional.empty();
+            this.setStructure();
+        }
     }
 
     @Override
