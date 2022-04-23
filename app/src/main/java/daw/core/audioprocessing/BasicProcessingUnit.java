@@ -17,6 +17,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
     private Optional<Sidechaining> sidechain;
 
     protected BasicProcessingUnit(final List<RPEffect> effects) {
+        this.sidechain = Optional.empty();
         if (effects != null && !effects.isEmpty()) {
             for (final var elem : effects) {
                 this.addEffect(elem);
@@ -24,7 +25,6 @@ public class BasicProcessingUnit implements ProcessingUnit {
         } else {
             throw new IllegalArgumentException("Cannot instantiate with an empty sequence.");
         }
-        this.sidechain = Optional.empty();
     }
 
     @Override
@@ -51,6 +51,9 @@ public class BasicProcessingUnit implements ProcessingUnit {
 
     @Override
     public void removeSidechaining() {
+        if (this.isSidechainingPresent()) {
+            this.getEffectAtPosition(0).removeAllConnections(this.sidechain.get());
+        }
         this.sidechain = Optional.empty();
     }
 
@@ -84,6 +87,8 @@ public class BasicProcessingUnit implements ProcessingUnit {
             this.effects.add(index, u);
             if (index > 0) {
                 this.connectEffects(this.effects.get(index-1), u);
+            } else if (this.isSidechainingPresent()) {
+                this.getEffectAtPosition(0).addInput(this.sidechain.get());
             }
             if (index < this.effects.size() - 1) {
                 this.connectEffects(u, this.effects.get(index+1));
@@ -103,9 +108,11 @@ public class BasicProcessingUnit implements ProcessingUnit {
         if (index >= 0 && index <= this.effects.size()-1) {
             if (this.effects.size() > 1) {
                 if (index != this.effects.size() - 1) {
-                    this.effects.get(index + 1).clearInputConnections();
+                    this.getEffectAtPosition(index + 1).removeAllConnections(this.getEffectAtPosition(index));
                     if (index != 0) {
-                        this.effects.get(index + 1).addInput(this.effects.get(index - 1));
+                        this.getEffectAtPosition(index + 1).addInput(this.getEffectAtPosition(index - 1));
+                    } else if (this.isSidechainingPresent()) {
+                        this.getEffectAtPosition(index + 1).addInput(this.sidechain.get());
                     }
                 }
                 this.effects.remove(index);

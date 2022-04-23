@@ -1,57 +1,87 @@
 package channel;
 
-import daw.core.audioprocessing.BasicProcessingUnit;
-import daw.core.audioprocessing.ProcessingUnit;
-import net.beadsproject.beads.ugens.Minimum;
-import net.beadsproject.beads.ugens.MonoPlug;
-import net.beadsproject.beads.ugens.Phasor;
-import net.beadsproject.beads.ugens.Reverb;
+import daw.core.audioprocessing.*;
+import net.beadsproject.beads.ugens.*;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestProcessingUnitRemoveAndReplace {
 
     private TestReflection ref = new TestReflection();
+    private ProcessingUnit pu = new BasicProcessingUnitBuilder()
+            .sidechain(new SamplePlayer(1), 1)
+            .reverb(1)
+            .highPassFilter(1, 100.0f)
+            .gate(2)
+            .lowPassFilter(1, 120.0f)
+            .build();
 
     @Test
-    public void testRemovingAndReplacing() {
-        final ProcessingUnit pu = new BasicProcessingUnit(List.of(new Reverb(), new Phasor(), new Minimum()));
-        // replacing at an out-of-bound position
+    public void testCorrectRemoval() {
+        this.pu.removeEffectAtPosition(2);
+        assertEquals(List.of(DigitalReverb.class, HighPassFilter.class, LowPassFilter.class),
+                this.ref.getList(this.pu.getEffects()));
+        assertEquals(Set.of(HighPassFilter.class), this.ref.getSet(this.pu.getEffectAtPosition(2).getConnectedInputs()));
+        this.pu.removeEffectAtPosition(0);
+        assertEquals(List.of(HighPassFilter.class, LowPassFilter.class), this.ref.getList(this.pu.getEffects()));
+        assertEquals(Set.of(Sidechaining.class), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
+    }
+
+    @Test
+    public void testWrongRemoval() {
         try {
-            pu.replace(3, new MonoPlug());
+            this.pu.removeEffectAtPosition(6);
             fail();
-        } catch (IndexOutOfBoundsException ignored) {
+        } catch (IllegalArgumentException ignored) {
         }
-        // removing at an out-of-bound position
         try {
-            pu.removeEffectAtPosition(3);
+            final var size = this.pu.getEffects().size();
+            for (int i=0; i<size; i++) {
+                this.pu.removeEffectAtPosition(0);
+            }
+            this.pu.removeEffectAtPosition(0);
             fail();
-        } catch (IndexOutOfBoundsException ignored) {
-        }
-        // replacing
-        pu.replace(1, new MonoPlug());
-        assertEquals(List.of(Reverb.class, MonoPlug.class, Minimum.class), this.ref.getList(pu.getEffects()));
-        assertEquals(List.of(Reverb.class), this.ref.getList(new ArrayList<>(
-                pu.getEffectAtPosition(1).getConnectedInputs())));
-        assertEquals(List.of(MonoPlug.class), this.ref.getList(new ArrayList<>(
-                pu.getEffectAtPosition(2).getConnectedInputs())));
-        // removing
-        pu.removeEffectAtPosition(1);
-        assertEquals(List.of(Reverb.class, Minimum.class), this.ref.getList(pu.getEffects()));
-        assertEquals(List.of(Reverb.class), this.ref.getList(new ArrayList<>(
-                pu.getEffectAtPosition(1).getConnectedInputs())));
-        pu.removeEffectAtPosition(0);
-        assertEquals(List.of(Minimum.class), this.ref.getList(pu.getEffects()));
-        assertEquals(List.of(), this.ref.getList(new ArrayList<>(
-                pu.getEffectAtPosition(0).getConnectedInputs())));
-        // removing when there is only one effect
-        try {
-            pu.removeEffectAtPosition(0);
-        } catch (IllegalStateException ex) {
-            assertEquals(List.of(Minimum.class), this.ref.getList(pu.getEffects()));
+        } catch (IllegalStateException ignored) {
         }
     }
+
+    @Test
+    public void testCorrectReplacement() {
+        this.pu.replace(3, new DigitalReverb(2));
+        assertEquals(List.of(DigitalReverb.class, HighPassFilter.class, Gate.class, DigitalReverb.class),
+                this.ref.getList(this.pu.getEffects()));
+        assertEquals(Set.of(Gate.class), this.ref.getSet(this.pu.getEffectAtPosition(3).getConnectedInputs()));
+        this.pu.replace(0, new Compression(1));
+        assertEquals(List.of(Compression.class, HighPassFilter.class, Gate.class, DigitalReverb.class),
+                this.ref.getList(this.pu.getEffects()));
+        assertEquals(Set.of(Sidechaining.class), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
+    }
+
+    @Test
+    public void testWrongReplacement() {
+        try {
+            this.pu.replace(-1, new Compression(1));
+            fail();
+        } catch (IllegalArgumentException ignored) {
+        }
+        try {
+            this.pu.replace(5, new DigitalReverb(1));
+            fail();
+        } catch (IllegalArgumentException ignored) {
+        }
+    }
+
+    @Test
+    public void testSidechainingRemoval() {
+        this.pu.removeSidechaining();
+        assertFalse(this.pu.isSidechainingPresent());
+        assertEquals(Set.of(), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
+        this.pu.addSidechaining(new Sidechaining(new SamplePlayer(1), 1));
+        assertEquals(Set.of(Sidechaining.class), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
+    }
+
 }
