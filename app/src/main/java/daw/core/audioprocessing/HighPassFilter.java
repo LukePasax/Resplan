@@ -14,7 +14,7 @@ public class HighPassFilter extends RPEffect {
 
     @Override
     public void calculateBuffer() {
-        // TO DO
+        // TODO
     }
 
 }

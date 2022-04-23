@@ -28,14 +28,14 @@ public interface ProcessingUnit {
     /**
      * Makes the processing unit sidechained to a specific source.
      * To know what sidechaining is and when to use it, please read the documentation at {@link Sidechaining}.
-     * Note that if the processing unit is already sidechained, this method does nothing, as a processing
+     * Note that if the processing unit is already sidechained this method does nothing, as a processing
      * unit cannot have two different sidechained sources at the same time.
      * @param s the compressor that performs the sidechaining.
      */
     void addSidechaining(Sidechaining s);
 
     /**
-     * Removes the {@link Sidechaining}.
+     * Makes the processing unit not be sidechained to any external source.
      */
     void removeSidechaining();
 
@@ -53,20 +53,20 @@ public interface ProcessingUnit {
     List<RPEffect> getEffects();
 
     /**
-     * Allows finding which effect is stored in a certain position of the sequence.
+     * Allows finding which effect is stored at the given position of the sequence.
      * @param index a position in the sequence.
-     * @return the effect that is placed at the given position.
+     * @return the {@link RPEffect} that is placed at the given position.
      * @throws IllegalArgumentException if the given position is out of bounds.
      */
     RPEffect getEffectAtPosition(int index);
 
     /**
-     * Adds a new effect in the last position of the sequence.
-     * Note that this method also match the preceding effect output to the given effect input.
-     * If the number of outputs of the preceding {@link RPEffect} is greater than the number of inputs of the given
-     * {@link RPEffect} then the extra outputs are not connected.
-     * If the number of inputs of the given {@link RPEffect} is greater than the number of outputs of the preceding
-     * {@link RPEffect} then the outputs are cycled to fill all inputs.
+     * Adds a new effect at the last position of the sequence.
+     * Note that this method also matches the preceding effect output to the given effect input.
+     * If the number of outputs of the preceding effect is greater than the number of inputs of the given
+     * effect then the extra outputs are not connected.
+     * If the number of inputs of the given effect is greater than the number of outputs of the preceding
+     * effect then the outputs are cycled to fill all inputs.
      * @param u the {@link RPEffect} that represents the effect to be added.
      */
     void addEffect(RPEffect u);

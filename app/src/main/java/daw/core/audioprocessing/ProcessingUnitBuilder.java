@@ -5,14 +5,13 @@ import net.beadsproject.beads.core.UGen;
 /**
  * Makes the creation of a {@link ProcessingUnit} interactive, in that the client can specify any number
  * of the following effects in any order. The only method whose utility is different is the sidechain method,
- * which allows to sidechain the {@link ProcessingUnit} to an external sound source.
- * This implementation allows adding up to one {@link RPEffect} of each type. This means that if one method
- * has already been called, calling it again will produce no changes.
+ * which allows to sidechain the {@link ProcessingUnit} to an external sound source. Said method is also
+ * the only one that produces changes to state of the builder only the first time it is called. This is
+ * because there can only be one {@link Sidechaining}.
  * Remember that the order of the calls is relevant because, as specified in the {@link ProcessingUnit}
  * documentation, the ordering by which {@link RPEffect}s are stored influences how sound is processed.
- *
  * The only state which raises an {@link IllegalStateException} is the one where the method build is called
- * and no effect had been specified, since a {@link ProcessingUnit} can never be empty.
+ * and no {@link RPEffect} had been specified, since a {@link ProcessingUnit} can never be empty.
  */
 public interface ProcessingUnitBuilder {
 

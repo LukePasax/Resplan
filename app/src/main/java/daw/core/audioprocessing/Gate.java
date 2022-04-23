@@ -19,7 +19,7 @@ public class Gate extends RPEffect {
 
     @Override
     public void calculateBuffer() {
-        // TO DO
+        // TODO
     }
 
 }
