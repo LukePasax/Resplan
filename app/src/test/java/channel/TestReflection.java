@@ -1,4 +1,4 @@
-package daw;
+package channel;
 
 import net.beadsproject.beads.core.UGen;
 import java.util.List;

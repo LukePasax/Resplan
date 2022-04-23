@@ -1,4 +1,4 @@
-package daw;
+package channel;
 
 import daw.core.audioprocessing.BasicProcessingUnitBuilder;
 import daw.core.audioprocessing.ProcessingUnit;

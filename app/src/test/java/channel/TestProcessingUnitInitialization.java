@@ -1,4 +1,4 @@
-package daw;
+package channel;
 
 import Resplan.AudioContextManager;
 import daw.core.audioprocessing.BasicProcessingUnit;
