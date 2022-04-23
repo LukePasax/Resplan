@@ -2,7 +2,6 @@ package daw.core.audioprocessing;
 
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
-
 import java.util.*;
 
 /**
