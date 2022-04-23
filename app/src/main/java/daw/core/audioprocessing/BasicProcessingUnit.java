@@ -24,6 +24,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
         } else {
             throw new IllegalArgumentException("Cannot instantiate with an empty sequence.");
         }
+        this.sidechain = Optional.empty();
     }
 
     @Override

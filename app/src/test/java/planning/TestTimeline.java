@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 /**
- * This class tests a {@link planning.RPTimeline} using some {@link plaig.RPSection}
+ * This class tests a {@link planning.RPTimeline} using some {@link planning.RPSection}
  */
 public class TestTimeline {
 	

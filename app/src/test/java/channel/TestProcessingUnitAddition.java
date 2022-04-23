@@ -1,51 +1,57 @@
 package channel;
 
 import Resplan.AudioContextManager;
-import daw.core.audioprocessing.BasicProcessingUnit;
-import daw.core.audioprocessing.ProcessingUnit;
+import daw.core.audioprocessing.*;
 import net.beadsproject.beads.ugens.*;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Set;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestProcessingUnitAddition {
 
     private final TestReflection ref = new TestReflection();
-    private final ProcessingUnit pu = new BasicProcessingUnit(
-            List.of(new Compressor(AudioContextManager.getAudioContext())));
-
-    @Test
-    public void testIllegalUGenAddition() {
-        try {
-            pu.addEffect(new Glide(AudioContextManager.getAudioContext()));
-            fail();
-        } catch (IllegalArgumentException ignored) {
-        }
-    }
+    private final ProcessingUnit pu = new BasicProcessingUnitBuilder().gate(1).compressor(1).build();
 
     @Test
     public void testCorrectAddition() {
         // adding at the last position using addEffect
-        pu.addEffect(new Plug(AudioContextManager.getAudioContext()));
-        assertEquals(List.of(Compressor.class, Plug.class), this.ref.getList(pu.getEffects()));
+        this.pu.addEffect(new Compression(1));
+        assertEquals(List.of(Gate.class, Compression.class, Compression.class), this.ref.getList(this.pu.getEffects()));
         // adding at a given position
-        pu.addEffectAtPosition(new Maximum(AudioContextManager.getAudioContext()), 1);
-        assertEquals(List.of(Compressor.class, Maximum.class, Plug.class), this.ref.getList(pu.getEffects()));
-        assertEquals(Set.of(Maximum.class), ref.getSet(pu.getEffectAtPosition(2).getConnectedInputs()));
+        this.pu.addEffectAtPosition(new DigitalReverb(1), 1);
+        assertEquals(List.of(Gate.class, DigitalReverb.class, Compression.class, Compression.class),
+                this.ref.getList(this.pu.getEffects()));
+        assertEquals(Set.of(DigitalReverb.class), this.ref.getSet(this.pu.getEffectAtPosition(2).getConnectedInputs()));
         // adding at the last position using addEffectAtPosition
-        pu.addEffectAtPosition(new Reverb(AudioContextManager.getAudioContext()), 3);
-        assertEquals(List.of(Compressor.class, Maximum.class, Plug.class, Reverb.class),
-                this.ref.getList(pu.getEffects()));
-        assertEquals(Set.of(Plug.class), this.ref.getSet(pu.getEffectAtPosition(3).getConnectedInputs()));
+        this.pu.addEffectAtPosition(new HighPassFilter(1, 100.0f), 4);
+        assertEquals(List.of(Gate.class, DigitalReverb.class, Compression.class, Compression.class, HighPassFilter.class),
+                this.ref.getList(this.pu.getEffects()));
+        assertEquals(Set.of(Compression.class), this.ref.getSet(this.pu.getEffectAtPosition(4).getConnectedInputs()));
     }
 
     @Test
     public void testOutOfBoundAddition() {
         // adding at an out-of-bound position
-        pu.addEffectAtPosition(new Reverb(AudioContextManager.getAudioContext()), -1);
-        pu.addEffectAtPosition(new Reverb(), 4);
-        assertEquals(List.of(Compressor.class), this.ref.getList(pu.getEffects()));
+        final var currPu = this.pu;
+        try {
+            this.pu.addEffectAtPosition(new DigitalReverb(1), -1);
+            fail();
+        } catch (IllegalArgumentException ignored) {
+        }
+        try {
+            this.pu.addEffectAtPosition(new DigitalReverb(2), 4);
+            fail();
+        } catch (IllegalArgumentException ignored) {
+        }
+        assertEquals(this.ref.getList(currPu.getEffects()), this.ref.getList(this.pu.getEffects()));
     }
+
+    @Test
+    public void testSidechainAddition() {
+        this.pu.addSidechaining(new Sidechaining(new SamplePlayer(AudioContextManager.getAudioContext(), 2),2));
+        assertTrue(this.pu.isSidechainingPresent());
+        assertEquals(Set.of(Sidechaining.class), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
+    }
+
 }
