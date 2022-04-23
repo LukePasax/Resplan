@@ -2,16 +2,16 @@ package daw.core.audioprocessing;
 
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 
 /**
  * This class represents a basic implementation of {@link ProcessingUnit}.
  * This particular implementation instantiates a {@link ProcessingUnit} so that it is not sidechained.
  */
 public class BasicProcessingUnit implements ProcessingUnit {
+
+    private static final String ILLEGAL_INDEX_ERROR = "The given index(es) is (are) not legal.";
 
     private final LinkedList<RPEffect> effects = new LinkedList<>();
     private Optional<Sidechaining> sidechain;
@@ -22,7 +22,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
                 this.addEffect(elem);
             }
         } else {
-            throw new IllegalArgumentException("Cannot instantiate with an empty sequence");
+            throw new IllegalArgumentException("Cannot instantiate with an empty sequence.");
         }
     }
 
@@ -68,7 +68,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
         try {
             return this.effects.get(index);
         } catch (IndexOutOfBoundsException ex) {
-            throw new IllegalArgumentException("The given index is not currently legal.");
+            throw new IllegalArgumentException(ILLEGAL_INDEX_ERROR);
         }
     }
 
@@ -88,7 +88,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
                 this.connectEffects(u, this.effects.get(index+1));
             }
         } else {
-            throw new IllegalArgumentException("The given index is not legal.");
+            throw new IllegalArgumentException(ILLEGAL_INDEX_ERROR);
         }
     }
 
@@ -99,16 +99,20 @@ public class BasicProcessingUnit implements ProcessingUnit {
 
     @Override
     public void removeEffectAtPosition(int index) {
-        if (this.effects.size() > 1) {
-            if (index != this.effects.size()-1) {
-                this.effects.get(index + 1).clearInputConnections();
-                if (index != 0) {
-                    this.effects.get(index+1).addInput(this.effects.get(index-1));
+        if (index >= 0 && index <= this.effects.size()-1) {
+            if (this.effects.size() > 1) {
+                if (index != this.effects.size() - 1) {
+                    this.effects.get(index + 1).clearInputConnections();
+                    if (index != 0) {
+                        this.effects.get(index + 1).addInput(this.effects.get(index - 1));
+                    }
                 }
+                this.effects.remove(index);
+            } else {
+                throw new IllegalStateException("Cannot perform this operation when there is only one effect stored.");
             }
-            this.effects.remove(index);
         } else {
-            throw new IllegalStateException("Cannot perform this operation when there is only one effect stored");
+            throw new IllegalArgumentException(ILLEGAL_INDEX_ERROR);
         }
     }
 
@@ -120,7 +124,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
             this.effects.remove(currentIndex);
             this.addEffectAtPosition(temp, newIndex);
         } else {
-            throw new IllegalArgumentException("The given indexes are not legal");
+            throw new IllegalArgumentException(ILLEGAL_INDEX_ERROR);
         }
     }
 
@@ -131,7 +135,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
             this.moveEffect(firstIndex, secondIndex);
             this.moveEffect(secondIndex - 1, firstIndex);
         } else {
-            throw new IllegalArgumentException("The given indexes are not legal");
+            throw new IllegalArgumentException(ILLEGAL_INDEX_ERROR);
         }
     }
 
@@ -141,7 +145,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
             this.removeEffectAtPosition(index);
             this.addEffectAtPosition(u, index);
         } catch (IllegalStateException ex) {
-            throw new IllegalArgumentException("The given index is not legal");
+            throw new IllegalArgumentException(ILLEGAL_INDEX_ERROR);
         }
     }
 
