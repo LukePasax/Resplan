@@ -19,5 +19,9 @@ public interface RPClock {
 	Double getClockStepUnit();
 	
 	Double getClockMaxTime();
+	
+	Long getClockMaxStep();
+	
+	Double roundToExistingClockTime(Double time);
 
 }

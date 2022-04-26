@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import daw.engine.*;
 
-
 class TestClock {
 
 	@Test
@@ -21,11 +20,11 @@ class TestClock {
 		Double time = 423784863.343234;
 		clock.setTime(time);
 		assertEquals(clock.timeToClockSteps(time), clock.getStep());
-		assertEquals((time-(time%clock.getClockStepUnit())), clock.getTime());
+		assertEquals(clock.roundToExistingClockTime(time), clock.getTime());
 		time = clock.getClockMaxTime();
 		clock.setTime(time);
 		assertEquals(clock.timeToClockSteps(time), clock.getStep(), "Tested with Clock Max Time");
-		assertEquals((time-(time%clock.getClockStepUnit())), clock.getTime(), "Tested with Clock Max Time");
+		assertEquals(clock.roundToExistingClockTime(time), clock.getTime(), "Tested with Clock Max Time");
 	}
 	
 	@Test
@@ -55,8 +54,30 @@ class TestClock {
 		Double time = clock.getClockMaxTime();
 		clock.setTime(time);
 		assertEquals(clock.getClockMaxTime(), clock.getTime());
-		assertEquals((time-(time%clock.getClockStepUnit())), clock.getTime());
+		assertEquals(clock.roundToExistingClockTime(time), clock.getTime());
 		assertThrows(ClockException.class, ()->clock.step());
+	}
+	
+	@Test
+	void testClock1000RandomTimes() {
+		RPClock clock = new Clock();
+		for(int i=0; i<1000; i++) {
+			Double time = Math.random()*clock.getClockMaxTime();
+			clock.setTime(time);
+			assertEquals(clock.timeToClockSteps(time), clock.getStep());
+			assertEquals(clock.roundToExistingClockTime(time), clock.getTime());
+		}
+	}
+	
+	@Test
+	void testAllDifferentTimes() throws ClockException {
+		RPClock clock = new Clock();
+		Long rand = Double.valueOf(Math.random()*clock.getClockMaxStep()).longValue();
+		for(long i=rand; i<rand+10000 && i<clock.getClockMaxStep(); i++) {
+			Double oldTime = clock.getTime();
+			clock.step();
+			assertTrue(clock.getTime()>oldTime);
+		}
 	}
 
 }

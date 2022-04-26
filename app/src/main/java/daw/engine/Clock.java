@@ -5,7 +5,8 @@ import Resplan.AudioContextManager;
 public class Clock implements RPClock {
 	
 	/**
-	 * The corrisponding time in ms to a single step of the clock calculated from the system audio sample rate.
+	 * The corrisponding time in ms to a single step of the clock.
+	 * Must be a multiple of 0.5 to avoid Double approximation problems.
 	 */
 	protected final static Double CLOCK_STEP_UNIT = Double.valueOf(1/AudioContextManager.getAudioContext().getSampleRate());
 	
@@ -13,8 +14,11 @@ public class Clock implements RPClock {
 	 * Approximatly one year is the max time value reachable for this clock.
 	 * CLOCK_MAX_TIME avoids Double rappresentation problems.
 	 */
-	private final static Double CLOCK_MAX_TIME = roundToExistingClockTime(Double.valueOf(3.154E10));
+	private final static Double CLOCK_MAX_TIME = new Clock().roundToExistingClockTime(3.154E10);
 	
+	/**
+	 * The current step of the clock.
+	 */
 	private Long steps = 0l;
 	
 	@Override
@@ -74,8 +78,14 @@ public class Clock implements RPClock {
 		return CLOCK_MAX_TIME;
 	}
 	
-	private static Double roundToExistingClockTime(Double time) {
-		return (time-(time%Clock.CLOCK_STEP_UNIT));
+	@Override
+	public Long getClockMaxStep() {
+		return this.timeToClockSteps(Clock.CLOCK_MAX_TIME);
+		
+	}
+	
+	public Double roundToExistingClockTime(Double time) {
+		return this.clockStepToTime(this.timeToClockSteps(time));
 	}
 
 
