@@ -42,6 +42,11 @@ public class HashMapToSet<X, Y> implements MapToSet<X, Y> {
 	}
 	
 	@Override
+	public boolean isEmpty() {
+		return map.isEmpty();
+	}
+	
+	@Override
 	public Set<Entry<X,Set<Y>>> entrySet() {
 		return this.map.entrySet();
 	}

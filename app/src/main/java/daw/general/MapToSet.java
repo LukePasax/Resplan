@@ -15,6 +15,8 @@ public interface MapToSet<X,Y> {
 
 	boolean containsKey(X time);
 	
+	boolean isEmpty();
+	
 	Set<Entry<X,Set<Y>>> entrySet();
 
 }

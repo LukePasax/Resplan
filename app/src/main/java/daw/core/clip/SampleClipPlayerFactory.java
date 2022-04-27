@@ -88,6 +88,11 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 			return this.player;
 		}
 
+		@Override
+		public boolean isPlaused() {
+			return this.player.isPaused();
+		}
+
 	}
 
 

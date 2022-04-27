@@ -28,14 +28,15 @@ public interface RPClipPlayer {
 	 */
 	void setPlaybackPosition(double milliseconds);
 	
+	void setCut(double time);
+	
+	void disableCut();
 	/**
 	 * @return
 	 */
 	double getPlaybackPosition();
 	
-	void setCut(double time);
-	
-	void disableCut();
+	boolean isPlaused();
 	
 	UGen getUGen();
 	
