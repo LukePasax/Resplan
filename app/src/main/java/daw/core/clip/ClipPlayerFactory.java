@@ -8,8 +8,8 @@ import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 
 public interface ClipPlayerFactory {
 	
-	RPClipPlayer createSampleClipPlayer(RPClip clip, RPChannel channel) throws IOException, OperationUnsupportedException, FileFormatException;
+	RPClipPlayer createClipPlayer(RPClip clip, RPChannel channel) throws IOException, OperationUnsupportedException, FileFormatException;
 	
-	RPClipPlayer createSampleClipPlayerWithActiveCut(RPClip clip, RPChannel channel, double cut) throws IOException, OperationUnsupportedException, FileFormatException;
+	RPClipPlayer createClipPlayerWithActiveCut(RPClip clip, RPChannel channel, double cut) throws IOException, OperationUnsupportedException, FileFormatException;
 
 }

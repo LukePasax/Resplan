@@ -19,6 +19,7 @@ class TestSampleClip {
 			sampleClip = new SampleClip(content);
 			assertFalse(sampleClip.isEmpty());
 			assertEquals(sampleClip.getDuration(), new Sample(content.getAbsolutePath()).getLength());
+			assertEquals(0, sampleClip.getContentPosition());
 		} catch (Exception e) {
 			fail();
 		}

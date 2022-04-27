@@ -13,15 +13,18 @@ import net.beadsproject.beads.ugens.SamplePlayer.LoopType;
 public class SampleClipPlayerFactory implements ClipPlayerFactory {
 
 	@Override
-	public RPClipPlayer createSampleClipPlayer(RPClip clip, RPChannel channel) throws IOException, OperationUnsupportedException, FileFormatException {
+	public RPClipPlayer createClipPlayer(RPClip clip, RPChannel channel) throws IOException, OperationUnsupportedException, FileFormatException {
+		if(!clip.getClass().equals(SampleClip.class)) {
+			throw new IllegalArgumentException("The supplied clip must be a Sample Clip");
+		}
 		SampleClipPlayer player = new SampleClipPlayer((SampleClip) clip);
 		channel.connectSource(player.getUGen());
 		return player;
 	}
 
 	@Override
-	public RPClipPlayer createSampleClipPlayerWithActiveCut(RPClip clip, RPChannel channel, double cut) throws IOException, OperationUnsupportedException, FileFormatException {
-		var player = this.createSampleClipPlayer(clip, channel);
+	public RPClipPlayer createClipPlayerWithActiveCut(RPClip clip, RPChannel channel, double cut) throws IOException, OperationUnsupportedException, FileFormatException {
+		var player = this.createClipPlayer(clip, channel);
 		player.setCut(cut);
 		return player;
 	}
@@ -89,8 +92,21 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 		}
 
 		@Override
-		public boolean isPlaused() {
+		public boolean isPaused() {
 			return this.player.isPaused();
+		}
+
+		@Override
+		public boolean isCutActive() {
+			return this.isCutActive;
+		}
+
+		@Override
+		public double getCutTime() {
+			if(!this.isCutActive) {
+				throw new IllegalStateException("The cut is not active for this player");
+			}
+			return this.cutTime;
 		}
 
 	}

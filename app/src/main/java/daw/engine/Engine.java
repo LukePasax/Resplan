@@ -94,9 +94,9 @@ public class Engine implements RPEngine {
 				try {
 					//gestisco eventuali clip che partono a metà
 					if(clip.getKey()<this.getPlaybackTime()) {
-						observers.put(0l, this.SamplePlayerFactory.createSampleClipPlayerWithActiveCut(clip.getValue(), channel.getKey(), this.getPlaybackTime()-clip.getKey()));
+						observers.put(0l, this.SamplePlayerFactory.createClipPlayerWithActiveCut(clip.getValue(), channel.getKey(), this.getPlaybackTime()-clip.getKey()));
 					} else {
-						observers.put(clock.timeToClockSteps(clip.getKey()), this.SamplePlayerFactory.createSampleClipPlayer(clip.getValue(), channel.getKey()));
+						observers.put(clock.timeToClockSteps(clip.getKey()), this.SamplePlayerFactory.createClipPlayer(clip.getValue(), channel.getKey()));
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

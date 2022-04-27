@@ -36,7 +36,11 @@ public interface RPClipPlayer {
 	 */
 	double getPlaybackPosition();
 	
-	boolean isPlaused();
+	boolean isPaused();
+	
+	boolean isCutActive();
+	
+	double getCutTime();
 	
 	UGen getUGen();
 	

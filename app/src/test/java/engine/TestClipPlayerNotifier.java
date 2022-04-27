@@ -18,49 +18,62 @@ import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 
 class TestClipPlayerNotifier {
 	
-	private Clock clock = new Clock();
+	{
+		this.clock = new Clock();
+		
+		this.channel = new BasicChannelFactory().basic();
+		
+		this.observers = new HashMapToSet<>();
+		
+		try {
+			this.initializeRandomObservers();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
-	private RPChannel channel = new BasicChannelFactory().basic();
+	private Clock clock;
 	
-	private MapToSet<Long, RPClipPlayer> observers = new HashMapToSet<>();
+	private RPChannel channel;
+	
+	private MapToSet<Long, RPClipPlayer> observers;
 	
 	static final String SEP = System.getProperty("file.separator");
 	
+	
 	private void initializeRandomObservers() throws IOException, OperationUnsupportedException, FileFormatException {
-		for(int i = 0; i<100*Math.random(); i++) {
+		for(int i = 0; i<20; i++) {
 			SampleClip clip = new SampleClip(new File(System.getProperty("user.dir") + SEP + "src" +
 					SEP + "test" + SEP + "resources"+ SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"));
-			this.observers.put(clock.timeToClockSteps(Math.random()*clock.getClockMaxTime()), new SampleClipPlayerFactory().createSampleClipPlayer(clip, channel));
-		}	
+			this.observers.put(clock.timeToClockSteps(i/20*clock.getClockMaxTime()), new SampleClipPlayerFactory().createClipPlayer(clip, channel));
+		}
 	}
 	
 	@Test
-	void randomObserversPlay() throws IOException, OperationUnsupportedException, FileFormatException {
-		this.initializeRandomObservers();
+	void randomObserversPlay() {
 		ClipPlayerNotifier cpn = new ClipPlayerNotifier(clock, observers);
 		observers.entrySet().stream().forEach(x->{
 			clock.setTime(clock.clockStepToTime(x.getKey()));
 			cpn.update();
 			x.getValue().forEach(player->{
-				assertFalse(player.isPlaused());
+				assertFalse(player.isPaused(), "clipTime: " + x.getKey());
 			});
 		});
 	}
 	
 	@Test
-	void randomObserversPause() throws IOException, OperationUnsupportedException, FileFormatException {
-		this.initializeRandomObservers();
+	void randomObserversPause() {
 		ClipPlayerNotifier cpn = new ClipPlayerNotifier(clock, observers);
 		observers.entrySet().stream().forEach(x->{
 			x.getValue().forEach(player->{
 				player.play();
-				assertFalse(player.isPlaused());
+				assertFalse(player.isPaused(), "paused: " + player.isPaused());
 			});
 		});
 		cpn.notifyStopped();
 		observers.entrySet().stream().forEach(x->{
 			x.getValue().forEach(player->{
-				assertTrue(player.isPlaused());
+				assertTrue(player.isPaused(), "paused: " + player.isPaused());
 			});
 		});
 		
