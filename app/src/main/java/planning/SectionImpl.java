@@ -10,7 +10,7 @@ public class SectionImpl implements RPSection {
 	
 	private String title;
 	private Optional<String> description = Optional.empty();
-	private int duration;
+	private double duration;
 	
 	/**
 	 * It is used to build a new Object of type RPSection with a description
@@ -24,7 +24,7 @@ public class SectionImpl implements RPSection {
 	 * @param duration
 	 * the duration of the section
 	 */
-	public SectionImpl(final String title, final String description, final int duration) {
+	public SectionImpl(final String title, final String description, final double duration) {
 		this.title = title;
 		this.description = Optional.of(description);
 		this.duration = duration;
@@ -39,7 +39,7 @@ public class SectionImpl implements RPSection {
 	 * @param duration
 	 * the duration of the section
 	 */
-	public SectionImpl(final String title, final int duration) {
+	public SectionImpl(final String title, final double duration) {
 		this.title = title;
 		this.duration = duration;
 	}
@@ -72,7 +72,7 @@ public class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getDuration() {
+	public double getDuration() {
 		return this.duration;
 	}
 	

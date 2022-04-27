@@ -8,7 +8,7 @@ public interface RPSection extends Element {
 	/**
 	 * Returns the duration of the section
 	 * 
-	 * @return an integer representing the duration of the section (expressed in ms)
+	 * @return a double representing the duration of the section (expressed in ms)
 	 */
-	int getDuration();
+	double getDuration();
 }

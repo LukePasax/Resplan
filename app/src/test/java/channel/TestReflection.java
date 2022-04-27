@@ -1,4 +1,4 @@
-package daw;
+package channel;
 
 import net.beadsproject.beads.core.UGen;
 import java.util.List;
@@ -7,11 +7,12 @@ import java.util.stream.Collectors;
 
 public class TestReflection {
 
-    public List<Class> getList(List<UGen> ugens) {
+    public List<Class> getList(List<? extends UGen> ugens) {
         return ugens.stream().map(Object::getClass).collect(Collectors.toUnmodifiableList());
     }
 
-    public Set<Class> getSet(Set<UGen> ugens) {
+    public Set<Class> getSet(Set<? extends UGen> ugens) {
         return ugens.stream().map(Object::getClass).collect(Collectors.toUnmodifiableSet());
     }
+
 }

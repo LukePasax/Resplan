@@ -14,12 +14,22 @@ import java.util.Optional;
 public interface RPMixer {
 
     /**
-     * A method to create a {@link RPChannel} in the mixer
-     * and links its output to the Master channel.
-     * @param type the {@link RPChannel} type that will be created
+     * A method to create a Basic {@link RPChannel} in the mixer
      * @return the {@link RPChannel} that is created
      */
-    RPChannel createChannel(RPChannel.Type type);
+    RPChannel createBasicChannel();
+
+    /**
+     * A method to create a Gated {@link RPChannel} in the mixer
+     * @return the {@link RPChannel} that is created
+     */
+    RPChannel createGatedChannel();
+
+    /**
+     * A method to create a Return {@link RPChannel} in the mixer
+     * @return the {@link RPChannel} that is created
+     */
+    RPChannel createReturnChannel();
 
     /**
      * This method is used to create a sidechained {@link RPChannel}
@@ -51,9 +61,16 @@ public interface RPMixer {
 
     /**
      * A method to remove a {@link RPChannel} from a group
-     * @param channel the {@link RPChannel} to remove
+     * @param channel the {@link RPChannel} to be removed
      * @param group the group to remove the {@link RPChannel} from
      */
-    void removeFromGroup(RPChannel channel, RPChannel group);
-    
+    void unlinkFromGroup(RPChannel channel, RPChannel group);
+
+    /**
+     * A method to link a sidechained {@link RPChannel}
+     * @param channel the {@link RPChannel} to sidechain
+     * @param sidechainedChannel the sidechained {@link RPChannel}
+     */
+    void linkToSidechained(RPChannel channel, RPChannel sidechainedChannel);
+
 }

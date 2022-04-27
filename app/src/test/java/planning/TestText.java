@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 /**
- * This class tests a {@link plaing.Text}
+ * This class tests a {@link planning.Text}
  */
 public class TestText {
 	
