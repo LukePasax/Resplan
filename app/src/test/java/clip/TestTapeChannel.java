@@ -56,7 +56,7 @@ class TestTapeChannel {
 	@Test
 	void testGetClipWithTimeIteratorEmptyTimeline() {
 		RPTapeChannel tapeChannel = new TapeChannel();
-		assertEquals(tapeChannel.getClipWithTimeIterator(), Optional.empty());
+		assertFalse(tapeChannel.getClipWithTimeIterator().hasNext());
 	}
 	
 	@Test
@@ -66,7 +66,7 @@ class TestTapeChannel {
 			RPClip clip = new EmptyClip(10);
 			tapeChannel.insertRPClip(clip, i*10);
 		}
-		Iterator<Pair<Double, RPClip>> iterator = tapeChannel.getClipWithTimeIterator().get();
+		Iterator<Pair<Double, RPClip>> iterator = tapeChannel.getClipWithTimeIterator();
 		for(double i = 0; i<100; i=i+10) {
 			assertTrue(iterator.hasNext());
 			var x = iterator.next();
@@ -82,7 +82,7 @@ class TestTapeChannel {
 			RPClip clip = new EmptyClip(100);
 			tapeChannel.insertRPClip(clip, i*10);
 		}
-		Iterator<Pair<Double, RPClip>> iterator = tapeChannel.getClipWithTimeIterator().get();
+		Iterator<Pair<Double, RPClip>> iterator = tapeChannel.getClipWithTimeIterator();
 		for(double i = 0; i<90; i=i+10) {
 			assertTrue(iterator.hasNext());
 			var x = iterator.next();

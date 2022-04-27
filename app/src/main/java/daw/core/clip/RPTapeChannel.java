@@ -2,6 +2,8 @@ package daw.core.clip;
 
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.Map.Entry;
 import javafx.util.Pair;
 
 /**
@@ -46,7 +48,20 @@ public interface RPTapeChannel {
 	 * Return an Optional.empty() if the Tape Channel contains no clip.
 	 * @return
 	 */
-	Optional<Iterator<Pair<Double, RPClip>>> getClipWithTimeIterator();
+	Iterator<Pair<Double, RPClip>> getClipWithTimeIterator();
+	
+	/**
+	 * Get an Optional of Iterator which iterate all the Pair<Double, RPClip> of the tape channel that match the predicate. All the items are ordered by time).
+	 * Return an Optional.empty() if the Tape Channel contains no clip matching the predicate.
+	 * @return
+	 */
+	Iterator<Pair<Double, RPClip>> getClipWithTimeIteratorFiltered(Predicate<? super Entry<Double, RPClip>> predicate);
+	
+	/**
+	 * @param clip
+	 * @return
+	 */
+	public double getClipTimeOut(Pair<Double, RPClip> clip);
 	
 	/**
 	 * Move the specified clip at the specified time in the timeline. 

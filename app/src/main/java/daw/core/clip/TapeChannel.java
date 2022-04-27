@@ -3,7 +3,10 @@ package daw.core.clip;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.function.Predicate;
+
 import javafx.util.Pair;
 
 public class TapeChannel implements RPTapeChannel {
@@ -49,14 +52,17 @@ public class TapeChannel implements RPTapeChannel {
 	}
 
 	@Override
-	public Optional<Iterator<Pair<Double, RPClip>>> getClipWithTimeIterator() {
-		if(this.isEmpty()) {
-			return Optional.empty();
-		}
-		return Optional.of(this.timeline.entrySet().stream()
+	public Iterator<Pair<Double, RPClip>> getClipWithTimeIterator() {	
+		return this.getClipWithTimeIteratorFiltered(x->true);
+	}
+
+	@Override
+	public Iterator<Pair<Double, RPClip>> getClipWithTimeIteratorFiltered(Predicate<? super Entry<Double, RPClip>> predicate) {
+		return this.timeline.entrySet().stream()
+				.filter(predicate)
 				.sorted((x1, x2)->Double.compare(x1.getKey(), x2.getKey()))
 				.map(x->(new Pair<>(x.getKey(), x.getValue())))
-				.iterator());
+				.iterator();
 	}
 
 	@Override
@@ -103,38 +109,37 @@ public class TapeChannel implements RPTapeChannel {
 		}
 	}	
 	
-	private double getClipTimeOut(Pair<Double, RPClip> clip) {
+	public double getClipTimeOut(Pair<Double, RPClip> clip) {
 		return clip.getKey()+clip.getValue().getDuration();
 	}
 	
 	private void clearBetween(double initialTime, double finalTime) {
-		this.getIteratorOfClipBetween(initialTime, finalTime).forEachRemaining(x->{
-			if(x.getKey()<initialTime) {
-				if(this.getClipTimeOut(new Pair<>(x.getKey(),x.getValue()))<=finalTime) {
-					//case (in<initialTime and out<=finalTime) A
-					this.setTimeOut(x.getKey(), initialTime);
+		var iterator = this.getIteratorOfClipBetween(initialTime, finalTime);
+			iterator.forEachRemaining(x->{
+				if(x.getKey()<initialTime) {
+					if(this.getClipTimeOut(new Pair<>(x.getKey(),x.getValue()))<=finalTime) {
+						//case (in<initialTime and out<=finalTime) A
+						this.setTimeOut(x.getKey(), initialTime);
+					} else {
+						//case (in<initialTime and out>finalTime) D
+						this.split(x.getKey(), finalTime);
+						this.setTimeOut(this.getClipAt(initialTime).get().getKey(), initialTime);
+					}
 				} else {
-					//case (in<initialTime and out>finalTime) D
-					this.split(x.getKey(), finalTime);
-					this.setTimeOut(this.getClipAt(initialTime).get().getKey(), initialTime);
+					if(this.getClipTimeOut(new Pair<>(x.getKey(),x.getValue()))<=finalTime) {
+						//case (in>=initialTime and out<=finalTime) B
+						this.removeRPClip(x.getKey());
+					} else {
+						//case (in>=initialTime and out>finalTime) C
+						this.setTimeIn(x.getKey(), finalTime);
+					}
 				}
-			} else {
-				if(this.getClipTimeOut(new Pair<>(x.getKey(),x.getValue()))<=finalTime) {
-					//case (in>=initialTime and out<=finalTime) B
-					this.removeRPClip(x.getKey());
-				} else {
-					//case (in>=initialTime and out>finalTime) C
-					this.setTimeIn(x.getKey(), finalTime);
-				}
-			}
-		});
+			});
 	}
 
 	private Iterator<Pair<Double, RPClip>> getIteratorOfClipBetween(double initialTime, double finalTime) {
-		return this.timeline.entrySet().stream().filter(x->{
+		return this.getClipWithTimeIteratorFiltered(x->{
 			return x.getKey()<finalTime && this.getClipTimeOut(new Pair<>(x.getKey(), x.getValue()))>initialTime;
-		}).sorted((x1, x2)->Double.compare(x1.getKey(), x2.getKey()))
-				.map(x->(new Pair<>(x.getKey(), x.getValue())))
-				.iterator();
+		});
 	}
 }
