@@ -42,7 +42,11 @@
                      <content>
                         <BorderPane minWidth="1.0E7" prefHeight="49.0" style="-fx-border-color: black;">
                            <top>
-                              <Label id="lTimeline" text="Label" BorderPane.alignment="CENTER" />
+                              <AnchorPane prefHeight="49.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Label fx:id="lTimeline" layoutY="27.0" />
+                                 </children>
+                              </AnchorPane>
                            </top></BorderPane>
                      </content></ScrollPane>
                </children>
@@ -51,7 +55,7 @@
                <children>
                   <BorderPane layoutX="-2.0" layoutY="-1.0" prefHeight="49.0" prefWidth="256.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="-4.0">
                      <top>
-                        <Button id="btnChannel" contentDisplay="CENTER" mnemonicParsing="false" stylesheets="@DAWViewButton.css" text="Add a channel" textAlignment="CENTER" BorderPane.alignment="CENTER">
+                        <Button fx:id="btnChannel" contentDisplay="CENTER" mnemonicParsing="false" stylesheets="@DAWViewButton.css" text="Add a channel" textAlignment="CENTER" BorderPane.alignment="CENTER">
                            <BorderPane.margin>
                               <Insets top="10.0" />
                            </BorderPane.margin>

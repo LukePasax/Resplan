@@ -1,14 +1,32 @@
 package view.DAWView;
 
+import java.util.ResourceBundle;
+
+import javax.print.DocFlavor.URL;
+
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class DAWViewFXMLController {
+public class DAWViewFXMLController implements Initializable{
 	
 	@FXML
 	private Label lTimeline;
 	
-	public void addTimeline() {
-		
-	}
+	@FXML
+	private Button btnChannel;
+
+	@Override
+	public void initialize(java.net.URL location, ResourceBundle resources) {
+		String text = "";
+        for(int i = 0; i < 20000; i++) {
+            if(i == 0) {
+                text = "| 0";
+            } else {
+                text = text + "             " + "| " + i;
+            } 
+        }
+        lTimeline.setText(text);
+	}   
 }
