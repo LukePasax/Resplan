@@ -3,6 +3,7 @@ package daw.manager;
 import daw.core.channel.RPChannel;
 import daw.core.clip.RPTapeChannel;
 import javafx.util.Pair;
+import planning.RPPart;
 import planning.RPRole;
 
 import java.util.Set;
@@ -35,6 +36,19 @@ public interface RPChannelLinker {
 	 * @return the {@link RPTapeChannel} linked to the given {@link RPRole}
 	 */
 	RPTapeChannel getTapeChannel(RPRole role);
+
+	/**
+	 * A method that returns the {@link  RPRole} with the given title
+	 * @param title the title of the part
+	 * @return the {@link RPRole} with the given title
+	 */
+	RPRole getPart(String title);
+
+	/**
+	 * A method to remove a Channel from the list with all its corresponding components
+	 * @param role the {@link RPRole} of the Channel that needs to be eliminated
+	 */
+	void removeChannel(RPRole role);
 
 	/**
 	 * This method returns all the {@link RPRole} of the type given present in the map

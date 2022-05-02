@@ -31,6 +31,7 @@ public class BasicChannel implements RPChannel {
         this.vol = vol;
         this.pan = pan;
         this.type = type;
+        this.enabled = true;
         this.pu = Optional.empty();
         this.gainIn = new Gain(AudioContextManager.getAudioContext(), 2);
         this.gainOut = new Gain(AudioContextManager.getAudioContext(), 2);

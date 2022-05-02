@@ -54,6 +54,21 @@ public class Manager implements RPManager{
         this.automaticGrouping(role);
     }
 
+    /**
+     * This method removes the Channel with the given title
+     *
+     * @param title the title of the Channel to remove
+     */
+    @Override
+    public void removeChannel(String title) {
+        this.getGroupList(this.getGroupName(this.channelLinker.getPart(title))).remove(this.channelLinker.getPart(title));
+        this.channelLinker.removeChannel(this.channelLinker.getPart(title));
+    }
+
+    private String getGroupName(RPRole part) {
+        return this.groupMap.entrySet().stream().filter(e -> e.getValue().contains(part)).map(e -> e.getKey().getTitle()).findAny().orElseThrow();
+    }
+
     private void automaticGrouping(RPRole role) {
         if (role.getType().equals(RPRole.RoleType.SPEECH)) {
             this.addToGroup(role, "Speech");

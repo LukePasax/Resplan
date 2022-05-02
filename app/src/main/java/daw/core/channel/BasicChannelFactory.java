@@ -33,7 +33,7 @@ public class BasicChannelFactory implements ChannelFactory {
         // TODO: make ProcessingUnit have correct effects
         final var bc = new BasicChannel(new BasicVolume(DEFAULT_VOLUME, DEFAULT_MAX_VOLUME),
                 new Panner(), RPChannel.Type.AUDIO);
-        bc.addProcessingUnit(new BasicProcessingUnitBuilder().sidechain(u, 1).build());
+        bc.addProcessingUnit(new BasicProcessingUnitBuilder().sidechain(u, 1).highPassFilter(1,100.0f).build());
         return bc;
     }
 

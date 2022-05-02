@@ -3,6 +3,7 @@ package daw.manager;
 import daw.core.channel.RPChannel;
 import daw.core.clip.RPTapeChannel;
 import javafx.util.Pair;
+import planning.RPPart;
 import planning.RPRole;
 
 import java.util.HashMap;
@@ -49,6 +50,27 @@ public class ChannelLinker implements RPChannelLinker {
     @Override
     public RPTapeChannel getTapeChannel(RPRole role) {
         return channelMap.get(role).getValue();
+    }
+
+    /**
+     * A method that returns the {@link  RPPart} with the given title
+     *
+     * @param title the title of the part
+     * @return the {@link RPPart} with the given title
+     */
+    @Override
+    public RPRole getPart(String title) {
+        return channelMap.keySet().stream().filter(k -> k.getTitle().equals(title)).findAny().orElseThrow();
+    }
+
+    /**
+     * A method to remove a Channel from the list with all its corresponding components
+     *
+     * @param role the {@link RPRole} of the Channel that needs to be eliminated
+     */
+    @Override
+    public void removeChannel(RPRole role) {
+        channelMap.remove(role);
     }
 
     /**

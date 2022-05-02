@@ -24,6 +24,12 @@ public interface RPManager {
     void addChannel(RPRole.RoleType type, String title, Optional<String> description);
 
     /**
+     * This method removes the Channel with the given title
+     * @param title the title of the Channel to remove
+     */
+    void removeChannel(String title);
+
+    /**
      * This method adds a Channel to a group
      * @param role the Channel to add to a group
      * @param groupName the name of the group
