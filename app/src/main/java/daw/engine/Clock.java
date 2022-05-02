@@ -14,7 +14,7 @@ public class Clock implements RPClock {
 	 * Approximatly one year is the max time value reachable for this clock.
 	 * CLOCK_MAX_TIME avoids Double rappresentation problems.
 	 */
-	private final static Double CLOCK_MAX_TIME = new Clock().roundToExistingClockTime(3.154E10);
+	private final static Double CLOCK_MAX_TIME = Clock.Utility.roundToExistingClockTime(3.154E10);
 	
 	/**
 	 * The current step of the clock.
@@ -39,7 +39,7 @@ public class Clock implements RPClock {
 		if(time > Clock.CLOCK_MAX_TIME) {
 			throw new IllegalArgumentException("Time or corresponding steps are bigger than Clock.CLOCK_MAX_TIME");
 		}
-		this.steps =  this.timeToClockSteps(time);
+		this.steps =  Clock.Utility.timeToClockSteps(time);
 	}
 
 	@Override
@@ -49,44 +49,46 @@ public class Clock implements RPClock {
 	
 	@Override
 	public Double getTime() {
-		return this.clockStepToTime(this.steps);
-	}
-
-	/**
-	 * Narrow conversion from time to the corrisponding clock step.
-	 */
-	@Override
-	public Long timeToClockSteps(Double time) {
-		return Double.valueOf(time/Clock.CLOCK_STEP_UNIT).longValue();
-	}
-
-	/**
-	 * Conversion from clockStep to the corrisponding time.
-	 */
-	@Override
-	public Double clockStepToTime(Long clockStep) {
-		return clockStep*Clock.CLOCK_STEP_UNIT;
-	}
-
-	@Override
-	public Double getClockStepUnit() {
-		return Clock.CLOCK_STEP_UNIT;
-	}
-
-	@Override
-	public Double getClockMaxTime() {
-		return CLOCK_MAX_TIME;
+		return Clock.Utility.clockStepToTime(this.steps);
 	}
 	
-	@Override
-	public Long getClockMaxStep() {
-		return this.timeToClockSteps(Clock.CLOCK_MAX_TIME);
+	public static class Utility {
+		
+		private Utility() {
+			throw new UnsupportedOperationException("Cannot instantiate an utility class.");
+		}
+		
+		/**
+		 * Narrow conversion from time to the corrisponding clock step.
+		 */
+		public static Long timeToClockSteps(Double time) {
+			return Double.valueOf(time/Clock.CLOCK_STEP_UNIT).longValue();
+		}
+	
+		/**
+		 * Conversion from clockStep to the corrisponding time.
+		 */
+		public static Double clockStepToTime(Long clockStep) {
+			return clockStep*Clock.CLOCK_STEP_UNIT;
+		}
+	
+		public static Double getClockStepUnit() {
+			return Clock.CLOCK_STEP_UNIT;
+		}
+	
+		public static Double getClockMaxTime() {
+			return CLOCK_MAX_TIME;
+		}
+		
+		public static Long getClockMaxStep() {
+			return Clock.Utility.timeToClockSteps(Clock.CLOCK_MAX_TIME);
+			
+		}
+		
+		public static Double roundToExistingClockTime(Double time) {
+		return Clock.Utility.clockStepToTime(Clock.Utility.timeToClockSteps(time));
+		}
 		
 	}
-	
-	public Double roundToExistingClockTime(Double time) {
-		return this.clockStepToTime(this.timeToClockSteps(time));
-	}
-
 
 }

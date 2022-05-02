@@ -11,17 +11,5 @@ public interface RPClock {
 	Long getStep();
 	
 	Double getTime();
-	
-	Long timeToClockSteps(Double time);
-	
-	Double clockStepToTime(Long clockStep);
-	
-	Double getClockStepUnit();
-	
-	Double getClockMaxTime();
-	
-	Long getClockMaxStep();
-	
-	Double roundToExistingClockTime(Double time);
 
 }

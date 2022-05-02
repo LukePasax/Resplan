@@ -11,8 +11,6 @@ import daw.core.channel.BasicChannelFactory;
 import daw.core.channel.RPChannel;
 import daw.core.clip.*;
 import daw.engine.*;
-import daw.general.HashMapToSet;
-import daw.general.MapToSet;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 
@@ -23,10 +21,10 @@ class TestClipPlayerNotifier {
 		
 		this.channel = new BasicChannelFactory().basic();
 		
-		this.observers = new HashMapToSet<>();
+		this.playersMap = new PlayersMap();
 		
 		try {
-			this.initializeRandomObservers();
+			this.createRandomPlayersMap();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -36,24 +34,24 @@ class TestClipPlayerNotifier {
 	
 	private RPChannel channel;
 	
-	private MapToSet<Long, RPClipPlayer> observers;
+	private PlayersMap playersMap;
 	
 	static final String SEP = System.getProperty("file.separator");
 	
 	
-	private void initializeRandomObservers() throws IOException, OperationUnsupportedException, FileFormatException {
-		for(int i = 0; i<20; i++) {
+	private void createRandomPlayersMap() throws IOException, OperationUnsupportedException, FileFormatException {
+		for(int i = 0; i<10; i++) {
 			SampleClip clip = new SampleClip(new File(System.getProperty("user.dir") + SEP + "src" +
 					SEP + "test" + SEP + "resources"+ SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"));
-			this.observers.put(clock.timeToClockSteps(i/20*clock.getClockMaxTime()), new SampleClipPlayerFactory().createClipPlayer(clip, channel));
+			this.playersMap.putClipPlayer(Clock.Utility.timeToClockSteps(i/20*Clock.Utility.getClockMaxTime()), new SampleClipPlayerFactory().createClipPlayer(clip, channel));
 		}
 	}
 	
 	@Test
 	void randomObserversPlay() {
-		ClipPlayerNotifier cpn = new ClipPlayerNotifier(clock, observers);
-		observers.entrySet().stream().forEach(x->{
-			clock.setTime(clock.clockStepToTime(x.getKey()));
+		ClipPlayerNotifier cpn = new ClipPlayerNotifier(clock, playersMap);
+		playersMap.entrySet().stream().forEach(x->{
+			clock.setTime(Clock.Utility.clockStepToTime(x.getKey()));
 			cpn.update();
 			x.getValue().forEach(player->{
 				assertFalse(player.isPaused(), "clipTime: " + x.getKey());
@@ -63,20 +61,19 @@ class TestClipPlayerNotifier {
 	
 	@Test
 	void randomObserversPause() {
-		ClipPlayerNotifier cpn = new ClipPlayerNotifier(clock, observers);
-		observers.entrySet().stream().forEach(x->{
+		ClipPlayerNotifier cpn = new ClipPlayerNotifier(clock, playersMap);
+		playersMap.entrySet().stream().forEach(x->{
 			x.getValue().forEach(player->{
 				player.play();
 				assertFalse(player.isPaused(), "paused: " + player.isPaused());
 			});
 		});
 		cpn.notifyStopped();
-		observers.entrySet().stream().forEach(x->{
+		playersMap.entrySet().stream().forEach(x->{
 			x.getValue().forEach(player->{
 				assertTrue(player.isPaused(), "paused: " + player.isPaused());
 			});
-		});
-		
+		});	
 	}
 
 }
