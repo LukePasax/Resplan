@@ -19,17 +19,17 @@ public class EmptyClip implements RPClip {
 	
 	@Override
 	public void setContentPosition(double milliseconds) {
-		throw new IllegalStateException("Can't set Content Position in an Empty Clip. Fill the clip with a Content then retry.");
+		throw new UnsupportedOperationException("Can't set Content Position in an Empty Clip. Conver the clip into one with content then retry.");
 	}
 
 	@Override
 	public double getContentPosition() {
-		throw new IllegalStateException("Can't get the Content Position. This is an Empty Clip. Fill the clip with a Content then retry.");
+		throw new UnsupportedOperationException("Can't get the Content Position. This is an Empty Clip. Conver the clip into one with content then retry.");
 	}
 
 	@Override
 	public File getContent() {
-		throw new IllegalStateException("Can't get the Content of an Empty Clip. Fill the clip with a Content then retry.");
+		throw new UnsupportedOperationException("Can't get the Content of an Empty Clip. Conver the clip into one with content then retry.");
 	}
 
 	@Override

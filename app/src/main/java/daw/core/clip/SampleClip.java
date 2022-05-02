@@ -8,7 +8,6 @@ import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 
 /**
- * @author alessandro
  * A SampleClip object is an RPClip which accepts any Audio File as content.
  * The default duration is the same as the audio content one.
  */
