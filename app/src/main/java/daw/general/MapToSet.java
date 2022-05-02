@@ -13,7 +13,7 @@ public interface MapToSet<X,Y> {
 	
 	Set<Y> get(X key);
 
-	boolean containsKey(X time);
+	boolean containsKey(X Key);
 	
 	boolean isEmpty();
 	

@@ -79,5 +79,15 @@ class TestClock {
 			assertTrue(clock.getTime()>oldTime);
 		}
 	}
+	
+	@Test
+	void consistency() {
+		RPClock clock = new Clock();
+		for(int i=0; i<200; i++) {
+			Double rand = Double.valueOf(Math.random()*clock.getClockMaxTime());
+			clock.setTime(rand);
+			assertEquals(clock.roundToExistingClockTime(rand), clock.getTime());
+		}
+	}
 
 }

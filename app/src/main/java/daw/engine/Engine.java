@@ -82,6 +82,7 @@ public class Engine implements RPEngine {
 	
 	private void updateObservers() {
 		MapToSet<Long, RPClipPlayer>  observers = new HashMapToSet<>();
+//CREAZIONE OBSERVERS
 		//for each channel
 		this.channelLinker.getAudioSet().forEach(channel->{
 			//get SampleClips after actual playback time
@@ -103,6 +104,8 @@ public class Engine implements RPEngine {
 				}
 			});
 		});
+		
+//AGGIORNAMENTO NOTIFIER
 		this.notifier = Optional.of(new ClipPlayerNotifier(this.clock, observers));	
 	}
 }
