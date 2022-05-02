@@ -2,14 +2,7 @@ package daw.engine;
 
 import java.util.Optional;
 
-import daw.core.clip.ClipPlayerFactory;
-import daw.core.clip.RPClipPlayer;
-import daw.core.clip.SampleClip;
-import daw.core.clip.SampleClipPlayerFactory;
-import daw.general.HashMapToSet;
-import daw.general.MapToSet;
 import daw.manager.ChannelLinker;
-import javafx.util.Pair;
 
 public class Engine implements RPEngine {
 	
@@ -36,12 +29,12 @@ public class Engine implements RPEngine {
 	/**
 	 * 
 	 */
-	private ClipPlayerFactory SamplePlayerFactory = new SampleClipPlayerFactory();
-	
-	
+	private final PlayersMapBuilder playersMapBuilder;
+		
 	public Engine(ChannelLinker channelLinker) {
 		this.channelLinker = channelLinker;
 		this.clock = new Clock();
+		this.playersMapBuilder = new PlayersMapBuilderImpl();
 	}
 
 	@Override
@@ -81,31 +74,11 @@ public class Engine implements RPEngine {
 	}
 	
 	private void updateObservers() {
-		MapToSet<Long, RPClipPlayer>  observers = new HashMapToSet<>();
-//CREAZIONE OBSERVERS
-		//for each channel
-		this.channelLinker.getAudioSet().forEach(channel->{
-			//get SampleClips after actual playback time
-			var clipIterator = channel.getValue().getClipWithTimeIteratorFiltered(x->{
-				return x.getValue().getClass().equals(SampleClip.class) 
-						&& channel.getValue().getClipTimeOut(new Pair<>(x.getKey(), x.getValue()))>this.getPlaybackTime();
-			});
-			//for each clip of the channel
-			clipIterator.forEachRemaining(clip->{
-				try {
-					//gestisco eventuali clip che partono a metà
-					if(clip.getKey()<this.getPlaybackTime()) {
-						observers.put(0l, this.SamplePlayerFactory.createClipPlayerWithActiveCut(clip.getValue(), channel.getKey(), this.getPlaybackTime()-clip.getKey()));
-					} else {
-						observers.put(clock.timeToClockSteps(clip.getKey()), this.SamplePlayerFactory.createClipPlayer(clip.getValue(), channel.getKey()));
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
-		});
-		
-//AGGIORNAMENTO NOTIFIER
-		this.notifier = Optional.of(new ClipPlayerNotifier(this.clock, observers));	
+		this.notifier = Optional.of(new ClipPlayerNotifier(
+			this.clock, 
+			this.playersMapBuilder.setChannelLinker(channelLinker)
+				.addSampleClipsBetween(Optional.of(this.getPlaybackTime()), Optional.empty())
+				.build()
+		));
 	}
 }

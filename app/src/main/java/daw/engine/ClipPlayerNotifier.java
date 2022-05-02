@@ -2,19 +2,18 @@ package daw.engine;
 
 import java.util.Set;
 import daw.core.clip.RPClipPlayer;
-import daw.general.MapToSet;
 
 public class ClipPlayerNotifier implements RPClipPlayerNotifier {
 	
 	private final RPClock clock;
 	
-	private final MapToSet<Long, RPClipPlayer> observers;
+	private final RPPlayersMap observers;
 	
 	/**
 	 * @param clock
 	 * @param observers
 	 */
-	public ClipPlayerNotifier(RPClock clock, MapToSet<Long, RPClipPlayer> observers) {
+	public ClipPlayerNotifier(RPClock clock, RPPlayersMap observers) {
 		this.clock = clock;
 		this.observers = observers;
 	}
@@ -22,8 +21,8 @@ public class ClipPlayerNotifier implements RPClipPlayerNotifier {
 	@Override
 	public void update() {
 		Long step = this.clock.getStep();
-		if(observers.containsKey(step)) {
-			this.play(this.observers.get(step));
+		if(observers.containsStep(step)) {
+			this.play(this.observers.getClipPlayersAt(step));
 		}
 	}
 
