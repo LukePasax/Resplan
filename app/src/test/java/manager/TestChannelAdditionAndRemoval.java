@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestChannelAdditionAndRemoval {
 
-    private final RPManager manager = new Manager();
+    private RPManager manager;
 
     @Test
     public void testNormalAddition() {

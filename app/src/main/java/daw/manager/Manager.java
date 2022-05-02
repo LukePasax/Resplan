@@ -1,14 +1,12 @@
 package daw.manager;
 
 import daw.core.channel.RPChannel;
-import daw.core.clip.EmptyClip;
-import daw.core.clip.RPClip;
-import daw.core.clip.RPTapeChannel;
-import daw.core.clip.TapeChannel;
+import daw.core.clip.*;
 import daw.core.mixer.Mixer;
 import daw.core.mixer.RPMixer;
 import planning.*;
 
+import java.io.File;
 import java.util.*;
 
 public class Manager implements RPManager{
@@ -131,13 +129,17 @@ public class Manager implements RPManager{
         }
     }
 
-    //TODO
     /**
      * This method creates a Clip and all the corresponding components
      */
     @Override
-    public void addClip(RPPart.PartType type, String title, Optional<String> description) {
-        final RPClip clip = new EmptyClip();
+    public void addClip(RPPart.PartType type, String title, Optional<String> description, Optional<File> content) {
+        final RPClip clip;
+        if (content.isPresent()) {
+            clip = new FileClip(content.get());
+        } else {
+            clip = new EmptyClip();
+        }
         final RPPart part;
         if (type.equals(RPPart.PartType.SPEECH)) {
             part = description.map(s -> new SpeechPart(title, s)).orElseGet(() -> new SpeechPart(title));

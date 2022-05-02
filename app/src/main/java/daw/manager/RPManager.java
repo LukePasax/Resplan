@@ -4,6 +4,7 @@ import daw.core.channel.RPChannel;
 import planning.RPPart;
 import planning.RPRole;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,9 +38,9 @@ public interface RPManager {
     void createGroup(String groupName, RPRole.RoleType type);
 
     /**
-     * This method creates a Clip and all the corresponding components
+     * This method creates Clip and all the corresponding components
      */
-    void addClip(RPPart.PartType type, String title, Optional<String> description);
+    void addClip(RPPart.PartType type, String title, Optional<String> description, Optional<File> content);
 
     /**
      * A method to return the {@link RPRole} associated with a groupName
