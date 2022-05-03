@@ -6,7 +6,6 @@ import daw.core.clip.ClipPlayerFactory;
 import daw.core.clip.SampleClip;
 import daw.core.clip.SampleClipPlayerFactory;
 import daw.manager.ChannelLinker;
-import javafx.util.Pair;
 
 public class PlayersMapBuilderImpl implements PlayersMapBuilder {
 	
@@ -43,7 +42,7 @@ public class PlayersMapBuilderImpl implements PlayersMapBuilder {
 			//get iterator of all SampleClips after timeIn and before timeOut
 			var clipIterator = channel.getValue().getClipWithTimeIteratorFiltered(x->{
 				return x.getValue().getClass().equals(SampleClip.class) 
-						&& channel.getValue().getClipTimeOut(new Pair<>(x.getKey(), x.getValue()))>in
+						&& channel.getValue().calculateTimeOut(x.getKey(), x.getValue().getDuration())>in
 						&& x.getKey()<out;
 			});
 			clipIterator.forEachRemaining(clip->{

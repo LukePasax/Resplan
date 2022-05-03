@@ -1,15 +1,36 @@
 package daw.core.clip;
 
-import java.io.IOException;
-
 import daw.core.channel.RPChannel;
-import net.beadsproject.beads.data.audiofile.FileFormatException;
-import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 
+/**
+ *	A Factory for {@link RPClipPlayer}
+ *	<p>Creates a player and connect it with the given {@link RPChannel}.
+ *	Could also create a player with an active cut already setted.
+ */
 public interface ClipPlayerFactory {
 	
-	RPClipPlayer createClipPlayer(RPClip clip, RPChannel channel) throws IOException, OperationUnsupportedException, FileFormatException;
+	/**
+	 * Creates a {@link RPClipPlayer} and connects it to the given {@link RPChannel}.
+	 * 
+	 * @param  clip  The clip to be played from the player.
+	 * 
+	 * @param  channel  The channel to connect the player to.
+	 * 
+	 * @return  The created player.
+	 */
+	RPClipPlayer createClipPlayer(RPClip<?> clip, RPChannel channel);
 	
-	RPClipPlayer createClipPlayerWithActiveCut(RPClip clip, RPChannel channel, double cut) throws IOException, OperationUnsupportedException, FileFormatException;
+	/**
+	 * Creates a {@link RPClipPlayer} with an active cut and connects it to the given {@link RPChannel}.
+	 * 
+	 * @param  clip  The clip to be played from the player.
+	 * 
+	 * @param  channel  The channel to connect the player to.
+	 * 
+	 * @param  cut  The time where to set the cut.
+	 * 
+	 * @return The created player.
+	 */
+	RPClipPlayer createClipPlayerWithActiveCut(RPClip<?> clip, RPChannel channel, double cut);
 
 }
