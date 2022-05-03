@@ -35,7 +35,7 @@ public interface RPClipPlayer {
 	 * 
 	 * @param  milliseconds  The playback position in milliseconds.
 	 * 
-	 * @throws  IllegalArgumentException  If the given time is equal to zero, a negative value or if is bigger than the clip duration.
+	 * @throws  IllegalArgumentException  If the given time is a negative value or if is equals or bigger than the clip duration.
 	 */
 	void setPlaybackPosition(double milliseconds);
 	

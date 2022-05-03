@@ -48,7 +48,7 @@ class TestTapeChannel {
 		RPClip<?> clip = new EmptyClip(duration);
 		tapeChannel.insertRPClip(clip, 0);
 		assertEquals(tapeChannel.getClipAt(0), Optional.of(new Pair<>(0.0, clip)));
-		assertThrows(IllegalStateException.class, ()->tapeChannel.removeClip(200));
+		assertThrows(ClipNotFoundException.class, ()->tapeChannel.removeClip(200));
 		try {
 			tapeChannel.removeClip(0);
 		} catch (ClipNotFoundException e) {
@@ -124,7 +124,7 @@ class TestTapeChannel {
 		}
 		assertEquals(tapeChannel.getClipAt(10), Optional.of(new Pair<>(10.0, clip)));
 		assertThrows(IllegalArgumentException.class, ()->tapeChannel.move(10, -2));
-		assertThrows(IllegalStateException.class, ()->tapeChannel.move(0, 10));
+		assertThrows(ClipNotFoundException.class, ()->tapeChannel.move(0, 10));
 	}
 	
 	@Test

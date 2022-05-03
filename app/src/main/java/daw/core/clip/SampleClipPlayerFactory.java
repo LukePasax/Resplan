@@ -66,9 +66,8 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 		 */
 		private SampleClipPlayer(SampleClip sampleClip) {
 			this.player = new SamplePlayer(sampleClip.getContent());
-			this.clip = sampleClip;
-			this.player.setPosition(this.clip.getContentPosition());
 			this.player.setLoopType(LoopType.NO_LOOP_FORWARDS);
+			this.clip = sampleClip;
 			this.cutTime = Optional.empty();
 			this.stop();
 		}
@@ -109,8 +108,8 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 		 */
 		@Override
 		public void setPlaybackPosition(double milliseconds) {
-			if(milliseconds<=0 || milliseconds>=clip.getDuration()) {
-				throw new IllegalArgumentException("The playback position must be a non-zero and positive value.");
+			if(milliseconds<0 || milliseconds>=clip.getDuration()) {
+				throw new IllegalArgumentException("The playback position must be a positive value.");
 			}
 			this.player.setPosition(milliseconds+clip.getContentPosition());
 		}

@@ -25,9 +25,9 @@ class TestEmptyClip {
 	@Test
 	void testEmptyClipExceptions() {
 		RPClip<?> clip = new EmptyClip();
-		assertThrows(IllegalStateException.class, ()->clip.setContentPosition(10));
-		assertThrows(IllegalStateException.class, ()->clip.getContentPosition());
-		assertThrows(IllegalStateException.class, ()->clip.getContent());
+		assertThrows(UnsupportedOperationException.class, ()->clip.setContentPosition(10));
+		assertThrows(UnsupportedOperationException.class, ()->clip.getContentPosition());
+		assertThrows(UnsupportedOperationException.class, ()->clip.getContent());
 	}
 
 }
