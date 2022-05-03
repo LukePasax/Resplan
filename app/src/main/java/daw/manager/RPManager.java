@@ -46,7 +46,7 @@ public interface RPManager {
     /**
      * This method creates Clip and all the corresponding components
      */
-    void addClip(RPPart.PartType type, String title, Optional<String> description, Optional<File> content);
+    void addClip(RPPart.PartType type, String title, Optional<String> description,String channel,Double time, Optional<File> content);
 
     /**
      * A method to return the {@link RPRole} associated with a groupName

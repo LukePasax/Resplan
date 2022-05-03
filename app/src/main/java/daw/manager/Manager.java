@@ -148,7 +148,7 @@ public class Manager implements RPManager{
      * This method creates a Clip and all the corresponding components
      */
     @Override
-    public void addClip(RPPart.PartType type, String title, Optional<String> description, Optional<File> content) {
+    public void addClip(RPPart.PartType type, String title, Optional<String> description,String channel,Double time, Optional<File> content) {
         final RPClip clip;
         if (content.isPresent()) {
             clip = new FileClip(content.get());
@@ -164,6 +164,7 @@ public class Manager implements RPManager{
             part = description.map(s -> new SoundtrackPart(title, s)).orElseGet(() -> new SoundtrackPart(title));
         }
         this.clipLinker.addClipReferences(clip, part);
+        channelLinker.getTapeChannel(channelLinker.getPart(title)).insertRPClip(clip, time);
     }
 
     /**

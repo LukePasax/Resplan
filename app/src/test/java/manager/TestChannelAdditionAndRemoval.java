@@ -17,7 +17,7 @@ public class TestChannelAdditionAndRemoval {
     private final RPManager manager = new Manager();
 
     @Test
-    public void testNormalAddition() {
+    public void testAddition() {
         manager.addChannel(RPRole.RoleType.SPEECH, "Paolo", Optional.empty());
         manager.addChannel(RPRole.RoleType.SPEECH, "Stefano", Optional.of("Mio cugino"));
         manager.addChannel(RPRole.RoleType.EFFECTS, "Cheer effect", Optional.empty());
