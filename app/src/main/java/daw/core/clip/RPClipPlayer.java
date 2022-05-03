@@ -34,6 +34,8 @@ public interface RPClipPlayer {
 	 * to {@code clip.getContentPosition()}, which is equals to the zero position of the clip.
 	 * 
 	 * @param  milliseconds  The playback position in milliseconds.
+	 * 
+	 * @throws  IllegalArgumentException  If the given time is equal to zero, a negative value or if is bigger than the clip duration.
 	 */
 	void setPlaybackPosition(double milliseconds);
 	

@@ -12,8 +12,10 @@ import java.io.File;
  * <p>An RPClip could also be empty.
  * An empty RPClip is used for reserving space in any {@link RPTapeChannel}, so it can be filled later.
  * <p>Calling the {@link #duplicate} method generate an exact copy of a clip.
+ * 
+ * @param <X>  The content Type.
  */
-public interface RPClip {
+public interface RPClip<X> {
 	
 	/**
 	 * This should be the default duration for an RPClip if it has not been specified or is not yet known.
@@ -25,7 +27,7 @@ public interface RPClip {
 	 * 
 	 * @param  milliseconds  The duration of this clip in milliseconds.
 	 * 
-	 * @throws  IllegalArgumentException  If the specified duration is zero or a negative value.
+	 * @throws  IllegalArgumentException  If the specified duration is zero, a negative value or if the specified duration is bigger than the content duration. 
 	 */
 	void setDuration(double milliseconds);
 
@@ -71,12 +73,12 @@ public interface RPClip {
 	 *
 	 * @throws  UnsupportedOperationException  If this RPClip is Empty. 
 	 */
-	File getContent();
+	X getContent();
 	
 	/**
 	 * Generate an exact copy of this RPClip.
 	 * 
 	 * @return  a duplicate of this RPClip.
 	 */
-	RPClip duplicate() throws Exception;
+	RPClip<X> duplicate() throws Exception;
 }

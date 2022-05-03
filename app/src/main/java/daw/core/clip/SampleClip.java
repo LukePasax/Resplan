@@ -12,12 +12,12 @@ import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
  * <p>The default duration is the same as the audio content one.
  * A SampleClip wrap a FileClip object and add all the Audio content related features and controls.
  */
-public class SampleClip implements RPClip {
+public class SampleClip implements RPClip<Sample> {
 	
 	/**
 	 * The FileClip that this object wrap.
 	 */
-	private final RPClip clip;
+	private final RPClip<File> clip;
 	
 	/**
 	 * The audio {@link Sample} content.
@@ -36,13 +36,13 @@ public class SampleClip implements RPClip {
 	 * 
 	 * @throws  IllegalArgumentException  If the supplied clip isn't a {@code FileClip.class} object
 	 * 
-	 * @throws  IOException  If the file can't be read or write.
+	 * @throws  IOException  If some I/O exception has occurred.
 	 * 
 	 * @throws  OperationUnsupportedException  If some write/read operation is not supported for this file.
 	 * 
 	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
-	private SampleClip(RPClip fileClip) throws IOException, OperationUnsupportedException, FileFormatException {
+	private SampleClip(RPClip<File> fileClip) throws IOException, OperationUnsupportedException, FileFormatException {
 		if(fileClip.getClass()!=FileClip.class) {
 			throw new IllegalArgumentException("The supplied fileClip must be a FileClip class object");
 		}
@@ -64,13 +64,13 @@ public class SampleClip implements RPClip {
 	 * 
 	 * @param  emptyClip  The empty clip to wrap.
 	 * 
-	 * @throws  IOException  If the file can't be read or write.
+	 * @throws  IOException  If some I/O exception has occurred.
 	 * 
 	 * @throws  OperationUnsupportedException  If some write/read operation is not supported for this file.
 	 * 
 	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
-	protected SampleClip(File file, RPClip emptyClip) throws IOException, OperationUnsupportedException, FileFormatException {
+	protected SampleClip(File file, RPClip<?> emptyClip) throws IOException, OperationUnsupportedException, FileFormatException {
 		this(new FileClip(file, emptyClip));
 	}
 	
@@ -79,7 +79,7 @@ public class SampleClip implements RPClip {
 	 * 
 	 * @param  file  The audio file content.
 	 * 
-	 * @throws  IOException  If the file can't be read or write.
+	 * @throws  IOException  If some I/O exception has occurred.
 	 * 
 	 * @throws  OperationUnsupportedException  If some write/read operation is not supported for this file.
 	 * 
@@ -99,7 +99,7 @@ public class SampleClip implements RPClip {
 	 * 
 	 * @param  file  The audio file content.
 	 * 
-	 * @throws  IOException  If the file can't be read or write.
+	 * @throws  IOException  If some I/O exception has occurred.
 	 * 
 	 * @throws  OperationUnsupportedException  If some write/read operation is not supported for this file.
 	 * 
@@ -112,11 +112,11 @@ public class SampleClip implements RPClip {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @throws  IllegalArgumentException  If the specified duration is zero, a negative value or if the specified duration is bigger than the content duration 
+	 * @throws  IllegalArgumentException  If the specified duration is zero, a negative value or if the specified duration is bigger than the content duration. 
 	 */
 	@Override
 	public void setDuration(double milliseconds) {
-		if(sample.getLength()<milliseconds) {
+		if((sample.getLength()-this.getContentPosition())<milliseconds) {
 			throw new IllegalArgumentException("the new clip duration can't be bigger than the content duration");
 		}
 		this.clip.setDuration(milliseconds);
@@ -155,8 +155,8 @@ public class SampleClip implements RPClip {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public File getContent() {
-		return this.clip.getContent();
+	public Sample getContent() {
+		return this.sample;
 	}
 
 	/**
@@ -170,14 +170,14 @@ public class SampleClip implements RPClip {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @throws  IOException  If the file can't be read or write.
+	 * @throws  IOException  If some I/O exception has occurred.
 	 * 
 	 * @throws  OperationUnsupportedException  If some write/read operation is not supported for this file.
 	 * 
 	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
 	@Override
-	public RPClip duplicate() throws IOException, OperationUnsupportedException, FileFormatException {
+	public RPClip<Sample> duplicate() throws IOException, OperationUnsupportedException, FileFormatException {
 			return new SampleClip(this.clip);
 	}
 }

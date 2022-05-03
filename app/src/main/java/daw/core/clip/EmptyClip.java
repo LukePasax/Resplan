@@ -1,12 +1,10 @@
 package daw.core.clip;
 
-import java.io.File;
-
 /**
  * An {@link RPClip} without a content.
  * <p>Since there's no content an EmptyClip stores only it's duration.
  */
-public class EmptyClip implements RPClip {
+public class EmptyClip implements RPClip<NoContent> {
 
 	/**
 	 * The duration of this RPClip.
@@ -27,7 +25,7 @@ public class EmptyClip implements RPClip {
 	 */
 	public EmptyClip(double duration) {
 		if(duration <= 0) {
-			throw new IllegalArgumentException("The duration of a clip must be a positive value");
+			throw new IllegalArgumentException("The duration of a clip must be a non-zero and positive value.");
 		}
 		this.duration = duration;
 	}
@@ -58,7 +56,7 @@ public class EmptyClip implements RPClip {
 	 * @throws  UnsupportedOperationException  {@inheritDoc}
 	 */
 	@Override
-	public File getContent() {
+	public NoContent getContent() {
 		throw new UnsupportedOperationException("Can't get the Content of an Empty Clip. Conver the clip into one with content then retry.");
 	}
 
@@ -78,7 +76,7 @@ public class EmptyClip implements RPClip {
 	@Override
 	public void setDuration(double milliseconds) {
 		if(duration <= 0) {
-			throw new IllegalArgumentException("The duration of a clip must be a positive value");
+			throw new IllegalArgumentException("The duration of a clip must be a non-zero and positive value.");
 		}
 		this.duration = milliseconds;
 	}
@@ -95,7 +93,7 @@ public class EmptyClip implements RPClip {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public RPClip duplicate() {
+	public RPClip<NoContent> duplicate() {
 		return new EmptyClip(this.duration);
 	}
 

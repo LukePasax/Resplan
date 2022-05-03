@@ -9,12 +9,12 @@ import java.io.File;
  * in some way or converted to it, so the content position is a time value in milliseconds.
  * A FileClip wrap an Empty RPClip object and add all the File content related features and controls.
  */
-public class FileClip implements RPClip {
+public class FileClip implements RPClip<File> {
 	
 	/**
 	 * The empty clip that this object wrap.
 	 */
-	private final RPClip clip;
+	private final RPClip<?> clip;
 	
 	/**
 	 * The File content.
@@ -39,7 +39,7 @@ public class FileClip implements RPClip {
 	 * @throws  IllegalArgumentException  If the supplied file does not exists
 	 * 							 or if {@link #isEmpty} method of the supplied clip returns {@code false}.
 	 */
-	protected FileClip(File content, RPClip emptyClip) {
+	protected FileClip(File content, RPClip<?> emptyClip) {
 		if(!content.exists()) {
 			throw new IllegalArgumentException("The file does not exists");
 		}
@@ -127,8 +127,8 @@ public class FileClip implements RPClip {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public RPClip duplicate() {
-		RPClip newClip = new FileClip(this.content, this.clip);
+	public RPClip<File> duplicate() {
+		RPClip<File> newClip = new FileClip(this.content, this.clip);
 		newClip.setContentPosition(this.contentPosition);
 		return newClip;
 	}

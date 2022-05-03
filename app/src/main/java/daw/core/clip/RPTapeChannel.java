@@ -7,93 +7,144 @@ import java.util.Map.Entry;
 import javafx.util.Pair;
 
 /**
- * Place and Manage RSClips in the Timeline of a tape channel.
- * The tape rapresent the physical support where you can record your audio.
- * For every channel of the Tape can record one source at time so clips of one channel can't overlap in the timeline.
- *
- * @author alessandro
+ * Place and Manage {@link RPClip} in a Timeline.
+ * <p>The tape rapresent the physical support where you can record your audio.
+ * <br>For every channel of the Tape is supported one source at time so clips of one RPTapeChannel can't overlap in the timeline.
+ * <p>The time in and time out refers to the starting and ending position of a clip in the timeline.
+ * Each clip is identified from his time in.
  */
 public interface RPTapeChannel {
 	
 	/**
-	 * Add an RPClip in the timeline of this tape channel. 
-	 * If another RPClip is present at the specified time the new clip will be placed over the already present RPClip.
-	 * @param clip
-	 * @param time
+	 * Add an {@link RPClip} in the timeline of this tape channel. 
+	 * <p>If another clip with a different time in is already present at the specified time the old one will be cutted 
+	 * and the new one will be placed at the specified time.
+	 * 
+	 * @param  clip  The clip to insert.
+	 * 
+	 * @param  time  The time where to insert the clip.
+	 * 
+	 * @throws  IllegalStateException  If another clip with the same time in already exists or if 
+	 * 						the same clip already exists in this tape channel.
+	 *
+	 * @throws  IllegalArgumentException  If the given time is a negative value.
 	 */
-	void insertRPClip(RPClip clip, double time);
+	void insertRPClip(RPClip<?> clip, double time);
 	
 	/**
-	 * Remove the specified RPClip in the timeline of this tape channel.
-	 * @param clipTimeIn
+	 * Remove the specified {@link RPClip} from the timeline of this tape channel.
+	 * 
+	 * @param  clipTimeIn  The time in of the clip to remove.
+	 * 
+	 * @throws ClipNotFoundException  If there's no clip with the specified time in.
 	 */
-	void removeRPClip(double clipTimeIn);
+	void removeClip(double clipTimeIn) throws ClipNotFoundException;
 	
 	/**
-	 * Return true if there's no clip in the tape channel
-	 * @return
+	 * Check if this tape channel is empty.
+	 * 
+	 * @return  {@code true} if and only if there aren't clips in the tape channel
+	 * 			{@code false} otherwise.
 	 */
 	boolean isEmpty();
 	
 	/**
-	 * Get the Optional<Entry<Double, RPClip>> placed at a specified time in the timeline of this tape channel.
-	 * If there's no RPClip placed in the specified time this method must return an Optional.empty().
-	 * @param time
-	 * @return
+	 * If present get an {@link Optional} of {@link Pair} of the clip intersected at the specified time and it's time in.
+	 * 
+	 * @param  time  The timeline position where to search the clip.
+	 * 
+	 * @return  {@code Optional<Entry<Double, RPClip>>} of clip intersected or 
+	 * 			{@code  Optional.empty()} if no clip is present at the specified time.
 	 */
-	Optional<Pair<Double, RPClip>> getClipAt(double time);
+	Optional<Pair<Double, RPClip<?>>> getClipAt(double time);
 	
 	/**
-	 * Get an Optional of Iterator which iterate all the Pair<Double, RPClip> of the tape channel ordered by time.
-	 * Return an Optional.empty() if the Tape Channel contains no clip.
-	 * @return
+	 * Get an {@link Iterator} which iterate all the clips of the tape channel ordered by time with their time in.
+	 * 
+	 * @return	An {@code Iterator} of all {@code Pair<Double, RPClip>} of this tape channel.
 	 */
-	Iterator<Pair<Double, RPClip>> getClipWithTimeIterator();
+	Iterator<Pair<Double, RPClip<?>>> getClipWithTimeIterator();
 	
 	/**
-	 * Get an Optional of Iterator which iterate all the Pair<Double, RPClip> of the tape channel that match the predicate. All the items are ordered by time).
-	 * Return an Optional.empty() if the Tape Channel contains no clip matching the predicate.
-	 * @return
+	 * Get an {@link Iterator} which iterate all the clips of the tape channel that match the {@link Predicate}. All the items are ordered by time.
+	 * 
+	 * @return An {@code Iterator} of all {@code Pair<Double, RPClip>} of this tape channel matching the {@code Predicate}.
 	 */
-	Iterator<Pair<Double, RPClip>> getClipWithTimeIteratorFiltered(Predicate<? super Entry<Double, RPClip>> predicate);
+	Iterator<Pair<Double, RPClip<?>>> getClipWithTimeIteratorFiltered(Predicate<? super Entry<Double, RPClip<?>>> predicate);
 	
 	/**
-	 * @param clip
-	 * @return
+	 * Get the time out of the specified clip.
+	 * 
+	 * @param  clipTimeIn  The time in of the clip.
+	 * 
+	 * @return  The time out of the specified clip.
+	 * 
+	 * @throws ClipNotFoundException  If there's no clip with the specified time in.
 	 */
-	public double getClipTimeOut(Pair<Double, RPClip> clip);
+	public double getClipTimeOut(double clipTimeIn) throws ClipNotFoundException;
 	
 	/**
-	 * Move the specified clip at the specified time in the timeline. 
-	 * If another RPClip is present at the specified time the moved clip will be placed over the other RPClip.
-	 * @param clip
-	 * @param time
+	 * Move the specified clip in a new position of the timeline of this tape channel.
+	 * <p>If another clip is already present at the specified time the old one will be cutted 
+	 * and the new one will be placed at the specified time.
+	 * 
+	 * @param  initialClipTimeIn  The time in of the clip to move.
+	 * 
+	 * @param  finalClipTimeIn  The final position where to move the clip.
+	 * 
+	 * @throws  ClipNotFoundException  If there's no clip with the specified time in.
 	 */
-	void move(double initialClipTimeIn, double finalClipTimeIn);
+	void move(double initialClipTimeIn, double finalClipTimeIn) throws ClipNotFoundException;
 	
 	/**
 	 * Set the duration of the specified clip.
-	 * If you extend the clip over another, the secondone will be cutted.
-	 * If the specified duration is bigger than the Clip Content Size then an exception could be lunched.
-	 * @param clip
-	 * @param duration
+	 * <p>If you extend the clip over another, the secondone will be cutted.
+	 * 
+	 * @param  clipTimeIn  The time in of the clip to modify.
+	 * 
+	 * @param  finalClipTimeOut  The final time out of the clip.
+	 * 
+	 * @throws  IllegalArgumentException  If the specified time out is before the clip time in or 
+	 * 					if the new clip duration exceeds the remaining content at the end of the clip.
+	 * 
+	 * @throws  ClipNotFoundException  If there's no clip with the specified time in.
 	 */
-	void setTimeOut(double initialClipTimeIn, double finalClipTimeOut);
+	void setTimeOut(double clipTimeIn, double finalClipTimeOut) throws ClipNotFoundException;
 	
 	/**
-	 * Move the clip starting point over the timeline without move the clip.
-	 * The duration and the RPClip content starting position will be modified.
-	 * @param clip
-	 * @param time
+	 * Move the time in over the timeline without changing the position of the clip content.
+	 * <p>The duration of the clip and the time in will change. The clip content position will be modified for compensate the shift of the clip time in.
+	 * 
+	 * @param  initialClipTimeIn  The time in of the clip to modify.
+	 * 
+	 * @param  finalClipTimeIn  The final time in of the clip.
+	 * 
+	 * @throws ClipNotFoundException  If there's no clip with the specified time in.
+	 * 
+	 * @throws  IllegalArgumentException  If the specified time in is after the clip time out or 
+	 * 					if the new clip duration exceeds the remaining content at the beginning of the clip.
 	 */
-	void setTimeIn(double initialClipTimeIn, double finalClipTimeIn);
+	void setTimeIn(double initialClipTimeIn, double finalClipTimeIn) throws ClipNotFoundException;
 	
 	/**
-	 * Split a clip in two different RPClips.
-	 * The time specified does not refere to the timeline but to the position where to split the clip starting from the beginning of the clip.
-	 * @param clip
-	 * @param time
+	 * Split a clip in two different clips.
+	 * <p>The splitting time does not refere to the timeline, but to the clip duration.
+	 * So the time where to split the clip it's calculated considering the zero at the beginning of the clip.
+	 * 
+	 * @param  initialClipTimeIn  The time in of the clip to modify.
+	 *
+	 * @param  splittingTime  The time where to split the clip.
+	 * 
+	 * @throws ClipNotFoundException  If there's no clip with the specified time in.
+	 * 
+	 * @throws IllegalArgumentException  If the specified splitting time is bigger than the clip duration.
 	 */
-	void split(double initialClipTimeIn, double SplittingTime);
+	void split(double initialClipTimeIn, double splittingTime) throws ClipNotFoundException;
+
+	/**
+	 * Calculate the time out from a time in and a duration.
+	 * <p>There might not be a clip associated with the given time in.
+	 */
+	double calculateTimeOut(double timeIn, double duration);
 
 }

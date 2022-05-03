@@ -14,7 +14,7 @@ class TestSampleClip {
 	void testSampleClipCreation() {
 		File content = new File(System.getProperty("user.dir") + SEP + "src" +
 				SEP + "test" + SEP + "resources"+ SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav");
-		RPClip sampleClip;
+		RPClip<?> sampleClip;
 		try {
 			sampleClip = new SampleClip(content);
 			assertFalse(sampleClip.isEmpty());

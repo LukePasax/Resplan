@@ -1,20 +1,25 @@
 package daw.core.clip;
 
-import java.io.IOException;
 import java.util.Optional;
 
 import daw.core.channel.RPChannel;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.data.Sample;
-import net.beadsproject.beads.data.audiofile.FileFormatException;
-import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 import net.beadsproject.beads.ugens.SamplePlayer;
 import net.beadsproject.beads.ugens.SamplePlayer.LoopType;
 
+/**
+ * A Factory for {@link RPClipPlayer} which plays a {@link SampleClip}
+ *	<p>Creates a {@link SampleClipPlayer} and connect it with the given {@link RPChannel}.
+ *	Could also create a player with an active cut already setted.
+ */
 public class SampleClipPlayerFactory implements ClipPlayerFactory {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public RPClipPlayer createClipPlayer(RPClip clip, RPChannel channel) throws IOException, OperationUnsupportedException, FileFormatException {
+	public RPClipPlayer createClipPlayer(RPClip<?> clip, RPChannel channel) {
 		if(!clip.getClass().equals(SampleClip.class)) {
 			throw new IllegalArgumentException("The supplied clip must be a Sample Clip");
 		}
@@ -23,13 +28,20 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 		return player;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public RPClipPlayer createClipPlayerWithActiveCut(RPClip clip, RPChannel channel, double cut) throws IOException, OperationUnsupportedException, FileFormatException {
+	public RPClipPlayer createClipPlayerWithActiveCut(RPClip<?> clip, RPChannel channel, double cut) {
 		var player = this.createClipPlayer(clip, channel);
 		player.setCut(cut);
 		return player;
 	}
 	
+	/**
+	 * An {@link RPClipPlayer} for a {@link SampleClip}.
+	 *
+	 */
 	public class SampleClipPlayer implements RPClipPlayer {
 		
 		/**
@@ -38,9 +50,9 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 		private final SamplePlayer player;
 		
 		/**
-		 * The content position of the RPClip to play.
+		 * The RPClip to play.
 		 */
-		private final double contentPosition;
+		private final RPClip<Sample> clip;
 		
 		/**
 		 * The optional cutTime.
@@ -49,30 +61,37 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 		
 		/**
 		 * Creates a SampleClipPlayer from a sampleClip.
-		 * @param sampleClip
-		 * @throws IOException
-		 * @throws OperationUnsupportedException
-		 * @throws FileFormatException
+		 * 
+		 * @param  sampleClip  The {@link SampleClip} to play.
 		 */
-		private SampleClipPlayer(SampleClip sampleClip) throws IOException, OperationUnsupportedException, FileFormatException {
-			this.player = new SamplePlayer(new Sample(sampleClip.getContent().getAbsolutePath()));
-			this.contentPosition = sampleClip.getContentPosition();
-			this.player.setPosition(this.contentPosition);
+		private SampleClipPlayer(SampleClip sampleClip) {
+			this.player = new SamplePlayer(sampleClip.getContent());
+			this.clip = sampleClip;
+			this.player.setPosition(this.clip.getContentPosition());
 			this.player.setLoopType(LoopType.NO_LOOP_FORWARDS);
 			this.cutTime = Optional.empty();
 			this.stop();
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public void play() {
 			this.player.start();
 		}
 
+		/**
+		 *  {@inheritDoc}
+		 */
 		@Override
 		public void pause() {
 			this.player.pause(true);
 		}
 
+		/**
+		 *  {@inheritDoc}
+		 */
 		@Override
 		public void stop() {
 			this.pause();
@@ -83,44 +102,77 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 			}	
 		}
 
+		/**
+		 *  {@inheritDoc}
+		 *  
+		 *  @throws  IllegalArgumentException  {@inheritDoc}
+		 */
 		@Override
 		public void setPlaybackPosition(double milliseconds) {
-			this.player.setPosition(milliseconds+contentPosition);
+			if(milliseconds<=0 || milliseconds>=clip.getDuration()) {
+				throw new IllegalArgumentException("The playback position must be a non-zero and positive value.");
+			}
+			this.player.setPosition(milliseconds+clip.getContentPosition());
 		}
 
+		/**
+		 *  {@inheritDoc}
+		 */
 		@Override
 		public double getPlaybackPosition() {
 			return this.player.getPosition();
 		}
 
+		/**
+		 *  {@inheritDoc}
+		 *  
+		 *  @throws  IllegalArgumentException  {@inheritDoc}
+		 */
 		@Override
 		public void setCut(double time) {
 			if(time<=0) {
-				throw new IllegalArgumentException("The supplied time could not be zero or a negative value.");
+				throw new IllegalArgumentException("The supplied time must be a non-zero and positive value.");
 			}
 			this.cutTime = Optional.of(time);
 		}
 
+		/**
+		 *  {@inheritDoc}
+		 */
 		@Override
 		public void disableCut() {
 			this.cutTime = Optional.empty();
 		}
 
+		/**
+		 *  {@inheritDoc}
+		 */
 		@Override
 		public UGen getUGen() {
 			return this.player;
 		}
 
+		/**
+		 *  {@inheritDoc}
+		 */
 		@Override
 		public boolean isPaused() {
 			return this.player.isPaused();
 		}
 
+		/**
+		 *  {@inheritDoc}
+		 */
 		@Override
 		public boolean isCutActive() {
 			return this.cutTime.isPresent();
 		}
 
+		/**
+		 *  {@inheritDoc}
+		 *  
+		 *  @throws  IllegalStateException  {@inheritDoc}
+		 */
 		@Override
 		public double getCutTime() {
 			if(this.cutTime.isEmpty()) {
@@ -128,7 +180,6 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 			}
 			return this.cutTime.get();
 		}
-
 	}
 
 
