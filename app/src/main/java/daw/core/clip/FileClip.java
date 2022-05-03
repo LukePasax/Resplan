@@ -28,9 +28,16 @@ public class FileClip implements RPClip {
 	
 	/**
 	 * Creates a FileClip from a file content and an empty Clip.
-	 * Constructor reserved for the {@link RPClipConverter} method that fills an empty clip with a content.
+	 * Constructor reserved for the {@link RPClipConverter} method 
+	 * that fills an empty clip with a content.
+	 * The duration is the same as the supplied empty clip.
+	 * 
 	 * @param  content  The File content of this RPClip.
+	 * 
 	 * @param  emptyClip  The empty RPClip to wrap.
+	 * 
+	 * @throws  IllegalArgumentException  If the supplied file does not exists
+	 * 							 or if {@link #isEmpty} method of the supplied clip returns {@code false}.
 	 */
 	protected FileClip(File content, RPClip emptyClip) {
 		if(!content.exists()) {
@@ -46,6 +53,7 @@ public class FileClip implements RPClip {
 	/**
 	 * Creates a FileClip with a duration of {@value RPClip#DEFAULT_DURATION} milliseconds 
 	 * filled with the specified file.
+	 * 
 	 * @param  content  The File content of this RPClip.
 	 */
 	public FileClip(File content) {
@@ -54,7 +62,9 @@ public class FileClip implements RPClip {
 	
 	/**
 	 * Creates a FileClip with the specified duration filled with the specified file.
+	 * 
 	 * @param  duration  The duration of this clip in milliseconds.
+	 * 
 	 * @param  content  The File content of this RPClip.
 	 */
 	public FileClip(double duration, File content) {
@@ -74,8 +84,6 @@ public class FileClip implements RPClip {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @throws  UnsupportedOperationException {@inheritDoc}
-	 * 
 	 * @throws  IllegalArgumentException {@inheritDoc}
 	 */
 	@Override
@@ -93,8 +101,6 @@ public class FileClip implements RPClip {
 	
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @throws  UnsupportedOperationException {@inheritDoc}
 	 */
 	@Override
 	public double getContentPosition() {
@@ -103,8 +109,6 @@ public class FileClip implements RPClip {
 
 	/**
 	 * {@inheritDoc}
-	 * 
-	 * @throws  UnsupportedOperationException {@inheritDoc}
 	 */
 	@Override
 	public File getContent() {

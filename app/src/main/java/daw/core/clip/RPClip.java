@@ -25,7 +25,7 @@ public interface RPClip {
 	 * 
 	 * @param  milliseconds  The duration of this clip in milliseconds.
 	 * 
-	 * @throws  IllegalArgumentException  If the specified duration is negative.
+	 * @throws  IllegalArgumentException  If the specified duration is zero or a negative value.
 	 */
 	void setDuration(double milliseconds);
 

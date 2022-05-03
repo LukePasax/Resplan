@@ -22,6 +22,7 @@ public class EmptyClip implements RPClip {
 	
 	/**
 	 * Creates an EmptyClip with a specified duration.
+	 * 
 	 * @param  duration  The duration of this clip in milliseconds.
 	 */
 	public EmptyClip(double duration) {

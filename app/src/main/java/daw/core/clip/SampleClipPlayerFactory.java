@@ -1,6 +1,7 @@
 package daw.core.clip;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import daw.core.channel.RPChannel;
 import net.beadsproject.beads.core.UGen;
@@ -31,17 +32,34 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 	
 	public class SampleClipPlayer implements RPClipPlayer {
 		
+		/**
+		 * The wrapped UGen.
+		 */
 		private final SamplePlayer player;
-		private final double contentPosition;
-		private double cutTime;
-		private boolean isCutActive;
 		
+		/**
+		 * The content position of the RPClip to play.
+		 */
+		private final double contentPosition;
+		
+		/**
+		 * The optional cutTime.
+		 */
+		private Optional<Double> cutTime;
+		
+		/**
+		 * Creates a SampleClipPlayer from a sampleClip.
+		 * @param sampleClip
+		 * @throws IOException
+		 * @throws OperationUnsupportedException
+		 * @throws FileFormatException
+		 */
 		private SampleClipPlayer(SampleClip sampleClip) throws IOException, OperationUnsupportedException, FileFormatException {
 			this.player = new SamplePlayer(new Sample(sampleClip.getContent().getAbsolutePath()));
 			this.contentPosition = sampleClip.getContentPosition();
 			this.player.setPosition(this.contentPosition);
 			this.player.setLoopType(LoopType.NO_LOOP_FORWARDS);
-			this.isCutActive = false;
+			this.cutTime = Optional.empty();
 			this.stop();
 		}
 
@@ -58,16 +76,16 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 		@Override
 		public void stop() {
 			this.pause();
-			if(isCutActive) {
-				this.setPlaybackPosition(cutTime);
+			if(cutTime.isPresent()) {
+				this.setPlaybackPosition(cutTime.get());
 			} else {
-				this.setPlaybackPosition(contentPosition);
+				this.setPlaybackPosition(0);
 			}	
 		}
 
 		@Override
 		public void setPlaybackPosition(double milliseconds) {
-			this.player.setPosition(milliseconds);
+			this.player.setPosition(milliseconds+contentPosition);
 		}
 
 		@Override
@@ -77,13 +95,15 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 
 		@Override
 		public void setCut(double time) {
-			this.cutTime = time;
-			this.isCutActive = true;
+			if(time<=0) {
+				throw new IllegalArgumentException("The supplied time could not be zero or a negative value.");
+			}
+			this.cutTime = Optional.of(time);
 		}
 
 		@Override
 		public void disableCut() {
-			this.isCutActive = false;
+			this.cutTime = Optional.empty();
 		}
 
 		@Override
@@ -98,15 +118,15 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 
 		@Override
 		public boolean isCutActive() {
-			return this.isCutActive;
+			return this.cutTime.isPresent();
 		}
 
 		@Override
 		public double getCutTime() {
-			if(!this.isCutActive) {
+			if(this.cutTime.isEmpty()) {
 				throw new IllegalStateException("The cut is not active for this player");
 			}
-			return this.cutTime;
+			return this.cutTime.get();
 		}
 
 	}
