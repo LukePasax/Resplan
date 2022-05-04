@@ -10,8 +10,9 @@ import net.beadsproject.beads.core.UGen;
  * because there can only be one {@link Sidechaining}.
  * Remember that the order of the calls is relevant because, as specified in the {@link ProcessingUnit}
  * documentation, the ordering by which {@link RPEffect}s are stored influences how sound is processed.
- * The only state which raises an {@link IllegalStateException} is the one where the method build is called
+ * The only state which surely raises an {@link IllegalStateException} is the one where the method build is called
  * and no {@link RPEffect} had been specified, since a {@link ProcessingUnit} can never be empty.
+ * Nonetheless, other exceptions may be thrown by particular instantiations of this interface.
  */
 public interface ProcessingUnitBuilder {
 
@@ -19,6 +20,7 @@ public interface ProcessingUnitBuilder {
      * Makes the {@link ProcessingUnit} have a {@link Sidechaining} tied to the given {@link UGen}.
      * @param u the {@link UGen} which this {@link ProcessingUnit} is sidechained to.
      * @param channels the number of input and output channels for the underlying compressor.
+     * @return a reference to this object.
      */
     ProcessingUnitBuilder sidechain(UGen u, int channels);
 
@@ -26,6 +28,7 @@ public interface ProcessingUnitBuilder {
      * Adds a {@link LowPassFilter} to the {@link ProcessingUnit}.
      * @param channels the number of input and output channels for this effect.
      * @param cutoffFrequency the frequency over which sound gets attenuated or eliminated.
+     * @return a reference to this object.
      */
     ProcessingUnitBuilder lowPassFilter(int channels, float cutoffFrequency);
 
@@ -33,24 +36,28 @@ public interface ProcessingUnitBuilder {
      * Adds a {@link HighPassFilter} to the {@link ProcessingUnit}.
      * @param channels the number of input and output channels for this effect.
      * @param cutoffFrequency the frequency under which sound gets attenuated or eliminated.
+     * @return a reference to this object.
      */
     ProcessingUnitBuilder highPassFilter(int channels, float cutoffFrequency);
 
     /**
      * Adds a {@link DigitalReverb} to the {@link ProcessingUnit}.
      * @param channels the number of input and output channels for this effect.
+     * @return a reference to this object.
      */
     ProcessingUnitBuilder reverb(int channels);
 
     /**
      * Adds a {@link Gate} to the {@link ProcessingUnit}.
      * @param channels the number of input and output channels for this effect.
+     * @return a reference to this object.
      */
     ProcessingUnitBuilder gate(int channels);
 
     /**
      * Adds a {@link Compression} to the {@link ProcessingUnit}.
      * @param channels the number of input and output channels for this effect.
+     * @return a reference to this object.
      */
     ProcessingUnitBuilder compressor(int channels);
 
