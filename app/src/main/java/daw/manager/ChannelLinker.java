@@ -15,14 +15,15 @@ import java.util.stream.Collectors;
 
 public class ChannelLinker implements RPChannelLinker {
 
-    private static Map<RPRole, Pair<RPChannel, RPTapeChannel>> channelMap;
+    private final Map<RPRole, Pair<RPChannel, RPTapeChannel>> channelMap;
 
     ChannelLinker() {
         channelMap = new HashMap<>();
     }
 
     /**
-     * This method links all the given components
+     * This method links all the given components.
+     *
      * @param channel the low-level {@link RPChannel} to link
      * @param tapeChannel the {@link RPTapeChannel} to link
      * @param role the high-level channel, represented by a {@link RPRole} to link
@@ -33,7 +34,8 @@ public class ChannelLinker implements RPChannelLinker {
     }
 
     /**
-     * A method that returns the {@link RPChannel} linked to the given {@link RPRole}
+     * A method that returns the {@link RPChannel} linked to the given {@link RPRole}.
+     *
      * @param role the {@link RPRole} linked to the wanted {@link  RPChannel}
      * @return the {@link RPChannel} linked to the given {@link RPRole}
      */
@@ -43,7 +45,8 @@ public class ChannelLinker implements RPChannelLinker {
     }
 
     /**
-     * A method that returns the {@link RPTapeChannel} linked to the given {@link RPRole}
+     * A method that returns the {@link RPTapeChannel} linked to the given {@link RPRole}.
+     *
      * @param role the {@link RPRole} linked to the wanted {@link  RPTapeChannel}
      * @return the {@link RPTapeChannel} linked to the given {@link RPRole}
      */
@@ -53,18 +56,18 @@ public class ChannelLinker implements RPChannelLinker {
     }
 
     /**
-     * A method that returns the {@link  RPPart} with the given title
+     * A method that returns the {@link  RPPart} with the given title.
      *
      * @param title the title of the part
      * @return the {@link RPPart} with the given title
      */
     @Override
-    public RPRole getPart(String title) {
+    public RPRole getRole(String title) {
         return channelMap.keySet().stream().filter(k -> k.getTitle().equals(title)).findAny().orElseThrow();
     }
 
     /**
-     * A method to remove a Channel from the list with all its corresponding components
+     * A method to remove a Channel from the list with all its corresponding components.
      *
      * @param role the {@link RPRole} of the Channel that needs to be eliminated
      */
@@ -74,7 +77,7 @@ public class ChannelLinker implements RPChannelLinker {
     }
 
     /**
-     * This method returns all the {@link RPRole} of the type given present in the map
+     * This method returns all the {@link RPRole} of the type given present in the map.
      *
      * @param type the type to search
      * @return a set containing all the {@link  RPRole} of the type given
@@ -85,12 +88,23 @@ public class ChannelLinker implements RPChannelLinker {
     }
 
     /**
-     * This method returns a Set of Pairs of all the low-level parts of a Channel
+     * This method returns a Set of Pairs of all the low-level parts of a Channel.
      *
      * @return a set of pairs of {@link RPChannel} and {@link RPTapeChannel}
      */
     @Override
     public Set<Pair<RPChannel, RPTapeChannel>> getAudioSet() {
         return new HashSet<>(channelMap.values());
+    }
+
+    /**
+     * This method is used to check if a Channel with the given title exists.
+     *
+     * @param title the title of the Channel that need to be checked
+     * @return true if the Channel exists, false otherwise
+     */
+    @Override
+    public boolean channelExists(String title) {
+        return this.channelMap.keySet().stream().anyMatch(k -> k.getTitle().equals(title));
     }
 }

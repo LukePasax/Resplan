@@ -4,12 +4,15 @@ import daw.core.channel.RPChannel;
 import daw.core.clip.*;
 import daw.core.mixer.Mixer;
 import daw.core.mixer.RPMixer;
+import net.beadsproject.beads.data.audiofile.FileFormatException;
+import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 import planning.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
-public class Manager implements RPManager{
+public class Manager implements RPManager {
 
     private final RPMixer mixer;
     private final RPChannelLinker channelLinker;
@@ -32,15 +35,18 @@ public class Manager implements RPManager{
     }
 
     /**
-     * This method creates a Channel of the given {@link RPChannel.Type} and all the corresponding
-     * components
+     * This method creates a Channel of the given {@link daw.core.channel.RPChannel.Type} and all the corresponding
+     * components.
      *
-     * @param type the {@link RPChannel.Type} of {@link RPChannel} to be created
+     * @param type the {@link planning.RPRole.RoleType} of {@link RPChannel} to be created
+     * @param  title the Title to associate to the Channel
+     * @param description the optional Description to associate to the Channel
+     * @throws IllegalArgumentException if the given title is already in use
      */
     @Override
-    public void addChannel(RPRole.RoleType type, String title, Optional<String> description) {
-        if (this.channelLinker.getRoleSet(type).stream().anyMatch(r -> r.getTitle().equals(title))) {
-            throw new IllegalArgumentException();
+    public void addChannel(RPRole.RoleType type, String title, Optional<String> description) throws IllegalArgumentException {
+        if (this.channelLinker.channelExists(title)) {
+            throw new IllegalArgumentException("Channel already exists");
         }
         final RPRole role = this.createRole(type, title, description);
         final RPTapeChannel tapeChannel = new TapeChannel();
@@ -50,19 +56,23 @@ public class Manager implements RPManager{
         } else {
             channel = this.mixer.createBasicChannel();
         }
-        this.channelLinker.addChannelReferences(channel,tapeChannel,role);
+        this.channelLinker.addChannelReferences(channel, tapeChannel, role);
         this.automaticGrouping(role);
     }
 
     /**
-     * This method removes the Channel with the given title
+     * This method removes the Channel with the given title.
      *
      * @param title the title of the Channel to remove
+     * @throws NoSuchElementException if a Channel with the given title does not exist
      */
     @Override
-    public void removeChannel(String title) {
-        this.getGroupList(this.getGroupName(this.channelLinker.getPart(title))).remove(this.channelLinker.getPart(title));
-        this.channelLinker.removeChannel(this.channelLinker.getPart(title));
+    public void removeChannel(String title) throws NoSuchElementException{
+        if (!this.channelLinker.channelExists(title)) {
+            throw new NoSuchElementException("The Channel does not exist");
+        }
+        this.getGroupList(this.getGroupName(this.channelLinker.getRole(title))).remove(this.channelLinker.getRole(title));
+        this.channelLinker.removeChannel(this.channelLinker.getRole(title));
     }
 
     private String getGroupName(RPRole part) {
@@ -96,19 +106,20 @@ public class Manager implements RPManager{
     }
 
     /**
-     * This method adds a Channel to a group
+     * This method adds a Channel to a group.
      *
      * @param role the Channel to add to a group
      * @param groupName the name of the group
+     * @throws NoSuchElementException if a group with the given name does not exist
      */
     @Override
-    public void addToGroup(RPRole role, String groupName) {
+    public void addToGroup(RPRole role, String groupName) throws NoSuchElementException {
         if(!this.groupContains(role, groupName)) {
             this.getGroupList(groupName).add(role);
             this.mixer.linkToGroup(this.channelLinker.getChannel(role),
                     this.channelLinker.getChannel(this.getGroup(groupName)));
         } else {
-            throw new IllegalArgumentException();
+            throw new NoSuchElementException("Group does not exist");
         }
     }
 
@@ -119,17 +130,17 @@ public class Manager implements RPManager{
         throw new IllegalArgumentException();
     }
 
-    //TODO
     /**
-     * A method to create a group
+     * A method to create a group.
      *
      * @param groupName the name of the group to be created
      * @param type the type of group to be created
+     * @throws IllegalArgumentException if a Group with the given name already exists
      */
     @Override
     public void createGroup(String groupName, RPRole.RoleType type) {
         if (this.groupExists(groupName)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Group already exists");
         } else {
             final RPChannel channel;
             if (type.equals(RPRole.RoleType.SOUNDTRACK)) {
@@ -145,13 +156,29 @@ public class Manager implements RPManager{
     }
 
     /**
-     * This method creates a Clip and all the corresponding components
+     * This method creates Clip and all the corresponding components.
+     *
+     * @param type the type of clip that needs to be created
+     * @param title the title to associate with the clip
+     * @param description the optional description to associate with the clip
+     * @param channel the channel where to insert the clip
+     * @param time the starting time of the clip in the channel
+     * @param content the Optional content of the clip
+     * @throws ImportException if there were problems importing the file
      */
     @Override
-    public void addClip(RPPart.PartType type, String title, Optional<String> description,String channel,Double time, Optional<File> content) {
+    public void addClip(RPPart.PartType type, String title, Optional<String> description,String channel,Double time,
+                        Optional<File> content) throws ImportException, IllegalArgumentException {
         final RPClip clip;
+        if (this.clipLinker.clipExists(title)) {
+            throw new IllegalArgumentException("Clip already exists");
+        }
         if (content.isPresent()) {
-            clip = new FileClip(content.get());
+            try {
+                clip = new SampleClip(content.get());
+            } catch (FileFormatException | OperationUnsupportedException | IOException exception) {
+                throw new ImportException("Error in loading file");
+            }
         } else {
             clip = new EmptyClip();
         }
@@ -164,28 +191,45 @@ public class Manager implements RPManager{
             part = description.map(s -> new SoundtrackPart(title, s)).orElseGet(() -> new SoundtrackPart(title));
         }
         this.clipLinker.addClipReferences(clip, part);
-        channelLinker.getTapeChannel(channelLinker.getPart(title)).insertRPClip(clip, time);
+        channelLinker.getTapeChannel(channelLinker.getRole(title)).insertRPClip(clip, time);
     }
 
     /**
-     * A method to return the {@link RPRole} associated with a groupName
+     * This method removes the Clip with the given title.
+     *
+     * @param channel the Channel with the Clip to be removed
+     * @param clip    the tile of the Clip to be removed
+     * @param time    the time of the Clip in the Channel
+     * @throws NoSuchElementException if the Clip does not exist
+     */
+    @Override
+    public void removeClip(String channel, String clip, double time) throws ClipNotFoundException {
+        this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel)).removeClip(time);
+        this.clipLinker.removeClip(this.getClipLinker().getPart(clip));
+    }
+
+    /**
+     * A method to return the {@link RPRole} associated with a groupName.
      *
      * @param groupName the name of the Group
      * @return the {@link RPRole}
+     * @throws NoSuchElementException if the group does non exist
      */
     @Override
-    public RPRole getGroup(String groupName) {
-        return this.groupMap.keySet().stream().filter(k -> k.getTitle().equals(groupName)).findAny().orElseThrow();
+    public RPRole getGroup(String groupName) throws NoSuchElementException {
+        return this.groupMap.keySet().stream().filter(k -> k.getTitle().equals(groupName)).findAny().orElseThrow(() ->
+                new NoSuchElementException("Group does not exist"));
     }
 
     /**
-     * A method to return the list of Channel associated to a group
+     * A method to return the list of Channel associated to a group.
      *
      * @param groupName the name of the group
      * @return a List of {@link RPRole}
+     * @throws NoSuchElementException if the group does not exist
      */
     @Override
-    public List<RPRole> getGroupList(String groupName) {
+    public List<RPRole> getGroupList(String groupName) throws NoSuchElementException {
         return this.groupMap.get(this.getGroup(groupName));
     }
 

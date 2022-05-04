@@ -5,17 +5,18 @@ import planning.RPPart;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class ClipLinker implements RPClipLinker{
 
-    private static Map<RPPart, RPClip> clipMap;
+    private final Map<RPPart, RPClip> clipMap;
 
     ClipLinker() {
         clipMap = new HashMap<>();
     }
 
     /**
-     * This method links the given {@link RPPart} to the given {@link RPClip}
+     * This method links the given {@link RPPart} to the given {@link RPClip}.
      *
      * @param clip the {@link RPClip} to link
      * @param part the {@link RPPart} to link
@@ -26,7 +27,7 @@ public class ClipLinker implements RPClipLinker{
     }
 
     /**
-     * A method that returns the {@link RPClip} linked to the given {@link RPPart}
+     * A method that returns the {@link RPClip} linked to the given {@link RPPart}.
      *
      * @param part the {@link RPPart} linked
      * @return the {@link RPClip} linked
@@ -34,5 +35,38 @@ public class ClipLinker implements RPClipLinker{
     @Override
     public RPClip getClip(RPPart part) {
         return clipMap.get(part);
+    }
+
+    /**
+     * A method that returns the {@link RPPart} with the given title.
+     *
+     * @param title the title of the {@link RPPart}
+     * @return the {@link RPPart} with the given title
+     */
+    @Override
+    public RPPart getPart(String title) {
+        return this.clipMap.keySet().stream().filter(k -> k.getTitle().equals(title)).findAny().orElseThrow(() ->
+                new NoSuchElementException("Clip does not exists"));
+    }
+
+    /**
+     * This method is used to check if a Clip with the given title exists.
+     *
+     * @param title the title of the Clip that need to be checked
+     * @return true if the Clip exists, false otherwise
+     */
+    @Override
+    public boolean clipExists(String title) {
+        return this.clipMap.keySet().stream().anyMatch(k -> k.getTitle().equals(title));
+    }
+
+    /**
+     * This method removes the Clip with the given {@link RPPart}.
+     *
+     * @param part the {@link RPPart} of the Clip
+     */
+    @Override
+    public void removeClip(RPPart part) {
+        this.clipMap.remove(part);
     }
 }
