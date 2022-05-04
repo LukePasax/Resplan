@@ -4,6 +4,7 @@ import daw.core.channel.BasicChannelFactory;
 import daw.core.channel.ChannelFactory;
 import daw.core.channel.RPChannel;
 
+
 public class Mixer implements RPMixer{
 
     private final ChannelFactory channelFactory;
@@ -115,7 +116,6 @@ public class Mixer implements RPMixer{
         masterChannel.connectSource(channel.getOutput());
     }
 
-    //TODO
     /**
      * A method to link a sidechained {@link RPChannel}
      *
