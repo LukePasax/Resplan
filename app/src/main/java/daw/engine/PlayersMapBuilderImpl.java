@@ -7,28 +7,38 @@ import daw.core.clip.SampleClip;
 import daw.core.clip.SampleClipPlayerFactory;
 import daw.manager.ChannelLinker;
 
+/**
+ * Implementation of {@link PlayersMapBuilder}.
+ */
 public class PlayersMapBuilderImpl implements PlayersMapBuilder {
 	
 	private final RPPlayersMap playersMap = new PlayersMap();
 	
 	private Optional<ChannelLinker> channelLinker = Optional.empty();
 	
-	/**
-	 * 
-	 */
+	
 	private ClipPlayerFactory SamplePlayerFactory = new SampleClipPlayerFactory();
-
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public RPPlayersMap build() {
 		return this.playersMap;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public PlayersMapBuilder setChannelLinker(ChannelLinker channelLinker) {
 		this.channelLinker = Optional.of(channelLinker);
 		return this;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public PlayersMapBuilder addSampleClipsBetween(Optional<Double> timeIn, Optional<Double> timeOut) {
 		if(this.channelLinker.isEmpty()) {

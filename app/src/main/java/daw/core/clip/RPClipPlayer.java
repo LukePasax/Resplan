@@ -23,7 +23,7 @@ public interface RPClipPlayer {
 	void pause();
 	
 	/**
-	 * Stop the playback and reset the playback position to 0 or to {@code this.getCutTime()} if {@code this.isCutActive}.
+	 * Stop the playback and reset the playback position to zero or to {@code this.getCutTime()} if {@code this.isCutActive}.
 	 */
 	void stop();
 	
