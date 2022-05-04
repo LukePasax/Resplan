@@ -12,8 +12,41 @@ public class DigitalReverb extends RPEffect {
         this.rev = new Reverb(AudioContextManager.getAudioContext(), channels);
     }
 
+    /**
+     *
+     * @param damping
+     */
+    public void setDamping(float damping) {
+        this.rev.setDamping(damping);
+    }
+
+    /**
+     *
+     * @param roomSize
+     */
+    public void setRoomSize(float roomSize) {
+        this.rev.setSize(roomSize);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public float getDamping() {
+        return this.rev.getDamping();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public float getRoomSize() {
+        return this.rev.getSize();
+    }
+
     @Override
     public void calculateBuffer() {
         this.rev.calculateBuffer();
     }
+
 }

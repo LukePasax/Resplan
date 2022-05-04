@@ -23,10 +23,75 @@ public class Compression extends RPEffect {
     }
 
     /**
+     *
+     * @param attack
+     */
+    public void setAttack(float attack) {
+        this.compressor.setAttack(attack);
+    }
+
+    /**
+     *
+     * @param threshold
+     */
+    public void setThreshold(float threshold) {
+        this.compressor.setThreshold(threshold);
+    }
+
+    /**
+     *
+     * @param decay
+     */
+    public void setDecay(float decay) {
+        this.compressor.setDecay(decay);
+    }
+
+    /**
+     *
+     * @param ratio
+     */
+    public void setRatio(float ratio) {
+        this.compressor.setRatio(ratio);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public float getAttack() {
+        return this.compressor.getAttack();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public float getThreshold() {
+        return this.compressor.getThreshold();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public float getDecay() {
+        return this.compressor.getDecay();
+    }
+
+    /**
+     *
+     * @return
+     */
+    public float getRatio() {
+        return this.compressor.getRatio();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public void calculateBuffer() {
         this.compressor.calculateBuffer();
     }
+
 }

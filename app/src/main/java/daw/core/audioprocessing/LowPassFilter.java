@@ -12,6 +12,22 @@ public class LowPassFilter extends RPEffect {
         this.filter = new OnePoleFilter(AudioContextManager.getAudioContext(), cutoffFrequency);
     }
 
+    /**
+     *
+     * @param frequency
+     */
+    public void setFrequency(float frequency) {
+        this.filter.setFrequency(frequency);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public float getFrequency() {
+        return this.filter.getFrequency();
+    }
+
     @Override
     public void calculateBuffer() {
         this.filter.calculateBuffer();
