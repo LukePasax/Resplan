@@ -13,11 +13,18 @@ public class Compression extends RPEffect {
 
     private final Compressor compressor;
 
+    /**
+     * Constructs a compressor and sets its parameters to the current default.
+     * @param channels the number of inputs and outputs of this effect.
+     */
     public Compression(int channels) {
         super(AudioContextManager.getAudioContext(), channels, channels);
-        this.compressor = new net.beadsproject.beads.ugens.Compressor(AudioContextManager.getAudioContext(), channels);
+        this.compressor = new Compressor(AudioContextManager.getAudioContext(), channels);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void calculateBuffer() {
         this.compressor.calculateBuffer();

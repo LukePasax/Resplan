@@ -18,11 +18,20 @@ public class Sidechaining extends UGen {
 
     private final Compressor compressor;
 
+    /**
+     * Constructs a {@link Sidechaining} object with the given parameters.
+     * Remember to pass the correct sidechained channel, because it cannot be changed after the instantiation.
+     * @param u the channel to be sidechained.
+     * @param channels the number of inputs and outputs of the given channel.
+     */
     public Sidechaining(UGen u, int channels) {
         super(AudioContextManager.getAudioContext(), channels, channels);
         this.compressor = new Compressor(AudioContext.getDefaultContext(), channels).setSideChain(u);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void calculateBuffer() {
         this.compressor.calculateBuffer();

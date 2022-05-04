@@ -9,10 +9,19 @@ import net.beadsproject.beads.core.UGen;
  */
 public abstract class RPEffect extends UGen {
 
-    public RPEffect(AudioContext context, int ins, int outs) {
+    /**
+     * Base constructor for all the effects of this software.
+     * @param context the {@link AudioContext} used by this effect.
+     * @param ins the number of inputs of this effect.
+     * @param outs the number of output of this effect.
+     */
+    protected RPEffect(AudioContext context, int ins, int outs) {
         super(context, ins, outs);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public abstract void calculateBuffer();
 
