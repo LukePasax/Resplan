@@ -1,10 +1,16 @@
 package daw.core.audioprocessing;
 
 import Resplan.AudioContextManager;
+import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.Compressor;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
- * This class represents a gate, which is a tool to reduce or eliminate noise from an audio source.
+ * This class represents a gate, which is a tool that reduces or eliminates noise coming from an audio source.
  * Specifically, a gate parses the audio signal and reduces the volume of all the samples that do not reach
  * a certain volume threshold.
  */
@@ -19,68 +25,37 @@ public class Gate extends RPEffect {
 
     /**
      *
-     * @param attack
-     */
-    public void setAttack(float attack) {
-        this.compressor.setAttack(attack);
-    }
-
-    /**
-     *
-     * @param threshold
-     */
-    public void setThreshold(float threshold) {
-        this.compressor.setThreshold(threshold);
-    }
-
-    /**
-     *
-     * @param decay
-     */
-    public void setDecay(float decay) {
-        this.compressor.setDecay(decay);
-    }
-
-    /**
-     *
-     * @param ratio
-     */
-    public void setRatio(float ratio) {
-        this.compressor.setRatio(ratio);
-    }
-
-    /**
-     *
      * @return
      */
-    public float getAttack() {
-        return this.compressor.getAttack();
+    @Override
+    public Map<String, Float> getParameters() {
+        return Map.of("threshold", this.compressor.getThreshold(), "ratio", this.compressor.getRatio(),
+                "attack", this.compressor.getAttack(), "decay", this.compressor.getDecay());
     }
 
     /**
      *
-     * @return
+     * @param parameters
      */
-    public float getThreshold() {
-        return this.compressor.getThreshold();
+    @Override
+    public void setParameters(Map<String, Float> parameters) {
+        this.compressor.sendData(new DataBead(parameters));
     }
 
     /**
      *
+     * @param key
      * @return
      */
-    public float getDecay() {
-        return this.compressor.getDecay();
+    // TODO
+    @Override
+    protected float getDefaultValue(String key) {
+        return 0.0f;
     }
 
     /**
      *
-     * @return
      */
-    public float getRatio() {
-        return this.compressor.getRatio();
-    }
-
     @Override
     public void calculateBuffer() {
         // TODO

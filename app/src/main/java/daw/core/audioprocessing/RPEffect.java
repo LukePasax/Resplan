@@ -2,6 +2,7 @@ package daw.core.audioprocessing;
 
 import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.core.UGen;
+import java.util.Map;
 
 /**
  * This class is an extension of {@link UGen}. In the context of this software, this class is the one
@@ -18,6 +19,12 @@ public abstract class RPEffect extends UGen {
     protected RPEffect(AudioContext context, int ins, int outs) {
         super(context, ins, outs);
     }
+
+    public abstract Map<String, Float> getParameters();
+
+    public abstract void setParameters(Map<String, Float> parameters);
+
+    protected abstract float getDefaultValue(String key);
 
     /**
      * {@inheritDoc}

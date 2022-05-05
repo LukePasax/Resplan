@@ -1,7 +1,13 @@
 package daw.core.audioprocessing;
 
 import Resplan.AudioContextManager;
+import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.Compressor;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class models compression, that is an audio signal processing operation which reduces the volume of
@@ -24,66 +30,32 @@ public class Compression extends RPEffect {
 
     /**
      *
-     * @param attack
-     */
-    public void setAttack(float attack) {
-        this.compressor.setAttack(attack);
-    }
-
-    /**
-     *
-     * @param threshold
-     */
-    public void setThreshold(float threshold) {
-        this.compressor.setThreshold(threshold);
-    }
-
-    /**
-     *
-     * @param decay
-     */
-    public void setDecay(float decay) {
-        this.compressor.setDecay(decay);
-    }
-
-    /**
-     *
-     * @param ratio
-     */
-    public void setRatio(float ratio) {
-        this.compressor.setRatio(ratio);
-    }
-
-    /**
-     *
      * @return
      */
-    public float getAttack() {
-        return this.compressor.getAttack();
+    @Override
+    public Map<String, Float> getParameters() {
+        return Map.of("threshold", this.compressor.getThreshold(), "ratio", this.compressor.getRatio(),
+                "attack", this.compressor.getAttack(), "decay", this.compressor.getDecay());
     }
 
     /**
      *
-     * @return
+     * @param parameters
      */
-    public float getThreshold() {
-        return this.compressor.getThreshold();
+    @Override
+    public void setParameters(Map<String, Float> parameters) {
+        this.compressor.sendData(new DataBead(parameters));
     }
 
     /**
      *
+     * @param key
      * @return
      */
-    public float getDecay() {
-        return this.compressor.getDecay();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public float getRatio() {
-        return this.compressor.getRatio();
+    // TODO
+    @Override
+    protected float getDefaultValue(String key) {
+        return 0.0f;
     }
 
     /**
