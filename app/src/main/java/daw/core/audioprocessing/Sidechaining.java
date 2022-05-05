@@ -11,8 +11,8 @@ import net.beadsproject.beads.ugens.Compressor;
  * to the volume of another source, so that the sounds don't overlap.
  * Practically, sidechaining is a property that a {@link ProcessingUnit} may possess.
  * A {@link ProcessingUnit} that is sidechained gets an input from another audio source to calculate the
- * level of compression. This external audio source cannot be changed after this class has been instantiated,
- * neither can it be removed.
+ * level of compression. This external audio source can always be changed after initialization, by calling
+ * the method setSidechain.
  */
 public class Sidechaining extends UGen {
 
@@ -27,6 +27,15 @@ public class Sidechaining extends UGen {
     public Sidechaining(UGen u, int channels) {
         super(AudioContextManager.getAudioContext(), channels, channels);
         this.compressor = new Compressor(AudioContext.getDefaultContext(), channels).setSideChain(u);
+    }
+
+    /**
+     * After this method is called, the channel that uses this sidechaining will be sidechained to
+     * the source given as input, regardless if it was already sidechained to another source or not.
+     * @param u
+     */
+    public void setSidechain(UGen u) {
+        this.compressor.setSideChain(u);
     }
 
     /**
