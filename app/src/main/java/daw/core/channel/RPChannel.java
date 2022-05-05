@@ -21,13 +21,13 @@ public interface RPChannel {
 
     /**
      * Connects the given source to the input of the channel.
-     * @param g the source to be connected.
+     * @param g the source that must be connected.
      */
     void connectSource(UGen g);
 
     /**
      * Disconnects the given source from the input of the channel.
-     * @param u the source to be disconnected.
+     * @param u the source that must be disconnected.
      */
     void disconnectSource(UGen u);
 
