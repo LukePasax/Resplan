@@ -32,6 +32,7 @@ public interface ChannelFactory {
     /**
      * Creates an {@link RPChannel} that possesses a sidechain. To know what a sidechain is and how to use it,
      * please read the documentation at {@link Sidechaining}.
+     * @param u the audio source that this channel must be sidechained to.
      * @return the {@link RPChannel}.
      */
     RPChannel sidechained(UGen u);
