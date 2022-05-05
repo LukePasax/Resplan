@@ -42,34 +42,38 @@ public interface RPChannel {
 
     /**
      * Sets the volume.
-     * @param vol
+     * @param vol the value that the volume must be set to.
      */
     void setVolume(int vol);
 
     /**
-     * Gets the volume.
-     * @return a {@link daw.general.Volume}.
+     * Gets the numerical value of the volume.
+     * @return an integer representing the volume.
      */
     int getVolume();
 
     /**
-     * Gets the panner.
+     * Gets the panner, that is the tool which controls the distribution of an audio signal
+     * into a new stereo or multichannel sound field.
      * @return a {@link Panner}.
      */
     Panner getPanner();
 
     /**
-     * Enables the audio of the channel.
+     * Enables the audio of the channel. After this operation is done,
+     * the channel will be able to produce output.
      */
     void enable();
 
     /**
-     * Disables the audio of the channel.
+     * Disables the audio of the channel. After this operation is done,
+     * the channel will not be able to produce any output.
      */
     void disable();
 
     /**
-     * Returns if the audio is enabled.
+     * Allows knowing whether the channel will produce output or not.
+     * @return true if the channel is enabled, that means it can produce output.
      */
     boolean isEnabled();
 
@@ -92,7 +96,7 @@ public interface RPChannel {
     Optional<ProcessingUnit> getProcessingUnit();
 
     /**
-     * Returns whether the channel has a {@link ProcessingUnit} attached or not.
+     * Allows knowing whether the channel has a {@link ProcessingUnit} attached or not.
      * @return true if the channel contains a {@link ProcessingUnit}.
      */
     boolean isProcessingUnitPresent();
