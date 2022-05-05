@@ -6,34 +6,27 @@ import net.beadsproject.beads.ugens.OnePoleFilter;
 
 import java.util.Map;
 
+/**
+ *
+ */
 public class LowPassFilter extends RPEffect {
 
     private final OnePoleFilter filter;
 
+    /**
+     * Constructs a low-pass filter and sets its cutoff frequency to the given value.
+     * @param channels the number of inputs and outputs of this effect.
+     * @param cutoffFrequency the frequency of cutoff.
+     */
     public LowPassFilter(int channels, float cutoffFrequency) {
         super(AudioContextManager.getAudioContext(), channels, channels);
         this.filter = new OnePoleFilter(AudioContextManager.getAudioContext(), cutoffFrequency);
     }
 
     /**
-     *
-     * @param frequency
-     */
-    public void setFrequency(float frequency) {
-        this.filter.setFrequency(frequency);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public float getFrequency() {
-        return this.filter.getFrequency();
-    }
-
-    /**
-     *
-     * @return
+     * {@inheritDoc}
+     * a {@link Map} where the keys are the parameters and the values are the
+     * current value of each parameter of the effect.
      */
     @Override
     public Map<String, Float> getParameters() {
@@ -41,8 +34,8 @@ public class LowPassFilter extends RPEffect {
     }
 
     /**
-     *
-     * @param parameters
+     * {@inheritDoc}
+     * @param parameters the {@link Map} that contains the parameters that must be modified.
      */
     @Override
     public void setParameters(Map<String, Float> parameters) {
@@ -50,9 +43,10 @@ public class LowPassFilter extends RPEffect {
     }
 
     /**
-     *
-     * @param key
-     * @return
+     * {@inheritDoc}
+     * @param key a parameter of this effect.
+     * @return the floating-point default value of the parameter.
+     * @throws IllegalArgumentException if the given string does not match any of the parameters of this effect.
      */
     @Override
     // TODO
@@ -61,7 +55,7 @@ public class LowPassFilter extends RPEffect {
     }
 
     /**
-     *
+     * {@inheritDoc}
      */
     @Override
     public void calculateBuffer() {

@@ -18,14 +18,19 @@ public class Gate extends RPEffect {
 
     private final Compressor compressor;
 
+    /**
+     * Constructs a gate and sets its parameters to the current default.
+     * @param channels the number of inputs and outputs of this effect.
+     */
     public Gate(int channels) {
         super(AudioContextManager.getAudioContext(), channels, channels);
         this.compressor = new Compressor(AudioContextManager.getAudioContext(), channels);
     }
 
     /**
-     *
-     * @return
+     * {@inheritDoc}
+     * @return a {@link Map} where the keys are the parameters and the values are the
+     * current value of each parameter of the effect.
      */
     @Override
     public Map<String, Float> getParameters() {
@@ -34,8 +39,8 @@ public class Gate extends RPEffect {
     }
 
     /**
-     *
-     * @param parameters
+     * {@inheritDoc}
+     * @param parameters the {@link Map} that contains the parameters that must be modified.
      */
     @Override
     public void setParameters(Map<String, Float> parameters) {
@@ -43,9 +48,10 @@ public class Gate extends RPEffect {
     }
 
     /**
-     *
-     * @param key
-     * @return
+     * {@inheritDoc}
+     * @param key a parameter of this effect.
+     * @return the floating-point default value of the parameter.
+     * @throws IllegalArgumentException if the given string does not match any of the parameters of this effect.
      */
     // TODO
     @Override
@@ -54,7 +60,7 @@ public class Gate extends RPEffect {
     }
 
     /**
-     *
+     * {@inheritDoc}
      */
     @Override
     public void calculateBuffer() {

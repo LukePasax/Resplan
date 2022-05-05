@@ -8,13 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ */
 public class DigitalReverb extends RPEffect {
 
     private final Reverb rev;
 
     /**
-     *
-     * @param channels
+     * Constructs a reverb and sets its parameters to the current default.
+     * @param channels the number of inputs and outputs of this effect.
      */
     public DigitalReverb(int channels) {
         super(AudioContextManager.getAudioContext(), channels, channels);
@@ -22,8 +25,9 @@ public class DigitalReverb extends RPEffect {
     }
 
     /**
-     *
-     * @return
+     * {@inheritDoc}
+     * @return a {@link Map} where the keys are the parameters and the values are the
+     * current value of each parameter of the effect.
      */
     @Override
     public Map<String, Float> getParameters() {
@@ -31,8 +35,8 @@ public class DigitalReverb extends RPEffect {
     }
 
     /**
-     *
-     * @param parameters
+     * {@inheritDoc}
+     * @param parameters the {@link Map} that contains the parameters that must be modified.
      */
     @Override
     public void setParameters(Map<String, Float> parameters) {
@@ -40,9 +44,10 @@ public class DigitalReverb extends RPEffect {
     }
 
     /**
-     *
-     * @param key
-     * @return
+     * {@inheritDoc}
+     * @param key a parameter of this effect.
+     * @return the floating-point default value of the parameter.
+     * @throws IllegalArgumentException if the given string does not match any of the parameters of this effect.
      */
     // TODO
     @Override
@@ -51,7 +56,7 @@ public class DigitalReverb extends RPEffect {
     }
 
     /**
-     *
+     * {@inheritDoc}
      */
     @Override
     public void calculateBuffer() {

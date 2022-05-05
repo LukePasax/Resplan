@@ -9,18 +9,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ */
 public class HighPassFilter extends RPEffect {
 
     private final OnePoleFilter filter;
 
+    /**
+     * Constructs a high-pass filter and sets its cutoff frequency to the given value.
+     * @param channels the number of inputs and outputs of this effect.
+     * @param cutoffFrequency the frequency of cutoff.
+     */
     public HighPassFilter(int channels, float cutoffFrequency) {
         super(AudioContextManager.getAudioContext(), channels, channels);
         this.filter = new OnePoleFilter(AudioContextManager.getAudioContext(), cutoffFrequency);
     }
 
     /**
-     *
-     * @return
+     * {@inheritDoc}
+     * @return a {@link Map} where the keys are the parameters and the values are the
+     * current value of each parameter of the effect.
      */
     @Override
     public Map<String, Float> getParameters() {
@@ -28,8 +37,8 @@ public class HighPassFilter extends RPEffect {
     }
 
     /**
-     *
-     * @param parameters
+     * {@inheritDoc}
+     * @param parameters the {@link Map} that contains the parameters that must be modified.
      */
     @Override
     public void setParameters(Map<String, Float> parameters) {
@@ -37,9 +46,10 @@ public class HighPassFilter extends RPEffect {
     }
 
     /**
-     *
-     * @param key
-     * @return
+     * {@inheritDoc}
+     * @param key a parameter of this effect.
+     * @return the floating-point default value of the parameter.
+     * @throws IllegalArgumentException if the given string does not match any of the parameters of this effect.
      */
     @Override
     // TODO
@@ -48,7 +58,7 @@ public class HighPassFilter extends RPEffect {
     }
 
     /**
-     *
+     * {@inheritDoc}
      */
     @Override
     public void calculateBuffer() {

@@ -29,8 +29,9 @@ public class Compression extends RPEffect {
     }
 
     /**
-     *
-     * @return
+     * {@inheritDoc}
+     * @return a {@link Map} where the keys are the parameters and the values are the
+     * current value of each parameter of the effect.
      */
     @Override
     public Map<String, Float> getParameters() {
@@ -39,8 +40,8 @@ public class Compression extends RPEffect {
     }
 
     /**
-     *
-     * @param parameters
+     * {@inheritDoc}
+     * @param parameters the {@link Map} that contains the parameters that must be modified.
      */
     @Override
     public void setParameters(Map<String, Float> parameters) {
@@ -48,9 +49,10 @@ public class Compression extends RPEffect {
     }
 
     /**
-     *
-     * @param key
-     * @return
+     * {@inheritDoc}
+     * @param key a parameter of this effect.
+     * @return the floating-point default value of the parameter.
+     * @throws IllegalArgumentException if the given string does not match any of the parameters of this effect.
      */
     // TODO
     @Override
