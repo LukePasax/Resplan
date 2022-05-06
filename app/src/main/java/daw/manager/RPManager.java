@@ -73,6 +73,25 @@ public interface RPManager {
                  Optional<File> content) throws ImportException,IllegalArgumentException;
 
     /**
+     * This method adds a content to a Clip.
+     *
+     * @param title the title of the Clip
+     * @param content the content to put into the Clip
+     * @throws NoSuchElementException if no Clip with the given title exists
+     * @throws ImportException if there was an error with the file
+     */
+    void addFileToClip(String title, File content) throws ImportException;
+
+    /**
+     * This method removes the content from a Clip.
+     *
+     * @param title the title of the Clip
+     * @throws IllegalArgumentException if the Clip has no content
+     * @throws NoSuchElementException if no Clip with the given title exists
+     */
+    void removeFileFromClip(String title);
+
+    /**
      * This method removes the Clip with the given title.
      *
      * @param channel the Channel with the Clip to be removed

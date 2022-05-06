@@ -18,12 +18,14 @@ public class Manager implements RPManager {
     private final RPChannelLinker channelLinker;
     private final RPClipLinker clipLinker;
     private final Map<RPRole, List<RPRole>> groupMap;
+    private final RPClipConverter clipConverter;
 
     public Manager() {
         this.mixer = new Mixer();
         this.channelLinker = new ChannelLinker();
         this.clipLinker = new ClipLinker();
         this.groupMap = new HashMap<>();
+        this.clipConverter = new ClipConverter();
         this.initializeGroups();
     }
 
@@ -169,18 +171,16 @@ public class Manager implements RPManager {
     @Override
     public void addClip(RPPart.PartType type, String title, Optional<String> description,String channel,Double time,
                         Optional<File> content) throws ImportException, IllegalArgumentException {
-        final RPClip clip;
+        final EmptyClip clip = new EmptyClip();
         if (this.clipLinker.clipExists(title)) {
             throw new IllegalArgumentException("Clip already exists");
         }
         if (content.isPresent()) {
             try {
-                clip = new SampleClip(content.get());
+                this.clipConverter.fromEmptyToSampleClip(clip, content.get());
             } catch (FileFormatException | OperationUnsupportedException | IOException exception) {
                 throw new ImportException("Error in loading file");
             }
-        } else {
-            clip = new EmptyClip();
         }
         final RPPart part;
         if (type.equals(RPPart.PartType.SPEECH)) {
@@ -192,6 +192,44 @@ public class Manager implements RPManager {
         }
         this.clipLinker.addClipReferences(clip, part);
         channelLinker.getTapeChannel(channelLinker.getRole(title)).insertRPClip(clip, time);
+    }
+
+    /**
+     * This method adds a content to a Clip.
+     *
+     * @param title   the title of the Clip
+     * @param content the content to put into the Clip
+     * @throws NoSuchElementException if no Clip with the given title exists
+     */
+    @Override
+    public void addFileToClip(String title, File content) throws ImportException , NoSuchElementException {
+        if (this.clipLinker.clipExists(title)) {
+            throw new NoSuchElementException("The Clip does not exist");
+        }
+        this.removeFileFromClip(title);
+        try {
+            this.clipConverter.fromEmptyToSampleClip((EmptyClip) this.clipLinker.getClip(this.clipLinker.getPart(title)), content);
+        } catch (OperationUnsupportedException | FileFormatException | IOException exception) {
+            throw new ImportException("Error in loading file");
+        }
+    }
+
+    /**
+     * This method removes the content from a Clip.
+     *
+     * @param title the title of the Clip
+     * @throws IllegalArgumentException if the Clip has no content
+     * @throws NoSuchElementException   if no Clip with the given title exists
+     */
+    @Override
+    public void removeFileFromClip(String title) throws NoSuchElementException, IllegalArgumentException {
+        if (!this.clipLinker.clipExists(title)) {
+            throw new NoSuchElementException("The Clip does not exist");
+        }
+        if (!this.clipLinker.getClip(this.clipLinker.getPart(title)).getClass().equals(SampleClip.class)) {
+            throw new IllegalArgumentException("The Clip has no content");
+        }
+        this.clipConverter.fromSampleToEmptyClip((SampleClip) this.clipLinker.getClip(this.clipLinker.getPart(title)));
     }
 
     /**
