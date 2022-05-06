@@ -1,4 +1,4 @@
-package view.DAWView;
+package view.DAW;
 
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -6,7 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-public class DAWViewFXMLController implements Initializable{
+public class DAWFXMLController implements Initializable{
 	
 	@FXML
 	private Label lTimeline;

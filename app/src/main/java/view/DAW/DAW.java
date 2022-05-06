@@ -1,4 +1,4 @@
-package view.DAWView;
+package view.DAW;
 
 import java.io.FileInputStream;
 
@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class DAWView extends Application {
+public class DAW extends Application {
 	
 	private final static String SEP = System.getProperty("file.separator");
 
