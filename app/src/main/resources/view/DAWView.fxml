@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="900.0" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DAWView.DAWViewFXMLController">
+<VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DAWView.DAWViewFXMLController">
    <children>
       <MenuBar>
         <menus>
@@ -40,14 +40,15 @@
                <children>
                   <ScrollPane layoutY="-3.0" minViewportHeight="600.0" minViewportWidth="300.0" prefHeight="675.0" prefViewportHeight="700.0" prefViewportWidth="600.0" prefWidth="486.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-3.0">
                      <content>
-                        <BorderPane minWidth="1.0E7" prefHeight="49.0" style="-fx-border-color: black;">
+                        <BorderPane minWidth="1800000.0" prefHeight="49.0" style="-fx-border-color: black;">
                            <top>
                               <AnchorPane prefHeight="49.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                  <children>
                                     <Label fx:id="lTimeline" layoutY="27.0" />
                                  </children>
                               </AnchorPane>
-                           </top></BorderPane>
+                           </top>
+                        </BorderPane>
                      </content></ScrollPane>
                </children>
             </AnchorPane>
