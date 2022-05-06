@@ -10,5 +10,5 @@ app/.project
 app/.classpath
 app/.settings
 app/bin
-.idea
+.idea/
 .settings/
