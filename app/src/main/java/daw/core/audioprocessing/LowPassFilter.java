@@ -7,7 +7,9 @@ import net.beadsproject.beads.ugens.OnePoleFilter;
 import java.util.Map;
 
 /**
- *
+ * Filtering boosts or attenuates frequencies in a sound, thus modifying the frequency spectrum of that sound.
+ * Low pass filters allow the low frequencies to pass while reducing or even eliminating some of the higher
+ * frequencies.
  */
 public class LowPassFilter extends RPEffect {
 

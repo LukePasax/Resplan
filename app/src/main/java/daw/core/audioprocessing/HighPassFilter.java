@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Filtering boosts or attenuates frequencies in a sound, thus modifying the frequency spectrum of that sound.
+ * High pass filters allow the high frequencies to pass while reducing or even eliminating some of the lower
+ * frequencies.
  */
 public class HighPassFilter extends RPEffect {
 

@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Reverberation, in acoustics, is a persistence of sound, or echo after a sound is produced.
+ * Reverberation is created when a sound or signal is reflected causing numerous reflections to build up
+ * and then decay as the sound is absorbed by the surfaces of objects in the space.
+ * A reverb effect, or digital reverb, is an audio effect applied to a sound signal to simulate reverberation.
  */
 public class DigitalReverb extends RPEffect {
 
