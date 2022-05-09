@@ -4,8 +4,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import daw.core.clip.RPClipPlayer;
-import daw.general.HashMapToSet;
-import daw.general.MapToSet;
+import daw.utilities.HashMapToSet;
+import daw.utilities.MapToSet;
 
 /**
  * Implementation of {@link RPPlayersMap}. It wraps a {@link MapToSet}.

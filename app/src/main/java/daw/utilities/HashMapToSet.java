@@ -1,4 +1,4 @@
-package daw.general;
+package daw.utilities;
 
 import java.util.HashMap;
 import java.util.HashSet;

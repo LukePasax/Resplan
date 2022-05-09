@@ -1,6 +1,6 @@
 package channel;
 
-import Resplan.AudioContextManager;
+import daw.utilities.AudioContextManager;
 import daw.core.audioprocessing.*;
 import net.beadsproject.beads.ugens.Compressor;
 import net.beadsproject.beads.ugens.Reverb;

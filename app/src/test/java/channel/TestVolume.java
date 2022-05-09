@@ -1,7 +1,7 @@
 package channel;
 
-import daw.general.BasicVolume;
-import daw.general.Volume;
+import daw.utilities.BasicVolume;
+import daw.utilities.Volume;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

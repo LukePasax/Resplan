@@ -1,8 +1,8 @@
 package daw.core.channel;
 
-import Resplan.AudioContextManager;
+import daw.utilities.AudioContextManager;
 import daw.core.audioprocessing.ProcessingUnit;
-import daw.general.Volume;
+import daw.utilities.Volume;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.Panner;
