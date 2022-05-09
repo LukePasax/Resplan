@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DAWView.DAWViewFXMLController">
+   <children>
+      <MenuBar>
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <SplitPane dividerPositions="0.29797979797979796, 0.5" minWidth="500.0" prefHeight="700.0" prefWidth="1000.0" VBox.vgrow="ALWAYS">
+        <items>
+          <AnchorPane maxWidth="250.0" minWidth="100.0" prefHeight="160.0" prefWidth="100.0" />
+          <AnchorPane minHeight="600.0" minWidth="300.0" prefHeight="700.0" prefWidth="600.0">
+               <children>
+                  <ScrollPane layoutY="-3.0" minViewportHeight="600.0" minViewportWidth="300.0" prefHeight="675.0" prefViewportHeight="700.0" prefViewportWidth="600.0" prefWidth="486.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-3.0">
+                     <content>
+                        <BorderPane minWidth="1800000.0" prefHeight="49.0" style="-fx-border-color: black;">
+                           <top>
+                              <AnchorPane prefHeight="49.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Label fx:id="lTimeline" layoutY="27.0" />
+                                 </children>
+                              </AnchorPane>
+                           </top>
+                        </BorderPane>
+                     </content></ScrollPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane maxHeight="1080.0" maxWidth="250.0" minHeight="160.0" minWidth="100.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <BorderPane layoutX="-2.0" layoutY="-1.0" prefHeight="49.0" prefWidth="256.0" style="-fx-border-color: black;" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="-4.0">
+                     <top>
+                        <Button fx:id="btnChannel" contentDisplay="CENTER" mnemonicParsing="false" text="Add a channel" textAlignment="CENTER" BorderPane.alignment="CENTER">
+                           <BorderPane.margin>
+                              <Insets top="10.0" />
+                           </BorderPane.margin>
+                        </Button>
+                     </top>
+                  </BorderPane>
+               </children></AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</VBox>
