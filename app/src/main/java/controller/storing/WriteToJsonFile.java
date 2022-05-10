@@ -7,12 +7,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-public class WriteToJSONFile<T> implements WriteToFile<T> {
+public class WriteToJsonFile<T> implements WriteToFile<T> {
 
     private final Gson writer = new Gson();
     private FileWriter fw;
 
-    public WriteToJSONFile(File file) {
+    public WriteToJsonFile(File file) {
         try {
             this.fw = new FileWriter(Objects.requireNonNull(file));
         } catch (IOException e) {

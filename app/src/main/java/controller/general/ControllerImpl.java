@@ -1,7 +1,7 @@
 package controller.general;
 
 import controller.storing.WriteToFile;
-import controller.storing.WriteToJSONFile;
+import controller.storing.WriteToJsonFile;
 import daw.manager.Manager;
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ public class ControllerImpl implements Controller {
     public ControllerImpl(Manager manager) {
         this.manager = manager;
         this.managerInfo = new File(WORKING_DIRECTORY + SEP + "/manager.json");
-        this.managerWriter = new WriteToJSONFile<>(this.managerInfo);
+        this.managerWriter = new WriteToJsonFile<>(this.managerInfo);
     }
 
     @Override
