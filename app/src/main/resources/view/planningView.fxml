@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
@@ -16,7 +15,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" stylesheets="@../stylesheets/planning.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane maxHeight="25.0" prefHeight="25.0">
          <children>
@@ -28,7 +27,7 @@
                   <Rectangle2D />
                </viewport>
             </ImageView>
-            <MenuBar fx:id="menuBar" maxHeight="25.0" prefHeight="25.0" style="-fx-use-system-menu-bar: true;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <MenuBar fx:id="menuBar" maxHeight="25.0" prefHeight="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <menus>
                 <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
                   <items>
@@ -44,7 +43,7 @@
       </AnchorPane>
       <SplitPane fx:id="mainPanel" dividerPositions="0.15, 0.85" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <items>
-            <VBox fx:id="commandBox" alignment="TOP_CENTER" maxWidth="150.0" prefHeight="450.0" spacing="10.0" styleClass="tool-container">
+            <VBox fx:id="commandBox" alignment="TOP_CENTER" maxWidth="150.0" minWidth="-Infinity" prefHeight="450.0" prefWidth="100.0" spacing="10.0" styleClass="tool-container">
                <children>
                   <Button fx:id="newChannelButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="New Channel" />
                   <Button fx:id="newClipButton" mnemonicParsing="false" prefWidth="100.0" text="New Clip" />
@@ -69,12 +68,8 @@
                   </VBox>
                </content>
             </ScrollPane>
-            <VBox fx:id="infoContainer" maxWidth="150.0" prefHeight="450.0" styleClass="tool-container" />
+            <VBox fx:id="infoContainer" maxWidth="150.0" minWidth="-Infinity" prefHeight="450.0" prefWidth="100.0" styleClass="tool-container" />
         </items>
       </SplitPane>
    </children>
-   <stylesheets>
-      <URL value="@../Resplan/app/src/main/resources/stylesheets/planning.css" />
-      <URL value="@../stylesheets/planning.css" />
-   </stylesheets>
 </VBox>
