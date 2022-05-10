@@ -1,5 +1,5 @@
 .separator {
-    -fx-background-color :linear-gradient(from 0px 0px to 0px 50px, orange, darkorange 50%, coral 100%);
+    -fx-background-color :linear-gradient(to bottom, orange, darkorange 50%, coral 100%);
     -fx-border-insets : 1px;
 }
 
@@ -9,7 +9,7 @@
 }
 
 .button {
-    -fx-background-color: linear-gradient(from 0px 0px to 0px 50px, orange, darkorange 50%, coral 100%);
+    -fx-background-color: linear-gradient(to bottom, orange, darkorange 50%, coral 100%);
     -fx-effect : dropshadow(gaussian, black, 10, 0, 1, 1);
 }
 
@@ -22,9 +22,9 @@
 }
 
 .menu-bar {
-    -fx-background-color: linear-gradient(from 0px 0px to 0px 50px, orange, darkorange 50%, coral 100%);
+    -fx-background-color: linear-gradient(to bottom, orange, darkorange 50%, coral 100%);
 }
 
 #menu-container {
-    -fx-background-color: linear-gradient(from 0px 0px to 0px 50px, orange, darkorange 50%, coral 100%);
+    -fx-background-color: linear-gradient(to bottom, orange, darkorange 50%, coral 100%);
 }
