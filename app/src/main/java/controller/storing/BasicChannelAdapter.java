@@ -4,7 +4,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import daw.core.channel.BasicChannel;
-
 import java.io.IOException;
 
 public class BasicChannelAdapter extends TypeAdapter<BasicChannel> {
@@ -18,7 +17,12 @@ public class BasicChannelAdapter extends TypeAdapter<BasicChannel> {
      */
     @Override
     public void write(JsonWriter out, BasicChannel value) throws IOException {
-
+        out.beginObject();
+        out.name("type");
+        out.value(value.getType().toString());
+        out.name("vol");
+        out.value(value.getVolume());
+        out.endObject();
     }
 
     /**
