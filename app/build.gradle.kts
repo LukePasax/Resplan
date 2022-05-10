@@ -40,6 +40,8 @@ dependencies {
         }
     }
     implementation("com.google.code.gson:gson:2.9.0")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.13.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
     implementation("net.beadsproject:beads:3.2")
     // JUnit API and testing engine
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
