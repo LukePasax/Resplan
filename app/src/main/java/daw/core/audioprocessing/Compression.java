@@ -46,6 +46,24 @@ public class Compression extends RPEffect {
     }
 
     /**
+     * Allows to get the number of input channels of the effect.
+     * @return an integer that represents the number of input.
+     */
+    @Override
+    public int getIns() {
+        return this.compressor.getIns();
+    }
+
+    /**
+     * Allows to get the number of output channels of the effect.
+     * @return an integer that represents the number of outputs.
+     */
+    @Override
+    public int getOuts() {
+        return this.compressor.getOuts();
+    }
+
+    /**
      * {@inheritDoc}
      * @param key a parameter of this effect.
      * @return the floating-point default value of the parameter.

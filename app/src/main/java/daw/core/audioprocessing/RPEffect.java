@@ -38,6 +38,18 @@ public abstract class RPEffect extends UGen {
     public abstract void setParameters(Map<String, Float> parameters);
 
     /**
+     * Allows to get the number of input channels of the effect.
+     * @return an integer that represents the number of input.
+     */
+    public abstract int getIns();
+
+    /**
+     * Allows to get the number of output channels of the effect.
+     * @return an integer that represents the number of outputs.
+     */
+    public abstract int getOuts();
+
+    /**
      * Allows getting the default value of a certain parameter of this particular effect.
      * @param key a parameter of this effect.
      * @return the floating-point default value of the parameter.
