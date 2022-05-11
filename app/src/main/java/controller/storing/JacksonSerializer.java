@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import daw.core.audioprocessing.RPEffect;
 
 public class JacksonSerializer<T> implements Serializer<T> {
 
@@ -15,7 +17,8 @@ public class JacksonSerializer<T> implements Serializer<T> {
                 .build()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-                .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+                .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+                .registerModule(new SimpleModule().addSerializer(RPEffect.class, new EffectSerializer()));
         if (disableGetters) {
             this.mapper.disable(MapperFeature.AUTO_DETECT_GETTERS).disable(MapperFeature.AUTO_DETECT_IS_GETTERS);
         }
@@ -31,8 +34,8 @@ public class JacksonSerializer<T> implements Serializer<T> {
         try {
             return ow.writeValueAsString(node);
         } catch (JsonProcessingException ex) {
-            throw new IllegalArgumentException("Serialization of the given object of class " + element.getClass() +
-                    " went wrong.");
+            throw new IllegalArgumentException("Serialization of the given object of class " +
+                    element.getClass() + " went wrong.");
         }
     }
 
