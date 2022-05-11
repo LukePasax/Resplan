@@ -1,18 +1,16 @@
 package controller.storing;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-public class WriteToJsonFile<T> implements WriteToFile<T> {
+public class WriteToFileImpl implements WriteToFile {
 
-    private final Gson writer = new Gson();
     private FileWriter fw;
 
-    public WriteToJsonFile(File file) {
+    public WriteToFileImpl(File file) {
         try {
             this.fw = new FileWriter(Objects.requireNonNull(file));
         } catch (IOException e) {
@@ -21,9 +19,9 @@ public class WriteToJsonFile<T> implements WriteToFile<T> {
     }
 
     @Override
-    public void write(T element) throws IOException {
+    public void write(String data) throws IOException {
         try {
-            this.writer.toJson(element, fw);
+            this.fw.write(data);
             this.fw.close();
         } catch (JsonIOException exception) {
             throw new IOException("Cannot write to file.");

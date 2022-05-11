@@ -2,8 +2,8 @@ package controller.storing;
 
 import java.io.IOException;
 
-public interface WriteToFile<T> {
+public interface WriteToFile {
 
-    void write(T element) throws IOException;
+    void write(String data) throws IOException;
 
 }
