@@ -24,6 +24,7 @@ public class WriteToJsonFile<T> implements WriteToFile<T> {
     public void write(T element) throws IOException {
         try {
             this.writer.toJson(element, fw);
+            this.fw.close();
         } catch (JsonIOException exception) {
             throw new IOException("Cannot write to file.");
         }
