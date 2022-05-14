@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import daw.core.audioprocessing.RPEffect;
+import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.Panner;
 
 public class JacksonSerializer<T> implements Serializer<T> {
@@ -22,7 +23,8 @@ public class JacksonSerializer<T> implements Serializer<T> {
                 .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
                 .registerModule(new Jdk8Module())
                 .registerModule(new SimpleModule().addSerializer(RPEffect.class, new EffectSerializer())
-                        .addSerializer(Panner.class, new PannerSerializer()));
+                        .addSerializer(Panner.class, new PannerSerializer())
+                        .addSerializer(Gain.class, new GainSerializer()));
         if (!enabledGetters) {
             this.mapper.disable(MapperFeature.AUTO_DETECT_GETTERS).disable(MapperFeature.AUTO_DETECT_IS_GETTERS);
         }
