@@ -3,7 +3,10 @@ package daw.core.audioprocessing;
 import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.core.UGen;
+import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.Compressor;
+
+import java.util.Map;
 
 /**
  * Sidechaining is a compression technique that makes the sound coming in from a source
@@ -36,6 +39,40 @@ public class Sidechaining extends UGen {
      */
     public void setSidechain(UGen u) {
         this.compressor.setSideChain(u);
+    }
+
+    /**
+     * @return a {@link Map} where the keys are the parameters and the values are the
+     * current value of each parameter of the effect.
+     */
+    public Map<String, Float> getParameters() {
+        return Map.of("threshold", this.compressor.getThreshold(), "ratio", this.compressor.getRatio(),
+                "attack", this.compressor.getAttack(), "decay", this.compressor.getDecay());
+    }
+
+    /**
+     * @param parameters the {@link Map} that contains the parameters that must be modified.
+     */
+    public void setParameters(Map<String, Float> parameters) {
+        this.compressor.sendData(new DataBead(parameters));
+    }
+
+    /**
+     * Allows to get the number of input channels of the effect.
+     * @return an integer that represents the number of input.
+     */
+    @Override
+    public int getIns() {
+        return this.compressor.getIns();
+    }
+
+    /**
+     * Allows to get the number of output channels of the effect.
+     * @return an integer that represents the number of outputs.
+     */
+    @Override
+    public int getOuts() {
+        return this.compressor.getOuts();
     }
 
     /**

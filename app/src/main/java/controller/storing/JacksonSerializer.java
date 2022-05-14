@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import daw.core.audioprocessing.RPEffect;
+import daw.core.audioprocessing.Sidechaining;
 import daw.core.clip.RPClip;
 import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.Panner;
@@ -27,7 +28,8 @@ public class JacksonSerializer<T> implements Serializer<T> {
                         .addSerializer(RPEffect.class, new EffectSerializer())
                         .addSerializer(Panner.class, new PannerSerializer())
                         .addSerializer(Gain.class, new GainSerializer())
-                        .addSerializer(RPClip.class, new ClipSerializer()));
+                        .addSerializer(RPClip.class, new ClipSerializer())
+                        .addSerializer(Sidechaining.class, new SidechainingSerializer()));
         if (!enabledGetters) {
             this.mapper.disable(MapperFeature.AUTO_DETECT_GETTERS).disable(MapperFeature.AUTO_DETECT_IS_GETTERS);
         }
