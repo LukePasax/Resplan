@@ -24,6 +24,7 @@ public class EffectSerializer extends StdSerializer<RPEffect> {
         }
         gen.writeNumberField("ins", value.getIns());
         gen.writeNumberField("outs", value.getOuts());
+        gen.writeEndObject();
     }
 
 }

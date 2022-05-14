@@ -6,23 +6,27 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import daw.core.audioprocessing.RPEffect;
+import net.beadsproject.beads.ugens.Panner;
 
 public class JacksonSerializer<T> implements Serializer<T> {
 
     private final ObjectMapper mapper;
 
-    public JacksonSerializer(boolean disableGetters, boolean disableFields) {
+    public JacksonSerializer(boolean enabledGetters, boolean enableFields) {
         this.mapper = new JsonMapper().builder()
                 .build()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
                 .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
-                .registerModule(new SimpleModule().addSerializer(RPEffect.class, new EffectSerializer()));
-        if (disableGetters) {
+                .registerModule(new Jdk8Module())
+                .registerModule(new SimpleModule().addSerializer(RPEffect.class, new EffectSerializer())
+                        .addSerializer(Panner.class, new PannerSerializer()));
+        if (!enabledGetters) {
             this.mapper.disable(MapperFeature.AUTO_DETECT_GETTERS).disable(MapperFeature.AUTO_DETECT_IS_GETTERS);
         }
-        if (disableFields) {
+        if (!enableFields) {
             this.mapper.disable(MapperFeature.AUTO_DETECT_FIELDS);
         }
     }
