@@ -20,7 +20,7 @@ public interface RPClip<X> {
 	/**
 	 * This should be the default duration for an RPClip if it has not been specified or is not yet known.
 	 */
-	public static final double DEFAULT_DURATION = 5000;
+	double DEFAULT_DURATION = 5000;
 	
 	/** 
 	 * Set this RPClip duration.

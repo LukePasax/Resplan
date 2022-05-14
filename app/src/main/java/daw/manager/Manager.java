@@ -7,7 +7,6 @@ import daw.core.mixer.RPMixer;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 import planning.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -33,7 +32,6 @@ public class Manager implements RPManager {
         this.createGroup("Speech", RPRole.RoleType.SPEECH);
         this.createGroup("Effects", RPRole.RoleType.EFFECTS);
         this.createGroup("Soundtrack", RPRole.RoleType.SOUNDTRACK);
-
     }
 
     /**
