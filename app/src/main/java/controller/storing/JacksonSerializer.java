@@ -20,7 +20,6 @@ public class JacksonSerializer<T> implements Serializer<T> {
     public JacksonSerializer(boolean enabledGetters, boolean enableFields) {
         this.mapper = new JsonMapper().builder()
                 .build()
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
                 .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
                 .registerModule(new Jdk8Module())
