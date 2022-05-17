@@ -70,8 +70,20 @@ public class DigitalReverb extends RPEffect {
      */
     // TODO
     @Override
-    protected float getDefaultValue(String key) {
+    public float getDefaultValue(String key) {
         return 0.0f;
+    }
+
+    /**
+     * Sets a default value for the parameter specified by the given key. If there is no such parameter,
+     * this method does nothing.
+     *
+     * @param key   the name of a parameter.
+     * @param value the value that the key has as default after this method is called.
+     */
+    @Override
+    public void setDefaultValue(String key, float value) {
+
     }
 
     /**

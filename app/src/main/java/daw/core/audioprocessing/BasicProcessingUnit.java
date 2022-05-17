@@ -14,7 +14,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
     private static final String ILLEGAL_INDEX_ERROR = "The given index(es) is (are) not legal.";
 
     private final LinkedList<RPEffect> effects = new LinkedList<>();
-    private Optional<Sidechaining> sidechain;
+    private Optional<BasicSidechaining> sidechain;
 
     /**
      * Constructs a {@link ProcessingUnit} that is not sidechained.
@@ -59,7 +59,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
      * @param s the compressor that performs the sidechaining.
      */
     @Override
-    public void addSidechaining(Sidechaining s) {
+    public void addSidechaining(BasicSidechaining s) {
         if (!this.isSidechainingPresent()) {
             this.sidechain = Optional.of(s);
             this.getEffectAtPosition(0).addInput(this.sidechain.get());

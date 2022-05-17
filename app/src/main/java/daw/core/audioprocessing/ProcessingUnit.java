@@ -32,7 +32,7 @@ public interface ProcessingUnit {
      * unit cannot have two different sidechained sources at the same time.
      * @param s the compressor that performs the sidechaining.
      */
-    void addSidechaining(Sidechaining s);
+    void addSidechaining(BasicSidechaining s);
 
     /**
      * Makes the processing unit not be sidechained to any external source.

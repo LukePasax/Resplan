@@ -1,45 +1,56 @@
 package daw.core.audioprocessing;
 
 import daw.utilities.AudioContextManager;
+import net.beadsproject.beads.core.AudioContext;
+import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.Compressor;
 
 import java.util.Map;
 
 /**
- * This class represents a gate, which is a tool that reduces or eliminates noise coming from an audio source.
- * Specifically, a gate parses the audio signal and reduces the volume of all the samples that do not reach
- * a certain volume threshold.
+ * Basic implementation of {@link Sidechaining}, that allows for the sidechained source to be changed after
+ * initialization.
+ * <p> NOTE: Due to how the Beads library is structured (namely the fact that UGen is an abstract class
+ * instead of an interface), this implementation of {@link Sidechaining} is the only one currently supported.
+ * This means all clients must use this class when sidechaining is needed. </p>
  */
-public class Gate extends RPEffect {
+public class BasicSidechaining extends UGen implements Sidechaining, AudioElement {
 
     private final Compressor compressor;
 
     /**
-     * Constructs a gate and sets its parameters to the current default.
-     * @param channels the number of inputs and outputs of this effect.
+     * Constructs a {@link BasicSidechaining} object with the given parameters.
+     * Remember to pass the correct sidechained channel, because it cannot be changed after the instantiation.
+     * @param u the channel to be sidechained.
+     * @param channels the number of inputs and outputs of the given channel.
      */
-    public Gate(int channels) {
+    public BasicSidechaining(UGen u, int channels) {
         super(AudioContextManager.getAudioContext(), channels, channels);
-        this.compressor = new Compressor(AudioContextManager.getAudioContext(), channels);
+        this.compressor = new Compressor(AudioContext.getDefaultContext(), channels).setSideChain(u);
     }
 
     /**
-     * {@inheritDoc}
+     * After this method is called, the channel that uses this sidechaining will be sidechained to
+     * the source given as input, regardless if it was already sidechained to another source or not.
+     * @param u
+     */
+    public void setSidechain(UGen u) {
+        this.compressor.setSideChain(u);
+    }
+
+    /**
      * @return a {@link Map} where the keys are the parameters and the values are the
      * current value of each parameter of the effect.
      */
-    @Override
     public Map<String, Float> getParameters() {
         return Map.of("threshold", this.compressor.getThreshold(), "ratio", this.compressor.getRatio(),
                 "attack", this.compressor.getAttack(), "decay", this.compressor.getDecay());
     }
 
     /**
-     * {@inheritDoc}
      * @param parameters the {@link Map} that contains the parameters that must be modified.
      */
-    @Override
     public void setParameters(Map<String, Float> parameters) {
         this.compressor.sendData(new DataBead(parameters));
     }
@@ -63,15 +74,15 @@ public class Gate extends RPEffect {
     }
 
     /**
-     * {@inheritDoc}
+     * Allows getting the default value of a certain parameter of this particular effect.
+     *
      * @param key a parameter of this effect.
      * @return the floating-point default value of the parameter.
      * @throws IllegalArgumentException if the given string does not match any of the parameters of this effect.
      */
-    // TODO
     @Override
     public float getDefaultValue(String key) {
-        return 0.0f;
+        return 0;
     }
 
     /**
@@ -91,7 +102,6 @@ public class Gate extends RPEffect {
      */
     @Override
     public void calculateBuffer() {
-        // TODO
+        this.compressor.calculateBuffer();
     }
-
 }
