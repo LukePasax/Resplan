@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DAW.EditViewController">
    <children>
       <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
         <menus>
@@ -22,7 +22,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem id="addChannel" fx:id="addChannel" mnemonicParsing="false" text="AddChannel" />
+              <MenuItem id="addChannel" fx:id="addChannel" mnemonicParsing="false" onAction="#addChannel" text="AddChannel" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -32,22 +32,35 @@
           </Menu>
         </menus>
       </MenuBar>
-      <SplitPane dividerPositions="0.7112010796221323" orientation="VERTICAL" VBox.vgrow="ALWAYS">
+      <SplitPane dividerPositions="0.7543859649122807" orientation="VERTICAL" VBox.vgrow="ALWAYS">
          <items>
-            <SplitPane fx:id="channelsPane" dividerPositions="0.2148829431438127, 0.818561872909699" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="374.0" prefWidth="600.0">
+            <SplitPane dividerPositions="0.2148829431438127" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="374.0" prefWidth="600.0">
               <items>
                 <AnchorPane id="browser" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                  <VBox id="timelineView">
-                     <children>
-                        <NumberAxis id="axis" animated="false" autoRanging="false" forceZeroInRange="false" side="TOP" />
-                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="189.0" prefWidth="159.0" VBox.vgrow="ALWAYS">
-                           <content>
-                              <SplitPane id="channelsPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" />
-                           </content>
-                        </ScrollPane>
-                     </children>
-                  </VBox>
-                  <AnchorPane id="projectManager" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
+                     <content>
+                        <SplitPane dividerPositions="0.7015086206896551">
+                           <items>
+                              <ScrollPane fitToHeight="true" fitToWidth="true">
+                                 <content>
+                                    <VBox id="timelineView">
+                                       <children>
+                                          <NumberAxis id="axis" fx:id="timeAxis" animated="false" autoRanging="false" forceZeroInRange="false" side="TOP" />
+                                          <SplitPane id="channelsPane" fx:id="channelsPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" VBox.vgrow="ALWAYS" />
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </ScrollPane>
+                              <VBox id="labelView">
+                                 <children>
+                                    <NumberAxis id="axis" fx:id="timeAxis1" animated="false" autoRanging="false" forceZeroInRange="false" side="TOP" />
+                                    <SplitPane id="channelsPane" fx:id="channelsLabelsPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" VBox.vgrow="ALWAYS" />
+                                 </children>
+                              </VBox>
+                           </items>
+                        </SplitPane>
+                     </content>
+                  </ScrollPane>
               </items>
             </SplitPane>
             <HBox id="effects" prefHeight="100.0" prefWidth="200.0" />
