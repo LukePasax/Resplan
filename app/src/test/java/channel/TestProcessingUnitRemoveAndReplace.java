@@ -3,7 +3,7 @@ package channel;
 import daw.core.audioprocessing.*;
 import net.beadsproject.beads.ugens.*;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Set;
 
@@ -28,7 +28,7 @@ public class TestProcessingUnitRemoveAndReplace {
         assertEquals(Set.of(HighPassFilter.class), this.ref.getSet(this.pu.getEffectAtPosition(2).getConnectedInputs()));
         this.pu.removeEffectAtPosition(0);
         assertEquals(List.of(HighPassFilter.class, LowPassFilter.class), this.ref.getList(this.pu.getEffects()));
-        assertEquals(Set.of(Sidechaining.class), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
+        assertEquals(Set.of(BasicSidechaining.class), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class TestProcessingUnitRemoveAndReplace {
         this.pu.replace(0, new Compression(1));
         assertEquals(List.of(Compression.class, HighPassFilter.class, Gate.class, DigitalReverb.class),
                 this.ref.getList(this.pu.getEffects()));
-        assertEquals(Set.of(Sidechaining.class), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
+        assertEquals(Set.of(BasicSidechaining.class), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
     }
 
     @Test
@@ -80,8 +80,8 @@ public class TestProcessingUnitRemoveAndReplace {
         this.pu.removeSidechaining();
         assertFalse(this.pu.isSidechainingPresent());
         assertEquals(Set.of(), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
-        this.pu.addSidechaining(new Sidechaining(new SamplePlayer(1), 1));
-        assertEquals(Set.of(Sidechaining.class), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
+        this.pu.addSidechaining(new BasicSidechaining(new SamplePlayer(1), 1));
+        assertEquals(Set.of(BasicSidechaining.class), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
     }
 
 }
