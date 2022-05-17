@@ -22,7 +22,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem id="addChannel" fx:id="addChannel" mnemonicParsing="false" text="AddChannel" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -34,19 +34,15 @@
       </MenuBar>
       <SplitPane dividerPositions="0.7112010796221323" orientation="VERTICAL" VBox.vgrow="ALWAYS">
          <items>
-            <SplitPane dividerPositions="0.2148829431438127, 0.818561872909699" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="374.0" prefWidth="600.0">
+            <SplitPane fx:id="channelsPane" dividerPositions="0.2148829431438127, 0.818561872909699" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="374.0" prefWidth="600.0">
               <items>
                 <AnchorPane id="browser" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                  <VBox>
+                  <VBox id="timelineView">
                      <children>
-                        <NumberAxis animated="false" autoRanging="false" forceZeroInRange="false" side="TOP" />
-                        <ScrollPane id="timelineView" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="189.0" prefWidth="159.0" VBox.vgrow="ALWAYS">
+                        <NumberAxis id="axis" animated="false" autoRanging="false" forceZeroInRange="false" side="TOP" />
+                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="189.0" prefWidth="159.0" VBox.vgrow="ALWAYS">
                            <content>
-                              <SplitPane id="channels" dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL">
-                                 <items>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                 </items></SplitPane>
+                              <SplitPane id="channelsPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" />
                            </content>
                         </ScrollPane>
                      </children>
