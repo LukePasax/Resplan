@@ -2,6 +2,7 @@ package channel;
 
 import daw.utilities.AudioContextManager;
 import daw.core.audioprocessing.*;
+import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.ugens.*;
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -16,7 +17,7 @@ public class TestProcessingUnitAddition {
     @Test
     public void testCorrectAddition() {
         // adding at the last position using addEffect
-        this.pu.addEffect(new Compression(1));
+        this.pu.addEffect(new BasicSidechaining(new Gain(2), 2));
         assertEquals(List.of(Gate.class, Compression.class, Compression.class), this.ref.getList(this.pu.getEffects()));
         // adding at a given position
         this.pu.addEffectAtPosition(new DigitalReverb(1), 1);

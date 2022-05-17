@@ -1,9 +1,7 @@
 package daw.core.audioprocessing;
 
-import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.Compressor;
-
 import java.util.Map;
 
 public abstract class AbstractCompression extends RPEffect {
@@ -11,8 +9,8 @@ public abstract class AbstractCompression extends RPEffect {
     protected final Compressor compressor;
 
     public AbstractCompression(int channels) {
-        super(AudioContextManager.getAudioContext(), channels, channels);
-        this.compressor = new Compressor(AudioContextManager.getAudioContext(), channels);
+        super(channels);
+        this.compressor = new Compressor(channels);
     }
 
     /**

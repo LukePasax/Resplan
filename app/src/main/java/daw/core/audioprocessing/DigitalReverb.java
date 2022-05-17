@@ -1,9 +1,7 @@
 package daw.core.audioprocessing;
 
-import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.Reverb;
-
 import java.util.Map;
 
 /**
@@ -21,8 +19,8 @@ public class DigitalReverb extends RPEffect {
      * @param channels the number of inputs and outputs of this effect.
      */
     public DigitalReverb(int channels) {
-        super(AudioContextManager.getAudioContext(), channels, channels);
-        this.rev = new Reverb(AudioContextManager.getAudioContext(), channels);
+        super(channels);
+        this.rev = new Reverb(channels);
     }
 
     /**

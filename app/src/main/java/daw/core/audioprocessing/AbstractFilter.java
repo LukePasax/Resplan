@@ -1,6 +1,5 @@
 package daw.core.audioprocessing;
 
-import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.OnePoleFilter;
 import java.util.Map;
@@ -10,8 +9,8 @@ public abstract class AbstractFilter extends RPEffect {
     protected final OnePoleFilter filter;
 
     protected AbstractFilter(int channels, float cutoffFrequency) {
-        super(AudioContextManager.getAudioContext(), channels, channels);
-        this.filter = new OnePoleFilter(AudioContextManager.getAudioContext(), cutoffFrequency);
+        super(channels);
+        this.filter = new OnePoleFilter(cutoffFrequency);
     }
 
     /**

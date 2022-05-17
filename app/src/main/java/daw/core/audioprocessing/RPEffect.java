@@ -1,6 +1,6 @@
 package daw.core.audioprocessing;
 
-import net.beadsproject.beads.core.AudioContext;
+import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.core.UGen;
 import java.util.Map;
 
@@ -12,12 +12,10 @@ public abstract class RPEffect extends UGen implements AudioElement {
 
     /**
      * Base constructor for all the effects of this software.
-     * @param context the {@link AudioContext} used by this effect.
-     * @param ins the number of inputs of this effect.
-     * @param outs the number of output of this effect.
+     * @param channels the number of inputs and outputs of this effect.
      */
-    protected RPEffect(AudioContext context, int ins, int outs) {
-        super(context, ins, outs);
+    protected RPEffect(int channels) {
+        super(AudioContextManager.getAudioContext(), channels, channels);
     }
 
     /**
