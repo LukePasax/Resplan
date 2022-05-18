@@ -113,6 +113,8 @@ public class BasicProcessingUnit implements ProcessingUnit {
     /**
      * {@inheritDoc}
      * @param u the {@link RPEffect} that represents the effect to be added.
+     * @throws IllegalArgumentException if the given position is out of bounds or if the given effect
+     * is an instantiation of {@link Sidechaining}.
      */
     @Override
     public void addEffect(RPEffect u) {
@@ -123,10 +125,15 @@ public class BasicProcessingUnit implements ProcessingUnit {
      * {@inheritDoc}
      * @param u the {@link RPEffect} that represents the effect to be added.
      * @param index a position in the sequence.
-     * @throws IllegalArgumentException if the given position is out of bounds.
+     * @throws IllegalArgumentException if the given position is out of bounds or if the given effect
+     * is an instantiation of {@link Sidechaining}.
      */
     @Override
     public void addEffectAtPosition(RPEffect u, int index) {
+        if (u instanceof BasicSidechaining) {
+            throw new IllegalArgumentException("A sidechained compressor cannot be added to the sequence. " +
+                    "Use addSidechaining instead\n");
+        }
         if (index >= 0 && index <= this.effects.size()) {
             this.effects.add(index, u);
             if (index > 0) {
