@@ -11,7 +11,7 @@ public abstract class AbstractJacksonDeserializer<T> implements Deserializer<T> 
 
     protected final ObjectMapper mapper;
 
-    public AbstractJacksonDeserializer() {
+    protected AbstractJacksonDeserializer() {
         this.mapper = new JsonMapper().builder()
                 .build()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

@@ -16,7 +16,7 @@ public abstract class AbstractJacksonSerializer<T> implements Serializer<T> {
 
     protected final ObjectMapper mapper;
 
-    public AbstractJacksonSerializer(boolean enabledGetters, boolean enableFields) {
+    protected AbstractJacksonSerializer(boolean enabledGetters, boolean enableFields) {
         this.mapper = new JsonMapper().builder()
                 .build()
                 .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
