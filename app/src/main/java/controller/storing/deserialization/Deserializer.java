@@ -1,4 +1,4 @@
-package controller.storing;
+package controller.storing.deserialization;
 
 public interface Deserializer<T> {
 
