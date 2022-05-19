@@ -5,13 +5,13 @@ import java.io.IOException;
 
 public class ControllerImpl implements Controller {
 
-    private final ProjectDownloader project;
+    private final ProjectDownloader downloader;
     private final ProjectLoader loader;
     private final Manager manager;
 
     public ControllerImpl() {
         this.manager = new Manager();
-        this.project = new ProjectDownloaderImpl(this.manager);
+        this.downloader = new ProjectDownloaderImpl(this.manager);
         this.loader = new ProjectLoaderImpl();
     }
 
@@ -23,7 +23,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void downloadProject() {
         try {
-            this.project.save();
+            this.downloader.download();
         } catch (IOException e) {
             //TODO: make the view react so as to warn the user?
         }

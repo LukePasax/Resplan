@@ -24,7 +24,7 @@ public class ProjectDownloaderImpl implements ProjectDownloader {
     }
 
     @Override
-    public void save() throws IOException {
+    public void download() throws IOException {
         this.writer.write(this.serializer.serialize(this.manager));
     }
 

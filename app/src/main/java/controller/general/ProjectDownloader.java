@@ -4,6 +4,6 @@ import java.io.IOException;
 
 public interface ProjectDownloader {
 
-    void save() throws IOException;
+    void download() throws IOException;
 
 }
