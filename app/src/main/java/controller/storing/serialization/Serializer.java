@@ -1,4 +1,4 @@
-package controller.storing;
+package controller.storing.serialization;
 
 public interface Serializer<T> {
 
