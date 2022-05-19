@@ -25,13 +25,19 @@ public class ControllerImpl implements Controller {
         try {
             this.downloader.download();
         } catch (IOException e) {
-            //TODO: make the view react so as to warn the user?
+            //TODO: make the view react so as to warn the user? All unsaved stuff would be lost...
         }
     }
 
     @Override
     public Manager loadProject() {
-        return this.loader.load();
+        try {
+            return this.loader.load();
+        } catch (IOException e) {
+            //TODO: make the view react so as to warn the user? If information cannot be retrieved from file,
+            // the user can still be provided with an new clean manager.
+            return new Manager();
+        }
     }
 
 
