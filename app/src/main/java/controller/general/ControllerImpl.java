@@ -32,7 +32,7 @@ public class ControllerImpl implements Controller {
     public Manager loadProject() {
         try {
             return this.loader.load();
-        } catch (IOException e) {
+        } catch (IOException | IllegalStateException e) {
             //TODO: make the view react so as to warn the user? If information cannot be retrieved from file,
             // the user can still be provided with a new clean manager, just like the first time the app is used.
             return new Manager();

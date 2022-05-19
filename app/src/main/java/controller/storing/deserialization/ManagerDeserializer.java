@@ -10,7 +10,7 @@ public class ManagerDeserializer extends AbstractJacksonDeserializer<Manager> {
         try {
             return this.mapper.readValue(text, Manager.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Serialization of manager has gone wrong.");
+            throw new RuntimeException("Deserialization of manager has gone wrong.");
         }
     }
 

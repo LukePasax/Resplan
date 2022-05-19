@@ -20,8 +20,12 @@ public class ProjectLoaderImpl implements ProjectLoader {
         this.deserializer = new ManagerDeserializer();
     }
 
-    public Manager load() throws IOException {
-        return this.deserializer.deserialize(this.reader.read());
+    public Manager load() throws IOException, IllegalStateException {
+        try {
+            return this.deserializer.deserialize(this.reader.read());
+        } catch (RuntimeException ex) {
+            throw new IllegalStateException(ex.getMessage());
+        }
     }
 
 }
