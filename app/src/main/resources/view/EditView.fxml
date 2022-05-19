@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DAW.EditViewController">
    <children>
-      <MenuBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+      <MenuBar id="menu bar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -32,40 +34,38 @@
           </Menu>
         </menus>
       </MenuBar>
-      <SplitPane dividerPositions="0.7543859649122807" orientation="VERTICAL" VBox.vgrow="ALWAYS">
+      <SplitPane id="orizzontal fx-edit split" dividerPositions="0.8294892915980231" orientation="VERTICAL" VBox.vgrow="ALWAYS">
          <items>
-            <SplitPane dividerPositions="0.2148829431438127" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="374.0" prefWidth="600.0">
+            <SplitPane id="vertical browser-edit split" dividerPositions="0.18812709030100336" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
               <items>
-                <AnchorPane id="browser" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
-                     <content>
-                        <SplitPane dividerPositions="0.7015086206896551">
-                           <items>
-                              <ScrollPane fitToHeight="true" fitToWidth="true">
-                                 <content>
-                                    <VBox id="timelineView">
-                                       <children>
-                                          <NumberAxis id="axis" fx:id="timeAxis" animated="false" autoRanging="false" forceZeroInRange="false" side="TOP" />
-                                          <SplitPane id="channelsPane" fx:id="channelsPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" VBox.vgrow="ALWAYS" />
-                                       </children>
-                                    </VBox>
-                                 </content>
-                              </ScrollPane>
-                              <VBox id="labelView">
-                                 <children>
-                                    <NumberAxis id="axis" fx:id="timeAxis1" animated="false" autoRanging="false" forceZeroInRange="false" side="TOP" />
-                                    <SplitPane id="channelsPane" fx:id="channelsLabelsPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" VBox.vgrow="ALWAYS" />
-                                 </children>
-                              </VBox>
-                           </items>
-                        </SplitPane>
-                     </content>
-                  </ScrollPane>
+                <AnchorPane id="browser" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" />
+                  <GridPane id="edit view" fx:id="timelineToChannelsAligner" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="50.0" />
+                      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="25.0" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                    </rowConstraints>
+                     <children>
+                        <NumberAxis id="time axis" fx:id="timeAxis" animated="false" autoRanging="false" forceZeroInRange="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" side="TOP" style="-fx-background-color: #FFFFFF;" tickLabelGap="1.0" tickLength="10.0" GridPane.hgrow="ALWAYS" GridPane.valignment="BASELINE" />
+                        <ScrollPane id="channels vertical scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minViewportHeight="40.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                           <content>
+                              <SplitPane id="clips-channel info divider" fx:id="channelsInfoResizer" dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                 <items>
+                                    <VBox fx:id="channelsContentPane" prefHeight="200.0" prefWidth="100.0" />
+                                    <VBox fx:id="channelsInfoPane" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" />
+                                 </items>
+                              </SplitPane>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </GridPane>
               </items>
             </SplitPane>
-            <HBox id="effects" prefHeight="100.0" prefWidth="200.0" />
+            <HBox id="effects" minHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
          </items>
       </SplitPane>
-      <Accordion />
    </children>
 </VBox>
