@@ -8,11 +8,13 @@ public class ControllerImpl implements Controller {
     private static final String WORKING_DIRECTORY = System.getProperty("user.dir");
 
     private final SaveProject project;
+    private final ProjectLoader loader;
     private final Manager manager;
 
     public ControllerImpl() {
         this.manager = new Manager();
         this.project = new SaveProjectImpl(this.manager);
+        this.loader = new ProjectLoaderImpl();
     }
 
     @Override
@@ -24,6 +26,12 @@ public class ControllerImpl implements Controller {
     public void saveProject() {
         this.project.save();
     }
+
+    @Override
+    public Manager loadProject() {
+        return this.loader.load();
+    }
+
 
     @Override
     public void newPlanningChannel(String type, String title, String description) throws IllegalArgumentException {
