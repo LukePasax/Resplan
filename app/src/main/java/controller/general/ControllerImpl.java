@@ -10,8 +10,8 @@ public class ControllerImpl implements Controller {
     private final SaveProject project;
     private final Manager manager;
 
-    public ControllerImpl(Manager manager) {
-        this.manager = manager;
+    public ControllerImpl() {
+        this.manager = new Manager();
         this.project = new SaveProjectImpl(this.manager);
     }
 
@@ -23,6 +23,16 @@ public class ControllerImpl implements Controller {
     @Override
     public void saveProject() {
         this.project.save();
+    }
+
+    @Override
+    public void newPlanningChannel(String type, String title, String description) throws IllegalArgumentException {
+
+    }
+
+    @Override
+    public void newPlanningClip() {
+
     }
 
 }

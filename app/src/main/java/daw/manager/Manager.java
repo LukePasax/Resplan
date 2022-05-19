@@ -47,6 +47,8 @@ public class Manager implements RPManager {
     public void addChannel(RPRole.RoleType type, String title, Optional<String> description) throws IllegalArgumentException {
         if (this.channelLinker.channelExists(title)) {
             throw new IllegalArgumentException("Channel already exists");
+        } else if (title.equals("")) {
+            throw new IllegalArgumentException("Title is mandatory");
         }
         final RPRole role = this.createRole(type, title, description);
         final RPTapeChannel tapeChannel = new TapeChannel();
@@ -172,6 +174,8 @@ public class Manager implements RPManager {
         final EmptyClip clip = new EmptyClip();
         if (this.clipLinker.clipExists(title)) {
             throw new IllegalArgumentException("Clip already exists");
+        } else if (title.equals("")) {
+            throw new IllegalArgumentException("Title is mandatory");
         }
         if (content.isPresent()) {
             try {
