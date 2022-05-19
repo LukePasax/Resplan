@@ -1,5 +1,6 @@
 package daw.manager;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import daw.core.clip.RPClip;
 import planning.RPPart;
 
@@ -9,6 +10,7 @@ import java.util.NoSuchElementException;
 
 public class ClipLinker implements RPClipLinker{
 
+    @JsonProperty
     private final Map<RPPart, RPClip> clipMap;
 
     ClipLinker() {

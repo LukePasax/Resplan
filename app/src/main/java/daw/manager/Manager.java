@@ -1,5 +1,6 @@
 package daw.manager;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import daw.core.channel.RPChannel;
 import daw.core.clip.*;
 import daw.core.mixer.Mixer;
@@ -13,9 +14,11 @@ import java.util.*;
 
 public class Manager implements RPManager {
 
+    @JsonProperty
     private final RPMixer mixer;
     private final RPChannelLinker channelLinker;
     private final RPClipLinker clipLinker;
+    @JsonProperty
     private final Map<RPRole, List<RPRole>> groupMap;
     private final RPClipConverter clipConverter;
 
