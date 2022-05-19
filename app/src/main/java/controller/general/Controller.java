@@ -13,4 +13,5 @@ public interface Controller {
     void newPlanningChannel(String type, String title, String description) throws IllegalArgumentException;
 
     void newPlanningClip() throws IllegalArgumentException;
+
 }

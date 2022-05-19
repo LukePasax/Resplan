@@ -1,11 +1,9 @@
 package controller.general;
 
 import daw.manager.Manager;
+import java.io.IOException;
 
 public class ControllerImpl implements Controller {
-
-    private static final String SEP = System.getProperty("file.separator");
-    private static final String WORKING_DIRECTORY = System.getProperty("user.dir");
 
     private final SaveProject project;
     private final ProjectLoader loader;
@@ -24,7 +22,11 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void saveProject() {
-        this.project.save();
+        try {
+            this.project.save();
+        } catch (IOException e) {
+            //TODO: make the view react so as to warn the user?
+        }
     }
 
     @Override

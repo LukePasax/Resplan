@@ -1,7 +1,9 @@
 package controller.general;
 
+import java.io.IOException;
+
 public interface SaveProject {
 
-    void save();
+    void save() throws IOException;
 
 }
