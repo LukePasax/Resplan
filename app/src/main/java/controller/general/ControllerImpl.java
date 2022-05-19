@@ -6,13 +6,12 @@ import java.io.IOException;
 public class ControllerImpl implements Controller {
 
     private final ProjectDownloader downloader;
-    private final ProjectLoader loader;
+    private final ProjectLoader loader = new ProjectLoaderImpl();
     private final Manager manager;
 
     public ControllerImpl() {
-        this.manager = new Manager();
+        this.manager = this.loadProject();
         this.downloader = new ProjectDownloaderImpl(this.manager);
-        this.loader = new ProjectLoaderImpl();
     }
 
     @Override
@@ -35,7 +34,7 @@ public class ControllerImpl implements Controller {
             return this.loader.load();
         } catch (IOException e) {
             //TODO: make the view react so as to warn the user? If information cannot be retrieved from file,
-            // the user can still be provided with an new clean manager.
+            // the user can still be provided with a new clean manager, just like the first time the app is used.
             return new Manager();
         }
     }
@@ -49,6 +48,11 @@ public class ControllerImpl implements Controller {
     @Override
     public void newPlanningClip() {
 
+    }
+
+    // ONLY FOR TEMPORARY TESTING PURPOSES
+    public Manager getManager() {
+        return this.manager;
     }
 
 }
