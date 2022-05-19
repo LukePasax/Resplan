@@ -1,13 +1,19 @@
 package controller.storing.deserialization;
 
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import daw.manager.Manager;
 
-public class ManagerDeserializer extends JacksonDeserializer<Manager> {
+public class ManagerDeserializer extends AbstractJacksonDeserializer<Manager> {
 
     @Override
     public Manager deserialize(String text) {
-        return new GsonBuilder().create().fromJson(text,Manager.class);
+        Manager manager;
+        try {
+            manager = this.mapper.readValue(text, Manager.class);
+        } catch (JsonProcessingException e) {
+            manager = new Manager();
+        }
+        return manager;
     }
 
 }

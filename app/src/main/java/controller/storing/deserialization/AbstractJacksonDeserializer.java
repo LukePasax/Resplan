@@ -7,17 +7,14 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import daw.core.mixer.RPMixer;
 import daw.manager.ChannelLinker;
 
-public abstract class JacksonDeserializer<T> implements Deserializer<T> {
+public abstract class AbstractJacksonDeserializer<T> implements Deserializer<T> {
 
     protected final ObjectMapper mapper;
 
-    public JacksonDeserializer() {
+    public AbstractJacksonDeserializer() {
         this.mapper = new JsonMapper().builder()
                 .build()
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .registerModule(new SimpleModule()
-                        .addDeserializer(RPMixer.class, new MixerDeserializer())
-                        .addDeserializer(ChannelLinker.class, new ChannelLinkerDeserializer()));
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     @Override
