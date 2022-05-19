@@ -6,7 +6,7 @@ public interface Controller {
 
     void updateView();
 
-    void saveProject();
+    void downloadProject();
 
     Manager loadProject();
 

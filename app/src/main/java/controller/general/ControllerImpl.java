@@ -5,13 +5,13 @@ import java.io.IOException;
 
 public class ControllerImpl implements Controller {
 
-    private final SaveProject project;
+    private final ProjectDownloader project;
     private final ProjectLoader loader;
     private final Manager manager;
 
     public ControllerImpl() {
         this.manager = new Manager();
-        this.project = new SaveProjectImpl(this.manager);
+        this.project = new ProjectDownloaderImpl(this.manager);
         this.loader = new ProjectLoaderImpl();
     }
 
@@ -21,7 +21,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void saveProject() {
+    public void downloadProject() {
         try {
             this.project.save();
         } catch (IOException e) {

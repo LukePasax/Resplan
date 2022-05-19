@@ -8,7 +8,7 @@ import daw.manager.Manager;
 import java.io.File;
 import java.io.IOException;
 
-public class SaveProjectImpl implements SaveProject {
+public class ProjectDownloaderImpl implements ProjectDownloader {
 
     private static final String SEP = System.getProperty("file.separator");
     private static final String WORKING_DIRECTORY = System.getProperty("user.dir");
@@ -17,7 +17,7 @@ public class SaveProjectImpl implements SaveProject {
     private final Serializer<Manager> serializer;
     private final Manager manager;
 
-    public SaveProjectImpl(Manager manager) {
+    public ProjectDownloaderImpl(Manager manager) {
         this.manager = manager;
         this.writer = new WriteToFileImpl(new File(WORKING_DIRECTORY + SEP + "save.json"));
         this.serializer = new ManagerSerializer(true, false);
