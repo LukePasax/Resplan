@@ -28,7 +28,7 @@
                   <Rectangle2D />
                </viewport>
             </ImageView>
-            <MenuBar fx:id="menuBar" maxHeight="25.0" prefHeight="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <MenuBar fx:id="menuBar" maxHeight="25.0" prefHeight="25.0" style="-fx-use-system-menu-bar: true;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <menus>
                 <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
                   <items>

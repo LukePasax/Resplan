@@ -9,9 +9,11 @@ public class NewChannelController {
     public TextField descriptionSelection;
     public ChoiceBox<String> typeChoicebox;
     public Button newChannelConfirm;
+    public Button cancelButton;
 
     public void initialize() {
         this.typeChoicebox.getItems().addAll("Speaker", "Effect", "Soundtrack");
+        this.typeChoicebox.setValue(this.typeChoicebox.getItems().get(0));
     }
 
 
@@ -26,5 +28,9 @@ public class NewChannelController {
             error.setContentText(e.getLocalizedMessage());
             error.showAndWait();
         }
+    }
+
+    public void cancelButtonPressed(ActionEvent event) {
+        this.typeChoicebox.getScene().getWindow().hide();
     }
 }

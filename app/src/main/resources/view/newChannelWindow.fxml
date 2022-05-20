@@ -35,6 +35,6 @@
       <TextField fx:id="descriptionSelection" maxWidth="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <ChoiceBox fx:id="typeChoicebox" prefWidth="150.0" styleClass="selector" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
       <Button fx:id="newChannelConfirm" mnemonicParsing="false" onAction="#okButtonPressed" prefWidth="52.0" text="Ok" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-      <Button cancelButton="true" mnemonicParsing="false" prefWidth="52.0" text="Cancel" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+      <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#cancelButtonPressed" prefWidth="52.0" text="Cancel" GridPane.columnIndex="3" GridPane.rowIndex="4" />
    </children>
 </GridPane>
