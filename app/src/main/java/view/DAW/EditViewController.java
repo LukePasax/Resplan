@@ -4,11 +4,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+
 import javafx.fxml.*;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Paint;
+import view.DAW.ChannelClipsPane.Clip;
 
 public class EditViewController implements Initializable{
 	
@@ -30,8 +30,7 @@ public class EditViewController implements Initializable{
 	/**
 	 * Asse del tempo.
 	 */
-	@FXML
-	private NumberAxis timeAxis;
+	private TimeAxisSetter timeAxisSetter;
 	
 	/**
 	 * VBox per contenuto canali
@@ -53,7 +52,13 @@ public class EditViewController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		//channel content - info - timeline grid resize
+		//--------------adding time axis------------
+		timeAxisSetter = new TimeAxisSetter();
+		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 1);
+		timelineToChannelsAligner.add(timeAxisSetter.getScroller(), 0, 0);
+	
+		
+		//--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
 		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
 			timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
 		});
@@ -75,23 +80,30 @@ public class EditViewController implements Initializable{
 	 */
 	@FXML
 	public void addChannel() {
-		//comunica al controller che vuoi creare un canale.
+		//--------CONTROLLER---------
+		//TODO
 		
-		//infos
-		Pane newChannelInfos = new Pane();
-		newChannelInfos.setBorder(new Border(new BorderStroke(null, null, Paint.valueOf("#999999"), null, 
-				null, null, BorderStrokeStyle.SOLID, null, CornerRadii.EMPTY, null, null)));
-		DragResizer.makeResizable(newChannelInfos);
-		channelsInfoPane.getChildren().add(newChannelInfos);
+		//--------INFOS--------------
+		Pane newChannelInfos = new ChannelInfoPane("Channel");
 		
-		newChannelInfos.getChildren().add(new Label("Channel"));
-		//clip panel
-		Pane newChannel = new Pane();
-		newChannel.setBorder(new Border(new BorderStroke(null, null, Paint.valueOf("#999999"), null, 
-				null, null, BorderStrokeStyle.SOLID, null, CornerRadii.EMPTY, null, null)));
+		//--------CLIP PANE----------
+		ChannelClipsPane newChannel = new ChannelClipsPane(timeAxisSetter.getAxis());
+		
+		
+		
+		//--------CHANNEL PANES HEIGHT LINK------
 		newChannelInfos.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
 			newChannel.setMinHeight(newChannelInfos.getHeight());
 		});
-		channelsContentPane.getChildren().add(newChannel);	
+		
+		//--------ADDING TO VIEW-----
+		channelsInfoPane.getChildren().add(newChannelInfos);
+		channelsContentPane.getChildren().add(newChannel);
+		
+		//test adding clips
+		Clip c = new Clip();
+		c.setIn(10);
+		c.setOut(20);
+		newChannel.getClips().add(c);
 	}
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -13,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DAW.EditViewController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DAW.EditViewController">
    <children>
       <MenuBar id="menu bar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
         <menus>
@@ -45,14 +44,14 @@
                       <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" />
                     </columnConstraints>
                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" />
                       <RowConstraints minHeight="25.0" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
                     </rowConstraints>
-                     <children>
-                        <NumberAxis id="time axis" fx:id="timeAxis" animated="false" autoRanging="false" forceZeroInRange="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" side="TOP" style="-fx-background-color: #FFFFFF;" tickLabelGap="1.0" tickLength="10.0" GridPane.hgrow="ALWAYS" GridPane.valignment="BASELINE" />
-                        <ScrollPane id="channels vertical scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minViewportHeight="40.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+                     <children> 
+                        <ScrollPane id="channels vertical scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minViewportHeight="40.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
                            <content>
-                              <SplitPane id="clips-channel info divider" fx:id="channelsInfoResizer" dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                              <SplitPane id="clips-channel info divider" fx:id="channelsInfoResizer" dividerPositions="0.752092050209205" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                  <items>
                                     <VBox fx:id="channelsContentPane" prefHeight="200.0" prefWidth="100.0" />
                                     <VBox fx:id="channelsInfoPane" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" />
