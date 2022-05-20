@@ -18,8 +18,9 @@ public class planningApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/planningView.fxml"));
-        Scene scene = new Scene(loader.load());
+        FXMLLoader planningLoader = new FXMLLoader(getClass().getResource("/view/planningView.fxml"));
+        Scene scene = new Scene(planningLoader.load());
+        planningApp.getController().setPlanningController(planningLoader.getController());
         stage.setScene(scene);
         stage.show();
     }

@@ -11,7 +11,7 @@ public class NewChannelController {
     public Button newChannelConfirm;
 
     public void initialize() {
-        this.typeChoicebox.getItems().addAll("Speaker", "Effects", "Soundtrack");
+        this.typeChoicebox.getItems().addAll("Speaker", "Effect", "Soundtrack");
     }
 
 
@@ -19,6 +19,7 @@ public class NewChannelController {
         try {
             planningApp.getController().newPlanningChannel(this.typeChoicebox.getValue(),
                     this.titleSelection.getText(),this.descriptionSelection.getText());
+            titleSelection.getScene().getWindow().hide();
         } catch (IllegalArgumentException e) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("error");

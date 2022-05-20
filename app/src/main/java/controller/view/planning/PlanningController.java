@@ -27,10 +27,8 @@ public class PlanningController {
     public SplitPane channelPane;
     public AnchorPane timelineRuler;
     public VBox infoContainer;
-    public Window owner;
 
     public void initialize() {
-        this.owner = this.menuBar.getScene().getWindow();
     }
 
     public void newChannelPressed(ActionEvent event) throws IOException {
@@ -40,7 +38,7 @@ public class PlanningController {
         stage.setScene(scene);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.setTitle("New Channel");
-        stage.initOwner(this.owner);
+        stage.initOwner(menuBar.getScene().getWindow());
         stage.showAndWait();
     }
 
@@ -51,7 +49,16 @@ public class PlanningController {
         stage.setScene(scene);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.setTitle("New Clip");
-        stage.initOwner(this.owner);
+        stage.initOwner(menuBar.getScene().getWindow());
         stage.showAndWait();
+    }
+
+    public void addChannel(String type, String title, String description) {
+        AnchorPane channel = new AnchorPane();
+        channel.setMinHeight(40);
+        channel.setPrefSize(160,100);
+        Label channelTitle = new Label(title);
+        this.infoContainer.getChildren().add(channelTitle);
+        this.channelPane.getItems().add(channel);
     }
 }

@@ -1,13 +1,18 @@
 package controller.general;
 
+import controller.view.planning.PlanningController;
 import daw.manager.Manager;
+import planning.RPRole;
+
 import java.io.IOException;
+import java.util.Optional;
 
 public class ControllerImpl implements Controller {
 
     private final ProjectDownloader downloader;
     private final ProjectLoader loader = new ProjectLoaderImpl();
     private final Manager manager;
+    private PlanningController planningController;
 
     public ControllerImpl() {
         this.manager = this.loadProject();
@@ -39,10 +44,27 @@ public class ControllerImpl implements Controller {
         }
     }
 
+    @Override
+    public void setPlanningController(PlanningController planningController) {
+        this.planningController = planningController;
+    }
 
     @Override
     public void newPlanningChannel(String type, String title, String description) throws IllegalArgumentException {
-
+        RPRole.RoleType roleType;
+        if (type.equals("Speaker")) {
+            roleType = RPRole.RoleType.SPEECH;
+        } else if (type.equals("Effect")) {
+            roleType = RPRole.RoleType.EFFECTS;
+        } else {
+            roleType = RPRole.RoleType.SOUNDTRACK;
+        }
+        if (description.equals("")) {
+            this.manager.addChannel(roleType, title, Optional.empty());
+        } else {
+            this.manager.addChannel(roleType, title, Optional.of(description));
+        }
+        this.planningController.addChannel(type, title, description);
     }
 
     @Override
