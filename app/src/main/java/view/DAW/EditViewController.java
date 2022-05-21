@@ -56,7 +56,6 @@ public class EditViewController implements Initializable{
 		timeAxisSetter = new TimeAxisSetter();
 		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 1);
 		timelineToChannelsAligner.add(timeAxisSetter.getScroller(), 0, 0);
-	
 		
 		//--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
 		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {

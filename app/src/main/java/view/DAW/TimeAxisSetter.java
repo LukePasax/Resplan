@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 import javafx.geometry.Side;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.util.StringConverter;
 
@@ -14,20 +15,32 @@ public class TimeAxisSetter {
 	private final static double LABELS_PX_GAP = 40;
 
 	private final NumberAxis na = new NumberAxis();
-	private final AnchorPane scroller = new AnchorPane();
+	private final AnchorPane scrollerPane = new AnchorPane();
+	private final Rectangle scroller = new Rectangle();
+
+	//TODO set and update prLenght with model!!!
+	/**
+	 * The time length of the project.
+	 */
+	private double prLength = MS_TO_MIN*60; //project length
 	
-	private double maxTime;
+	/**
+	 * The time interval displayed on axis.
+	 */
+	private double timeDelta;
 		
 	public TimeAxisSetter() {
+	//---------NUMBER AXIS-------------
 		na.setAnimated(false);
 		na.setAutoRanging(false);
 		na.setSide(Side.TOP);
 		//set this to Double.MAX_VALUE prevent warnings if the range is changed before a new tick unit is calculated.
 		na.setTickUnit(Double.MAX_VALUE);
-		calculateRange();
+		//set the range to 100% prLength
+		setRange(MS_TO_MIN*30, MS_TO_MIN*40);
 		na.setTickLabelGap(5);
 		//------CALCULATE TICK WHEN RESIZE AXIS-------
-		na.needsLayoutProperty().addListener((obs, old, needsLayout) -> calculateTicks());
+		na.needsLayoutProperty().addListener((obs, old, needsLayout) -> {calculateTicks(); updateScroller();});
 		//-----PRINT TIME INSTEAD OF MILLISECONDS-----
 		na.setTickLabelFormatter(new StringConverter<Number>() {
 
@@ -57,29 +70,35 @@ public class TimeAxisSetter {
 			}
 			
 		});
-		//----------SCROLLER-------------
-		Rectangle r = new Rectangle();
-		r.setWidth(30);
-		r.setHeight(scroller.getHeight());
-		scroller.getChildren().add(r);
+	//----------SCROLLER----------------
+		scroller.setFill(Paint.valueOf("#444444"));
+		AnchorPane.setBottomAnchor(scroller, 0.0);
+		AnchorPane.setTopAnchor(scroller, 0.0);
+		scroller.setHeight(5);
+		scroller.setArcHeight(5);
+		scroller.setArcWidth(5);
+		scrollerPane.getChildren().add(scroller);
+		//------SCROLLER DRAG RESIZE-----------
+		
 	}
 
+	//---------FX COMPONENTS GETTERS---------------
 	public NumberAxis getAxis() {
 		return na;
 	}
 	public AnchorPane getScroller() {
-		return scroller;
+		return scrollerPane;
 	}
 	
+	//---------CALCULATE AXIS---------------------
 	/**
 	 * Calculate tick unit for major and minor ticks.
 	 * <p>The final unit will be calculated from the actual axis length and it's value range. 
 	 * If possible the unit will be also a multiple of standard time units like seconds or minutes.
+	 * Needs to be called every time number axis needs layout;
 	 */
 	private void calculateTicks() {
-		double timeDelta = na.getUpperBound()-na.getLowerBound();
-		double axisLength = na.getDisplayPosition(na.getUpperBound())-na.getDisplayPosition(na.getLowerBound());
-		Long maxLabels = Double.valueOf(axisLength/LABELS_PX_GAP).longValue();
+		Long maxLabels = Double.valueOf(na.getWidth()/LABELS_PX_GAP).longValue();
 		double minTickUnit = timeDelta/Math.min(30, maxLabels);
 		//round to multiples of min or sec.
 		double tick;
@@ -105,13 +124,46 @@ public class TimeAxisSetter {
 		na.setMinorTickCount(Double.valueOf(mTCount).intValue());
 	}
 	
-	private void calculateRange() {
-		na.setLowerBound(0);
-		na.setUpperBound(MS_TO_MIN*600);
+	/**
+	 * Set a new range for the timeline. Responsable of update scroller position.
+	 * @param lowerBound
+	 * @param upperBound
+	 */
+	private void setRange(double lowerBound, double upperBound) {
+		if(lowerBound<0 || upperBound>prLength || lowerBound>=upperBound) {
+			throw new IllegalArgumentException("Lower and upper bounds must be between 0 and project length.");
+		}
+		na.setLowerBound(lowerBound);
+		na.setUpperBound(upperBound);
+		timeDelta = na.getUpperBound()-na.getLowerBound();
+		updateScroller();
 	}
 	
-	private void zoom() {
-		//TODO
+	//---------CALCULATE SCROLLER-----------------
+	/**
+	 * Update scroller dimension and position.
+	 * Needs to be called every time:<ul>
+	 * <li> the number axis needs layout
+	 * <li> the prLength change
+	 * <li> axis bounds are changed (axis zoom)
+	 * </ul>
+	 */
+	private void updateScroller() {
+		//length
+		scroller.setWidth(na.getWidth()*calculatePercent(prLength, timeDelta));
+		//position
+		double pos = na.getWidth()*calculatePercent(prLength, na.getLowerBound());
+		AnchorPane.setLeftAnchor(scroller, pos);
 	}
-
+	
+	/**
+	 * Return a number between 0 and 1. es: 0.2 = 20%;
+	 * @param total
+	 * @param part
+	 * @return
+	 */
+	private double calculatePercent(double total, double part) {
+		return part/total;
+	}
 }
+
