@@ -6,16 +6,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 
 /**
- * {@link DragResizer} can be used to add mouse listeners to a {@link Region}
+ * {@link RegionHeightResizer} can be used to add mouse listeners to a {@link Region}
  * and make it resizable by the user by clicking and dragging the border in the
  * same way as a window.
  * <p>
  * Only height resizing is currently implemented. Usage: <pre>DragResizer.makeResizable(myAnchorPane);</pre>
- * 
- * @author atill
- * 
  */
-public class DragResizer {
+public class RegionHeightResizer {
 
     /**
      * The margin around the control that a user can click in to start resizing
@@ -31,12 +28,12 @@ public class DragResizer {
 
     private boolean dragging;
 
-    private DragResizer(Region aRegion) {
+    private RegionHeightResizer(Region aRegion) {
         region = aRegion;
     }
 
     public static void makeResizable(Region region) {
-        final DragResizer resizer = new DragResizer(region);
+        final RegionHeightResizer resizer = new RegionHeightResizer(region);
 
         region.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override

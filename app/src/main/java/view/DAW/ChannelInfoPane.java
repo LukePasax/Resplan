@@ -36,7 +36,7 @@ public class ChannelInfoPane extends Pane {
 		this.setBorder(new Border(new BorderStroke(null, null, borderColor, null, 
 				null, null, BorderStrokeStyle.SOLID, null, CornerRadii.EMPTY, null, null)));
 		//set drag resize
-		DragResizer.makeResizable(this);
+		RegionHeightResizer.makeResizable(this);
 		//set content
 		this.channelNameLabel = new Label(channelName);
 		muteButton.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));

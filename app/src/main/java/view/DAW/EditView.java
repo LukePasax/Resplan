@@ -28,46 +28,9 @@ public class EditView extends Application {
 		FileInputStream fxmlStream = new FileInputStream(path);
 		VBox root = (VBox) loader.load(fxmlStream);
 		
-		
-		Button zoomIn = new Button("+");
-		Button zoomOut = new Button("-");
-		
-		//chart test
-
-		x.setSide(Side.TOP);
-		CategoryAxis y = new CategoryAxis();
-		y.setSide(Side.RIGHT);
-		
-		ScatterChart<Number,String> c = new ScatterChart<>(x,y);
-		
-		Series<Number,String> s = new Series<>();
-		Data<Number,String> d = new Data<>(10, "vocals");
-		d.setNode(new Label("puttana"));
-		s.getData().add(d);
-		s.getData().add(new Data<>(30, "vocals"));
-		s.getData().add(new Data<>(1, "vocals"));
-		s.getData().add(new Data<>(10, "fx"));
-		s.getData().add(new Data<>(12, "fx"));
-		s.getData().add(new Data<>(5, "fx"));
-		
-		c.getData().add(s);
-		//root.getChildren().addAll(c, zoomIn, zoomOut);
-		
-		zoomIn.setOnAction(e->{
-			NumberAxis xa = (NumberAxis) c.getXAxis();
-			x.setAutoRanging(false);
-			xa.setLowerBound(xa.getLowerBound()+10);
-			xa.setUpperBound(xa.getUpperBound()-10);
-			
-		});
-		zoomOut.setOnAction(e->{
-			NumberAxis xa = (NumberAxis) c.getXAxis();
-			xa.setAutoRanging(true);
-		});
-		
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setTitle("FXML with controller");
+        stage.setTitle("Resplan");
         stage.show();
 	}
 
