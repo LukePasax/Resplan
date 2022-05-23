@@ -53,10 +53,10 @@ public class ChannelLinker implements RPChannelLinker {
     }
 
     /**
-     * A method that returns the {@link  RPPart} with the given title.
+     * A method that returns the {@link  RPRole} with the given title.
      *
-     * @param title the title of the part
-     * @return the {@link RPPart} with the given title
+     * @param title the title of the {@link RPRole}
+     * @return the {@link RPRole} with the given title
      */
     @Override
     public RPRole getRole(String title) {

@@ -1,11 +1,18 @@
 package controller.general;
 
+import com.sun.javafx.binding.StringFormatter;
 import controller.view.planning.PlanningController;
+import daw.manager.ImportException;
 import daw.manager.Manager;
+import planning.Element;
+import planning.RPPart;
 import planning.RPRole;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ControllerImpl implements Controller {
 
@@ -59,17 +66,31 @@ public class ControllerImpl implements Controller {
         } else {
             roleType = RPRole.RoleType.SOUNDTRACK;
         }
-        if (description.equals("")) {
-            this.manager.addChannel(roleType, title, Optional.empty());
-        } else {
-            this.manager.addChannel(roleType, title, Optional.of(description));
-        }
+        Optional<String> desc = description.equals("") ? Optional.empty() : Optional.of(description);
+        this.manager.addChannel(roleType, title, desc);
         this.planningController.addChannel(type, title, description);
     }
 
     @Override
-    public void newPlanningClip() {
+    public void newPlanningClip(String type, String title, String description, String channel, Double time, File content) throws IllegalArgumentException, ImportException {
+        RPPart.PartType partType;
+        if (type.equals("Speaker")) {
+            partType = RPPart.PartType.SPEECH;
+        } else if (type.equals("Effects")) {
+            partType = RPPart.PartType.EFFECTS;
+        } else {
+            partType = RPPart.PartType.SOUNDTRACK;
+        }
+        Optional<String> desc = description.equals("") ? Optional.empty() : Optional.of(description);
+        Optional<File> file = content == null ? Optional.empty() : Optional.of(content);
+        this.manager.addClip(partType, title, desc, channel, time, file);
+        this.planningController.addClip(title, description, channel, time);
+    }
 
+
+    @Override
+    public List<String> getChannelList() {
+        return this.manager.getChannelList().stream().map(Element::getTitle).collect(Collectors.toList());
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES

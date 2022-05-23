@@ -1,5 +1,6 @@
 package controller.view.planning;
 
+import controller.view.planningApp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -43,14 +44,21 @@ public class PlanningController {
     }
 
     public void newClipPressed(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/newClipWindow.fxml"));
-        Scene scene = new Scene(loader.load());
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.setTitle("New Clip");
-        stage.initOwner(menuBar.getScene().getWindow());
-        stage.showAndWait();
+        if (planningApp.getController().getChannelList().isEmpty()) {
+            Alert error = new Alert(Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setContentText("No channels present");
+            error.showAndWait();
+        } else {
+            FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/newClipWindow.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setTitle("New Clip");
+            stage.initOwner(menuBar.getScene().getWindow());
+            stage.showAndWait();
+        }
     }
 
     public void addChannel(String type, String title, String description) {
@@ -60,5 +68,8 @@ public class PlanningController {
         Label channelTitle = new Label(title);
         this.infoContainer.getChildren().add(channelTitle);
         this.channelPane.getItems().add(channel);
+    }
+
+    public void addClip(String title, String description, String channel, Double time) {
     }
 }
