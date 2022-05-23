@@ -2,40 +2,26 @@ package view.DAW;
 
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
-import javafx.scene.ImageCursor;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Region;
 
 public class TimeAxisDragNavigator {
-    /**
-     * The margin around the control that a user can click in to start resizing
-     * the region.
-     */
-    private static final int RESIZE_MARGIN = 5;
 
     private final TimeAxisSetter setter;
     private final NumberAxis axis;
 
     private double initialY;
     private double initialTime;
-    private double initialTimeX;
     private double initialLowerBound;
-    private double initialLowerBoundX;
     private double initialUpperBound;
-    private double initialUpperBoundY;
 
     private boolean dragging;
-    
-    private final static String SEP = System.getProperty("file.separator");
-    
-    //private ImageCursor magnifier = new ImageCursor(new Image(System.getProperty("user.dir") + SEP + "src" + SEP + "main" + SEP + "resources" + SEP + "images" + SEP + "magnifier.png"));
 
     private TimeAxisDragNavigator(TimeAxisSetter timeAxisSetter) {
         setter = timeAxisSetter;
         axis = timeAxisSetter.getAxis();
+        
+        
     }
 
     public static void makeNavigable(TimeAxisSetter timeAxisSetter) {
@@ -64,22 +50,22 @@ public class TimeAxisDragNavigator {
             }});
         
         //on events for scrolling (scroller)
-        timeAxisSetter.getScroller().setOnMousePressed(new EventHandler<MouseEvent>() {
+        timeAxisSetter.getNavigator().setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 navigator.mousePressed(event);
             }});
-        timeAxisSetter.getScroller().setOnMouseDragged(new EventHandler<MouseEvent>() {
+        timeAxisSetter.getNavigator().setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 navigator.mouseDragged(event);
             }});
-        timeAxisSetter.getScroller().setOnMouseMoved(new EventHandler<MouseEvent>() {
+        timeAxisSetter.getNavigator().setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 navigator.mouseOver(event);
             }});
-        timeAxisSetter.getScroller().setOnMouseReleased(new EventHandler<MouseEvent>() {
+        timeAxisSetter.getNavigator().setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 navigator.mouseReleased(event);
@@ -96,20 +82,21 @@ public class TimeAxisDragNavigator {
     		//zoom event
     		axis.setCursor(Cursor.V_RESIZE);
     	} else {
-    		//scroll event TODO
-    		if(isInScrollerDraggableZone(event) || dragging) {
-            setter.getScroller().setCursor(Cursor.S_RESIZE);
+    		//scroll event
+    		if(isInScrollerDraggableZone(event)) {
+    			setter.getNavigator().setCursor(Cursor.OPEN_HAND);
 	        }
-	        else {
-	            //setter.setCursor(Cursor.DEFAULT);
+	        else if(dragging) {
+	            setter.getNavigator().setCursor(Cursor.CLOSED_HAND);
+	        } else {
+	        	setter.getNavigator().setCursor(Cursor.HAND);
 	        }
     	}
        
     }
 
     protected boolean isInScrollerDraggableZone(MouseEvent event) {
-    	//TODO
-        return event.getY() > (setter.getScroller().getWidth() - RESIZE_MARGIN);
+        return (event.getX() > setter.getScrollerX() && event.getX() < (setter.getScrollerX()+setter.getScrollerWidth()));
     }
 
     protected void mouseDragged(MouseEvent event) {
@@ -144,15 +131,21 @@ public class TimeAxisDragNavigator {
         	}
         } else {
         	//scroll event
+        	double ratio = event.getX()/axis.getWidth();
+			double actualTime = setter.getProjectLength()*ratio;
+        	double vSpostamento = actualTime-initialTime;
+        	double lb = initialLowerBound + vSpostamento;
+        	double ub = initialUpperBound + vSpostamento;
+        	if(lb<0) {
+        		lb=0;
+        	}
+        	if(ub > setter.getProjectLength()) {
+        		ub = setter.getProjectLength();
+        	}
+        	if(lb<ub) {
+        		setter.setRange(lb, ub);
+        	}
         }
-/*
-        double mousey = event.getY();
-
-        double newHeight = setter.getMinHeight() + (mousey - y);
-
-        setter.setMinHeight(newHeight);
-
-        y = mousey;*/
     }
 
     protected void mousePressed(MouseEvent event) {
@@ -160,34 +153,31 @@ public class TimeAxisDragNavigator {
     	if(event.getSource().equals(axis)) {
     		//reset zoom
     		if(event.getClickCount()==2) {
-    			axis.setLowerBound(0);
-            	axis.setUpperBound(setter.getProjectLength());
+    			setter.setRange(0, setter.getProjectLength());
             	return;
     		}
     		dragging = true;
     		initialY = event.getY();
     		initialTime = axis.getValueForDisplay(event.getX()).doubleValue();
-    		initialTimeX = axis.getDisplayPosition(initialTime);
     		initialLowerBound = axis.getLowerBound();
     		initialUpperBound = axis.getUpperBound();
     	} else {
     		//scroll event
+    		if(isInScrollerDraggableZone(event)) {
+    			//scroll
+    			dragging = true;
+    			initialTime = axis.getValueForDisplay(event.getX()).doubleValue();
+    			initialLowerBound = axis.getLowerBound();
+        		initialUpperBound = axis.getUpperBound();
+    		} else {
+    			//instant move
+    			double ratio = event.getX()/axis.getWidth();
+    			double clickedTime = setter.getProjectLength()*ratio;
+    			double timeDelta = axis.getUpperBound()-axis.getLowerBound();
+    			double lb = clickedTime-(timeDelta/2)<0 ? 0 : clickedTime-(timeDelta/2);
+    			double ub = clickedTime+(timeDelta/2)>setter.getProjectLength() ? setter.getProjectLength() : clickedTime+(timeDelta/2);
+    			setter.setRange(lb, ub);
+    		}
     	}
- /*       // ignore clicks outside of the draggable margin
-        if(!isInScrollerDraggableZone(event)) {
-            return;
-        }
-
-        dragging = true;
-
-        // make sure that the minimum height is set to the current height once,
-        // setting a min height that is smaller than the current height will
-        // have no effect
-        if (!initMinHeight) {
-            setter.setMinHeight(setter.getHeight());
-            initMinHeight = true;
-        }
-
-        y = event.getY();*/
     }
 }

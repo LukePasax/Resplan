@@ -52,10 +52,10 @@ public class EditViewController implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		//--------------adding time axis------------
-		timeAxisSetter = new TimeAxisSetter();
+		//--------------setting time axis------------
+		timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
 		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 1);
-		timelineToChannelsAligner.add(timeAxisSetter.getScroller(), 0, 0);
+		timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);
 		
 		//--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
 		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
@@ -104,5 +104,9 @@ public class EditViewController implements Initializable{
 		c.setIn(10);
 		c.setOut(20);
 		newChannel.getClips().add(c);
+	}
+
+	public void addClip() {
+		//TODO
 	}
 }

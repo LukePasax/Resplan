@@ -7,9 +7,6 @@ import javafx.geometry.Side;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.PopupControl;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
@@ -20,51 +17,50 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Popup;
-import javafx.stage.PopupWindow;
 import javafx.util.StringConverter;
 
 public class TimeAxisSetter {
 	
-	private final static double MS_TO_MIN = 60000;
-	private final static double MS_TO_SEC = 1000;
+	public final static double MS_TO_MIN = 60000;
+	public final static double MS_TO_SEC = 1000;
 	private final static double LABELS_PX_GAP = 40;
 
-	private final NumberAxis na = new NumberAxis();
-	private final AnchorPane scrollerPane = new AnchorPane();
+	private final NumberAxis axis = new NumberAxis();
+	private final AnchorPane navigator = new AnchorPane();
 	private final Rectangle scroller = new Rectangle();
-
+	
 	//TODO set and update prLenght with model!!!
 	/**
 	 * The time length of the project.
 	 */
-	private double prLength = MS_TO_MIN*10; //project length
+	private double prLength;
 	
 	/**
 	 * The time interval displayed on axis.
 	 */
 	private double timeDelta;
 		
-	public TimeAxisSetter() {
+	public TimeAxisSetter(double projectLength) {
+		//set ptoject length
+		this.prLength = projectLength;
 	//---------NUMBER AXIS-------------
-		na.setAnimated(false);
-		na.setAutoRanging(false);
-		na.setSide(Side.TOP);
+		axis.setAnimated(false);
+		axis.setAutoRanging(false);
+		axis.setSide(Side.TOP);
 		//set this to Double.MAX_VALUE prevent warnings if the range is changed before a new tick unit is calculated.
-		na.setTickUnit(Double.MAX_VALUE);
+		axis.setTickUnit(Double.MAX_VALUE);
 		//set the range to 100% prLength
 		setRange(0, prLength);
-		na.setTickLabelGap(5);
+		axis.setTickLabelGap(5);
 		//------CALCULATE TICK WHEN RESIZE AXIS-------
-		na.needsLayoutProperty().addListener((obs, old, needsLayout) -> {calculateTicks(); updateScroller();});
+		axis.needsLayoutProperty().addListener((obs, old, needsLayout) -> {calculateTicks(); updateScroller();});
 		//-----PRINT TIME INSTEAD OF MILLISECONDS-----
-		na.setTickLabelFormatter(new StringConverter<Number>() {
+		axis.setTickLabelFormatter(new StringConverter<Number>() {
 
 			@Override
 			public String toString(Number milliseconds) {
@@ -72,7 +68,7 @@ public class TimeAxisSetter {
 				Long sec = TimeUnit.MILLISECONDS.toSeconds(milliseconds.longValue());
 				Long ms = milliseconds.longValue()-TimeUnit.SECONDS.toMillis(sec);
 				sec -= TimeUnit.MINUTES.toSeconds(min);
-				if(na.getTickUnit() < MS_TO_SEC) {
+				if(axis.getTickUnit() < MS_TO_SEC) {
 					return String.format("%02d", min) + ":" + String.format("%02d", sec) + "(+" + ms + "ms)";
 				}
 				return String.format("%02d", min) + ":" + String.format("%02d", sec);
@@ -90,7 +86,7 @@ public class TimeAxisSetter {
 			
 		});
 		//------SET PRECISION NAVIGATION---------
-		na.setOnMouseClicked(e->{
+		axis.setOnMouseClicked(e->{
 			if(e.getButton().equals(MouseButton.SECONDARY)) {
 				class AxisMenu extends Popup {
 					TextField lb = new TextField();
@@ -105,7 +101,7 @@ public class TimeAxisSetter {
 					    return null;
 					};
 					AxisMenu() {
-						na.setDisable(true);
+						axis.setDisable(true);
 						//buttons
 						HBox buttons = new HBox();
 						Button reset = new Button("RESET");
@@ -121,12 +117,12 @@ public class TimeAxisSetter {
 						buttons.getChildren().addAll(reset, ok);
 						//lower bound
 						HBox lowerBoundSetter = new HBox();	
-						lb.setPromptText(na.getTickLabelFormatter().toString(na.getLowerBound()));
+						lb.setPromptText(axis.getTickLabelFormatter().toString(axis.getLowerBound()));
 						lb.setTextFormatter(new TextFormatter<>(f));
 						lowerBoundSetter.getChildren().addAll(new Label("from: "), lb);
 						//upper bound
 						HBox upperBoundSetter = new HBox();
-						ub.setPromptText(na.getTickLabelFormatter().toString(na.getUpperBound()));
+						ub.setPromptText(axis.getTickLabelFormatter().toString(axis.getUpperBound()));
 						ub.setTextFormatter(new TextFormatter<>(f));
 						upperBoundSetter.getChildren().addAll(new Label("to: "), ub);
 						//pop-up
@@ -136,38 +132,47 @@ public class TimeAxisSetter {
 						v.setBackground(new Background(new BackgroundFill(Paint.valueOf("#999999"), null, null)));
 						v.getChildren().addAll(new Label("Set axis range"), lowerBoundSetter, upperBoundSetter, buttons);
 						this.getContent().add(v);
-						this.setOnHidden(e->na.setDisable(false));
+						this.setOnHidden(e->axis.setDisable(false));
 					}
 					void setBounds() {
 						if(lb.getText().isBlank() || ub.getText().isBlank()) {
 							return;
 						}
-						StringConverter<Number> sc = na.getTickLabelFormatter();
+						StringConverter<Number> sc = axis.getTickLabelFormatter();
 						setRange(sc.fromString(lb.getText()).doubleValue(), sc.fromString(ub.getText()).doubleValue());	
 					}
 				}
 				Popup p = new AxisMenu();
-				p.show(na.getScene().getWindow(), e.getScreenX(), e.getScreenY());
+				p.show(axis.getScene().getWindow(), e.getScreenX(), e.getScreenY());
 				}		
 			});
 	//----------SCROLLER----------------
 		scroller.setFill(Paint.valueOf("#444444"));
 		AnchorPane.setBottomAnchor(scroller, 0.0);
 		AnchorPane.setTopAnchor(scroller, 0.0);
-		scroller.setHeight(5);
+		scroller.setHeight(7);
 		scroller.setArcHeight(5);
 		scroller.setArcWidth(5);
-		scrollerPane.getChildren().add(scroller);
+		navigator.getChildren().add(scroller);
 		//------DRAG RESIZE AND NAVIGATE-----------
 		TimeAxisDragNavigator.makeNavigable(this);
 	}
 
 	//---------FX COMPONENTS GETTERS---------------
 	public NumberAxis getAxis() {
-		return na;
+		return axis;
 	}
-	public AnchorPane getScroller() {
-		return scrollerPane;
+	
+	public AnchorPane getNavigator() {
+		return navigator;
+	}
+	
+	public double getScrollerX() {
+		return AnchorPane.getLeftAnchor(scroller);
+	}
+	
+	public double getScrollerWidth() {
+		return scroller.getWidth();
 	}
 	
 	//---------CALCULATE AXIS---------------------
@@ -178,7 +183,7 @@ public class TimeAxisSetter {
 	 * Needs to be called every time number axis needs layout;
 	 */
 	private void calculateTicks() {
-		Long maxLabels = Double.valueOf(na.getWidth()/LABELS_PX_GAP).longValue();
+		Long maxLabels = Double.valueOf(axis.getWidth()/LABELS_PX_GAP).longValue();
 		double minTickUnit = timeDelta/Math.min(30, maxLabels);
 		//round to multiples of min or sec.
 		double tick;
@@ -200,8 +205,8 @@ public class TimeAxisSetter {
 			mTCount = tick/MS_TO_MIN;
 		}
 		//set
-		na.setTickUnit(Double.valueOf(tick).longValue());
-		na.setMinorTickCount(Double.valueOf(mTCount).intValue());
+		axis.setTickUnit(Double.valueOf(tick).longValue());
+		axis.setMinorTickCount(Double.valueOf(mTCount).intValue());
 	}
 	
 	/**
@@ -213,9 +218,9 @@ public class TimeAxisSetter {
 		if(lowerBound<0 || upperBound>prLength || lowerBound>=upperBound) {
 			throw new IllegalArgumentException("Lower and upper bounds must be between 0 and project length.");
 		}
-		na.setLowerBound((lowerBound));
-		na.setUpperBound((upperBound));
-		timeDelta = na.getUpperBound()-na.getLowerBound();
+		axis.setLowerBound((lowerBound));
+		axis.setUpperBound((upperBound));
+		timeDelta = axis.getUpperBound()-axis.getLowerBound();
 		updateScroller();
 	}
 	
@@ -230,9 +235,9 @@ public class TimeAxisSetter {
 	 */
 	private void updateScroller() {
 		//length
-		scroller.setWidth(na.getWidth()*calculatePercent(prLength, timeDelta));
+		scroller.setWidth(axis.getWidth()*calculatePercent(prLength, timeDelta));
 		//position
-		double pos = na.getWidth()*calculatePercent(prLength, na.getLowerBound());
+		double pos = axis.getWidth()*calculatePercent(prLength, axis.getLowerBound());
 		AnchorPane.setLeftAnchor(scroller, pos);
 	}
 	
@@ -246,9 +251,13 @@ public class TimeAxisSetter {
 		return part/total;
 	}
 	
-	//other getters
+	//----PROJECT LENGTH------
 	public double getProjectLength() {
 		return prLength;
+	}
+	
+	public void setProjectLength(double prLength) {
+		this.prLength = prLength;
 	}
 }
 
