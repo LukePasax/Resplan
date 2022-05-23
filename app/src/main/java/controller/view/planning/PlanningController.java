@@ -3,14 +3,23 @@ package controller.view.planning;
 import controller.view.planningApp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import view.DAW.ChannelClipsPane;
+import view.DAW.ChannelInfoPane;
+import view.DAW.TimeAxisSetter;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class PlanningController {
@@ -24,12 +33,35 @@ public class PlanningController {
     public VBox commandBox;
     public Button newChannelButton;
     public Button newClipButton;
-    public ScrollPane channelScrollPane;
-    public SplitPane channelPane;
-    public AnchorPane timelineRuler;
-    public VBox infoContainer;
+    public GridPane timelineToChannelsAligner;
+    public SplitPane channelsInfoResizer;
+    public VBox channelsContentPane;
+    public VBox channelsInfoPane;
+    private TimeAxisSetter timeAxisSetter;
+
 
     public void initialize() {
+        //--------------setting time axis------------
+        timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
+        timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 1);
+        timelineToChannelsAligner.setPadding(new Insets(0,0,0,20));
+        timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);
+
+        //--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
+        channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
+            timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
+        });
+		
+		/*
+		timeAxis.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
+            if(!needsLayout) {
+                clips.forEach((num, point) -> {
+                    double posX = timeAxis.getDisplayPosition(num);
+                    point.setLayoutX(posX);
+                    point.setLayoutY(50D);
+                });
+            }
+        });*/
     }
 
     public void newChannelPressed(ActionEvent event) throws IOException {
@@ -62,12 +94,22 @@ public class PlanningController {
     }
 
     public void addChannel(String type, String title, String description) {
-        AnchorPane channel = new AnchorPane();
-        channel.setMinHeight(40);
-        channel.setPrefSize(160,100);
-        Label channelTitle = new Label(title);
-        this.infoContainer.getChildren().add(channelTitle);
-        this.channelPane.getItems().add(channel);
+        //--------INFOS--------------
+        Pane newChannelInfos = new ChannelInfoPane(title);
+
+        //--------CLIP PANE----------
+        ChannelClipsPane newChannel = new ChannelClipsPane(timeAxisSetter.getAxis());
+
+
+
+        //--------CHANNEL PANES HEIGHT LINK------
+        newChannelInfos.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
+            newChannel.setMinHeight(newChannelInfos.getHeight());
+        });
+
+        //--------ADDING TO VIEW-----
+        channelsInfoPane.getChildren().add(newChannelInfos);
+        channelsContentPane.getChildren().add(newChannel);
     }
 
     public void addClip(String title, String description, String channel, Double time) {

@@ -8,13 +8,14 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" stylesheets="@../stylesheets/planning.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.view.planning.PlanningController">
    <children>
@@ -42,7 +43,7 @@
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" text="Resplan" textAlignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="298.22222222222223" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <SplitPane fx:id="mainPanel" dividerPositions="0.15, 0.85" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+      <SplitPane fx:id="mainPanel" dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <items>
             <VBox fx:id="commandBox" alignment="TOP_CENTER" maxWidth="150.0" minWidth="-Infinity" prefHeight="450.0" prefWidth="100.0" spacing="10.0" styleClass="tool-container">
                <children>
@@ -53,25 +54,35 @@
                   <Insets left="2.5" right="2.5" top="10.0" />
                </padding>
             </VBox>
-            <ScrollPane fx:id="channelScrollPane" fitToHeight="true" fitToWidth="true" pannable="true" prefWidth="300.0">
-               <content>
-                  <VBox>
-                     <children>
-                      <AnchorPane fx:id="timelineRuler" minHeight="40.0" minWidth="0.0" prefHeight="37.0" prefWidth="438.0" styleClass="channel-container" />
-                        <Separator cache="true" maxHeight="5.0" minHeight="5.0" prefHeight="16.0" prefWidth="440.0" />
-                        <SplitPane fx:id="channelPane" orientation="VERTICAL" prefHeight="455.0" prefWidth="434.0" VBox.vgrow="ALWAYS">
-                          <items>
-                            <AnchorPane minHeight="20.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="channel-container" />
-                          </items>
-                        </SplitPane>
-                     </children>
-                  </VBox>
-               </content>
-            </ScrollPane>
-            <VBox fx:id="infoContainer" maxWidth="150.0" minWidth="-Infinity" prefHeight="450.0" prefWidth="100.0" styleClass="tool-container">
+            <GridPane id="edit view" fx:id="timelineToChannelsAligner" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="50.0" />
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" />
+                  <RowConstraints minHeight="25.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+               </rowConstraints>
                <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="47.0" smooth="false" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="102.0" />
-               </children></VBox>
+                  <ScrollPane id="channels vertical scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minViewportHeight="40.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+                     <content>
+                        <SplitPane id="clips-channel info divider" fx:id="channelsInfoResizer" dividerPositions="0.752092050209205" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                           <items>
+                              <VBox fx:id="channelsContentPane" prefHeight="200.0" prefWidth="100.0" />
+                              <VBox fx:id="channelsInfoPane" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" />
+                           </items>
+                        </SplitPane>
+                     </content>
+                  </ScrollPane>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="20.0" />
+               </padding>
+            </GridPane>
         </items>
       </SplitPane>
    </children>
