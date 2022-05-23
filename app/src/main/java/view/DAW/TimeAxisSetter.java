@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.Scene;
 import javafx.scene.chart.Axis.TickMark;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,10 +20,13 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 import javafx.stage.Popup;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 public class TimeAxisSetter {
@@ -89,7 +93,7 @@ public class TimeAxisSetter {
 		//------SET PRECISION NAVIGATION---------
 		axis.setOnMouseClicked(e->{
 			if(e.getButton().equals(MouseButton.SECONDARY)) {
-				class AxisMenu extends Popup {
+				class AxisMenu extends Pane {
 					TextField lb = new TextField();
 					TextField ub = new TextField();
 					java.util.function.UnaryOperator<Change> f = change -> {
@@ -102,18 +106,17 @@ public class TimeAxisSetter {
 					    return null;
 					};
 					AxisMenu() {
-						axis.setDisable(true);
 						//buttons
 						HBox buttons = new HBox();
 						Button reset = new Button("RESET");
 						reset.setOnAction(a->{
 							setRange(0, getProjectLength());
-							hide();
+							this.getScene().getWindow().hide();
 						});
 						Button ok = new Button("OK");
 						ok.setOnAction(a->{
 							setBounds();
-							hide();
+							this.getScene().getWindow().hide();
 						});
 						buttons.getChildren().addAll(reset, ok);
 						//lower bound
@@ -132,8 +135,7 @@ public class TimeAxisSetter {
 						v.setBorder(new Border(new BorderStroke(Paint.valueOf("#000000"), BorderStrokeStyle.SOLID, null, null)));
 						v.setBackground(new Background(new BackgroundFill(Paint.valueOf("#999999"), null, null)));
 						v.getChildren().addAll(new Label("Set axis range"), lowerBoundSetter, upperBoundSetter, buttons);
-						this.getContent().add(v);
-						this.setOnHidden(e->axis.setDisable(false));
+						this.getChildren().add(v);
 					}
 					void setBounds() {
 						if(lb.getText().isBlank() || ub.getText().isBlank()) {
@@ -143,8 +145,16 @@ public class TimeAxisSetter {
 						setRange(sc.fromString(lb.getText()).doubleValue(), sc.fromString(ub.getText()).doubleValue());	
 					}
 				}
-				Popup p = new AxisMenu();
-				p.show(axis.getScene().getWindow(), e.getScreenX(), e.getScreenY());
+				Pane p = new AxisMenu();
+				Scene s = new Scene(p);
+				Stage stage = new Stage();
+				stage.setScene(s);
+				stage.initModality(Modality.WINDOW_MODAL);
+				stage.setTitle("Precision zoom");
+				stage.setX(e.getScreenX());
+				stage.setY(e.getScreenY());
+				stage.initOwner(axis.getScene().getWindow());
+				stage.showAndWait();
 				}		
 			});
 	//----------SCROLLER----------------

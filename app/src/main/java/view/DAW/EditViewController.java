@@ -63,7 +63,6 @@ public class EditViewController implements Initializable{
 		//--------------setting time axis------------
 		timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
 		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 1);
-		timelineToChannelsAligner.setPadding(new Insets(0,0,0,20));
 		timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);
 		
 		//--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
