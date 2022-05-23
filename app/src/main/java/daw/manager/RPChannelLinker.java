@@ -5,6 +5,7 @@ import daw.core.clip.RPTapeChannel;
 import javafx.util.Pair;
 import planning.RPRole;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -76,4 +77,6 @@ public interface RPChannelLinker {
 	 * @return true if the Channel exists, false otherwise
 	 */
 	boolean channelExists(String title);
+
+    List<RPRole> getRoleList();
 }

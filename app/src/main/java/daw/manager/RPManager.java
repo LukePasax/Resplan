@@ -130,4 +130,6 @@ public interface RPManager {
      * @return the {@link RPClipLinker} of this manager
      */
     RPClipLinker getClipLinker();
+
+    List<RPRole> getChannelList();
 }

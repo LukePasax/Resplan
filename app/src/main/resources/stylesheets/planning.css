@@ -14,7 +14,7 @@
 }
 
 .tool-container {
-    -fx-background-color: linear-gradient(to top left, darkorange, white);
+    -fx-background-color: linear-gradient(to bottom, white, lightgray);
 }
 
 .channel-container {
@@ -27,4 +27,9 @@
 
 #menu-container {
     -fx-background-color: linear-gradient(to bottom, orange, darkorange 50%, coral 100%);
+}
+
+.selector {
+    -fx-background-color: linear-gradient(to bottom, orange, darkorange 50%, coral 100%);
+    -fx-effect : dropshadow(gaussian, black, 10, 0, 1, 1);
 }

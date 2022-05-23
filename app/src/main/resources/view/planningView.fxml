@@ -14,8 +14,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" stylesheets="@../stylesheets/planning.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" stylesheets="@../stylesheets/planning.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.view.planning.PlanningController">
    <children>
       <AnchorPane maxHeight="25.0" prefHeight="25.0">
          <children>
@@ -45,8 +46,8 @@
         <items>
             <VBox fx:id="commandBox" alignment="TOP_CENTER" maxWidth="150.0" minWidth="-Infinity" prefHeight="450.0" prefWidth="100.0" spacing="10.0" styleClass="tool-container">
                <children>
-                  <Button fx:id="newChannelButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="New Channel" />
-                  <Button fx:id="newClipButton" mnemonicParsing="false" prefWidth="100.0" text="New Clip" />
+                  <Button fx:id="newChannelButton" mnemonicParsing="false" onAction="#newChannelPressed" prefHeight="25.0" prefWidth="100.0" text="New Channel" />
+                  <Button fx:id="newClipButton" mnemonicParsing="false" onAction="#newClipPressed" prefWidth="100.0" text="New Clip" />
                </children>
                <padding>
                   <Insets left="2.5" right="2.5" top="10.0" />
@@ -56,11 +57,10 @@
                <content>
                   <VBox>
                      <children>
-                        <AnchorPane maxHeight="54.0" minHeight="40.0" prefHeight="54.0" prefWidth="440.0" VBox.vgrow="SOMETIMES" />
+                      <AnchorPane fx:id="timelineRuler" minHeight="40.0" minWidth="0.0" prefHeight="37.0" prefWidth="438.0" styleClass="channel-container" />
                         <Separator cache="true" maxHeight="5.0" minHeight="5.0" prefHeight="16.0" prefWidth="440.0" />
-                        <SplitPane fx:id="channelPane" dividerPositions="0.1" orientation="VERTICAL" prefHeight="455.0" prefWidth="434.0" VBox.vgrow="ALWAYS">
+                        <SplitPane fx:id="channelPane" orientation="VERTICAL" prefHeight="455.0" prefWidth="434.0" VBox.vgrow="ALWAYS">
                           <items>
-                            <AnchorPane fx:id="timelineRuler" minHeight="20.0" minWidth="0.0" prefHeight="37.0" prefWidth="438.0" styleClass="channel-container" />
                             <AnchorPane minHeight="20.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" styleClass="channel-container" />
                           </items>
                         </SplitPane>
@@ -68,7 +68,10 @@
                   </VBox>
                </content>
             </ScrollPane>
-            <VBox fx:id="infoContainer" maxWidth="150.0" minWidth="-Infinity" prefHeight="450.0" prefWidth="100.0" styleClass="tool-container" />
+            <VBox fx:id="infoContainer" maxWidth="150.0" minWidth="-Infinity" prefHeight="450.0" prefWidth="100.0" styleClass="tool-container">
+               <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="47.0" smooth="false" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="102.0" />
+               </children></VBox>
         </items>
       </SplitPane>
    </children>

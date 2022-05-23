@@ -11,7 +11,7 @@ import java.util.*;
  */
 public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
 
-    private Optional<Sidechaining> sidechain;
+    private Optional<BasicSidechaining> sidechain;
     private final List<RPEffect> effects;
 
     public BasicProcessingUnitBuilder() {
@@ -28,7 +28,7 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     @Override
     public ProcessingUnitBuilder sidechain(UGen u, int channels) {
         if (this.sidechain.isEmpty()) {
-            this.sidechain = Optional.of(new Sidechaining(u, channels));
+            this.sidechain = Optional.of(new BasicSidechaining(u, channels));
         }
         return this;
     }

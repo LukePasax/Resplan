@@ -1,23 +1,23 @@
-package controller.storing;
+package controller.storing.serialization;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import daw.core.audioprocessing.RPEffect;
+import daw.core.audioprocessing.BasicSidechaining;
 import java.io.IOException;
 
-public class EffectSerializer extends StdSerializer<RPEffect> {
+public class SidechainingSerializer extends StdSerializer<BasicSidechaining> {
 
-    protected EffectSerializer() {
+    protected SidechainingSerializer() {
         this(null);
     }
 
-    protected EffectSerializer(Class<RPEffect> t) {
+    protected SidechainingSerializer(Class<BasicSidechaining> t) {
         super(t);
     }
 
     @Override
-    public void serialize(RPEffect value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(BasicSidechaining value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
         for (final var parameter: value.getParameters().entrySet()) {
             gen.writeNumberField(parameter.getKey(), parameter.getValue());

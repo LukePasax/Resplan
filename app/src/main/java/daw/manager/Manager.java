@@ -1,5 +1,6 @@
 package daw.manager;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import daw.core.channel.RPChannel;
 import daw.core.clip.*;
 import daw.core.mixer.Mixer;
@@ -10,12 +11,15 @@ import planning.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Manager implements RPManager {
 
+    @JsonProperty
     private final RPMixer mixer;
     private final RPChannelLinker channelLinker;
     private final RPClipLinker clipLinker;
+    @JsonProperty
     private final Map<RPRole, List<RPRole>> groupMap;
     private final RPClipConverter clipConverter;
 
@@ -47,6 +51,8 @@ public class Manager implements RPManager {
     public void addChannel(RPRole.RoleType type, String title, Optional<String> description) throws IllegalArgumentException {
         if (this.channelLinker.channelExists(title)) {
             throw new IllegalArgumentException("Channel already exists");
+        } else if (title.equals("")) {
+            throw new IllegalArgumentException("Title is mandatory");
         }
         final RPRole role = this.createRole(type, title, description);
         final RPTapeChannel tapeChannel = new TapeChannel();
@@ -172,6 +178,8 @@ public class Manager implements RPManager {
         final EmptyClip clip = new EmptyClip();
         if (this.clipLinker.clipExists(title)) {
             throw new IllegalArgumentException("Clip already exists");
+        } else if (title.equals("")) {
+            throw new IllegalArgumentException("Title is mandatory");
         }
         if (content.isPresent()) {
             try {
@@ -189,7 +197,7 @@ public class Manager implements RPManager {
             part = description.map(s -> new SoundtrackPart(title, s)).orElseGet(() -> new SoundtrackPart(title));
         }
         this.clipLinker.addClipReferences(clip, part);
-        channelLinker.getTapeChannel(channelLinker.getRole(title)).insertRPClip(clip, time);
+        channelLinker.getTapeChannel(channelLinker.getRole(channel)).insertRPClip(clip, time);
     }
 
     /**
@@ -283,5 +291,11 @@ public class Manager implements RPManager {
     @Override
     public RPClipLinker getClipLinker() {
         return this.clipLinker;
+    }
+
+    @Override
+    public List<RPRole> getChannelList() {
+        return this.channelLinker.getRoleList().stream().filter(k -> !this.groupMap.containsKey(k))
+                .collect(Collectors.toList());
     }
 }

@@ -29,10 +29,11 @@ public interface ProcessingUnit {
      * Makes the processing unit sidechained to a specific source.
      * To know what sidechaining is and when to use it, please read the documentation at {@link Sidechaining}.
      * Note that if the processing unit is already sidechained this method does nothing, as a processing
-     * unit cannot have two different sidechained sources at the same time.
+     * unit cannot have two different sidechained sources at the same time. If the desired action is to change
+     * the source of the sidechaining, first call removeSidechaining and then this method.
      * @param s the compressor that performs the sidechaining.
      */
-    void addSidechaining(Sidechaining s);
+    void addSidechaining(BasicSidechaining s);
 
     /**
      * Makes the processing unit not be sidechained to any external source.
@@ -68,6 +69,8 @@ public interface ProcessingUnit {
      * If the number of inputs of the given effect is greater than the number of outputs of the preceding
      * effect then the outputs are cycled to fill all inputs.
      * @param u the {@link RPEffect} that represents the effect to be added.
+     * @throws IllegalArgumentException if the given position is out of bounds or if the given effect
+     * is an instantiation of {@link Sidechaining}.
      */
     void addEffect(RPEffect u);
 
@@ -81,7 +84,8 @@ public interface ProcessingUnit {
      * two consecutive {@link RPEffect} is different.
      * @param u the {@link RPEffect} that represents the effect to be added.
      * @param index a position in the sequence.
-     * @throws IllegalArgumentException if the given position is out of bounds.
+     * @throws IllegalArgumentException if the given position is out of bounds or if the given effect
+     * is an instantiation of {@link Sidechaining}.
      */
     void addEffectAtPosition(RPEffect u, int index);
 
