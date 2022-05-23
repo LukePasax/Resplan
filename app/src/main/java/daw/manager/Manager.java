@@ -11,6 +11,7 @@ import planning.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Manager implements RPManager {
 
@@ -290,5 +291,11 @@ public class Manager implements RPManager {
     @Override
     public RPClipLinker getClipLinker() {
         return this.clipLinker;
+    }
+
+    @Override
+    public List<RPRole> getChannelList() {
+        return this.channelLinker.getRoleList().stream().filter(k -> !this.groupMap.containsKey(k))
+                .collect(Collectors.toList());
     }
 }

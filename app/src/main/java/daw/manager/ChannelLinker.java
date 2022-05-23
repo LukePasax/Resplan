@@ -6,10 +6,7 @@ import javafx.util.Pair;
 import planning.RPPart;
 import planning.RPRole;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -106,5 +103,10 @@ public class ChannelLinker implements RPChannelLinker {
     @Override
     public boolean channelExists(String title) {
         return this.channelMap.keySet().stream().anyMatch(k -> k.getTitle().equals(title));
+    }
+
+    @Override
+    public List<RPRole> getRoleList() {
+        return new ArrayList<>(this.channelMap.keySet());
     }
 }
