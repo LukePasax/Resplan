@@ -63,7 +63,7 @@
                   </GridPane>
               </items>
             </SplitPane>
-            <HBox id="effects" minHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
+            <HBox id="effects" fx:id="fxPanel" minHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
          </items>
       </SplitPane>
    </children>

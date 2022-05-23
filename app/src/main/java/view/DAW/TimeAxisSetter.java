@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.Axis.TickMark;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
