@@ -1,4 +1,4 @@
-package view.daw;
+package view.common;
 
 import java.util.concurrent.TimeUnit;
 

@@ -11,9 +11,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import view.daw.ChannelClipsPane;
+import view.common.TimeAxisSetter;
+import view.edit.ChannelClipsPane;
 import view.planning.ChannelInfoPane;
-import view.daw.TimeAxisSetter;
 
 import java.io.IOException;
 

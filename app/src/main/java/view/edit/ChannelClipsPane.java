@@ -1,4 +1,4 @@
-package view.daw;
+package view.edit;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;

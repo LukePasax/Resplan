@@ -1,24 +1,19 @@
-package view.daw;
+package view.edit;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import view.daw.ChannelClipsPane.Clip;
+import view.common.TimeAxisSetter;
 
 public class EditViewController implements Initializable{
 	
-	private Map<Pane, String> channels = new HashMap<>(); 
 	private final static String SEP = System.getProperty("file.separator");
-	
-	Map<Double, Region> clips = new HashMap<>();
 	
 	/**
 	 * La griglia usata per dimensionare la timeline alla vista dei canali.
@@ -105,15 +100,20 @@ public class EditViewController implements Initializable{
 	public void addChannel() {
 		//--------CONTROLLER---------
 		//TODO
-		
+	}
+
+	public void addClip() {
+		//TODO
+	}
+	
+	/**
+	 * Update all displayed channels
+	 */
+	public void updateChannels() {
 		//--------INFOS--------------
 		Pane newChannelInfos = new ChannelInfoPane("Channel");
-		
 		//--------CLIP PANE----------
-		ChannelClipsPane newChannel = new ChannelClipsPane(timeAxisSetter.getAxis());
-		
-		
-		
+		ChannelClipsPane newChannel = new ChannelClipsPane(timeAxisSetter.getAxis());	
 		//--------CHANNEL PANES HEIGHT LINK------
 		newChannelInfos.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
 			newChannel.setMinHeight(newChannelInfos.getHeight());
@@ -123,14 +123,12 @@ public class EditViewController implements Initializable{
 		channelsInfoPane.getChildren().add(newChannelInfos);
 		channelsContentPane.getChildren().add(newChannel);
 		
-		//test adding clips
-		Clip c = new Clip();
-		c.setIn(10);
-		c.setOut(20);
-		newChannel.getClips().add(c);
 	}
-
-	public void addClip() {
-		//TODO
+	
+	/**
+	 * Update all displayed clips
+	 */
+	public void updateClips() {
+		
 	}
 }

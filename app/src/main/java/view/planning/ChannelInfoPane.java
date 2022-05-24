@@ -3,7 +3,7 @@ package view.planning;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
-import view.daw.RegionHeightResizer;
+import view.common.RegionHeightResizer;
 
 public class ChannelInfoPane extends Pane {
 

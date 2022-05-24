@@ -1,4 +1,4 @@
-package view.daw;
+package view.edit;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import view.common.RegionHeightResizer;
 
 public class ChannelInfoPane extends Pane {
 	
