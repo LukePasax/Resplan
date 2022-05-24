@@ -22,12 +22,13 @@ public class ControllerImpl implements Controller {
     private Manager manager;
     private PlanningController planningController;
     private File currentProject;
-    private final File template;
+    private final File appSettings;
 
     public ControllerImpl() {
-        this.template = new File(WORKING_DIRECTORY + SEP + "template.json");
+        this.appSettings = new File(WORKING_DIRECTORY + SEP + "settings.json");
         try {
-            this.manager = this.loader.load(new File(new ReadFromFileImpl(this.template).read()));
+            this.currentProject = new File(new ReadFromFileImpl(this.appSettings).read());
+            this.manager = this.loader.load(this.currentProject);
         } catch (IOException e) {
             this.manager = new Manager();
         }
@@ -83,7 +84,8 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void newPlanningClip(String type, String title, String description, String channel, Double time, File content) throws IllegalArgumentException, ImportException {
+    public void newPlanningClip(String type, String title, String description, String channel, Double time, File content)
+            throws IllegalArgumentException, ImportException {
         RPPart.PartType partType;
         if (type.equals("Speaker")) {
             partType = RPPart.PartType.SPEECH;
@@ -105,7 +107,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void setTemplateProject() throws DownloadingException {
-        final WriteToFile writer = new WriteToFileImpl(template);
+        final WriteToFile writer = new WriteToFileImpl(this.appSettings);
         try {
             writer.write(this.currentProject.getAbsolutePath());
         } catch (IOException e) {
