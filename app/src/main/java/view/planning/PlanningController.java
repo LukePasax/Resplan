@@ -102,4 +102,28 @@ public class PlanningController {
 
     public void addClip(String title, String description, String channel, Double time) {
     }
+
+    public void newProjectPressed(ActionEvent event) {
+    }
+
+    public void openProjectPressed(ActionEvent event) {
+    }
+
+    public void closeProjectPressed(ActionEvent event) {
+    }
+
+    public void setTemplatePressed(ActionEvent event) {
+    }
+
+    public void resetTemplatePressed(ActionEvent event) {
+    }
+
+    public void delChannelPressed(ActionEvent event) {
+    }
+
+    public void delClipPressed(ActionEvent event) {
+    }
+
+    public void launchDawPressed(ActionEvent event) {
+    }
 }

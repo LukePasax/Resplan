@@ -33,11 +33,11 @@
               <menus>
                 <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
                   <items>
-                        <MenuItem id="newFile" fx:id="newFile" mnemonicParsing="false" text="New" />
-                        <MenuItem id="openFile" fx:id="openFile" mnemonicParsing="false" text="Open" />
-                    <MenuItem id="closeFile" fx:id="closeFile" mnemonicParsing="false" text="Close" />
-                        <MenuItem fx:id="setTemplate" mnemonicParsing="false" text="Set current project as Template" />
-                        <MenuItem fx:id="resetTemplate" mnemonicParsing="false" text="Reset Template" />
+                        <MenuItem id="newFile" fx:id="newFile" mnemonicParsing="false" onAction="#newProjectPressed" text="New project" />
+                        <MenuItem id="openFile" fx:id="openFile" mnemonicParsing="false" onAction="#openProjectPressed" text="Open project" />
+                    <MenuItem id="closeFile" fx:id="closeFile" mnemonicParsing="false" onAction="#closeProjectPressed" text="Close project" />
+                        <MenuItem fx:id="setTemplate" mnemonicParsing="false" onAction="#setTemplatePressed" text="Set current project as Template" />
+                        <MenuItem fx:id="resetTemplate" mnemonicParsing="false" onAction="#resetTemplatePressed" text="Reset Template" />
                   </items>
                 </Menu>
               </menus>
@@ -51,9 +51,9 @@
                <children>
                   <Button fx:id="newChannelButton" mnemonicParsing="false" onAction="#newChannelPressed" prefHeight="25.0" prefWidth="100.0" text="New Channel" />
                   <Button fx:id="newClipButton" mnemonicParsing="false" onAction="#newClipPressed" prefWidth="100.0" text="New Clip" />
-                  <Button fx:id="delChannelButton" mnemonicParsing="false" prefWidth="100.0" text="Delete Channel" />
-                  <Button fx:id="delClipButton" mnemonicParsing="false" prefWidth="100.0" text="Delete Clip" />
-                  <Button fx:id="launchDawButton" mnemonicParsing="false" prefWidth="100.0" text="Launch DAW" />
+                  <Button fx:id="delChannelButton" mnemonicParsing="false" onAction="#delChannelPressed" prefWidth="100.0" text="Delete Channel" />
+                  <Button fx:id="delClipButton" mnemonicParsing="false" onAction="#delClipPressed" prefWidth="100.0" text="Delete Clip" />
+                  <Button fx:id="launchDawButton" mnemonicParsing="false" onAction="#launchDawPressed" prefWidth="100.0" text="Launch DAW" />
                </children>
                <padding>
                   <Insets left="2.5" right="2.5" top="10.0" />
