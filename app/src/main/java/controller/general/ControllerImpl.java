@@ -42,7 +42,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void saveCurrentProject() throws DownloadingException {
         try {
-            this.downloader.download();
+            this.downloader.download(this.currentProject);
         } catch (IOException e) {
             throw new DownloadingException(e.getMessage());
         }
