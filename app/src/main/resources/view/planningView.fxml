@@ -33,6 +33,7 @@
               <menus>
                 <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
                   <items>
+                        <MenuItem mnemonicParsing="false" onAction="#saveProjectPressed" text="Save project" />
                         <MenuItem id="newFile" fx:id="newFile" mnemonicParsing="false" onAction="#newProjectPressed" text="New project" />
                         <MenuItem id="openFile" fx:id="openFile" mnemonicParsing="false" onAction="#openProjectPressed" text="Open project" />
                     <MenuItem id="closeFile" fx:id="closeFile" mnemonicParsing="false" onAction="#closeProjectPressed" text="Close project" />

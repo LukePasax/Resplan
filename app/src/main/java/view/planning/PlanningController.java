@@ -126,4 +126,7 @@ public class PlanningController {
 
     public void launchDawPressed(ActionEvent event) {
     }
+
+    public void saveProjectPressed(ActionEvent event) {
+    }
 }
