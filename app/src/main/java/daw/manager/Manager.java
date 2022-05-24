@@ -310,4 +310,29 @@ public class Manager implements RPManager {
                 .forEachRemaining(p -> list.add(this.clipLinker.getPartFromClip(p.getValue())));
         return list;
     }
+
+    /**
+     * @param clip the name of the clip
+     * @return the start time of a clip
+     */
+    @Override
+    public Double getClipTime(String clip, String channel) {
+        final var it = this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel)).getClipWithTimeIterator();
+        while (it.hasNext()) {
+            var h = it.next();
+            if (h.getValue().equals(this.clipLinker.getClipFromPart(this.clipLinker.getPart(clip)))) {
+                return h.getKey();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param clip the clip in question
+     * @return the duration of a clip
+     */
+    @Override
+    public Double getClipDuration(String clip) {
+        return this.clipLinker.getClipFromPart(this.clipLinker.getPart(clip)).getDuration();
+    }
 }

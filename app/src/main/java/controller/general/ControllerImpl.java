@@ -122,13 +122,13 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public Double getClipTime(String clip) {
-        return null;
+    public Double getClipTime(String clip, String channel) {
+        return this.manager.getClipTime(clip, channel);
     }
 
     @Override
     public Double getClipDuration(String clip) {
-        return null;
+        return this.manager.getClipDuration(clip);
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES

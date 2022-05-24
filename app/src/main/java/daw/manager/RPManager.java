@@ -143,4 +143,19 @@ public interface RPManager {
      * @return the list of clips associated with a channel
      */
     List<RPPart> getClipList(String channel);
+
+    /**
+     *
+     * @param clip the name of the clip
+     * @param channel the channel of a clip
+     * @return the start time of a clip
+     */
+    Double getClipTime(String clip, String channel);
+
+    /**
+     *
+     * @param clip the clip in question
+     * @return the duration of a clip
+     */
+    Double getClipDuration(String clip);
 }

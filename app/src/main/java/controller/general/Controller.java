@@ -36,7 +36,7 @@ public interface Controller {
 
     List<String> getClipList(String channel);
 
-    Double getClipTime(String clip);
+    Double getClipTime(String clip, String channel);
 
     Double getClipDuration(String clip);
 }
