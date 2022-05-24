@@ -63,6 +63,13 @@ public class TapeChannel implements RPTapeChannel {
 	/**
 	 * {@inheritDoc}
 	 */
+	public void clearTape() {
+		timeline.clear();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isEmpty() {
 		return this.timeline.isEmpty();

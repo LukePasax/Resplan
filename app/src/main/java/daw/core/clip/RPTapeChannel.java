@@ -41,6 +41,11 @@ public interface RPTapeChannel {
 	void removeClip(double clipTimeIn) throws ClipNotFoundException;
 	
 	/**
+	 * Remove all clips from the timeline of this tape channel.
+	 */
+	void clearTape();
+	
+	/**
 	 * Check if this tape channel is empty.
 	 * 
 	 * @return  {@code true} if and only if there aren't clips in the tape channel
