@@ -3,7 +3,6 @@ package daw.manager;
 import daw.core.channel.RPChannel;
 import daw.core.clip.RPTapeChannel;
 import javafx.util.Pair;
-import planning.RPPart;
 import planning.RPRole;
 
 import java.util.*;

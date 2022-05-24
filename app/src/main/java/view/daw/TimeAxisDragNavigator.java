@@ -1,4 +1,4 @@
-package view.DAW;
+package view.daw;
 
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;

@@ -1,4 +1,4 @@
-package view.DAW;
+package view.daw;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

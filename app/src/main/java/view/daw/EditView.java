@@ -1,4 +1,4 @@
-package view.DAW;
+package view.daw;
 
 import java.io.FileInputStream;
 

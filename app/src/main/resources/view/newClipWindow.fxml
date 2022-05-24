@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="281.0" prefWidth="381.0" styleClass="tool-container" stylesheets="@../stylesheets/planning.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.view.planning.NewClipController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="281.0" prefWidth="381.0" styleClass="tool-container" stylesheets="@../stylesheets/planning.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.planning.NewClipController">
   <columnConstraints>
     <ColumnConstraints />
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="338.22222900390625" minWidth="10.0" prefWidth="300.0" />

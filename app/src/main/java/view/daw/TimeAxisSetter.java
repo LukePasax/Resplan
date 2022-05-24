@@ -1,4 +1,4 @@
-package view.DAW;
+package view.daw;
 
 import java.util.concurrent.TimeUnit;
 
@@ -6,7 +6,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.Scene;
-import javafx.scene.chart.Axis.TickMark;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -25,7 +24,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 

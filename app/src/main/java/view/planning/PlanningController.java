@@ -1,25 +1,20 @@
-package controller.view.planning;
+package view.planning;
 
-import controller.view.planningApp;
+import Resplan.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import view.DAW.ChannelClipsPane;
-import view.DAW.ChannelInfoPane;
-import view.DAW.TimeAxisSetter;
+import view.daw.ChannelClipsPane;
+import view.daw.ChannelInfoPane;
+import view.daw.TimeAxisSetter;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class PlanningController {
@@ -41,13 +36,10 @@ public class PlanningController {
 
 
     public void initialize() {
-        //--------------setting time axis------------
         timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
         timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 1);
         timelineToChannelsAligner.setPadding(new Insets(0,0,0,20));
         timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);
-
-        //--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
         channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
             timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
         });
@@ -76,7 +68,7 @@ public class PlanningController {
     }
 
     public void newClipPressed(ActionEvent event) throws IOException {
-        if (planningApp.getController().getChannelList().isEmpty()) {
+        if (App.getController().getChannelList().isEmpty()) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Error");
             error.setContentText("No channels present");
@@ -94,20 +86,11 @@ public class PlanningController {
     }
 
     public void addChannel(String type, String title, String description) {
-        //--------INFOS--------------
         Pane newChannelInfos = new ChannelInfoPane(title);
-
-        //--------CLIP PANE----------
         ChannelClipsPane newChannel = new ChannelClipsPane(timeAxisSetter.getAxis());
-
-
-
-        //--------CHANNEL PANES HEIGHT LINK------
         newChannelInfos.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
             newChannel.setMinHeight(newChannelInfos.getHeight());
         });
-
-        //--------ADDING TO VIEW-----
         channelsInfoPane.getChildren().add(newChannelInfos);
         channelsContentPane.getChildren().add(newChannel);
     }

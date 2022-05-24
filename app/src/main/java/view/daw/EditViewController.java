@@ -1,4 +1,4 @@
-package view.DAW;
+package view.daw;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,10 +9,9 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import javafx.fxml.*;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import view.DAW.ChannelClipsPane.Clip;
+import view.daw.ChannelClipsPane.Clip;
 
 public class EditViewController implements Initializable{
 	

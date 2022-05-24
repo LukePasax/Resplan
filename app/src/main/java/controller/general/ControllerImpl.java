@@ -1,7 +1,6 @@
 package controller.general;
 
-import com.sun.javafx.binding.StringFormatter;
-import controller.view.planning.PlanningController;
+import view.planning.PlanningController;
 import daw.manager.ImportException;
 import daw.manager.Manager;
 import planning.Element;
