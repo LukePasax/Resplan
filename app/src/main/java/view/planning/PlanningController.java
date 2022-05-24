@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import view.daw.ChannelClipsPane;
-import view.daw.ChannelInfoPane;
+import view.planning.ChannelInfoPane;
 import view.daw.TimeAxisSetter;
 
 import java.io.IOException;
@@ -32,6 +32,11 @@ public class PlanningController {
     public SplitPane channelsInfoResizer;
     public VBox channelsContentPane;
     public VBox channelsInfoPane;
+    public MenuItem setTemplate;
+    public MenuItem resetTemplate;
+    public Button delChannelButton;
+    public Button delClipButton;
+    public Button launchDawButton;
     private TimeAxisSetter timeAxisSetter;
 
 
