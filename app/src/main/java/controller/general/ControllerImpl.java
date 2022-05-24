@@ -21,7 +21,7 @@ public class ControllerImpl implements Controller {
     private PlanningController planningController;
 
     public ControllerImpl() {
-        this.manager = this.loadProject();
+        this.manager = new Manager();
         this.downloader = new ProjectDownloaderImpl(this.manager);
     }
 
@@ -31,7 +31,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void downloadProject() {
+    public void saveCurrentProject() {
         try {
             this.downloader.download();
         } catch (IOException e) {
@@ -40,13 +40,11 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public Manager loadProject() {
+    public Manager openProject(File file) throws LoadingException {
         try {
-            return this.loader.load();
-        } catch (IOException | IllegalStateException e) {
-            //TODO: make the view react so as to warn the user? If information cannot be retrieved from file,
-            // the user can still be provided with a new clean manager, just like the first time the app is used.
-            return new Manager();
+            return this.loader.load(file);
+        } catch (IOException | IllegalArgumentException e) {
+            throw new LoadingException(e.getMessage());
         }
     }
 
@@ -90,6 +88,11 @@ public class ControllerImpl implements Controller {
     @Override
     public List<String> getChannelList() {
         return this.manager.getChannelList().stream().map(Element::getTitle).collect(Collectors.toList());
+    }
+
+    @Override
+    public void setTemplateProject() {
+
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES

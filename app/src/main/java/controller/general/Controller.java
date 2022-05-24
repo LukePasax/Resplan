@@ -11,9 +11,9 @@ public interface Controller {
 
     void updateView();
 
-    void downloadProject();
+    void saveCurrentProject();
 
-    Manager loadProject();
+    Manager openProject(File file) throws LoadingException;
 
     void setPlanningController(PlanningController planningController);
 
@@ -22,4 +22,7 @@ public interface Controller {
     void newPlanningClip(String type, String title, String description, String channel, Double time, File content) throws IllegalArgumentException, ImportException;
 
     List<String> getChannelList();
+
+    void setTemplateProject();
+
 }

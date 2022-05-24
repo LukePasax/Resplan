@@ -9,23 +9,18 @@ import java.io.IOException;
 
 public class ProjectLoaderImpl implements ProjectLoader {
 
-    private static final String SEP = System.getProperty("file.separator");
-    private static final String WORKING_DIRECTORY = System.getProperty("user.dir");
-
-    private final ReadFromFile reader;
     private final ManagerDeserializer deserializer;
 
     public ProjectLoaderImpl() {
-        this.reader = new ReadFromFileImpl(new File(WORKING_DIRECTORY + SEP + "save.json"));
         this.deserializer = new ManagerDeserializer();
     }
 
-    public Manager load() throws IOException, IllegalStateException {
-        try {
-            return this.deserializer.deserialize(this.reader.read());
-        } catch (RuntimeException ex) {
-            throw new IllegalStateException(ex.getMessage());
+    public Manager load(File file) throws IOException {
+        if (!file.getPath().split(".")[1].equals("json")) {
+            throw new IllegalArgumentException("Selected file's format is not supported. Choose only .json files.");
         }
+        final ReadFromFile reader = new ReadFromFileImpl(file);
+        return this.deserializer.deserialize(reader.read());
     }
 
 }
