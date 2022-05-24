@@ -11,7 +11,7 @@ public interface Controller {
 
     void updateView();
 
-    void saveCurrentProject();
+    void saveCurrentProject() throws DownloadingException;
 
     Manager openProject(File file) throws LoadingException;
 

@@ -31,11 +31,11 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void saveCurrentProject() {
+    public void saveCurrentProject() throws DownloadingException {
         try {
             this.downloader.download();
         } catch (IOException e) {
-            //TODO: make the view react so as to warn the user? All unsaved stuff would be lost...
+            throw new DownloadingException(e.getMessage());
         }
     }
 
