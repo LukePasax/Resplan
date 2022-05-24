@@ -131,5 +131,16 @@ public interface RPManager {
      */
     RPClipLinker getClipLinker();
 
+    /**
+     *
+     * @return the list of {@link RPRole}  of all channels excluded groups
+     */
     List<RPRole> getChannelList();
+
+    /**
+     *
+     * @param channel the name of the channel
+     * @return the list of clips associated with a channel
+     */
+    List<RPPart> getClipList(String channel);
 }

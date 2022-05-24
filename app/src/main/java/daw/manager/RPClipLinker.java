@@ -23,7 +23,14 @@ public interface RPClipLinker {
 	 * @param part the {@link RPPart} linked
 	 * @return the {@link RPClip} linked
 	 */
-	RPClip getClip(RPPart part);
+	RPClip getClipFromPart(RPPart part);
+
+	/**
+	 *
+	 * @param clip the {@link RPClip} linked
+	 * @return the {@link RPPart} linked
+	 */
+	RPPart getPartFromClip(RPClip clip);
 
 	/**
 	 * A method that returns the {@link RPPart} with the given title.

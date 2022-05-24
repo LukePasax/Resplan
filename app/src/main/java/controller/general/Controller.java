@@ -33,4 +33,10 @@ public interface Controller {
      */
     void setTemplateProject() throws DownloadingException;
 
+
+    List<String> getClipList(String channel);
+
+    Double getClipTime(String clip);
+
+    Double getClipDuration(String clip);
 }

@@ -35,8 +35,17 @@ public class ClipLinker implements RPClipLinker{
      * @return the {@link RPClip} linked
      */
     @Override
-    public RPClip getClip(RPPart part) {
+    public RPClip getClipFromPart(RPPart part) {
         return clipMap.get(part);
+    }
+
+    /**
+     * @param clip the {@link RPClip} linked
+     * @return the {@link RPPart} linked
+     */
+    @Override
+    public RPPart getPartFromClip(RPClip clip) {
+        return this.clipMap.entrySet().stream().filter(k -> k.getValue().equals(clip)).map(Map.Entry::getKey).findFirst().orElseThrow();
     }
 
     /**

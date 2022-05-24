@@ -214,7 +214,7 @@ public class Manager implements RPManager {
         }
         this.removeFileFromClip(title);
         try {
-            this.clipConverter.fromEmptyToSampleClip((EmptyClip) this.clipLinker.getClip(this.clipLinker.getPart(title)), content);
+            this.clipConverter.fromEmptyToSampleClip((EmptyClip) this.clipLinker.getClipFromPart(this.clipLinker.getPart(title)), content);
         } catch (OperationUnsupportedException | FileFormatException | IOException exception) {
             throw new ImportException("Error in loading file");
         }
@@ -232,10 +232,10 @@ public class Manager implements RPManager {
         if (!this.clipLinker.clipExists(title)) {
             throw new NoSuchElementException("The Clip does not exist");
         }
-        if (!this.clipLinker.getClip(this.clipLinker.getPart(title)).getClass().equals(SampleClip.class)) {
+        if (!this.clipLinker.getClipFromPart(this.clipLinker.getPart(title)).getClass().equals(SampleClip.class)) {
             throw new IllegalArgumentException("The Clip has no content");
         }
-        this.clipConverter.fromSampleToEmptyClip((SampleClip) this.clipLinker.getClip(this.clipLinker.getPart(title)));
+        this.clipConverter.fromSampleToEmptyClip((SampleClip) this.clipLinker.getClipFromPart(this.clipLinker.getPart(title)));
     }
 
     /**
@@ -297,5 +297,17 @@ public class Manager implements RPManager {
     public List<RPRole> getChannelList() {
         return this.channelLinker.getRoleList().stream().filter(k -> !this.groupMap.containsKey(k))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * @param channel
+     * @return
+     */
+    @Override
+    public List<RPPart> getClipList(String channel) {
+        List<RPPart> list = new ArrayList<>();
+        this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel)).getClipWithTimeIterator()
+                .forEachRemaining(p -> list.add(this.clipLinker.getPartFromClip(p.getValue())));
+        return list;
     }
 }

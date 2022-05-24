@@ -116,6 +116,21 @@ public class ControllerImpl implements Controller {
         }
     }
 
+    @Override
+    public List<String> getClipList(String channel) {
+        return this.manager.getClipList(channel).stream().map(Element::getTitle).collect(Collectors.toList());
+    }
+
+    @Override
+    public Double getClipTime(String clip) {
+        return null;
+    }
+
+    @Override
+    public Double getClipDuration(String clip) {
+        return null;
+    }
+
     // ONLY FOR TEMPORARY TESTING PURPOSES
     public Manager getManager() {
         return this.manager;
