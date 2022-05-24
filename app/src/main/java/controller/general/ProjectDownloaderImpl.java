@@ -10,16 +10,13 @@ import java.io.IOException;
 
 public class ProjectDownloaderImpl implements ProjectDownloader {
 
-    private static final String SEP = System.getProperty("file.separator");
-    private static final String WORKING_DIRECTORY = System.getProperty("user.dir");
-
     private final WriteToFile writer;
     private final Serializer<Manager> serializer;
     private final Manager manager;
 
     public ProjectDownloaderImpl(Manager manager) {
         this.manager = manager;
-        this.writer = new WriteToFileImpl(new File(WORKING_DIRECTORY + SEP + "save.json"));
+        this.writer = new WriteToFileImpl(new File(Controller.WORKING_DIRECTORY + Controller.SEP + "save.json"));
         this.serializer = new ManagerSerializer(true, false);
     }
 

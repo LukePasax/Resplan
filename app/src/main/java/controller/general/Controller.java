@@ -9,6 +9,9 @@ import java.util.List;
 
 public interface Controller {
 
+    String SEP = System.getProperty("file.separator");
+    String WORKING_DIRECTORY = System.getProperty("user.dir");
+
     void updateView();
 
     void saveCurrentProject() throws DownloadingException;
@@ -23,6 +26,11 @@ public interface Controller {
 
     List<String> getChannelList();
 
-    void setTemplateProject();
+    /**
+     * Sets the current project as the template. If this call is successful,
+     * then any time a user launches the application, the project that will be opened is the current one.
+     * @throws DownloadingException if the writing to file is unsuccessful.
+     */
+    void setTemplateProject() throws DownloadingException;
 
 }

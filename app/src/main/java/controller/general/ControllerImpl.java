@@ -1,12 +1,14 @@
 package controller.general;
 
+import controller.storing.ReadFromFileImpl;
+import controller.storing.WriteToFile;
+import controller.storing.WriteToFileImpl;
 import view.planning.PlanningController;
 import daw.manager.ImportException;
 import daw.manager.Manager;
 import planning.Element;
 import planning.RPPart;
 import planning.RPRole;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -17,11 +19,18 @@ public class ControllerImpl implements Controller {
 
     private final ProjectDownloader downloader;
     private final ProjectLoader loader = new ProjectLoaderImpl();
-    private final Manager manager;
+    private Manager manager;
     private PlanningController planningController;
+    private File currentProject;
+    private final File template;
 
     public ControllerImpl() {
-        this.manager = new Manager();
+        this.template = new File(WORKING_DIRECTORY + SEP + "template.json");
+        try {
+            this.manager = this.loader.load(new File(new ReadFromFileImpl(this.template).read()));
+        } catch (IOException e) {
+            this.manager = new Manager();
+        }
         this.downloader = new ProjectDownloaderImpl(this.manager);
     }
 
@@ -41,11 +50,16 @@ public class ControllerImpl implements Controller {
 
     @Override
     public Manager openProject(File file) throws LoadingException {
-        try {
-            return this.loader.load(file);
-        } catch (IOException | IllegalArgumentException e) {
-            throw new LoadingException(e.getMessage());
+        if (!this.currentProject.equals(file)) {
+            try {
+                final var man = this.loader.load(file);
+                this.currentProject = file;
+                return man;
+            } catch (IOException | IllegalArgumentException e) {
+                throw new LoadingException(e.getMessage());
+            }
         }
+        return this.manager;
     }
 
     @Override
@@ -84,15 +98,20 @@ public class ControllerImpl implements Controller {
         this.planningController.addClip(title, description, channel, time);
     }
 
-
     @Override
     public List<String> getChannelList() {
         return this.manager.getChannelList().stream().map(Element::getTitle).collect(Collectors.toList());
     }
 
     @Override
-    public void setTemplateProject() {
-
+    public void setTemplateProject() throws DownloadingException {
+        final WriteToFile writer = new WriteToFileImpl(template);
+        try {
+            writer.write(this.currentProject.getAbsolutePath());
+        } catch (IOException e) {
+            throw new DownloadingException("Unable to perform this operation. " +
+                    "Retry to set this project as the template.");
+        }
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES
