@@ -39,6 +39,17 @@ public class TestReadAndWrite {
     }
 
     @Test
+    public void simpleRead() {
+        try {
+            final var man = new ManagerDeserializer()
+                    .deserialize(new ReadFromFileImpl(new File(Controller.WORKING_DIRECTORY + Controller.SEP + FILENAME))
+                    .read());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void writeComplex() {
         final Manager man = new Manager();
         RPRole role = new EffectsRole("claps");

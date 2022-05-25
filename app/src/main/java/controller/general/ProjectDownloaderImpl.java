@@ -4,6 +4,8 @@ import controller.storing.WriteToFileImpl;
 import controller.storing.serialization.ManagerSerializer;
 import controller.storing.serialization.Serializer;
 import daw.manager.Manager;
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -19,6 +21,9 @@ public class ProjectDownloaderImpl implements ProjectDownloader {
 
     @Override
     public void download(File file) throws IOException {
+        if (!FilenameUtils.getExtension(file.getName()).equals("json")) {
+            throw new IllegalArgumentException("Selected file's format is not supported. Choose only .json files.");
+        }
         new WriteToFileImpl(file).write(this.serializer.serialize(this.manager));
     }
 
