@@ -32,13 +32,14 @@ val jUnitVersion = "5.7.1"
 val javaFxVersion = 15
 
 dependencies {
-    implementation("com.google.guava:guava:28.1-jre")
     // JavaFX: comment out if you do not need them
     for (platform in supportedPlatforms) {
         for (module in javaFXModules) {
             implementation("org.openjfx:javafx-$module:$javaFxVersion:$platform")
         }
     }
+    implementation("com.google.guava:guava:28.1-jre")
+    implementation("commons-io:commons-io:2.11.0")
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("com.fasterxml.jackson.core:jackson-core:2.13.1")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
