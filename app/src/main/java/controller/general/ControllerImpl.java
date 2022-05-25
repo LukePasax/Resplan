@@ -25,15 +25,16 @@ public class ControllerImpl implements Controller {
     private final File appSettings;
 
     public ControllerImpl() {
-        this.appSettings = new File(WORKING_DIRECTORY + SEP + "settings.json");
+        this.appSettings = new File(WORKING_DIRECTORY + SEP + APP_SETTINGS);
         try {
             final var fileName = new ReadFromFileImpl(this.appSettings).read();
             if (fileName.isBlank()) {
                 this.currentProject = null;
+                this.manager = new Manager();
             } else {
                 this.currentProject = new File(fileName);
+                this.manager = this.loader.load(this.currentProject);
             }
-            this.manager = this.loader.load(this.currentProject);
         } catch (IOException e) {
             this.manager = new Manager();
         }
@@ -66,13 +67,11 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void openProject(File file) throws LoadingException {
-        if (this.currentProject != null && !this.currentProject.equals(file)) {
-            try {
-                this.manager = this.loader.load(file);
-                this.currentProject = file;
-            } catch (IOException | IllegalArgumentException e) {
-                throw new LoadingException(e.getMessage());
-            }
+        try {
+            this.manager = this.loader.load(file);
+            this.currentProject = file;
+        } catch (IOException | IllegalArgumentException e) {
+            throw new LoadingException(e.getMessage());
         }
     }
 

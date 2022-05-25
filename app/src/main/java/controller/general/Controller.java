@@ -2,8 +2,6 @@ package controller.general;
 
 import view.planning.PlanningController;
 import daw.manager.ImportException;
-import daw.manager.Manager;
-
 import java.io.File;
 import java.util.List;
 
@@ -11,6 +9,7 @@ public interface Controller {
 
     String SEP = System.getProperty("file.separator");
     String WORKING_DIRECTORY = System.getProperty("user.dir");
+    String APP_SETTINGS = "settings.json";
 
     void updateView();
 
