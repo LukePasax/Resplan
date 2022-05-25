@@ -27,7 +27,12 @@ public class ControllerImpl implements Controller {
     public ControllerImpl() {
         this.appSettings = new File(WORKING_DIRECTORY + SEP + "settings.json");
         try {
-            this.currentProject = new File(new ReadFromFileImpl(this.appSettings).read());
+            final var fileName = new ReadFromFileImpl(this.appSettings).read();
+            if (fileName.isBlank()) {
+                this.currentProject = null;
+            } else {
+                this.currentProject = new File(fileName);
+            }
             this.manager = this.loader.load(this.currentProject);
         } catch (IOException e) {
             this.manager = new Manager();
@@ -41,7 +46,17 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void saveCurrentProject() throws DownloadingException {
+    public void saveCurrentProject() throws DownloadingException, IllegalStateException {
+        if (this.currentProject == null) {
+            throw new IllegalStateException("Select a file name and a directory");
+        } else {
+            this.saveWithName(this.currentProject);
+        }
+    }
+
+    @Override
+    public void saveWithName(File file) throws DownloadingException {
+        this.currentProject = file;
         try {
             this.downloader.download(this.currentProject);
         } catch (IOException e) {
@@ -50,17 +65,15 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public Manager openProject(File file) throws LoadingException {
-        if (!this.currentProject.equals(file)) {
+    public void openProject(File file) throws LoadingException {
+        if (this.currentProject != null && !this.currentProject.equals(file)) {
             try {
-                final var man = this.loader.load(file);
+                this.manager = this.loader.load(file);
                 this.currentProject = file;
-                return man;
             } catch (IOException | IllegalArgumentException e) {
                 throw new LoadingException(e.getMessage());
             }
         }
-        return this.manager;
     }
 
     @Override
@@ -106,8 +119,11 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void setTemplateProject() throws DownloadingException {
+    public void setTemplateProject() throws DownloadingException, IllegalStateException {
         final WriteToFile writer = new WriteToFileImpl(this.appSettings);
+        if (this.currentProject == null) {
+            throw new IllegalStateException("Save project before setting it as template.");
+        }
         try {
             writer.write(this.currentProject.getAbsolutePath());
         } catch (IOException e) {
