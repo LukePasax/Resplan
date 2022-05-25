@@ -1,6 +1,8 @@
 package daw.manager;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import controller.storing.serialization.ManagerSerializer;
+import controller.storing.serialization.Serializer;
 import daw.core.channel.RPChannel;
 import daw.core.clip.*;
 import daw.core.mixer.Mixer;
@@ -298,4 +300,13 @@ public class Manager implements RPManager {
         return this.channelLinker.getRoleList().stream().filter(k -> !this.groupMap.containsKey(k))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Serializer<Manager> serializer = new ManagerSerializer(true, false);
+        return serializer.serialize(this).equals(serializer.serialize((Manager) o));
+    }
+
 }
