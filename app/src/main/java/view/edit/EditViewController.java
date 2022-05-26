@@ -31,10 +31,7 @@ public class EditViewController implements Initializable{
 	 * SplitPanel per dimensionare la divisione tra channel info e channel content.
 	 */
 	@FXML
-	private SplitPane channelsInfoResizer;		
-	/**
-	 */
-	private TimeAxisSetter timeAxisSetter;
+	private SplitPane channelsInfoResizer;	
 	
 	/**
 	 * VBox per contenuto canali
