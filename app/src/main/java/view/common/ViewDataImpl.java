@@ -6,6 +6,8 @@ import java.util.Objects;
 import java.util.Set;
 import daw.core.clip.RPClip;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.scene.Node;
@@ -44,17 +46,30 @@ public class ViewDataImpl implements ViewData {
 		
 	}
 	
+	@Override
 	public Channel getChannel(String title) {
 		var ch = data.keySet().stream().filter(x->x.getTitle().equals(title)).findFirst();
 		return ch.isEmpty() ? null : ch.get();
 	}
 	
-	public ObservableMap<Channel, ObservableList<Clip>> getChannels() {
-		return data;
+	@Override
+	public void addChannelsDataListener(MapChangeListener<Channel, ObservableList<Clip>> mapChangeListener) {
+		data.addListener(mapChangeListener);
 	}
 	
-	public ObservableList<Clip> getClips(Channel channel){
-		return data.get(channel);
+	@Override
+	public void addClipsDataListener(Channel channel, ListChangeListener<Clip> listChangeListener) {
+		data.get(channel).addListener(listChangeListener);
+	}
+	
+	@Override
+	public Set<Channel> getUnmodifiableChannels() {
+		return data.keySet();
+	}
+	
+	@Override
+	public ObservableList<Clip> getUnmodifiableClips(Channel channel) {
+		return FXCollections.unmodifiableObservableList(data.get(channel));
 	}
 	
 	public static class Channel {
@@ -105,8 +120,6 @@ public class ViewDataImpl implements ViewData {
 			Channel other = (Channel) obj;
 			return Objects.equals(title, other.title);
 		}
-		
-		
 	}
 	
 	public static class Clip {

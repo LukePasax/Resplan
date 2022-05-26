@@ -35,7 +35,7 @@ public abstract class ChannelContentView extends AnchorPane {
 		axis.lowerBoundProperty().addListener(x->updateClips());
 		axis.upperBoundProperty().addListener(x->updateClips());
 		//update clips with data add/remove
-		App.getData().getClips(ch).addListener(new ListChangeListener<Clip>() {
+		App.getData().addClipsDataListener(ch, new ListChangeListener<Clip>() {
 
 			@Override
 			public void onChanged(Change<? extends Clip> c) {
@@ -59,7 +59,7 @@ public abstract class ChannelContentView extends AnchorPane {
 	 * The clip.view set will be updated with currently displayed clips.
 	 */
 	public void updateClips() {
-		ObservableList<Clip> clips = App.getData().getClips(ch);
+		ObservableList<Clip> clips = App.getData().getUnmodifiableClips(ch);
 		clips.stream().filter(clipFromData->{
 			return clipFromData.getPosition()<axis.getUpperBound() && (clipFromData.getPosition()+clipFromData.getDuration())>axis.getLowerBound();
 		}).forEach(clipInTimeRange->{

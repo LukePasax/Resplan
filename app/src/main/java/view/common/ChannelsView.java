@@ -12,7 +12,7 @@ import view.edit.EditChannelInfos;
 public class ChannelsView {
 	
 	public ChannelsView(TimeAxisSetter timeAxisSetter, VBox channelsContentPane, VBox channelsInfoPane) {
-		App.getData().getChannels().addListener(new MapChangeListener<Channel, ObservableList<Clip>>() {
+		App.getData().addChannelsDataListener(new MapChangeListener<Channel, ObservableList<Clip>>() {
 
 			@Override
 			public void onChanged(Change<? extends Channel, ? extends ObservableList<Clip>> c) {

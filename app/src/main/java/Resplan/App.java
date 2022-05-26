@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import view.common.ViewData;
 import view.common.ViewDataImpl;
 
 public class App extends Application {
@@ -23,9 +24,9 @@ public class App extends Application {
         return controller;
     }
     
-    static final ViewDataImpl viewData = new ViewDataImpl();
+    static final ViewData viewData = new ViewDataImpl();
     
-    public static ViewDataImpl getData() {
+    public static ViewData getData() {
     	return viewData;
     }
 
