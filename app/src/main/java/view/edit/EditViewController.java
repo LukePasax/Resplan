@@ -1,19 +1,22 @@
 package view.edit;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.fxml.*;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import view.common.ChannelsView;
 import view.common.TimeAxisSetter;
 
 public class EditViewController implements Initializable{
 	
-	private final static String SEP = System.getProperty("file.separator");
+	@FXML
+	private VBox rootNode;
 	
 	/**
 	 * La griglia usata per dimensionare la timeline alla vista dei canali.
@@ -21,13 +24,15 @@ public class EditViewController implements Initializable{
 	@FXML
 	private GridPane timelineToChannelsAligner;
 	
+	@FXML
+	private ScrollPane scrollPane;
+	
 	/**
 	 * SplitPanel per dimensionare la divisione tra channel info e channel content.
 	 */
 	@FXML
 	private SplitPane channelsInfoResizer;		
 	/**
-	 * Asse del tempo.
 	 */
 	private TimeAxisSetter timeAxisSetter;
 	
@@ -44,6 +49,11 @@ public class EditViewController implements Initializable{
 	private VBox channelsInfoPane;
 	
 	/**
+	 * Asse del tempo.
+	 */
+	private TimeAxisSetter timeAxisSetter;
+
+	/**
 	 * Aggiungi canale bottone
 	 */
 	@FXML
@@ -56,26 +66,18 @@ public class EditViewController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		//--------------setting time axis------------
 		timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
-		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 1);
+		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 2);
 		timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);
+		timelineToChannelsAligner.setMaxWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth()*0.8);
+		//--------set channels view----------
+		new ChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane);
 		
 		//--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
 		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
-			timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
+			((GridPane)scrollPane.getParent()).getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
 		});
-		
-		/*
-		timeAxis.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
-            if(!needsLayout) {
-                clips.forEach((num, point) -> {
-                    double posX = timeAxis.getDisplayPosition(num);
-                    point.setLayoutX(posX);
-                    point.setLayoutY(50D);
-                });
-            }
-        });*/
 		//----Audio FX----
-		FXMLLoader loader = new FXMLLoader();
+		/*FXMLLoader loader = new FXMLLoader();
 		String path = System.getProperty("user.dir") + SEP + "src" + SEP + "main" + SEP + "resources" + SEP + "view" + SEP + "TextEditorView.fxml";
 		FileInputStream fxmlStream;
 		try {
@@ -90,45 +92,28 @@ public class EditViewController implements Initializable{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	/**
 	 * Aggiunta di un canale.
+	 * @throws IOException 
 	 */
 	@FXML
-	public void addChannel() {
+	public void addChannel() throws IOException {
 		//--------CONTROLLER---------
 		//TODO
+		 FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/newChannelWindow.fxml"));
+	        Scene scene = new Scene(loader.load());
+	        Stage stage = new Stage();
+	        stage.setScene(scene);
+	        stage.initModality(Modality.WINDOW_MODAL);
+	        stage.setTitle("New Channel");
+	        stage.initOwner(rootNode.getScene().getWindow());
+	        stage.showAndWait();
 	}
 
 	public void addClip() {
 		//TODO
-	}
-	
-	/**
-	 * Update all displayed channels
-	 */
-	public void updateChannels() {
-		//--------INFOS--------------
-		Pane newChannelInfos = new ChannelInfoPane("Channel");
-		//--------CLIP PANE----------
-		ChannelClipsPane newChannel = new ChannelClipsPane(timeAxisSetter.getAxis());	
-		//--------CHANNEL PANES HEIGHT LINK------
-		newChannelInfos.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
-			newChannel.setMinHeight(newChannelInfos.getHeight());
-		});
-		
-		//--------ADDING TO VIEW-----
-		channelsInfoPane.getChildren().add(newChannelInfos);
-		channelsContentPane.getChildren().add(newChannel);
-		
-	}
-	
-	/**
-	 * Update all displayed clips
-	 */
-	public void updateClips() {
-		
 	}
 }

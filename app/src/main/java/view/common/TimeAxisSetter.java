@@ -55,6 +55,7 @@ public class TimeAxisSetter {
 		axis.setAnimated(false);
 		axis.setAutoRanging(false);
 		axis.setSide(Side.TOP);
+		axis.setMinWidth(50);
 		//set this to Double.MAX_VALUE prevent warnings if the range is changed before a new tick unit is calculated.
 		axis.setTickUnit(Double.MAX_VALUE);
 		//set the range to 100% prLength
@@ -108,7 +109,7 @@ public class TimeAxisSetter {
 						HBox buttons = new HBox();
 						Button reset = new Button("RESET");
 						reset.setOnAction(a->{
-							setRange(0, getProjectLength());
+							resetRange();
 							this.getScene().getWindow().hide();
 						});
 						Button ok = new Button("OK");
@@ -227,10 +228,16 @@ public class TimeAxisSetter {
 		if(lowerBound<0 || upperBound>prLength || lowerBound>=upperBound) {
 			throw new IllegalArgumentException("Lower and upper bounds must be between 0 and project length.");
 		}
+		axis.setTickUnit(Double.MAX_VALUE);
 		axis.setLowerBound((lowerBound));
 		axis.setUpperBound((upperBound));
 		timeDelta = axis.getUpperBound()-axis.getLowerBound();
+		calculateTicks();
 		updateScroller();
+	}
+	
+	public void resetRange() {
+		setRange(0, prLength);
 	}
 	
 	//---------CALCULATE SCROLLER-----------------
@@ -245,6 +252,9 @@ public class TimeAxisSetter {
 	private void updateScroller() {
 		//length
 		scroller.setWidth(axis.getWidth()*calculatePercent(prLength, timeDelta));
+		if(scroller.getWidth()<20) {
+			scroller.setWidth(20);
+		}
 		//position
 		double pos = axis.getWidth()*calculatePercent(prLength, axis.getLowerBound());
 		AnchorPane.setLeftAnchor(scroller, pos);

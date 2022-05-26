@@ -111,15 +111,19 @@ public class TimeAxisDragNavigator {
         	double newLow; 
         	double newUp;
         	double ratio; 
-        	if(initialLowerBound==0 && vSpostamento<0) {
-        		newLow = 0;
-        		newUp = axis.getValueForDisplay(axis.getDisplayPosition(initialUpperBound)-vSpostamento).doubleValue();
-        	
-        	} else {
-        		newLow = axis.getValueForDisplay(axis.getDisplayPosition(initialLowerBound)+vSpostamento).doubleValue();
-	        	ratio = (initialTime-initialLowerBound)/(initialUpperBound-initialLowerBound);  	
-	        	newUp = initialTime+((initialTime-newLow)*ratio*(1-ratio));
+        	double sensibility = 1.5;
+        	if(event.isAltDown()) {
+        		sensibility *= 0.2;
         	}
+        	/*if(initialLowerBound==0 && vSpostamento<0) {
+        		newLow = 0;
+        		newUp = axis.getValueForDisplay(axis.getDisplayPosition(initialUpperBound)-(sensibility*vSpostamento)).doubleValue();
+        	
+        	} else {*/
+        		ratio = (initialTime-initialLowerBound)/(initialUpperBound-initialLowerBound);  	
+        		newLow = axis.getValueForDisplay(axis.getDisplayPosition(initialLowerBound)+(sensibility*ratio*vSpostamento)).doubleValue();
+	        	newUp = axis.getValueForDisplay(axis.getDisplayPosition(initialUpperBound)-(sensibility*(1-ratio)*vSpostamento)).doubleValue();
+        	//}
         	if(newLow<0) {
         		newLow = 0;
         	}
@@ -134,8 +138,15 @@ public class TimeAxisDragNavigator {
         	double ratio = event.getX()/axis.getWidth();
 			double actualTime = setter.getProjectLength()*ratio;
         	double vSpostamento = actualTime-initialTime;
-        	double lb = initialLowerBound + vSpostamento;
-        	double ub = initialUpperBound + vSpostamento;
+        	double sensibility = 1;
+        	if(axis.getTickUnit()<1000) {
+        		sensibility = 0.2;
+        	}
+        	if(event.isAltDown()) {
+        		sensibility = 0.01;
+        	}
+        	double lb = initialLowerBound + (sensibility*vSpostamento);
+        	double ub = initialUpperBound + (sensibility*vSpostamento);
         	if(lb<0) {
         		lb=0;
         	}
@@ -153,7 +164,7 @@ public class TimeAxisDragNavigator {
     	if(event.getSource().equals(axis)) {
     		//reset zoom
     		if(event.getClickCount()==2) {
-    			setter.setRange(0, setter.getProjectLength());
+    			setter.resetRange();
             	return;
     		}
     		dragging = true;

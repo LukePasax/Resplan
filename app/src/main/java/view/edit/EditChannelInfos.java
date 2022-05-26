@@ -1,45 +1,33 @@
 package view.edit;
 
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import view.common.RegionHeightResizer;
+import view.common.ChannelInfosView;
+import view.common.ViewDataImpl.Channel;
 
-public class ChannelInfoPane extends Pane {
-	
-	private final static Paint borderColor = Paint.valueOf("#999999");
+public class EditChannelInfos extends ChannelInfosView {
+
 	private final static Paint muteColor = Paint.valueOf("#FF3333");
 	private final static Paint soloColor = Paint.valueOf("#B8D4FF");
-	
-	private final Label channelNameLabel;
-	
-	private final Button muteButton = new Button("M");
-	
-	private final Button soloButton = new Button("S");
 	
 	//da sostituire con controller.
 	private boolean muted;
 	private boolean solo;
 
-	public ChannelInfoPane(String channelName) {
-		super();
-		//borderLayout
-		this.setBorder(new Border(new BorderStroke(null, null, borderColor, null, 
-				null, null, BorderStrokeStyle.SOLID, null, CornerRadii.EMPTY, null, null)));
-		//set drag resize
-		RegionHeightResizer.makeResizable(this);
-		//set content
-		this.channelNameLabel = new Label(channelName);
+	public EditChannelInfos(Channel ch) {
+		super(ch);
+	}
+	
+	@Override
+	public Node drawClipRegion() {
+		//buttons
+		Button muteButton = new Button("M");
+		Button soloButton = new Button("S");
 		muteButton.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 		soloButton.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 		muteButton.setOnAction(e->{
@@ -60,7 +48,9 @@ public class ChannelInfoPane extends Pane {
 				soloButton.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 			}
 		});
-		this.getChildren().add(new VBox(channelNameLabel, new FlowPane(muteButton, soloButton)));
+		
+		return new FlowPane(muteButton, soloButton);
 	}
 
+	
 }
