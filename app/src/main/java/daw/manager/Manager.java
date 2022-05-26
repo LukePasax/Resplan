@@ -1,5 +1,6 @@
 package daw.manager;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import controller.storing.deserialization.RoleDeserializer;
@@ -299,6 +300,7 @@ public class Manager implements RPManager {
     }
 
     @Override
+    @JsonIgnore
     public List<RPRole> getChannelList() {
         return this.channelLinker.getRoleList().stream().filter(k -> !this.groupMap.containsKey(k))
                 .collect(Collectors.toList());

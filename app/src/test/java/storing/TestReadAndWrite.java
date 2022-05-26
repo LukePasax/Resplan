@@ -40,13 +40,15 @@ public class TestReadAndWrite {
 
     @Test
     public void simpleRead() {
+        Manager man = new Manager();
         try {
-            final var man = new ManagerDeserializer()
+            man = new ManagerDeserializer()
                     .deserialize(new ReadFromFileImpl(new File(Controller.WORKING_DIRECTORY + Controller.SEP + FILENAME))
                     .read());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println(new ManagerSerializer(true, false).serialize(man));
     }
 
     @Test

@@ -11,7 +11,7 @@ public class ChannelLinkerDeserializer extends JsonDeserializer<ChannelLinker> {
 
     @Override
     public ChannelLinker deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
-        return null;
+        return new ChannelLinker();
     }
 
 }
