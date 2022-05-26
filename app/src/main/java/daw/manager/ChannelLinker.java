@@ -4,16 +4,14 @@ import daw.core.channel.RPChannel;
 import daw.core.clip.RPTapeChannel;
 import javafx.util.Pair;
 import planning.RPRole;
-
 import java.util.*;
 import java.util.stream.Collectors;
-
 
 public class ChannelLinker implements RPChannelLinker {
 
     private final Map<RPRole, Pair<RPChannel, RPTapeChannel>> channelMap;
 
-    ChannelLinker() {
+    public ChannelLinker() {
         channelMap = new HashMap<>();
     }
 
