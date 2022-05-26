@@ -1,16 +1,13 @@
 package daw.core.mixer;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import daw.core.channel.RPChannel;
-import net.beadsproject.beads.ugens.Gain;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * This interface models a mixer,
  * which is a controller for {@link RPChannel}.
  */
-
+@JsonDeserialize(as = Mixer.class)
 public interface RPMixer {
 
     /**
