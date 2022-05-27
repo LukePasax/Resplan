@@ -6,6 +6,6 @@ import java.io.IOException;
 
 public interface ProjectLoader {
 
-    Manager load(File file) throws IOException;
+    Manager load(File file) throws IOException, IllegalArgumentException;
 
 }

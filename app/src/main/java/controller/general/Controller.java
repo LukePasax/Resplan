@@ -13,7 +13,7 @@ public interface Controller {
 
     void updateView();
 
-    void saveCurrentProject() throws DownloadingException, IllegalStateException;
+    void save() throws DownloadingException, IllegalStateException;
 
     void saveWithName(File file) throws DownloadingException;
 

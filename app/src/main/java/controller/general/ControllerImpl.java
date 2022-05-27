@@ -4,6 +4,7 @@ import Resplan.App;
 import controller.storing.ReadFromFileImpl;
 import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;
+import org.apache.commons.io.FilenameUtils;
 import view.common.ViewDataImpl;
 import view.planning.PlanningController;
 import daw.manager.ImportException;
@@ -24,10 +25,9 @@ public class ControllerImpl implements Controller {
     private Manager manager;
     private PlanningController planningController;
     private File currentProject;
-    private final File appSettings;
+    private final File appSettings = new File(WORKING_DIRECTORY + SEP + APP_SETTINGS);
 
     public ControllerImpl() {
-        this.appSettings = new File(WORKING_DIRECTORY + SEP + APP_SETTINGS);
         try {
             final var fileName = new ReadFromFileImpl(this.appSettings).read();
             if (fileName.isBlank()) {
@@ -49,17 +49,15 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void saveCurrentProject() throws DownloadingException, IllegalStateException {
+    public void save() throws DownloadingException, IllegalStateException {
         if (this.currentProject == null) {
             throw new IllegalStateException("Select a file name and a directory");
         } else {
-            this.saveWithName(this.currentProject);
+            this.saveCurrentProject();
         }
     }
 
-    @Override
-    public void saveWithName(File file) throws DownloadingException {
-        this.currentProject = file;
+    private void saveCurrentProject() throws DownloadingException {
         try {
             this.downloader.download(this.currentProject);
         } catch (IOException e) {
@@ -68,8 +66,19 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
+    public void saveWithName(File file) throws DownloadingException {
+        if (!FilenameUtils.getExtension(file.getName()).equals("json")) {
+            throw new DownloadingException("Selected file is not a JSON file.");
+        } else {
+            this.currentProject = file;
+            this.saveCurrentProject();
+        }
+    }
+
+    @Override
     public void openProject(File file) throws LoadingException {
         try {
+            this.save();
             this.manager = this.loader.load(file);
             this.currentProject = file;
         } catch (IOException | IllegalArgumentException e) {

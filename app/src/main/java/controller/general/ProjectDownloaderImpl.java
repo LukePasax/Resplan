@@ -20,7 +20,7 @@ public class ProjectDownloaderImpl implements ProjectDownloader {
     }
 
     @Override
-    public void download(File file) throws IOException {
+    public void download(File file) throws IOException, IllegalArgumentException {
         if (!FilenameUtils.getExtension(file.getName()).equals("json")) {
             throw new IllegalArgumentException("Selected file's format is not supported. Choose only .json files.");
         }

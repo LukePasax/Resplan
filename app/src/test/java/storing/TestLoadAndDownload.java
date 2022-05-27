@@ -29,7 +29,7 @@ public class TestLoadAndDownload {
     public void testSave() {
         try {
             // current project has never been saved before, therefore an IllegalStateException has to be raised
-            this.controller.saveCurrentProject();
+            this.controller.save();
             fail();
         } catch (IllegalStateException e) {
             try {
