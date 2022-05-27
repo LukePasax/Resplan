@@ -10,22 +10,29 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Implements {@link ProjectDownloader}.
+ */
 public class ProjectDownloaderImpl implements ProjectDownloader {
 
     private final Serializer<Manager> serializer;
-    private final Manager manager;
 
-    public ProjectDownloaderImpl(Manager manager) {
-        this.manager = manager;
+    public ProjectDownloaderImpl() {
         this.serializer = new ManagerSerializer(true, false);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param file the file where to download.
+     * @throws IOException if the writer fails to write onto the given file.
+     * @throws FileFormatException if the given file is not compatible with the standard format.
+     */
     @Override
-    public void download(File file) throws IOException, FileFormatException {
+    public void download(File file, final Manager manager) throws IOException, FileFormatException {
         if (!FilenameUtils.getExtension(file.getName()).equals("json")) {
             throw new FileFormatException("Selected file's format is not supported. Choose only .json files.");
         }
-        new WriteToFileImpl(file).write(this.serializer.serialize(this.manager));
+        new WriteToFileImpl(file).write(this.serializer.serialize(manager));
     }
 
 }

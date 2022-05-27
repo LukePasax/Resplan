@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class ControllerImpl implements Controller {
 
     private final ProjectDownloader downloader;
-    private final ProjectLoader loader = new ProjectLoaderImpl();
+    private final ProjectLoader loader;
     private Manager manager;
     private PlanningController planningController;
     private File currentProject;
@@ -31,8 +31,9 @@ public class ControllerImpl implements Controller {
      * Sets up the application and initializes a new project (see newProject).
      */
     public ControllerImpl() {
+        this.loader = new ProjectLoaderImpl();
+        this.downloader = new ProjectDownloaderImpl();
         this.newProject();
-        this.downloader = new ProjectDownloaderImpl(this.manager);
     }
 
     /**
@@ -74,7 +75,7 @@ public class ControllerImpl implements Controller {
 
     private void saveCurrentProject() throws DownloadingException {
         try {
-            this.downloader.download(this.currentProject);
+            this.downloader.download(this.currentProject, this.manager);
         } catch (IOException | FileFormatException e) {
             throw new DownloadingException(e.getMessage());
         }
