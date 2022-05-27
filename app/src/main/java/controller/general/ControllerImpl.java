@@ -5,7 +5,6 @@ import controller.storing.ReadFromFileImpl;
 import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
-import org.apache.commons.io.FilenameUtils;
 import view.common.ViewDataImpl;
 import view.planning.PlanningController;
 import daw.manager.ImportException;
@@ -28,11 +27,17 @@ public class ControllerImpl implements Controller {
     private File currentProject;
     private final File appSettings = new File(WORKING_DIRECTORY + SEP + APP_SETTINGS);
 
+    /**
+     * Sets up the application and initializes a new project (see newProject).
+     */
     public ControllerImpl() {
         this.newProject();
         this.downloader = new ProjectDownloaderImpl(this.manager);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void newProject() {
         try {
             final var fileName = new ReadFromFileImpl(this.appSettings).read();
@@ -53,10 +58,15 @@ public class ControllerImpl implements Controller {
 
     }
 
+    /**
+     * {@inheritDoc}
+     * @throws DownloadingException if an error has occurred when trying to write to file.
+     * @throws IllegalStateException if the current project has never been saved before.
+     */
     @Override
     public void save() throws DownloadingException, IllegalStateException {
         if (this.currentProject == null) {
-            throw new IllegalStateException("Select a file name and a directory");
+            throw new IllegalStateException("Select a file name and a directory.");
         } else {
             this.saveCurrentProject();
         }
@@ -70,12 +80,22 @@ public class ControllerImpl implements Controller {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @param file the file where to save.
+     * @throws DownloadingException if an error has occurred when trying to write to file.
+     */
     @Override
     public void saveWithName(File file) throws DownloadingException {
         this.currentProject = file;
         this.saveCurrentProject();
     }
 
+    /**
+     * {@inheritDoc}
+     * @param file the file where to read.
+     * @throws LoadingException if an error has occurred when trying to read from file.
+     */
     @Override
     public void openProject(File file) throws LoadingException {
         try {
@@ -130,6 +150,11 @@ public class ControllerImpl implements Controller {
         return this.manager.getChannelList().stream().map(Element::getTitle).collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     * @throws DownloadingException if the writing to file is unsuccessful.
+     * @throws IllegalStateException if the current project has never been saved before.
+     */
     @Override
     public void setTemplateProject() throws DownloadingException, IllegalStateException {
         final WriteToFile writer = new WriteToFileImpl(this.appSettings);

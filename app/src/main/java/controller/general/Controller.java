@@ -11,22 +11,43 @@ public interface Controller {
     String WORKING_DIRECTORY = System.getProperty("user.dir");
     String APP_SETTINGS = "settings.json";
 
+    /**
+     * Creates a new project. The new project is the template project if there is one,
+     * otherwise it is a blank project.
+     */
     void newProject();
 
     void updateView();
 
-    void save() throws DownloadingException;
+    /**
+     * Saves the current project on the file associated to it,
+     * which means the current project has already been saved before.
+     * @throws DownloadingException if an error has occurred when trying to write to file.
+     * @throws IllegalStateException if the current project has never been saved before.
+     */
+    void save() throws DownloadingException, IllegalStateException;
 
+    /**
+     * Saves the current project on the given file.
+     * @param file the file where to save.
+     * @throws DownloadingException if an error has occurred when trying to write to file.
+     */
     void saveWithName(File file) throws DownloadingException;
 
+    /**
+     * Opens the project associated to the given file. The project that is open when this method is called
+     * is abruptly closed, meaning all unsaved work will be lost.
+     * @param file the file where to read.
+     * @throws LoadingException if an error has occurred when trying to read from file.
+     */
     void openProject(File file) throws LoadingException;
 
     void setPlanningController(PlanningController planningController);
 
     void newPlanningChannel(String type, String title, String description) throws IllegalArgumentException;
 
-    void newPlanningClip(String type, String title, String description, String channel, Double startTime, Double duration, File content)
-            throws IllegalArgumentException, ImportException;
+    void newPlanningClip(String type, String title, String description, String channel, Double startTime,
+                         Double duration, File content) throws IllegalArgumentException, ImportException;
 
     List<String> getChannelList();
 
@@ -34,6 +55,7 @@ public interface Controller {
      * Sets the current project as the template. If this call is successful,
      * then any time a user launches the application, the project that will be opened is the current one.
      * @throws DownloadingException if the writing to file is unsuccessful.
+     * @throws IllegalStateException if the current project has never been saved before.
      */
     void setTemplateProject() throws DownloadingException, IllegalStateException;
 
