@@ -4,6 +4,7 @@ import Resplan.App;
 import controller.storing.ReadFromFileImpl;
 import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;
+import net.beadsproject.beads.data.audiofile.FileFormatException;
 import org.apache.commons.io.FilenameUtils;
 import view.common.ViewDataImpl;
 import view.planning.PlanningController;
@@ -37,7 +38,7 @@ public class ControllerImpl implements Controller {
                 this.currentProject = new File(fileName);
                 this.manager = this.loader.load(this.currentProject);
             }
-        } catch (IOException e) {
+        } catch (IOException | FileFormatException e) {
             this.manager = new Manager();
         }
         this.downloader = new ProjectDownloaderImpl(this.manager);
@@ -60,7 +61,7 @@ public class ControllerImpl implements Controller {
     private void saveCurrentProject() throws DownloadingException {
         try {
             this.downloader.download(this.currentProject);
-        } catch (IOException e) {
+        } catch (IOException | FileFormatException e) {
             throw new DownloadingException(e.getMessage());
         }
     }
@@ -81,7 +82,7 @@ public class ControllerImpl implements Controller {
             this.save();
             this.manager = this.loader.load(file);
             this.currentProject = file;
-        } catch (IOException | IllegalArgumentException e) {
+        } catch (IOException | FileFormatException e) {
             throw new LoadingException(e.getMessage());
         }
     }

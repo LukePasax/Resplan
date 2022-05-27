@@ -13,7 +13,7 @@ public interface Controller {
 
     void updateView();
 
-    void save() throws DownloadingException, IllegalStateException;
+    void save() throws DownloadingException;
 
     void saveWithName(File file) throws DownloadingException;
 
@@ -35,10 +35,10 @@ public interface Controller {
      */
     void setTemplateProject() throws DownloadingException, IllegalStateException;
 
-
     List<String> getClipList(String channel);
 
     Double getClipTime(String clip, String channel);
 
     Double getClipDuration(String clip);
+
 }

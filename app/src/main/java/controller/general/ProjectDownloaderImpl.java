@@ -4,6 +4,7 @@ import controller.storing.WriteToFileImpl;
 import controller.storing.serialization.ManagerSerializer;
 import controller.storing.serialization.Serializer;
 import daw.manager.Manager;
+import net.beadsproject.beads.data.audiofile.FileFormatException;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -20,9 +21,9 @@ public class ProjectDownloaderImpl implements ProjectDownloader {
     }
 
     @Override
-    public void download(File file) throws IOException, IllegalArgumentException {
+    public void download(File file) throws IOException, FileFormatException {
         if (!FilenameUtils.getExtension(file.getName()).equals("json")) {
-            throw new IllegalArgumentException("Selected file's format is not supported. Choose only .json files.");
+            throw new FileFormatException("Selected file's format is not supported. Choose only .json files.");
         }
         new WriteToFileImpl(file).write(this.serializer.serialize(this.manager));
     }
