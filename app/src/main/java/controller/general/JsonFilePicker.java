@@ -9,8 +9,9 @@ public class JsonFilePicker {
 
     public JsonFilePicker() {
         this.fileChooser = new FileChooser();
-        this.fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("File JSON", "*.json"));
-        this.fileChooser.setInitialDirectory(new File(System.getProperty("user.root")));
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("File JSON", "*.json");
+        this.fileChooser.getExtensionFilters().add(extensionFilter);
+        this.fileChooser.setSelectedExtensionFilter(extensionFilter);
     }
 
     public FileChooser getFileChooser() {

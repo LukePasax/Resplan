@@ -36,10 +36,10 @@ public class App extends Application {
         Scene planningScene = new Scene(planningLoader.load());
         App.getController().setPlanningController(planningLoader.getController());
         stage.setScene(planningScene);
-        stage.getIcons().add(new Image("images/icon.png"));
+        stage.getIcons().add(new Image("/images/icon.png"));
         stage.setTitle("Resplan");
-        stage.show(); 
-        
+        stage.show();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
         Scene editScene = new Scene(loader.load());
         planningScene.setOnKeyPressed(e->{
