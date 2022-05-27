@@ -20,6 +20,8 @@ public class NewClipController {
     public TextField clipFileUrl;
     public ChoiceBox<String> channelPicker;
     public ChoiceBox<String> typePicker;
+    public TextField startTimePicker;
+    public TextField durationPicker;
     private File file;
 
     public void initialize() {
@@ -33,7 +35,8 @@ public class NewClipController {
         try {
             App.getController().newPlanningClip(this.typePicker.getValue(),
                     this.clipTitleSelection.getText(), this.clipDescriptionSelection.getText(),
-                    this.channelPicker.getValue(), 0.0, file);
+                    this.channelPicker.getValue(), Double.parseDouble(startTimePicker.getText()),
+                    Double.parseDouble(durationPicker.getText()), file);
             clipTitleSelection.getScene().getWindow().hide();
         } catch (IllegalArgumentException | ImportException | NoSuchElementException e) {
             Alert error = new Alert(Alert.AlertType.ERROR);

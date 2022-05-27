@@ -1,8 +1,10 @@
 package controller.general;
 
+import Resplan.App;
 import controller.storing.ReadFromFileImpl;
 import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;
+import view.common.ViewDataImpl;
 import view.planning.PlanningController;
 import daw.manager.ImportException;
 import daw.manager.Manager;
@@ -93,10 +95,11 @@ public class ControllerImpl implements Controller {
         Optional<String> desc = description.equals("") ? Optional.empty() : Optional.of(description);
         this.manager.addChannel(roleType, title, desc);
         this.planningController.addChannel(type, title, description);
+        App.getData().addChannel(new ViewDataImpl.Channel(title));
     }
 
     @Override
-    public void newPlanningClip(String type, String title, String description, String channel, Double time, File content)
+    public void newPlanningClip(String type, String title, String description, String channel, Double time, Double duration, File content)
             throws IllegalArgumentException, ImportException {
         RPPart.PartType partType;
         if (type.equals("Speaker")) {
@@ -110,6 +113,7 @@ public class ControllerImpl implements Controller {
         Optional<File> file = content == null ? Optional.empty() : Optional.of(content);
         this.manager.addClip(partType, title, desc, channel, time, file);
         this.planningController.addClip(title, description, channel, time);
+        App.getData().addClip(App.getData().getChannel(channel),new ViewDataImpl.Clip(title, time, duration, time));
     }
 
     @Override

@@ -23,7 +23,7 @@ public interface Controller {
 
     void newPlanningChannel(String type, String title, String description) throws IllegalArgumentException;
 
-    void newPlanningClip(String type, String title, String description, String channel, Double time, File content)
+    void newPlanningClip(String type, String title, String description, String channel, Double startTime, Double duration, File content)
             throws IllegalArgumentException, ImportException;
 
     List<String> getChannelList();
