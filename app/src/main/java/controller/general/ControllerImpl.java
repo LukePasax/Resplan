@@ -72,18 +72,13 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void saveWithName(File file) throws DownloadingException {
-        if (!FilenameUtils.getExtension(file.getName()).equals("json")) {
-            throw new DownloadingException("Selected file is not a JSON file.");
-        } else {
-            this.currentProject = file;
-            this.saveCurrentProject();
-        }
+        this.currentProject = file;
+        this.saveCurrentProject();
     }
 
     @Override
     public void openProject(File file) throws LoadingException {
         try {
-            this.save();
             this.manager = this.loader.load(file);
             this.currentProject = file;
         } catch (IOException | FileFormatException e) {
