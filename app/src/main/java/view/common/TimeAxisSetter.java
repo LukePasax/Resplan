@@ -56,10 +56,8 @@ public class TimeAxisSetter {
 		axis.setAutoRanging(false);
 		axis.setSide(Side.TOP);
 		axis.setMinWidth(50);
-		//set this to Double.MAX_VALUE prevent warnings if the range is changed before a new tick unit is calculated.
-		axis.setTickUnit(Double.MAX_VALUE);
 		//set the range to 100% prLength
-		setRange(0, prLength);
+		resetRange();
 		axis.setTickLabelGap(5);
 		//------CALCULATE TICK WHEN RESIZE AXIS-------
 		axis.needsLayoutProperty().addListener((obs, old, needsLayout) -> {calculateTicks(); updateScroller();});

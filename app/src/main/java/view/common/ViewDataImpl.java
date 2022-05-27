@@ -10,6 +10,8 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import javafx.collections.ObservableSet;
+import javafx.collections.SetChangeListener;
 import javafx.scene.Node;
 import planning.RPPart;
 
@@ -17,6 +19,9 @@ public class ViewDataImpl implements ViewData {
 	
 	private ObservableMap<Channel, ObservableList<Clip>> data = FXCollections.observableHashMap();
 
+	private ObservableSet<Marker> markers = FXCollections.observableSet();
+	
+	//channels and clips
 	@Override
 	public void addChannel(Channel channel) {
 		data.put(channel, FXCollections.observableArrayList());
@@ -64,12 +69,34 @@ public class ViewDataImpl implements ViewData {
 	
 	@Override
 	public Set<Channel> getUnmodifiableChannels() {
-		return data.keySet();
+		return Collections.unmodifiableSet(data.keySet());
 	}
 	
 	@Override
 	public ObservableList<Clip> getUnmodifiableClips(Channel channel) {
 		return FXCollections.unmodifiableObservableList(data.get(channel));
+	}
+
+	//markers
+	
+		@Override
+	public void setMarker(Marker marker) {
+		markers.add(marker);
+	}
+
+	@Override
+	public ObservableSet<Marker> getUnmodifiableMarkers() {
+		return FXCollections.unmodifiableObservableSet(markers);
+	}
+	
+	@Override
+	public void removeMarker(Marker marker) {
+		markers.remove(marker);
+	}
+
+	@Override
+	public void addMarkerDataListener(SetChangeListener<Marker> listener) {
+		markers.addListener(listener);
 	}
 	
 	public static class Channel {
@@ -199,4 +226,53 @@ public class ViewDataImpl implements ViewData {
 		}
 		
 	}
+
+	public static class Marker {
+		
+		private String title;
+		private Double position;
+		private Set<Node> view = new HashSet<>();
+
+		public Marker(String title, Double position) {
+			this.title = title;
+			this.position = position;
+		}
+		
+		public String getTitle() {
+			return title;
+		}
+		
+		public Double getPosition() {
+			return position;
+		}
+		
+		public void addToViewAll(Node... nodes) {
+			for(Node n : nodes) {
+				view.add(n);
+			}
+		}
+		
+		public Set<Node> getViewSet() {
+			return Collections.unmodifiableSet(view);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(title);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Marker other = (Marker) obj;
+			return Objects.equals(title, other.title);
+		}
+		
+	}
+
 }

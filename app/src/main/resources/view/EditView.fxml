@@ -15,7 +15,6 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
@@ -30,7 +29,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem id="addChannel" fx:id="addChannel" mnemonicParsing="false" onAction="#addChannel" text="AddChannel" />
+              <MenuItem id="addChannel" mnemonicParsing="false" onAction="#addChannel" text="AddChannel" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -42,7 +41,7 @@
       </MenuBar>
       <FlowPane alignment="CENTER" columnHalignment="CENTER" style="-fx-background-color: #FFFFFF;">
          <children>
-          <Button alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" style="-fx-background-color: #FFFFFF;" text="Button">
+          <Button fx:id="stop" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#stop" prefHeight="15.0" prefWidth="15.0" style="-fx-background-color: #FFFFFF;" text="Button">
                <FlowPane.margin>
                   <Insets left="5.0" right="5.0" />
                </FlowPane.margin>
@@ -52,19 +51,19 @@
                         <Rectangle2D />
                      </viewport>
                      <image>
-                        <Image url="/icons/stopButton.png" />
+                        <Image url="file:/Users/alessandro/eclipse-workspaces/Progetto%20OOP/Resplan/app/src/main/resources/view/icons/stopButton.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Button alignment="CENTER" layoutX="303.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" style="-fx-background-color: #FFFFFF;" text="Button">
+            <Button fx:id="play" alignment="CENTER" layoutX="303.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#play" prefHeight="15.0" prefWidth="15.0" text="Button">
                <FlowPane.margin>
                   <Insets left="5.0" right="5.0" />
                </FlowPane.margin>
                <graphic>
                   <ImageView fitHeight="9.0" fitWidth="9.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -3;">
                      <image>
-                        <Image url="/icons/playButton.png" />
+                        <Image url="file:/Users/alessandro/eclipse-workspaces/Progetto%20OOP/Resplan/app/src/main/resources/view/icons/playButton.png" />
                      </image>
                      <viewport>
                         <Rectangle2D />
@@ -72,14 +71,14 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button alignment="CENTER" layoutX="315.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" style="-fx-background-color: #FFFFFF;" text="Button">
+            <Button fx:id="pause" alignment="CENTER" layoutX="315.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pause" prefHeight="15.0" prefWidth="15.0" style="-fx-background-color: #FFFFFF;" text="Button">
                <FlowPane.margin>
                   <Insets left="5.0" right="5.0" />
                </FlowPane.margin>
                <graphic>
                   <ImageView fitHeight="9.0" fitWidth="9.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -4;">
                      <image>
-                        <Image url="/icons/pauseButton.png" />
+                        <Image url="file:/Users/alessandro/eclipse-workspaces/Progetto%20OOP/Resplan/app/src/main/resources/view/icons/pauseButton.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -119,7 +118,6 @@
                               </SplitPane>
                            </content>
                         </ScrollPane>
-                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" GridPane.rowSpan="3" />
                      </children>
                      <padding>
                         <Insets left="20.0" />

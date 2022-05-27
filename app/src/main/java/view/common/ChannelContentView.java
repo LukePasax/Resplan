@@ -70,7 +70,7 @@ public abstract class ChannelContentView extends AnchorPane {
 			} else {
 				drawClip(clipInTimeRange);
 			}
-		});;
+		});
 		clips.stream().filter(clipFromData->{
 			return clipFromData.getPosition()>=axis.getUpperBound() && (clipFromData.getPosition()+clipFromData.getDuration())<=axis.getLowerBound();
 		}).forEach(nonInTimeClip->{

@@ -115,11 +115,6 @@ public class TimeAxisDragNavigator {
         	if(event.isAltDown()) {
         		sensibility *= 0.2;
         	}
-        	/*if(initialLowerBound==0 && vSpostamento<0) {
-        		newLow = 0;
-        		newUp = axis.getValueForDisplay(axis.getDisplayPosition(initialUpperBound)-(sensibility*vSpostamento)).doubleValue();
-        	
-        	} else {*/
         		ratio = (initialTime-initialLowerBound)/(initialUpperBound-initialLowerBound);  	
         		newLow = axis.getValueForDisplay(axis.getDisplayPosition(initialLowerBound)+(sensibility*ratio*vSpostamento)).doubleValue();
 	        	newUp = axis.getValueForDisplay(axis.getDisplayPosition(initialUpperBound)-(sensibility*(1-ratio)*vSpostamento)).doubleValue();
