@@ -40,12 +40,8 @@ public class App extends Application {
         stage.setTitle("Resplan");
         stage.show(); 
         
-        FXMLLoader loader = new FXMLLoader();
-        String path = System.getProperty("user.dir") + SEP + "src" + SEP + "main" + SEP + "resources" + SEP + "view" + SEP + "EditView.fxml";
-		FileInputStream fxmlStream = new FileInputStream(path);
-		VBox root = (VBox) loader.load(fxmlStream);
-		
-        Scene editScene = new Scene(root);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
+        Scene editScene = new Scene(loader.load());
         planningScene.setOnKeyPressed(e->{
         	if(e.getCode().equals(KeyCode.A)) {
         		stage.setScene(editScene);
