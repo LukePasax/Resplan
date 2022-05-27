@@ -1,6 +1,9 @@
 package view.planning;
 
 import Resplan.App;
+import controller.general.DownloadingException;
+import controller.general.JsonFilePicker;
+import controller.general.LoadingException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -8,10 +11,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+import view.common.ChannelsView;
 import view.common.TimeAxisSetter;
+import static javafx.scene.control.Alert.AlertType.ERROR;
 
+import java.io.File;
 import java.io.IOException;
 
 public class PlanningController {
@@ -35,7 +43,8 @@ public class PlanningController {
     public Button delClipButton;
     public Button launchDawButton;
     private TimeAxisSetter timeAxisSetter;
-
+    private JsonFilePicker filePicker;
+    private ChannelsView channelsView;
 
     public void initialize() {
         timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
@@ -45,6 +54,7 @@ public class PlanningController {
         channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
             timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
         });
+        this.channelsView = new ChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane);
     }
 
     public void newChannelPressed(ActionEvent event) throws IOException {
@@ -60,7 +70,7 @@ public class PlanningController {
 
     public void newClipPressed(ActionEvent event) throws IOException {
         if (App.getController().getChannelList().isEmpty()) {
-            Alert error = new Alert(Alert.AlertType.ERROR);
+            Alert error = new Alert(ERROR);
             error.setTitle("Error");
             error.setContentText("No channels present");
             error.showAndWait();
@@ -77,28 +87,59 @@ public class PlanningController {
     }
 
     public void addChannel(String type, String title, String description) {
-       /* Pane newChannelInfos = new ChannelInfoPane(title);
-        ChannelClipsPane newChannel = new ChannelClipsPane(timeAxisSetter.getAxis());
-        newChannelInfos.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
-            newChannel.setMinHeight(newChannelInfos.getHeight());
-        });
-        channelsInfoPane.getChildren().add(newChannelInfos);
-        channelsContentPane.getChildren().add(newChannel);*/
+
     }
 
     public void addClip(String title, String description, String channel, Double time) {
     }
 
     public void newProjectPressed(ActionEvent event) {
+
     }
 
     public void openProjectPressed(ActionEvent event) {
+        this.filePicker = new JsonFilePicker();
+        this.saveProject();
+        try {
+            App.getController().openProject(this.filePicker.getFileChooser().showOpenDialog(this.menuBar.getScene().getWindow()));
+        } catch (LoadingException e) {
+            Alert error = new Alert(ERROR);
+            error.setContentText(e.getLocalizedMessage());
+            error.setTitle("Error");
+        }
+    }
+
+    private void saveProject() {
+        try {
+            App.getController().save();
+        } catch (DownloadingException e) {
+            Alert error = new Alert(ERROR);
+            error.setContentText(e.getLocalizedMessage());
+            error.setTitle("Error");
+        } catch (IllegalStateException e) {
+            this.filePicker =  new JsonFilePicker();
+            try {
+                App.getController().saveWithName(this.filePicker.getFileChooser().showSaveDialog(this.menuBar.getScene().getWindow()));
+            } catch (DownloadingException ex) {
+                Alert error = new Alert(ERROR);
+                error.setContentText(e.getLocalizedMessage());
+                error.setTitle("Error");
+            }
+        }
     }
 
     public void closeProjectPressed(ActionEvent event) {
+        this.menuBar.getScene().getWindow().hide();
     }
 
     public void setTemplatePressed(ActionEvent event) {
+        try {
+            App.getController().setTemplateProject();
+        } catch (DownloadingException | IllegalStateException e) {
+            Alert error = new Alert(ERROR);
+            error.setContentText(e.getLocalizedMessage());
+            error.setTitle("Error");
+        }
     }
 
     public void resetTemplatePressed(ActionEvent event) {
@@ -114,5 +155,6 @@ public class PlanningController {
     }
 
     public void saveProjectPressed(ActionEvent event) {
+        this.saveProject();
     }
 }
