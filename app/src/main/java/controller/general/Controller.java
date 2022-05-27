@@ -11,6 +11,8 @@ public interface Controller {
     String WORKING_DIRECTORY = System.getProperty("user.dir");
     String APP_SETTINGS = "settings.json";
 
+    void newProject();
+
     void updateView();
 
     void save() throws DownloadingException;

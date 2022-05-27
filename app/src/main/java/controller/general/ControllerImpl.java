@@ -29,6 +29,11 @@ public class ControllerImpl implements Controller {
     private final File appSettings = new File(WORKING_DIRECTORY + SEP + APP_SETTINGS);
 
     public ControllerImpl() {
+        this.newProject();
+        this.downloader = new ProjectDownloaderImpl(this.manager);
+    }
+
+    public void newProject() {
         try {
             final var fileName = new ReadFromFileImpl(this.appSettings).read();
             if (fileName.isBlank()) {
@@ -41,7 +46,6 @@ public class ControllerImpl implements Controller {
         } catch (IOException | FileFormatException e) {
             this.manager = new Manager();
         }
-        this.downloader = new ProjectDownloaderImpl(this.manager);
     }
 
     @Override
