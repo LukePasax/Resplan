@@ -2,7 +2,7 @@ package view.planning;
 
 import Resplan.App;
 import controller.general.DownloadingException;
-import controller.general.JsonFilePicker;
+import view.common.JsonFilePicker;
 import controller.general.LoadingException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -11,15 +11,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import view.common.ChannelsView;
 import view.common.TimeAxisSetter;
 import static javafx.scene.control.Alert.AlertType.ERROR;
 
-import java.io.File;
 import java.io.IOException;
 
 public class PlanningController {

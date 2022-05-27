@@ -1,4 +1,4 @@
-package controller.general;
+package view.common;
 
 import javafx.stage.FileChooser;
 import java.io.File;
