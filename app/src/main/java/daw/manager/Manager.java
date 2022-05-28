@@ -27,6 +27,7 @@ public class Manager implements RPManager {
     @JsonProperty
     @JsonDeserialize(keyUsing = RoleDeserializer.class)
     private final Map<RPRole, List<RPRole>> groupMap;
+    @JsonIgnore
     private final RPClipConverter clipConverter;
 
     public Manager() {

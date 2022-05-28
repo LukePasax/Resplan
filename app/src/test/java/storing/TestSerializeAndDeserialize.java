@@ -43,7 +43,7 @@ public class TestSerializeAndDeserialize {
         Manager man = new Manager();
         try {
             man = new ManagerDeserializer()
-                    .deserialize(new ReadFromFileImpl(new File(Controller.WORKING_DIRECTORY + Controller.SEP + FILENAME))
+                    .deserialize(new ReadFromFileImpl(new File(FILENAME))
                     .read());
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,7 +69,7 @@ public class TestSerializeAndDeserialize {
         } catch (ImportException e) {
             e.printStackTrace();
         }
-        AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer(false, true);
+        AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer(true, false);
         WriteToFile writer = new WriteToFileImpl(new File(FILENAME));
         try {
             writer.write(serializer.serialize(man));
