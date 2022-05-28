@@ -38,7 +38,7 @@ public class NewClipController {
                     this.channelPicker.getValue(), Double.parseDouble(startTimePicker.getText()),
                     Double.parseDouble(durationPicker.getText()), file);
             clipTitleSelection.getScene().getWindow().hide();
-        } catch (IllegalArgumentException | ImportException | NoSuchElementException e) {
+        } catch (IllegalArgumentException | ImportException | NoSuchElementException | IllegalStateException e) {
             Alert error = new Alert(Alert.AlertType.ERROR);
             error.setTitle("Error");
             error.setContentText(e.getLocalizedMessage());
