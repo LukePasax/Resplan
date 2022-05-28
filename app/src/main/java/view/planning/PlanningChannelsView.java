@@ -20,6 +20,8 @@ public class PlanningChannelsView extends ChannelsView {
 
     @Override
     public Node drawInfos(ViewDataImpl.Channel ch) {
-        return new FlowPane();
+        FlowPane pane  = new FlowPane();
+        pane.setMinHeight(20);
+        return pane;
     }
 }
