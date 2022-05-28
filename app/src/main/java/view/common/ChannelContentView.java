@@ -87,23 +87,32 @@ public abstract class ChannelContentView extends AnchorPane {
 	 */
 	private void drawClip(Clip clip) {
 		Pane clipView = new Pane(drawClipRegion(clip));
-			clipView.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, null, null)));
-			AnchorPane.setBottomAnchor(clipView, 0.0);
-			AnchorPane.setTopAnchor(clipView, 0.0);
-			placeClip(clipView, clip);
-			clip.addToViewAll(clipView);
-			getChildren().add(clipView);
+		clipView.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, null, null)));
+		AnchorPane.setBottomAnchor(clipView, 0.0);
+		AnchorPane.setTopAnchor(clipView, 0.0);
+		placeClip(clipView, clip);
+		clip.addToViewAll(clipView);
+		getChildren().add(clipView);
 	}
 	
 	/**
 	 * Place a clip in the correct axis position.
 	 */
 	private void placeClip(Pane clipView, Clip clip) {
-		clipView.relocate(axis.getDisplayPosition(clip.getPosition()), 0);
-		clipView.setTranslateX(0);
-		clipView.setMinWidth(axis.getDisplayPosition(clip.getDuration()));
-		clipView.setPrefWidth(axis.getDisplayPosition(clip.getDuration()));
-		clipView.setMaxWidth(axis.getDisplayPosition(clip.getDuration()));
+		double inX;
+		double outX;
+		if(clip.getPosition()<axis.getLowerBound()) {
+			inX = axis.getDisplayPosition(axis.getLowerBound());
+		} else {
+			inX = axis.getDisplayPosition(clip.getPosition());
+		}
+		if(clip.getDuration()+clip.getPosition()>axis.getUpperBound()) {
+			outX = axis.getDisplayPosition(axis.getUpperBound());
+		} else {
+			outX = axis.getDisplayPosition(clip.getPosition()+clip.getDuration());
+		}
+		clipView.relocate(inX, 0);
+		clipView.setPrefWidth(outX-inX);
 	}
 	
 	public abstract Node drawClipRegion(Clip clip);

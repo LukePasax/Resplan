@@ -1,7 +1,5 @@
 package Resplan;
 
-import java.io.FileInputStream;
-
 import controller.general.Controller;
 import controller.general.ControllerImpl;
 import javafx.application.Application;
@@ -9,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import view.common.ViewData;
 import view.common.ViewDataImpl;

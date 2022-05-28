@@ -18,118 +18,122 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="rootNode" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.edit.EditViewController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.edit.EditViewController">
    <children>
-      <MenuBar id="menu bar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem id="addChannel" mnemonicParsing="false" onAction="#addChannel" text="AddChannel" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <FlowPane alignment="CENTER" columnHalignment="CENTER" style="-fx-background-color: #FFFFFF;">
+      <VBox fx:id="rootNode" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-          <Button fx:id="stop" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#stop" prefHeight="15.0" prefWidth="15.0" style="-fx-background-color: #FFFFFF;" text="Button">
-               <FlowPane.margin>
-                  <Insets left="5.0" right="5.0" />
-               </FlowPane.margin>
-               <graphic>
-                  <ImageView fitHeight="8.0" fitWidth="8.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -4;">
-                     <viewport>
-                        <Rectangle2D />
-                     </viewport>
-                     <image>
-                        <Image url="@../icons/stopButton.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="play" alignment="CENTER" layoutX="303.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#play" prefHeight="15.0" prefWidth="15.0" text="Button">
-               <FlowPane.margin>
-                  <Insets left="5.0" right="5.0" />
-               </FlowPane.margin>
-               <graphic>
-                  <ImageView fitHeight="9.0" fitWidth="9.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -3;">
-                     <image>
-                        <Image url="@../icons/playButton.png" />
-                     </image>
-                     <viewport>
-                        <Rectangle2D />
-                     </viewport>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="pause" alignment="CENTER" layoutX="315.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pause" prefHeight="15.0" prefWidth="15.0" style="-fx-background-color: #FFFFFF;" text="Button">
-               <FlowPane.margin>
-                  <Insets left="5.0" right="5.0" />
-               </FlowPane.margin>
-               <graphic>
-                  <ImageView fitHeight="9.0" fitWidth="9.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -4;">
-                     <image>
-                        <Image url="@../icons/pauseButton.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-         <padding>
-            <Insets bottom="3.0" top="3.0" />
-         </padding>
-      </FlowPane>
-      <SplitPane id="orizzontal fx-edit split" dividerPositions="0.8294892915980231" orientation="VERTICAL" VBox.vgrow="ALWAYS">
-         <items>
-            <SplitPane id="vertical browser-edit split" dividerPositions="0.18812709030100336" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-              <items>
-                <AnchorPane id="browser" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" />
-                  <GridPane id="edit view" fx:id="timelineToChannelsAligner" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="50.0" />
-                      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" />
-                        <RowConstraints minHeight="16.0" prefHeight="16.0" />
-                      <RowConstraints minHeight="25.0" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-                    </rowConstraints>
-                     <children>
-                        <ScrollPane id="channels vertical scroll" fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minViewportHeight="40.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
-                           <content>
-                              <SplitPane id="clips-channel info divider" fx:id="channelsInfoResizer" dividerPositions="0.752092050209205" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                                 <items>
-                                    <VBox fx:id="channelsContentPane" prefHeight="200.0" prefWidth="100.0" />
-                                    <VBox fx:id="channelsInfoPane" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" />
-                                 </items>
-                              </SplitPane>
-                           </content>
-                        </ScrollPane>
-                     </children>
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </GridPane>
-              </items>
+            <MenuBar id="menu bar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem id="addChannel" mnemonicParsing="false" onAction="#addChannel" text="AddChannel" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <FlowPane alignment="CENTER" columnHalignment="CENTER" style="-fx-background-color: #FFFFFF;">
+               <children>
+                <Button fx:id="stop" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#stop" prefHeight="15.0" prefWidth="15.0" style="-fx-background-color: #FFFFFF;" text="Button">
+                     <FlowPane.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </FlowPane.margin>
+                     <graphic>
+                        <ImageView fitHeight="8.0" fitWidth="8.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -4;">
+                           <viewport>
+                              <Rectangle2D />
+                           </viewport>
+                           <image>
+                              <Image url="@../icons/stopButton.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="play" alignment="CENTER" layoutX="303.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#play" prefHeight="15.0" prefWidth="15.0" text="Button">
+                     <FlowPane.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </FlowPane.margin>
+                     <graphic>
+                        <ImageView fitHeight="9.0" fitWidth="9.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -3;">
+                           <image>
+                              <Image url="@../icons/playButton.png" />
+                           </image>
+                           <viewport>
+                              <Rectangle2D />
+                           </viewport>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="pause" alignment="CENTER" layoutX="315.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pause" prefHeight="15.0" prefWidth="15.0" style="-fx-background-color: #FFFFFF;" text="Button">
+                     <FlowPane.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </FlowPane.margin>
+                     <graphic>
+                        <ImageView fitHeight="9.0" fitWidth="9.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -4;">
+                           <image>
+                              <Image url="@../icons/pauseButton.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="3.0" top="3.0" />
+               </padding>
+            </FlowPane>
+            <SplitPane id="orizzontal fx-edit split" dividerPositions="0.8294892915980231" orientation="VERTICAL" VBox.vgrow="ALWAYS">
+               <items>
+                  <SplitPane id="vertical browser-edit split" dividerPositions="0.18812709030100336" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                    <items>
+                      <AnchorPane id="browser" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                        <GridPane id="edit view" fx:id="timelineToChannelsAligner" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="50.0" />
+                            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints minHeight="10.0" />
+                              <RowConstraints minHeight="16.0" prefHeight="16.0" />
+                            <RowConstraints minHeight="25.0" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                          </rowConstraints>
+                           <children>
+                              <ScrollPane id="channels vertical scroll" fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minViewportHeight="40.0" minViewportWidth="40.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                                 <content>
+                                    <SplitPane id="clips-channel info divider" fx:id="channelsInfoResizer" dividerPositions="0.752092050209205" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                       <items>
+                                          <VBox fx:id="channelsContentPane" prefHeight="200.0" prefWidth="100.0" />
+                                          <VBox fx:id="channelsInfoPane" prefHeight="200.0" prefWidth="100.0" />
+                                       </items>
+                                    </SplitPane>
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </GridPane>
+                    </items>
+                  </SplitPane>
+                  <HBox id="effects" fx:id="fxPanel" minHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
+               </items>
             </SplitPane>
-            <HBox id="effects" fx:id="fxPanel" minHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
-         </items>
-      </SplitPane>
+         </children>
+      </VBox>
    </children>
-</VBox>
+</AnchorPane>
