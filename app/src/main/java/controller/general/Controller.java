@@ -1,5 +1,6 @@
 package controller.general;
 
+import view.edit.EditViewController;
 import view.planning.PlanningController;
 import daw.manager.ImportException;
 import java.io.File;
@@ -16,6 +17,10 @@ public interface Controller {
      * otherwise it is a blank project.
      */
     void newProject();
+
+    PlanningController getPlanningController();
+
+    EditViewController getEditController();
 
     void updateView();
 
@@ -43,6 +48,8 @@ public interface Controller {
     void openProject(File file) throws LoadingException;
 
     void setPlanningController(PlanningController planningController);
+
+    void setEditController(EditViewController editController);
 
     void newPlanningChannel(String type, String title, String description) throws IllegalArgumentException;
 

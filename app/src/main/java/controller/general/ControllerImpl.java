@@ -6,6 +6,7 @@ import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import view.common.ViewDataImpl;
+import view.edit.EditViewController;
 import view.planning.PlanningController;
 import daw.manager.ImportException;
 import daw.manager.Manager;
@@ -24,6 +25,7 @@ public class ControllerImpl implements Controller {
     private final ProjectLoader loader;
     private Manager manager;
     private PlanningController planningController;
+    private EditViewController editController;
     private File currentProject;
     private final File appSettings = new File(WORKING_DIRECTORY + SEP + APP_SETTINGS);
 
@@ -52,6 +54,16 @@ public class ControllerImpl implements Controller {
         } catch (IOException | FileFormatException e) {
             this.manager = new Manager();
         }
+    }
+
+    @Override
+    public PlanningController getPlanningController() {
+        return planningController;
+    }
+
+    @Override
+    public EditViewController getEditController() {
+        return editController;
     }
 
     @Override
@@ -110,6 +122,11 @@ public class ControllerImpl implements Controller {
     @Override
     public void setPlanningController(PlanningController planningController) {
         this.planningController = planningController;
+    }
+
+    @Override
+    public void setEditController(EditViewController editController) {
+        this.editController = editController;
     }
 
     @Override
