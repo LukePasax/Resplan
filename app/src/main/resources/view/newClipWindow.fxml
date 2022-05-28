@@ -36,8 +36,8 @@
       <Label text="Content" GridPane.rowIndex="7" />
       <TextField fx:id="clipTitleSelection" maxWidth="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
       <TextField fx:id="clipDescriptionSelection" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-      <Button fx:id="newClipConfirm" mnemonicParsing="false" onAction="#okButtonPressed" prefWidth="52.0" text="Ok" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-      <Button mnemonicParsing="false" onAction="#cancelButtonPressed" prefWidth="52.0" text="Cancel" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+      <Button fx:id="newClipConfirm" defaultButton="true" mnemonicParsing="false" onAction="#okButtonPressed" prefWidth="52.0" text="Ok" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+      <Button cancelButton="true" mnemonicParsing="false" onAction="#cancelButtonPressed" prefWidth="52.0" text="Cancel" GridPane.columnIndex="2" GridPane.rowIndex="8" />
       <Button fx:id="clipFilePicker" mnemonicParsing="false" onAction="#pickFilePressed" text="Pick file" GridPane.columnIndex="2" GridPane.rowIndex="7" />
       <TextField fx:id="clipFileUrl" editable="false" promptText="Empty" GridPane.columnIndex="1" GridPane.rowIndex="7" />
       <Label text="Channel" GridPane.rowIndex="4" />
