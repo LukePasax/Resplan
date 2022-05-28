@@ -9,26 +9,26 @@ import controller.storing.deserialization.AbstractJacksonDeserializer;
 import controller.storing.deserialization.ManagerDeserializer;
 import controller.storing.serialization.AbstractJacksonSerializer;
 import controller.storing.serialization.ManagerSerializer;
+import daw.manager.ImportException;
 import daw.manager.Manager;
 import org.junit.jupiter.api.Test;
-import planning.EffectsRole;
-import planning.RPRole;
+import planning.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestReadAndWrite {
+public class TestSerializeAndDeserialize {
 
-    private static final String FILENAME = "trial.json";
+    private static final String FILENAME = Controller.WORKING_DIRECTORY + Controller.SEP + "trial.json";
 
     @Test
-    public void simpleWriteAndRead() {
+    public void simpleSerializationAndDeserialization() {
         final Manager man = new Manager();
         AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer(true, false);
-        WriteToFile writer = new WriteToFileImpl(new File(Controller.WORKING_DIRECTORY + Controller.SEP + FILENAME));
+        WriteToFile writer = new WriteToFileImpl(new File(FILENAME));
         AbstractJacksonDeserializer<Manager> deserializer = new ManagerDeserializer();
-        ReadFromFile reader = new ReadFromFileImpl(new File(Controller.WORKING_DIRECTORY + Controller.SEP + FILENAME));
+        ReadFromFile reader = new ReadFromFileImpl(new File(FILENAME));
         try {
             writer.write(serializer.serialize(man));
             final var manAfterRead = deserializer.deserialize(reader.read());
@@ -52,14 +52,23 @@ public class TestReadAndWrite {
     }
 
     @Test
-    public void writeComplex() {
+    public void serializationAndDeserializationWithNewClip() {
         final Manager man = new Manager();
         RPRole role = new EffectsRole("claps");
         man.addChannel(RPRole.RoleType.EFFECTS, "claps", Optional.empty());
         man.createGroup("effects", RPRole.RoleType.EFFECTS);
         man.addToGroup(role,"effects");
-        AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer(true, false);
-        WriteToFile writer = new WriteToFileImpl(new File(Controller.WORKING_DIRECTORY + Controller.SEP + FILENAME));
+        try {
+            File file = new File(Controller.WORKING_DIRECTORY + Controller.SEP + "src" + Controller.SEP +
+                    "test" + Controller.SEP + "resources" + Controller.SEP + "audio" + Controller.SEP +
+                    "Alergy - Brain in the Jelly.wav");
+            man.addClip(RPPart.PartType.EFFECTS,"part1", Optional.empty(),
+                    "claps",0.00,Optional.empty());
+        } catch (ImportException e) {
+            e.printStackTrace();
+        }
+        AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer(false, true);
+        WriteToFile writer = new WriteToFileImpl(new File(FILENAME));
         try {
             writer.write(serializer.serialize(man));
         } catch (IOException e) {

@@ -3,12 +3,11 @@ package controller.storing.serialization;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import daw.core.clip.EmptyClip;
-import daw.core.clip.NoContent;
-import daw.core.clip.RPClip;
+import daw.core.clip.*;
 import net.beadsproject.beads.data.Sample;
 import java.io.File;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 
 public class ClipSerializer extends StdSerializer<RPClip> {
 
@@ -24,16 +23,14 @@ public class ClipSerializer extends StdSerializer<RPClip> {
         gen.writeStartObject();
         gen.writeNumberField("duration", value.getDuration());
         if (value instanceof EmptyClip) {
-            gen.writeNumberField("content position", 0);
-        } else {
-            gen.writeNumberField("content position", value.getContentPosition());
-        }
-        if (value.getContent() instanceof Sample) {
-            gen.writeStringField("content name",((Sample) value.getContent()).getFileName());
-        } else if (value.getContent() instanceof File) {
-            gen.writeStringField("content name", ((File) value.getContent()).getName());
-        } else if (value.getContent() instanceof NoContent) {
+            gen.writeNumberField("content position", -1.0);
             gen.writeStringField("content name", "");
+        } else if (value instanceof SampleClip) {
+            gen.writeNumberField("content position", value.getContentPosition());
+            gen.writeStringField("content name", ((Sample) value.getContent()).getFileName());
+        } else if (value instanceof FileClip) {
+            gen.writeNumberField("content position", value.getContentPosition());
+            gen.writeStringField("content name", ((File) value.getContent()).getName());
         }
         gen.writeEndObject();
     }

@@ -181,7 +181,7 @@ public class Manager implements RPManager {
     @Override
     public void addClip(RPPart.PartType type, String title, Optional<String> description,String channel,Double time,
                         Optional<File> content) throws ImportException, IllegalArgumentException {
-        final EmptyClip clip = new EmptyClip();
+        RPClip clip = new EmptyClip();
         if (this.clipLinker.clipExists(title)) {
             throw new IllegalArgumentException("Clip already exists");
         } else if (title.equals("")) {
@@ -189,7 +189,7 @@ public class Manager implements RPManager {
         }
         if (content.isPresent()) {
             try {
-                this.clipConverter.fromEmptyToSampleClip(clip, content.get());
+                clip = this.clipConverter.fromEmptyToSampleClip((EmptyClip) clip, content.get());
             } catch (FileFormatException | OperationUnsupportedException | IOException exception) {
                 throw new ImportException("Error in loading file");
             }
