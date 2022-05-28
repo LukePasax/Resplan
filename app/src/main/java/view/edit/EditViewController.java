@@ -12,7 +12,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import view.common.ChannelsView;
 import view.common.TimeAxisSetter;
 import view.common.MarkersPane;
 
@@ -36,7 +35,6 @@ public class EditViewController implements Initializable{
 	 * VBox per info canali
 	 */
 	@FXML private VBox channelsInfoPane;
-	
 	@FXML private HBox fxPanel;
 	@FXML private Button stop;
 	@FXML private Button play;
@@ -46,25 +44,26 @@ public class EditViewController implements Initializable{
 	 */
 	private TimeAxisSetter timeAxisSetter;
 	private MarkersPane markersPane;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		//playButton
 		this.play.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 		//--------------setting time axis------------
 		timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
-		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0,5,0,0));
+		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 5, 0, 0));
 		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 2);
 		timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);
 		timelineToChannelsAligner.setMaxWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth()*0.8);
-		//--------set channels view----------
-		new ChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane);
 		//--------set markers pane---------
 		markersPane = new MarkersPane(timeAxisSetter.getAxis());
-		timelineToChannelsAligner.add(markersPane, 0, 1);
-		GridPane.setRowSpan(markersPane, 3);
+		timelineToChannelsAligner.add(markersPane, 0, 1, 1, 3);
+		GridPane.setVgrow(markersPane, Priority.ALWAYS);
+		//--------set channels view----------
+		new EditChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane);
 		//--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
 		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
-			((GridPane)scrollPane.getParent()).getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
+			timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
 		});
 	}
 	

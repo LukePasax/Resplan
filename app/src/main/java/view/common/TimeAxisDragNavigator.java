@@ -118,7 +118,6 @@ public class TimeAxisDragNavigator {
         		ratio = (initialTime-initialLowerBound)/(initialUpperBound-initialLowerBound);  	
         		newLow = axis.getValueForDisplay(axis.getDisplayPosition(initialLowerBound)+(sensibility*ratio*vSpostamento)).doubleValue();
 	        	newUp = axis.getValueForDisplay(axis.getDisplayPosition(initialUpperBound)-(sensibility*(1-ratio)*vSpostamento)).doubleValue();
-        	//}
         	if(newLow<0) {
         		newLow = 0;
         	}

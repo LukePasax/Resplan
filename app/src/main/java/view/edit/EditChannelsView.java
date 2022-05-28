@@ -2,29 +2,39 @@ package view.edit;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import view.common.ChannelInfosView;
+import view.common.ChannelsView;
+import view.common.TimeAxisSetter;
 import view.common.ViewDataImpl.Channel;
+import view.common.ViewDataImpl.Clip;
 
-public class EditChannelInfos extends ChannelInfosView {
-
+public class EditChannelsView extends ChannelsView {
+	
 	private final static Paint muteColor = Paint.valueOf("#FF3333");
 	private final static Paint soloColor = Paint.valueOf("#B8D4FF");
 	
 	//da sostituire con controller.
 	private boolean muted;
 	private boolean solo;
-
-	public EditChannelInfos(Channel ch) {
-		super(ch);
+	
+	public EditChannelsView(TimeAxisSetter timeAxisSetter, VBox channelsContentPane, VBox channelsInfoPane) {
+		super(timeAxisSetter, channelsContentPane, channelsInfoPane);
+		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
-	public Node drawClipRegion() {
+	public Node drawClip(Clip clip) {
+		return new Label(clip.getTitle());
+	}
+
+	@Override
+	public Node drawInfos(Channel ch) {
 		//buttons
 		Button muteButton = new Button("M");
 		Button soloButton = new Button("S");
@@ -51,6 +61,5 @@ public class EditChannelInfos extends ChannelInfosView {
 		
 		return new FlowPane(muteButton, soloButton);
 	}
-
 	
 }

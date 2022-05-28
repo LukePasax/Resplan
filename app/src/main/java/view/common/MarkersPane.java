@@ -5,50 +5,66 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import view.common.ViewDataImpl.Marker;
+import view.common.ViewDataImpl.Section;
 
 public class MarkersPane extends Pane {
 	
 	private final NumberAxis axis;
-	 private final Path timeMarkers = new Path();
+	private final Path timeMarkers = new Path();
+	private final Path sectionMarkers = new Path();
+	private final Pane labels = new Pane();
 
 	public MarkersPane(NumberAxis axis) {
 		this.setMouseTransparent(true);
 		timeMarkers.setStroke(Color.DARKGREY);
-		this.getChildren().add(timeMarkers);
+		sectionMarkers.setStroke(Color.ORANGE);
+		labels.setMaxHeight(axis.getLayoutY());
+		this.getChildren().addAll(timeMarkers, sectionMarkers, labels);
+		
 		this.axis = axis;
-		axis.needsLayoutProperty().addListener(x->{updatePositions(); updateTimeMarkers();});
+		//update when axis layout
+		axis.needsLayoutProperty().addListener(x->{updateSectionMarkers(); updateTimeMarkers();});
+		//update on data changes
+		App.getData().addSectionDataListener(x->updateTimeMarkers());
+		//vertical layout resize
+		this.heightProperty().addListener(x->{updateSectionMarkers(); updateTimeMarkers();});
 	}
 
-	private void updatePositions() {
-		ObservableSet<Marker> markers = App.getData().getUnmodifiableMarkers();
+	//-------SECTIONS-------
+	private void updateSectionMarkers() {
+		sectionMarkers.getElements().clear();
+		labels.getChildren().clear();
+		ObservableSet<Section> markers = App.getData().getUnmodifiableSections();
 		markers.stream().filter(marker->{
 			return marker.getPosition()<axis.getUpperBound() && marker.getPosition()>axis.getLowerBound();
 		}).forEach(markerInTimeRange->{
-			if(markerInTimeRange.getViewSet().stream().anyMatch(x->getChildren().contains(x))) {
-				markerInTimeRange.getViewSet().stream().filter(x->getChildren().contains(x)).forEach(drawedMarker->{
-					placeMarker((Line)drawedMarker, markerInTimeRange);
-				});
-			} else {
-				drawClip(markerInTimeRange);
-			}
+            final double x = axis.getDisplayPosition(markerInTimeRange.getPosition());
+            if ((x != axis.getZeroPosition()) && x > 0 && x <= axis.getWidth()) {
+            	//marker (path)
+                sectionMarkers.getElements().add(new MoveTo(x+0.5, axis.getLayoutY()+axis.getHeight()));
+                sectionMarkers.getElements().add(new LineTo(x+0.5, this.getHeight()));
+                //marker title (label + path)
+                sectionMarkers.getElements().add(new MoveTo(x+0.5, 0));
+                sectionMarkers.getElements().add(new LineTo(x+0.5, axis.getLayoutY()-10));
+                Label title = new Label(markerInTimeRange.getTitle());
+                title.setBackground(new Background(new BackgroundFill(Color.ORANGE, null, null)));
+                title.setMaxHeight(axis.getLayoutY());
+                title.setMinWidth(title.getPrefWidth());
+                title.relocate(x+2, 0);
+                labels.getChildren().add(title);
+            }
 		});
 	}
-
-	private void drawClip(Marker markerInTimeRange) {
-		
-	}
-
-	private void placeMarker(Line markerView, Marker markerInTimeRange) {
-		//markerView.relocate(markerInTimeRange.getPosition(), 0);
-	}
 	
+	//-----TIME MARKERS------
 	private void updateTimeMarkers() {
 		final ObservableList<Axis.TickMark<Number>> tickMarks = axis.getTickMarks();
 		timeMarkers.getElements().clear();
@@ -61,5 +77,4 @@ public class MarkersPane extends Pane {
             }
         } 
 	}
-	
 }

@@ -9,7 +9,7 @@ import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener;
 import view.common.ViewDataImpl.Channel;
 import view.common.ViewDataImpl.Clip;
-import view.common.ViewDataImpl.Marker;
+import view.common.ViewDataImpl.Section;
 
 public interface ViewData {
 
@@ -33,11 +33,11 @@ public interface ViewData {
 	ObservableList<Clip> getUnmodifiableClips(Channel channel);
 	
 	//markers
-	void setMarker(Marker marker);
+	void addSection(Section section);
 	
-	void removeMarker(Marker marker);
+	void removeSection(Section section);
 	
-	void addMarkerDataListener(SetChangeListener<Marker> listener);
+	void addSectionDataListener(SetChangeListener<Section> listener);
 	
-	ObservableSet<Marker> getUnmodifiableMarkers();
+	ObservableSet<Section> getUnmodifiableSections();
 }

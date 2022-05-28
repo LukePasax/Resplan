@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import view.common.ViewDataImpl.Channel;
 import view.common.ViewDataImpl.Clip;
@@ -32,8 +33,6 @@ public abstract class ChannelContentView extends AnchorPane {
 				null, null, BorderStrokeStyle.SOLID, null, CornerRadii.EMPTY, null, null)));
 		//update clips with layout
 		axis.needsLayoutProperty().addListener(x->updateClips());
-		axis.lowerBoundProperty().addListener(x->updateClips());
-		axis.upperBoundProperty().addListener(x->updateClips());
 		//update clips with data add/remove
 		App.getData().addClipsDataListener(ch, new ListChangeListener<Clip>() {
 
@@ -88,7 +87,7 @@ public abstract class ChannelContentView extends AnchorPane {
 	 */
 	private void drawClip(Clip clip) {
 		Pane clipView = new Pane(drawClipRegion(clip));
-			clipView.setBackground(new Background(new BackgroundFill(Paint.valueOf("#4902F3"), null, null)));
+			clipView.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, null, null)));
 			AnchorPane.setBottomAnchor(clipView, 0.0);
 			AnchorPane.setTopAnchor(clipView, 0.0);
 			placeClip(clipView, clip);
@@ -101,7 +100,9 @@ public abstract class ChannelContentView extends AnchorPane {
 	 */
 	private void placeClip(Pane clipView, Clip clip) {
 		clipView.relocate(axis.getDisplayPosition(clip.getPosition()), 0);
+		clipView.setTranslateX(0);
 		clipView.setMinWidth(axis.getDisplayPosition(clip.getDuration()));
+		clipView.setPrefWidth(axis.getDisplayPosition(clip.getDuration()));
 		clipView.setMaxWidth(axis.getDisplayPosition(clip.getDuration()));
 	}
 	

@@ -51,7 +51,7 @@
                         <Rectangle2D />
                      </viewport>
                      <image>
-                        <Image url="/icons/stopButton.png" />
+                        <Image url="@../icons/stopButton.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -63,7 +63,7 @@
                <graphic>
                   <ImageView fitHeight="9.0" fitWidth="9.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -3;">
                      <image>
-                        <Image url="/icons/playButton.png" />
+                        <Image url="@../icons/playButton.png" />
                      </image>
                      <viewport>
                         <Rectangle2D />
@@ -78,7 +78,7 @@
                <graphic>
                   <ImageView fitHeight="9.0" fitWidth="9.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -4;">
                      <image>
-                        <Image url="/icons/pauseButton.png" />
+                        <Image url="@../icons/pauseButton.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -103,7 +103,7 @@
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" />
-                        <RowConstraints minHeight="12.0" prefHeight="12.0" />
+                        <RowConstraints minHeight="16.0" prefHeight="16.0" />
                       <RowConstraints minHeight="25.0" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
                     </rowConstraints>

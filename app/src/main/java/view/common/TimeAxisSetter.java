@@ -230,8 +230,7 @@ public class TimeAxisSetter {
 		axis.setLowerBound((lowerBound));
 		axis.setUpperBound((upperBound));
 		timeDelta = axis.getUpperBound()-axis.getLowerBound();
-		calculateTicks();
-		updateScroller();
+		axis.requestAxisLayout();
 	}
 	
 	public void resetRange() {

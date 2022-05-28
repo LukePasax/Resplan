@@ -15,6 +15,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import view.common.ChannelsView;
 import view.common.TimeAxisSetter;
+import view.edit.EditChannelsView;
+
 import static javafx.scene.control.Alert.AlertType.ERROR;
 
 import java.io.IOException;
@@ -51,7 +53,7 @@ public class PlanningController {
         channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
             timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
         });
-        this.channelsView = new ChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane);
+        this.channelsView = new EditChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane);
     }
 
     public void newChannelPressed(ActionEvent event) throws IOException {

@@ -19,7 +19,7 @@ public class ViewDataImpl implements ViewData {
 	
 	private ObservableMap<Channel, ObservableList<Clip>> data = FXCollections.observableHashMap();
 
-	private ObservableSet<Marker> markers = FXCollections.observableSet();
+	private ObservableSet<Section> sections = FXCollections.observableSet();
 	
 	//channels and clips
 	@Override
@@ -77,26 +77,26 @@ public class ViewDataImpl implements ViewData {
 		return FXCollections.unmodifiableObservableList(data.get(channel));
 	}
 
-	//markers
+	//sections
 	
 		@Override
-	public void setMarker(Marker marker) {
-		markers.add(marker);
+	public void addSection(Section section) {
+		sections.add(section);
 	}
 
 	@Override
-	public ObservableSet<Marker> getUnmodifiableMarkers() {
-		return FXCollections.unmodifiableObservableSet(markers);
+	public ObservableSet<Section> getUnmodifiableSections() {
+		return FXCollections.unmodifiableObservableSet(sections);
 	}
 	
 	@Override
-	public void removeMarker(Marker marker) {
-		markers.remove(marker);
+	public void removeSection(Section section) {
+		sections.remove(section);
 	}
 
 	@Override
-	public void addMarkerDataListener(SetChangeListener<Marker> listener) {
-		markers.addListener(listener);
+	public void addSectionDataListener(SetChangeListener<Section> listener) {
+		sections.addListener(listener);
 	}
 	
 	public static class Channel {
@@ -227,13 +227,13 @@ public class ViewDataImpl implements ViewData {
 		
 	}
 
-	public static class Marker {
+	public static class Section {
 		
 		private String title;
 		private Double position;
 		private Set<Node> view = new HashSet<>();
 
-		public Marker(String title, Double position) {
+		public Section(String title, Double position) {
 			this.title = title;
 			this.position = position;
 		}
@@ -269,7 +269,7 @@ public class ViewDataImpl implements ViewData {
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
-			Marker other = (Marker) obj;
+			Section other = (Section) obj;
 			return Objects.equals(title, other.title);
 		}
 		
