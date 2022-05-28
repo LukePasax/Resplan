@@ -27,7 +27,7 @@ public class ClipSerializer extends StdSerializer<RPClip> {
             gen.writeStringField("content name", "");
         } else if (value instanceof SampleClip) {
             gen.writeNumberField("content position", value.getContentPosition());
-            gen.writeStringField("content name", ((Sample) value.getContent()).getFileName());
+            gen.writeStringField("content name", ((Sample) value.getContent()).getSimpleName());
         } else if (value instanceof FileClip) {
             gen.writeNumberField("content position", value.getContentPosition());
             gen.writeStringField("content name", ((File) value.getContent()).getName());
