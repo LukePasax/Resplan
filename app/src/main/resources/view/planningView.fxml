@@ -54,7 +54,7 @@
                   <Button fx:id="newClipButton" mnemonicParsing="false" onAction="#newClipPressed" prefWidth="100.0" text="New Clip" />
                   <Button fx:id="delChannelButton" mnemonicParsing="false" onAction="#delChannelPressed" prefWidth="100.0" text="Delete Channel" />
                   <Button fx:id="delClipButton" mnemonicParsing="false" onAction="#delClipPressed" prefWidth="100.0" text="Delete Clip" />
-                  <Button fx:id="launchDawButton" mnemonicParsing="false" onAction="#launchDawPressed" prefWidth="100.0" text="Launch DAW" />
+                  <Button fx:id="launchEditViewButton" mnemonicParsing="false" onAction="#launchEditViewPressed" prefWidth="100.0" text="Edit View" />
                </children>
                <padding>
                   <Insets left="2.5" right="2.5" top="10.0" />

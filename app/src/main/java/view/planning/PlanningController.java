@@ -2,6 +2,7 @@ package view.planning;
 
 import Resplan.App;
 import controller.general.DownloadingException;
+import javafx.scene.input.KeyCode;
 import view.common.JsonFilePicker;
 import controller.general.LoadingException;
 import javafx.event.ActionEvent;
@@ -40,7 +41,7 @@ public class PlanningController {
     public MenuItem resetTemplate;
     public Button delChannelButton;
     public Button delClipButton;
-    public Button launchDawButton;
+    public Button launchEditViewButton;
     private TimeAxisSetter timeAxisSetter;
     private JsonFilePicker filePicker;
     private ChannelsView channelsView;
@@ -53,7 +54,18 @@ public class PlanningController {
         channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
             timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
         });
-        this.channelsView = new EditChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane);
+        this.channelsView = new PlanningChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane);
+    }
+
+    private void switchScene() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
+        try {
+            menuBar.getScene().setRoot(loader.load());
+        } catch (IOException e) {
+            Alert error = new Alert(ERROR);
+            error.setTitle("Error");
+            error.setContentText(e.getLocalizedMessage());
+        }
     }
 
     public void newChannelPressed(ActionEvent event) throws IOException {
@@ -150,9 +162,9 @@ public class PlanningController {
     public void delClipPressed(ActionEvent event) {
     }
 
-    public void launchDawPressed(ActionEvent event) {
+    public void launchEditViewPressed(ActionEvent event) {
+        this.switchScene();
     }
-
     public void saveProjectPressed(ActionEvent event) {
         this.saveProject();
     }
