@@ -5,7 +5,6 @@ import java.util.List;
 import Resplan.App;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.chart.NumberAxis;

@@ -31,7 +31,8 @@ public class TimeAxisSetter {
 	
 	public final static double MS_TO_MIN = 60000;
 	public final static double MS_TO_SEC = 1000;
-	private final static double LABELS_PX_GAP = 40;
+	private final static double LABELS_PX_GAP = 45;
+	private final static int MAX_LABELS = 28;
 
 	private final NumberAxis axis = new NumberAxis();
 	private final AnchorPane navigator = new AnchorPane();
@@ -70,10 +71,10 @@ public class TimeAxisSetter {
 				Long sec = TimeUnit.MILLISECONDS.toSeconds(milliseconds.longValue());
 				Long ms = milliseconds.longValue()-TimeUnit.SECONDS.toMillis(sec);
 				sec -= TimeUnit.MINUTES.toSeconds(min);
-				if(axis.getTickUnit() < MS_TO_SEC) {
-					return String.format("%02d", min) + ":" + String.format("%02d", sec) + "(+" + ms + "ms)";
+				if(ms.equals(Long.valueOf(0))) {
+					return String.format("%02d", min) + ":" + String.format("%02d", sec);
 				}
-				return String.format("%02d", min) + ":" + String.format("%02d", sec);
+				return String.format("%02d", min) + ":" + String.format("%02d", sec) + "(+" + ms + "ms)";
 			}
 
 			@Override
@@ -192,7 +193,7 @@ public class TimeAxisSetter {
 	 */
 	private void calculateTicks() {
 		Long maxLabels = Double.valueOf(axis.getWidth()/LABELS_PX_GAP).longValue();
-		double minTickUnit = timeDelta/Math.min(30, maxLabels);
+		double minTickUnit = timeDelta/Math.min(MAX_LABELS, maxLabels);
 		//round to multiples of min or sec.
 		double tick;
 		double mTCount;
@@ -219,6 +220,7 @@ public class TimeAxisSetter {
 	
 	/**
 	 * Set a new range for the timeline. Responsable of update scroller position.
+	 * If tick unit is bigger or equals MS_TO_SEC, lb and ub will be rounded to integer sec value.
 	 * @param lowerBound
 	 * @param upperBound
 	 */
@@ -226,9 +228,18 @@ public class TimeAxisSetter {
 		if(lowerBound<0 || upperBound>prLength || lowerBound>=upperBound) {
 			throw new IllegalArgumentException("Lower and upper bounds must be between 0 and project length.");
 		}
+		double newLB = lowerBound;
+		double newUB = upperBound;
+		if(upperBound-lowerBound>=MS_TO_SEC*5) {
+			newLB = Math.round(newLB/MS_TO_SEC)*MS_TO_SEC;
+			newUB = Math.round(newUB/MS_TO_SEC)*MS_TO_SEC;
+		} else if(upperBound-lowerBound>=MS_TO_SEC) {
+			newLB = Math.round(newLB/100)*100;
+			newUB = Math.round(newUB/100)*100;
+		}
 		axis.setTickUnit(Double.MAX_VALUE);
-		axis.setLowerBound((lowerBound));
-		axis.setUpperBound((upperBound));
+		axis.setLowerBound(newLB);
+		axis.setUpperBound(newUB);
 		timeDelta = axis.getUpperBound()-axis.getLowerBound();
 		axis.requestAxisLayout();
 	}
