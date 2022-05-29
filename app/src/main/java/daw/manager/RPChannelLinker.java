@@ -1,7 +1,7 @@
 package daw.manager;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import controller.storing.deserialization.ChannelLinkerDeserializer;
+//import controller.storing.deserialization.ChannelLinkerDeserializer;
 import daw.core.channel.RPChannel;
 import daw.core.clip.RPTapeChannel;
 import javafx.util.Pair;
@@ -14,7 +14,7 @@ import java.util.Set;
  * This interface represents a class to link a {@link RPRole} to its corresponding Pair of {@link RPChannel} and
  * {@link RPTapeChannel}.
  */
-@JsonDeserialize(using = ChannelLinkerDeserializer.class)
+@JsonDeserialize(as = ChannelLinker.class)
 public interface RPChannelLinker {
 
 	/**

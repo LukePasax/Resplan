@@ -1,5 +1,9 @@
 package daw.manager;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import controller.storing.deserialization.RoleDeserializer;
 import daw.core.channel.RPChannel;
 import daw.core.clip.RPTapeChannel;
 import javafx.util.Pair;
@@ -9,9 +13,11 @@ import java.util.stream.Collectors;
 
 public class ChannelLinker implements RPChannelLinker {
 
+    @JsonProperty
+    @JsonDeserialize(keyUsing = RoleDeserializer.class)
     private final Map<RPRole, Pair<RPChannel, RPTapeChannel>> channelMap;
 
-    public ChannelLinker() {
+    ChannelLinker() {
         channelMap = new HashMap<>();
     }
 
@@ -87,6 +93,7 @@ public class ChannelLinker implements RPChannelLinker {
      * @return a set of pairs of {@link RPChannel} and {@link RPTapeChannel}
      */
     @Override
+    @JsonIgnore
     public Set<Pair<RPChannel, RPTapeChannel>> getAudioSet() {
         return new HashSet<>(channelMap.values());
     }
@@ -103,6 +110,7 @@ public class ChannelLinker implements RPChannelLinker {
     }
 
     @Override
+    @JsonIgnore
     public List<RPRole> getRoleList() {
         return new ArrayList<>(this.channelMap.keySet());
     }
