@@ -65,6 +65,12 @@ public class EditViewController implements Initializable{
 		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
 			timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
 		});
+		//-------PLAYBACK TIME SET-----
+		channelsContentPane.setOnMouseClicked(e->{
+			if(/*!App.getController().isPlaying()*/ true) {
+				markersPane.updatePlaybackMarker(timeAxisSetter.getAxis().getValueForDisplay(e.getX()).doubleValue());
+			}
+		});
 	}
 	
 	/**
@@ -102,5 +108,9 @@ public class EditViewController implements Initializable{
 	public void pause() {
 		//App.getController().pause();
 		this.play.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+	}
+	
+	public void setPlaybackMarkerPosition(double time) {
+		this.markersPane.updatePlaybackMarker(time);
 	}
 }

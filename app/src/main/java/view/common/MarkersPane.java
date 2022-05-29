@@ -20,14 +20,16 @@ public class MarkersPane extends Pane {
 	private final NumberAxis axis;
 	private final Path timeMarkers = new Path();
 	private final Path sectionMarkers = new Path();
+	private final Path playbackMarker = new Path();
 	private final Pane labels = new Pane();
 
 	public MarkersPane(NumberAxis axis) {
 		this.setMouseTransparent(true);
 		timeMarkers.setStroke(Color.DARKGREY);
 		sectionMarkers.setStroke(Color.ORANGE);
+		playbackMarker.setStroke(Color.BLACK);
 		labels.setMaxHeight(axis.getLayoutY());
-		this.getChildren().addAll(timeMarkers, sectionMarkers, labels);
+		this.getChildren().addAll(timeMarkers, sectionMarkers, labels, playbackMarker);
 		
 		this.axis = axis;
 		//update when axis layout
@@ -76,5 +78,15 @@ public class MarkersPane extends Pane {
                 timeMarkers.getElements().add(new LineTo(x+0.5, this.getHeight()));
             }
         } 
+	}
+	
+	//----PLAYBACK MARKER-----
+	public void updatePlaybackMarker(double time) {
+		playbackMarker.getElements().clear();
+		double x = axis.getDisplayPosition(time);
+		if ((x != axis.getZeroPosition()) && x > 0 && x <= axis.getWidth()) {
+			playbackMarker.getElements().add(new MoveTo(x+0.5, 0));
+			playbackMarker.getElements().add(new LineTo(x+0.5, this.getHeight()));
+		}
 	}
 }
