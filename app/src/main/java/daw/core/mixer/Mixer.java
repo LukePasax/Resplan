@@ -4,7 +4,7 @@ import daw.core.channel.BasicChannelFactory;
 import daw.core.channel.ChannelFactory;
 import daw.core.channel.RPChannel;
 
-public class Mixer implements RPMixer{
+public class Mixer implements RPMixer {
 
     private final ChannelFactory channelFactory;
     private final RPChannel masterChannel;

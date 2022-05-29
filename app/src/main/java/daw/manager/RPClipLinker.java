@@ -6,7 +6,6 @@ import planning.RPPart;
 /**
  * This interface represents a class to link a {@link RPPart} to its corresponding {@link RPClip}.
  */
-
 public interface RPClipLinker {
 
 	/**
