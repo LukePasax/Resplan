@@ -1,11 +1,14 @@
 package view.common;
 
+import java.util.List;
+
 import Resplan.App;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
@@ -18,8 +21,8 @@ import javafx.scene.paint.Paint;
 import view.common.ViewDataImpl.Channel;
 import view.common.ViewDataImpl.Clip;
 
-public abstract class ChannelContentView extends AnchorPane {
-	
+public abstract class ChannelContentView extends Pane {
+
 	private final static Paint borderColor = Paint.valueOf("#999999");
 	private final NumberAxis axis;
 	private final Channel ch;
@@ -52,6 +55,31 @@ public abstract class ChannelContentView extends AnchorPane {
 		});
 	}
 	
+	//LAYOUT CLIPS
+	private double computeChildHeight(Pane child, Double topAnchor, Double bottomAnchor, double areaHeight) {
+        final Insets insets = getInsets();
+        return areaHeight - insets.getTop() - insets.getBottom() - topAnchor - bottomAnchor;
+    }
+	
+	@Override protected void layoutChildren() {
+		final Insets insets = getInsets();
+        final List<Pane> children = getManagedChildren();
+        for (Pane child : children) {
+            final Double topAnchor = 0.0;
+            final Double bottomAnchor = 0.0;
+            double x = child.getLayoutX();
+            double y = child.getLayoutY();
+            double h = computeChildHeight(child, topAnchor, bottomAnchor, getHeight());;
+            double w = child.getPrefWidth();
+            
+            y = insets.getTop() + topAnchor;
+            y = getHeight() - insets.getBottom() - bottomAnchor - h;
+
+            child.resizeRelocate(x, y, w, h);
+        }
+	}
+	
+	//UPDATE AND DRAW CLIPS
 	/**
 	 * Does nothing if every clip contained in data is drawed and in it's size is right.
 	 * Else update the view in order to correctly display the clips.
@@ -71,7 +99,7 @@ public abstract class ChannelContentView extends AnchorPane {
 			}
 		});
 		clips.stream().filter(clipFromData->{
-			return clipFromData.getPosition()>=axis.getUpperBound() && (clipFromData.getPosition()+clipFromData.getDuration())<=axis.getLowerBound();
+			return clipFromData.getPosition()>=axis.getUpperBound() || (clipFromData.getPosition()+clipFromData.getDuration())<=axis.getLowerBound();
 		}).forEach(nonInTimeClip->{
 			nonInTimeClip.getViewSet().stream().forEach(view->{
 				if(getChildren().contains(view)) {
@@ -88,8 +116,6 @@ public abstract class ChannelContentView extends AnchorPane {
 	private void drawClip(Clip clip) {
 		Pane clipView = new Pane(drawClipRegion(clip));
 		clipView.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, null, null)));
-		AnchorPane.setBottomAnchor(clipView, 0.0);
-		AnchorPane.setTopAnchor(clipView, 0.0);
 		placeClip(clipView, clip);
 		clip.addToViewAll(clipView);
 		getChildren().add(clipView);
@@ -101,16 +127,8 @@ public abstract class ChannelContentView extends AnchorPane {
 	private void placeClip(Pane clipView, Clip clip) {
 		double inX;
 		double outX;
-		if(clip.getPosition()<axis.getLowerBound()) {
-			inX = axis.getDisplayPosition(axis.getLowerBound());
-		} else {
-			inX = axis.getDisplayPosition(clip.getPosition());
-		}
-		if(clip.getDuration()+clip.getPosition()>axis.getUpperBound()) {
-			outX = axis.getDisplayPosition(axis.getUpperBound());
-		} else {
-			outX = axis.getDisplayPosition(clip.getPosition()+clip.getDuration());
-		}
+		inX = axis.getDisplayPosition(clip.getPosition());
+		outX = axis.getDisplayPosition(clip.getPosition()+clip.getDuration());
 		clipView.relocate(inX, 0);
 		clipView.setPrefWidth(outX-inX);
 	}
