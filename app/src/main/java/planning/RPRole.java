@@ -1,11 +1,14 @@
 package planning;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.List;
 import java.util.Optional;
 
 /**
  * It's an interface that represents a guest, a soundtrack, or effects in high level
  */
+@JsonDeserialize(as = RoleImpl.class)
 public interface RPRole extends Element {
 	
 	/**
