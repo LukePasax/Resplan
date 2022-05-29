@@ -2,8 +2,6 @@ package view.planning;
 
 import Resplan.App;
 import controller.general.DownloadingException;
-import javafx.scene.input.KeyCode;
-import view.common.JsonFilePicker;
 import controller.general.LoadingException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -14,11 +12,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import view.common.AlertDispatcher;
 import view.common.ChannelsView;
+import view.common.JsonFilePicker;
 import view.common.TimeAxisSetter;
-import view.edit.EditChannelsView;
-
-import static javafx.scene.control.Alert.AlertType.ERROR;
 
 import java.io.IOException;
 
@@ -62,9 +59,7 @@ public class PlanningController {
         try {
             menuBar.getScene().setRoot(loader.load());
         } catch (IOException e) {
-            Alert error = new Alert(ERROR);
-            error.setTitle("Error");
-            error.setContentText(e.getLocalizedMessage());
+            AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
     }
 
@@ -81,10 +76,7 @@ public class PlanningController {
 
     public void newClipPressed(ActionEvent event) throws IOException {
         if (App.getController().getChannelList().isEmpty()) {
-            Alert error = new Alert(ERROR);
-            error.setTitle("Error");
-            error.setContentText("No channels present");
-            error.showAndWait();
+            AlertDispatcher.dispatchError("No channels present");
         } else {
             FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/newClipWindow.fxml"));
             Scene scene = new Scene(loader.load());
@@ -114,9 +106,7 @@ public class PlanningController {
         try {
             App.getController().openProject(this.filePicker.getFileChooser().showOpenDialog(this.menuBar.getScene().getWindow()));
         } catch (LoadingException e) {
-            Alert error = new Alert(ERROR);
-            error.setContentText(e.getLocalizedMessage());
-            error.setTitle("Error");
+            AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
     }
 
@@ -124,17 +114,13 @@ public class PlanningController {
         try {
             App.getController().save();
         } catch (DownloadingException e) {
-            Alert error = new Alert(ERROR);
-            error.setContentText(e.getLocalizedMessage());
-            error.setTitle("Error");
+            AlertDispatcher.dispatchError(e.getLocalizedMessage());
         } catch (IllegalStateException e) {
             this.filePicker =  new JsonFilePicker();
             try {
                 App.getController().saveWithName(this.filePicker.getFileChooser().showSaveDialog(this.menuBar.getScene().getWindow()));
             } catch (DownloadingException ex) {
-                Alert error = new Alert(ERROR);
-                error.setContentText(e.getLocalizedMessage());
-                error.setTitle("Error");
+                AlertDispatcher.dispatchError(e.getLocalizedMessage());
             }
         }
     }
@@ -147,9 +133,7 @@ public class PlanningController {
         try {
             App.getController().setTemplateProject();
         } catch (DownloadingException | IllegalStateException e) {
-            Alert error = new Alert(ERROR);
-            error.setContentText(e.getLocalizedMessage());
-            error.setTitle("Error");
+            AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
     }
 

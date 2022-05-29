@@ -3,11 +3,11 @@ package view.planning;
 import Resplan.App;
 import daw.manager.ImportException;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import view.common.AlertDispatcher;
 
 import java.io.File;
 import java.util.NoSuchElementException;
@@ -39,10 +39,7 @@ public class NewClipController {
                     Double.parseDouble(durationPicker.getText()), file);
             clipTitleSelection.getScene().getWindow().hide();
         } catch (IllegalArgumentException | ImportException | NoSuchElementException | IllegalStateException e) {
-            Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setTitle("Error");
-            error.setContentText(e.getLocalizedMessage());
-            error.showAndWait();
+            AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
     }
 

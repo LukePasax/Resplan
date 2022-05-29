@@ -3,6 +3,7 @@ package view.planning;
 import Resplan.App;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import view.common.AlertDispatcher;
 
 public class NewChannelController {
     public TextField titleSelection;
@@ -23,10 +24,7 @@ public class NewChannelController {
                     this.titleSelection.getText(),this.descriptionSelection.getText());
             titleSelection.getScene().getWindow().hide();
         } catch (IllegalArgumentException e) {
-            Alert error = new Alert(Alert.AlertType.ERROR);
-            error.setTitle("error");
-            error.setContentText(e.getLocalizedMessage());
-            error.showAndWait();
+            AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
     }
 
