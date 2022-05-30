@@ -231,6 +231,11 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
+    public void updatePlaybackTime(Double time) {
+        
+    }
+
+    @Override
     public Boolean isPaused() {
         return this.engine.isPaused();
     }

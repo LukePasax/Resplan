@@ -77,6 +77,8 @@ public interface Controller {
 
     Double getPlaybackTime();
 
+    void updatePlaybackTime(Double time);
+
     Boolean isPaused();
 
 }
