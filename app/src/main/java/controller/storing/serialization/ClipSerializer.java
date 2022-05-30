@@ -21,17 +21,14 @@ public class ClipSerializer extends StdSerializer<RPClip> {
     @Override
     public void serialize(RPClip value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
-        gen.writeNumberField("duration", value.getDuration());
         if (value instanceof EmptyClip) {
-            gen.writeNumberField("content position", -1.0);
-            gen.writeStringField("content name", "");
+            gen.writeStringField("type name", "empty");
         } else if (value instanceof SampleClip) {
+            gen.writeStringField("type name", "sample");
             gen.writeNumberField("content position", value.getContentPosition());
-            gen.writeStringField("content name", ((Sample) value.getContent()).getSimpleName());
-        } else if (value instanceof FileClip) {
-            gen.writeNumberField("content position", value.getContentPosition());
-            gen.writeStringField("content name", ((File) value.getContent()).getName());
+            gen.writeObjectField("content name", new File(((Sample) value.getContent()).getFileName()));
         }
+        gen.writeNumberField("duration", value.getDuration());
         gen.writeEndObject();
     }
 
