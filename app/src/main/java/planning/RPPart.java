@@ -1,11 +1,22 @@
 package planning;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.List;
 import java.util.Optional;
 
 /**
  * It's an interface that represents a clip in high level which could belong to a guest, a soundtrack or to effects
  */
+@JsonTypeInfo(
+		use = JsonTypeInfo.Id.NAME,
+		property = "type name")
+@JsonSubTypes({
+		@JsonSubTypes.Type(value = EffectsPart.class, name = "effects"),
+		@JsonSubTypes.Type(value = SoundtrackPart.class, name = "soundtrack"),
+		@JsonSubTypes.Type(value = SpeechRole.class, name = "speech")
+})
 public interface RPPart extends Element{
 	
 	/**

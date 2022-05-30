@@ -294,7 +294,6 @@ public class Manager implements RPManager {
      * @return the {@link RPClipLinker} of this manager
      */
     @Override
-    @JsonIgnore
     public RPClipLinker getClipLinker() {
         return this.clipLinker;
     }
