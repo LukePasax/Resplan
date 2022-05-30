@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import planning.EffectsRole;
 import planning.RPRole;
 import planning.SoundtrackRole;
+import planning.SpeechRole;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +22,7 @@ public class RoleDeserializer extends KeyDeserializer {
         } else if (this.getType(values.get(2)) == RPRole.RoleType.SOUNDTRACK) {
             return new SoundtrackRole(values.get(0));
         } else {
-            return new EffectsRole(values.get(0));
+            return new SpeechRole(values.get(0));
         }
     }
 
@@ -31,9 +32,9 @@ public class RoleDeserializer extends KeyDeserializer {
     }
 
     private final RPRole.RoleType getType(String type) {
-        if (type == "SPEECH") {
+        if (type.equals("SPEECH")) {
             return RPRole.RoleType.SPEECH;
-        } else if (type == "EFFECTS") {
+        } else if (type.equals("EFFECTS")) {
             return RPRole.RoleType.EFFECTS;
         } else {
             return RPRole.RoleType.SOUNDTRACK;
