@@ -74,7 +74,7 @@ public class PlanningController {
     }
 
     public void newChannelPressed(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/newChannelWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/NewChannelWindow.fxml"));
         Scene scene = new Scene(loader.load());
         Stage stage = new Stage();
         stage.setScene(scene);
@@ -88,7 +88,7 @@ public class PlanningController {
         if (Starter.getController().getChannelList().isEmpty()) {
             AlertDispatcher.dispatchError("No channels present");
         } else {
-            FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/newClipWindow.fxml"));
+            FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/NewClipWindow.fxml"));
             Scene scene = new Scene(loader.load());
             Stage stage = new Stage();
             stage.setScene(scene);

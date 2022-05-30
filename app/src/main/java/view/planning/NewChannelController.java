@@ -20,7 +20,7 @@ public class NewChannelController {
 
     public void okButtonPressed(ActionEvent event) {
         try {
-            Starter.getController().newPlanningChannel(this.typeChoicebox.getValue(),
+            Starter.getController().newChannel(this.typeChoicebox.getValue(),
                     this.titleSelection.getText(),this.descriptionSelection.getText());
             titleSelection.getScene().getWindow().hide();
         } catch (IllegalArgumentException e) {

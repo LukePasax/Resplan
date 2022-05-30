@@ -24,7 +24,7 @@ public class App extends Application {
     private Parent sleepingRoot;
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader planningLoader = new FXMLLoader(getClass().getResource("/view/planningView.fxml"));
+        FXMLLoader planningLoader = new FXMLLoader(getClass().getResource("/view/PlanningView.fxml"));
         this.activeScene = new Scene(planningLoader.load());
         Starter.getController().setPlanningController(planningLoader.getController());
         stage.setScene(activeScene);

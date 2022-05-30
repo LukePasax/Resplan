@@ -81,7 +81,7 @@ public class EditViewController implements Initializable{
 	public void addChannel() throws IOException {
 		//--------CONTROLLER---------
 		//TODO
-		 FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/newChannelWindow.fxml"));
+		 FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/NewChannelWindow.fxml"));
 	        Scene scene = new Scene(loader.load());
 	        Stage stage = new Stage();
 	        stage.setScene(scene);

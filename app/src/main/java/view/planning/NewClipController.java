@@ -33,7 +33,7 @@ public class NewClipController {
 
     public void okButtonPressed(ActionEvent event) {
         try {
-            Starter.getController().newPlanningClip(this.typePicker.getValue(),
+            Starter.getController().newClip(this.typePicker.getValue(),
                     this.clipTitleSelection.getText(), this.clipDescriptionSelection.getText(),
                     this.channelPicker.getValue(), Double.parseDouble(startTimePicker.getText()),
                     Double.parseDouble(durationPicker.getText()), file);
