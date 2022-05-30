@@ -1,6 +1,6 @@
 package view.planning;
 
-import Resplan.App;
+import Resplan.Starter;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import view.common.AlertDispatcher;
@@ -20,7 +20,7 @@ public class NewChannelController {
 
     public void okButtonPressed(ActionEvent event) {
         try {
-            App.getController().newPlanningChannel(this.typeChoicebox.getValue(),
+            Starter.getController().newPlanningChannel(this.typeChoicebox.getValue(),
                     this.titleSelection.getText(),this.descriptionSelection.getText());
             titleSelection.getScene().getWindow().hide();
         } catch (IllegalArgumentException e) {

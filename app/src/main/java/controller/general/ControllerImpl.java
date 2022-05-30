@@ -1,6 +1,6 @@
 package controller.general;
 
-import Resplan.App;
+import view.common.App;
 import controller.storing.ReadFromFileImpl;
 import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;

@@ -1,6 +1,5 @@
 package view.common;
 
-import Resplan.App;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;

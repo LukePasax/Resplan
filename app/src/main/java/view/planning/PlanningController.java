@@ -1,6 +1,6 @@
 package view.planning;
 
-import Resplan.App;
+import Resplan.Starter;
 import controller.general.DownloadingException;
 import controller.general.LoadingException;
 import javafx.event.ActionEvent;
@@ -14,7 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import view.common.AlertDispatcher;
-import view.common.ChannelsView;
 import view.common.JsonFilePicker;
 import view.common.MarkersPane;
 import view.common.TimeAxisSetter;
@@ -86,7 +85,7 @@ public class PlanningController {
     }
 
     public void newClipPressed(ActionEvent event) throws IOException {
-        if (App.getController().getChannelList().isEmpty()) {
+        if (Starter.getController().getChannelList().isEmpty()) {
             AlertDispatcher.dispatchError("No channels present");
         } else {
             FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/newClipWindow.fxml"));
@@ -115,7 +114,7 @@ public class PlanningController {
         this.filePicker = new JsonFilePicker();
         this.saveProject();
         try {
-            App.getController().openProject(this.filePicker.getFileChooser().showOpenDialog(this.menuBar.getScene().getWindow()));
+            Starter.getController().openProject(this.filePicker.getFileChooser().showOpenDialog(this.menuBar.getScene().getWindow()));
         } catch (LoadingException e) {
             AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
@@ -123,13 +122,13 @@ public class PlanningController {
 
     private void saveProject() {
         try {
-            App.getController().save();
+            Starter.getController().save();
         } catch (DownloadingException e) {
             AlertDispatcher.dispatchError(e.getLocalizedMessage());
         } catch (IllegalStateException e) {
             this.filePicker =  new JsonFilePicker();
             try {
-                App.getController().saveWithName(this.filePicker.getFileChooser().showSaveDialog(this.menuBar.getScene().getWindow()));
+                Starter.getController().saveWithName(this.filePicker.getFileChooser().showSaveDialog(this.menuBar.getScene().getWindow()));
             } catch (DownloadingException ex) {
                 AlertDispatcher.dispatchError(e.getLocalizedMessage());
             }
@@ -142,13 +141,14 @@ public class PlanningController {
 
     public void setTemplatePressed(ActionEvent event) {
         try {
-            App.getController().setTemplateProject();
+            Starter.getController().setTemplateProject();
         } catch (DownloadingException | IllegalStateException e) {
             AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
     }
 
     public void resetTemplatePressed(ActionEvent event) {
+
     }
 
     public void delChannelPressed(ActionEvent event) {

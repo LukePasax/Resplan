@@ -1,6 +1,6 @@
 package view.planning;
 
-import Resplan.App;
+import Resplan.Starter;
 import daw.manager.ImportException;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
@@ -25,7 +25,7 @@ public class NewClipController {
     private File file;
 
     public void initialize() {
-        this.channelPicker.getItems().addAll(App.getController().getChannelList());
+        this.channelPicker.getItems().addAll(Starter.getController().getChannelList());
         this.channelPicker.setValue(this.channelPicker.getItems().get(0));
         this.typePicker.getItems().addAll("Speaker", "Effects", "Soundtrack");
         this.typePicker.setValue(this.typePicker.getItems().get(0));
@@ -33,7 +33,7 @@ public class NewClipController {
 
     public void okButtonPressed(ActionEvent event) {
         try {
-            App.getController().newPlanningClip(this.typePicker.getValue(),
+            Starter.getController().newPlanningClip(this.typePicker.getValue(),
                     this.clipTitleSelection.getText(), this.clipDescriptionSelection.getText(),
                     this.channelPicker.getValue(), Double.parseDouble(startTimePicker.getText()),
                     Double.parseDouble(durationPicker.getText()), file);

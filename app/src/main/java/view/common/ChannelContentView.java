@@ -2,7 +2,6 @@ package view.common;
 
 import java.util.List;
 
-import Resplan.App;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
