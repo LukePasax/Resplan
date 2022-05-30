@@ -63,7 +63,7 @@ public class Mixer implements RPMixer {
     @Override
     public RPChannel createSidechained(RPChannel channel) {
         RPChannel Schannel = channelFactory.sidechained(channel.getOutput());
-        masterChannel.connectSource(channel.getOutput());
+        this.linkToMaster(Schannel);
         return Schannel;
     }
 

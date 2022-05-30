@@ -52,7 +52,8 @@ public class Manager implements RPManager {
      * @throws IllegalArgumentException if the given title is already in use
      */
     @Override
-    public void addChannel(RPRole.RoleType type, String title, Optional<String> description) throws IllegalArgumentException {
+    public void addChannel(RPRole.RoleType type, String title, Optional<String> description)
+            throws IllegalArgumentException {
         if (this.channelLinker.channelExists(title)) {
             throw new IllegalArgumentException("Channel already exists");
         } else if (title.equals("")) {
@@ -82,12 +83,17 @@ public class Manager implements RPManager {
             throw new NoSuchElementException("The Channel does not exist");
         }
         this.channelLinker.getTapeChannel(this.channelLinker.getRole(title)).clearTape();
-        this.getGroupList(this.getGroupName(this.channelLinker.getRole(title))).remove(this.channelLinker.getRole(title));
+        this.getGroupList(this.getGroupName(this.channelLinker.getRole(title)))
+                .remove(this.channelLinker.getRole(title));
         this.channelLinker.removeChannel(this.channelLinker.getRole(title));
     }
 
     private String getGroupName(RPRole part) {
-        return this.groupMap.entrySet().stream().filter(e -> e.getValue().contains(part)).map(e -> e.getKey().getTitle()).findAny().orElseThrow();
+        return this.groupMap.entrySet().stream()
+                .filter(e -> e.getValue().contains(part))
+                .map(e -> e.getKey().getTitle())
+                .findAny()
+                .orElseThrow();
     }
 
     private void automaticGrouping(RPRole role) {
@@ -266,8 +272,10 @@ public class Manager implements RPManager {
      */
     @Override
     public RPRole getGroup(String groupName) throws NoSuchElementException {
-        return this.groupMap.keySet().stream().filter(k -> k.getTitle().equals(groupName)).findAny().orElseThrow(() ->
-                new NoSuchElementException("Group does not exist"));
+        return this.groupMap.keySet().stream()
+                .filter(k -> k.getTitle().equals(groupName))
+                .findAny()
+                .orElseThrow(() -> new NoSuchElementException("Group does not exist"));
     }
 
     /**
@@ -301,8 +309,9 @@ public class Manager implements RPManager {
 
     @Override
     @JsonIgnore
-    public List<RPRole> getChannelList() {
-        return this.channelLinker.getRoleList().stream().filter(k -> !this.groupMap.containsKey(k))
+    public List<RPRole> getRoleList() {
+        return this.channelLinker.getRoleList().stream()
+                .filter(k -> !this.groupMap.containsKey(k))
                 .collect(Collectors.toList());
     }
 
@@ -311,7 +320,7 @@ public class Manager implements RPManager {
      * @return
      */
     @Override
-    public List<RPPart> getClipList(String channel) {
+    public List<RPPart> getPartList(String channel) {
         List<RPPart> list = new ArrayList<>();
         this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel)).getClipWithTimeIterator()
                 .forEachRemaining(p -> list.add(this.clipLinker.getPartFromClip(p.getValue())));
@@ -324,7 +333,8 @@ public class Manager implements RPManager {
      */
     @Override
     public Double getClipTime(String clip, String channel) {
-        final var it = this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel)).getClipWithTimeIterator();
+        final var it =
+                this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel)).getClipWithTimeIterator();
         while (it.hasNext()) {
             var h = it.next();
             if (h.getValue().equals(this.clipLinker.getClipFromPart(this.clipLinker.getPart(clip)))) {

@@ -2,17 +2,13 @@ package daw.manager;
 
 import daw.core.channel.RPChannel;
 import daw.core.clip.ClipNotFoundException;
-import net.beadsproject.beads.data.audiofile.FileFormatException;
-import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 import planning.RPPart;
 import planning.RPRole;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 /**
  * This interface represents a manager that takes decisions for the user, simplifying its experience. It is used to
@@ -135,14 +131,14 @@ public interface RPManager {
      *
      * @return the list of {@link RPRole}  of all channels excluded groups
      */
-    List<RPRole> getChannelList();
+    List<RPRole> getRoleList();
 
     /**
      *
      * @param channel the name of the channel
      * @return the list of clips associated with a channel
      */
-    List<RPPart> getClipList(String channel);
+    List<RPPart> getPartList(String channel);
 
     /**
      *

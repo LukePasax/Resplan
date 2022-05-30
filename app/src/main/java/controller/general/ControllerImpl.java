@@ -174,7 +174,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public List<String> getChannelList() {
-        return this.manager.getChannelList().stream().map(Element::getTitle).collect(Collectors.toList());
+        return this.manager.getRoleList().stream().map(Element::getTitle).collect(Collectors.toList());
     }
 
     /**
@@ -198,7 +198,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public List<String> getClipList(String channel) {
-        return this.manager.getClipList(channel).stream().map(Element::getTitle).collect(Collectors.toList());
+        return this.manager.getPartList(channel).stream().map(Element::getTitle).collect(Collectors.toList());
     }
 
     @Override
