@@ -42,12 +42,13 @@ public interface RPChannel {
 
     /**
      * Sets the volume.
-     * @param vol the value that the volume must be set to.
+     * @param vol the value that the volume must be set to. This value has to be between 0 and 100.
+     * @throws IllegalArgumentException if the volume is not between 0 and 100.
      */
     void setVolume(int vol);
 
     /**
-     * Gets the numerical value of the volume.
+     * Gets the 0 to 100 scaled value of the volume.
      * @return an integer representing the volume.
      */
     int getVolume();

@@ -21,7 +21,8 @@ public abstract class AbstractCompression extends RPEffect {
     @Override
     public Map<String, Float> getParameters() {
         return Map.of("threshold", this.compressor.getThreshold(), "ratio", this.compressor.getRatio(),
-                "attack", this.compressor.getAttack(), "decay", this.compressor.getDecay());
+                "attack", this.compressor.getAttack(), "decay", this.compressor.getDecay(),
+                "current compression", this.compressor.getCurrentCompression());
     }
 
     /**
