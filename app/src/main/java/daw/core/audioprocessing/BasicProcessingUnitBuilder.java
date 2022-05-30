@@ -97,12 +97,13 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
      */
     @Override
     public ProcessingUnit build() throws IllegalStateException {
-        if (!this.effects.isEmpty() || this.sidechain.isPresent()) {
-            final var pu = new BasicProcessingUnit(effects);
-            this.sidechain.ifPresent(pu::addSidechaining);
-            return pu;
+        if (this.sidechain.isPresent()) {
+            this.effects.add(0, this.sidechain.get());
         }
-        throw new IllegalStateException("Cannot create an empty ProcessingUnit.");
+        if (this.effects.isEmpty()) {
+            throw new IllegalStateException("Cannot create an empty processing unit.");
+        }
+        return new BasicProcessingUnit(this.effects);
     }
 
 }
