@@ -157,7 +157,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
     /**
      * {@inheritDoc}
      * @param index a position in the sequence.
-     * @throws IllegalStateException if there is only one effect stored when this method is called.
+     * @throws IllegalStateException if there is only one {@link AudioElement} stored when this method is called.
      * @throws IllegalArgumentException if the given position is out of bounds.
      */
     @Override
@@ -173,8 +173,8 @@ public class BasicProcessingUnit implements ProcessingUnit {
                     }
                 }
                 this.effects.remove(index);
-            } else {
-                throw new IllegalStateException("Cannot perform this operation when there is only one effect stored.");
+            } else if (!this.isSidechainingPresent()) {
+                throw new IllegalStateException("Cannot perform this operation when there is only one audio element stored.");
             }
         } else {
             throw new IllegalArgumentException(ILLEGAL_INDEX_ERROR);

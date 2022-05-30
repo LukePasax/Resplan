@@ -93,11 +93,11 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     /**
      * {@inheritDoc}
      * @return a {@link ProcessingUnit} with the ordered sequence of effects.
-     * @throws IllegalStateException if no effects have been specified through this builder.
+     * @throws IllegalStateException if no {@link AudioElement} has been added through this builder.
      */
     @Override
     public ProcessingUnit build() throws IllegalStateException {
-        if (!this.effects.isEmpty()) {
+        if (!this.effects.isEmpty() || this.sidechain.isPresent()) {
             final var pu = new BasicProcessingUnit(effects);
             this.sidechain.ifPresent(pu::addSidechaining);
             return pu;

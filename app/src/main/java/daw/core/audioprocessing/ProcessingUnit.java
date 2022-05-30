@@ -92,7 +92,7 @@ public interface ProcessingUnit {
     /**
      * Removes the effect at the given position from the sequence.
      * @param index a position in the sequence.
-     * @throws IllegalStateException if there is only one effect stored when this method is called.
+     * @throws IllegalStateException if there is only one {@link AudioElement} stored when this method is called.
      * @throws IllegalArgumentException if the given position is out of bounds.
      */
     void removeEffectAtPosition(int index);
