@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import daw.core.channel.RPChannel;
 import daw.manager.RPChannelLinker;
+import planning.RPRole;
 
 public abstract class AbstractJacksonDeserializer<T> implements Deserializer<T> {
 
@@ -19,8 +20,8 @@ public abstract class AbstractJacksonDeserializer<T> implements Deserializer<T> 
                 .registerModule(new Jdk8Module())
                 .registerModule(new SimpleModule()
                         .addDeserializer(RPChannel.class, new ChannelDeserializer())
-                        .addDeserializer(RPChannelLinker.class, new ChannelLinkerDeserializer()));
-                        //.addKeyDeserializer(RPRole.class, new RoleDeserializer()));
+                        .addDeserializer(RPChannelLinker.class, new ChannelLinkerDeserializer())
+                        .addKeyDeserializer(RPRole.class, new RoleKeyDeserializer()));
     }
 
     @Override

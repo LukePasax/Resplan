@@ -2,7 +2,6 @@ package controller.storing.deserialization;
 
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.KeyDeserializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import planning.EffectsRole;
 import planning.RPRole;
 import planning.SoundtrackRole;
@@ -11,7 +10,7 @@ import planning.SpeechRole;
 import java.io.IOException;
 import java.util.List;
 
-public class RoleDeserializer extends KeyDeserializer {
+public class RoleKeyDeserializer extends KeyDeserializer {
 
     @Override
     public RPRole deserializeKey(String key, DeserializationContext ctxt) throws IOException {

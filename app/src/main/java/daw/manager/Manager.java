@@ -2,8 +2,6 @@ package daw.manager;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import controller.storing.deserialization.RoleDeserializer;
 import controller.storing.serialization.ManagerSerializer;
 import controller.storing.serialization.Serializer;
 import daw.core.channel.RPChannel;
@@ -25,7 +23,6 @@ public class Manager implements RPManager {
     private final RPChannelLinker channelLinker;
     private final RPClipLinker clipLinker;
     @JsonProperty
-    @JsonDeserialize(keyUsing = RoleDeserializer.class)
     private final Map<RPRole, List<RPRole>> groupMap;
     @JsonIgnore
     private final RPClipConverter clipConverter;
@@ -296,8 +293,8 @@ public class Manager implements RPManager {
     /**
      * @return the {@link RPClipLinker} of this manager
      */
-    @JsonIgnore
     @Override
+    @JsonIgnore
     public RPClipLinker getClipLinker() {
         return this.clipLinker;
     }
