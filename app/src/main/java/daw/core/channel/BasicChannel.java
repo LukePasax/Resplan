@@ -19,7 +19,6 @@ import java.util.Optional;
  */
 public class BasicChannel implements RPChannel {
 
-    private final Volume vol;
     private final Panner pan;
     private final Type type;
     private Optional<ProcessingUnit> pu;
@@ -30,18 +29,15 @@ public class BasicChannel implements RPChannel {
     /**
      * Constructs a channel with the given type and parameters. The channel is initially enables and has
      * no {@link ProcessingUnit}.
-     * @param vol a {@link Volume}.
-     * @param pan a {@link Panner}.
      * @param type a {@link Type}.
      */
-    protected BasicChannel(final Volume vol, final Panner pan, final Type type) {
-        this.vol = vol;
-        this.pan = pan;
+    protected BasicChannel(final Type type) {
+        this.pan = new Panner();
         this.type = type;
         this.enabled = true;
         this.pu = Optional.empty();
-        this.gainIn = new Gain(AudioContextManager.getAudioContext(), 2);
-        this.gainOut = new Gain(AudioContextManager.getAudioContext(), 2);
+        this.gainIn = new Gain(AudioContextManager.getAudioContext(), 2).setGain(0.9f);
+        this.gainOut = new Gain(AudioContextManager.getAudioContext(), 2).setGain(1.0f);
         this.setStructure();
     }
 
@@ -84,11 +80,15 @@ public class BasicChannel implements RPChannel {
 
     /**
      * {@inheritDoc}
-     * @param vol the value that the volume must be set to.
+     * @param vol the value that the volume must be set to. This value has to be between 0 and 100.
+     * @throws IllegalArgumentException if the volume is not between 0 and 100.
      */
     @Override
     public void setVolume(int vol) {
-        this.vol.setVolume(vol);
+        if (vol < 0 || vol > 100) {
+            throw new IllegalArgumentException("Volume level must be between 0 and 100.");
+        }
+        this.gainOut.setGain((float) vol/100);
     }
 
     /**
@@ -97,7 +97,7 @@ public class BasicChannel implements RPChannel {
      */
     @Override
     public int getVolume() {
-        return this.vol.getVolume();
+        return (int) this.gainOut.getGain()*100;
     }
 
     /**
