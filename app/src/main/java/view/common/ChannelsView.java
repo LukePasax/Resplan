@@ -21,7 +21,7 @@ public abstract class ChannelsView {
 					ChannelContentView cw = new ChannelContentView(ch, timeAxisSetter.getAxis()){
 
 						@Override
-						public Node drawClipRegion(Clip clip) {
+						public Node drawClipContent(Clip clip) {
 							return drawClip(clip);
 						}
 						
@@ -29,7 +29,7 @@ public abstract class ChannelsView {
 					ChannelInfosView iw = new ChannelInfosView(ch) {
 
 						@Override
-						public Node drawInfosRegion(Channel ch) {
+						public Node drawChannelInfos(Channel ch) {
 							return drawInfos(ch);
 						}
 						

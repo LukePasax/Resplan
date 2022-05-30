@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
@@ -113,7 +114,13 @@ public abstract class ChannelContentView extends Pane {
 	 * Add also the new clip to the clip.view set.
 	 */
 	private void drawClip(Clip clip) {
-		Pane clipView = new Pane(drawClipRegion(clip));
+		Node clipContent = drawClipContent(clip);
+		AnchorPane clipView = new AnchorPane(clipContent);
+		clipView.setBorder(new Border(new BorderStroke(null, BorderStrokeStyle.SOLID, null, null)));
+		AnchorPane.setBottomAnchor(clipContent, 0.0);
+		AnchorPane.setTopAnchor(clipContent, 0.0);
+		AnchorPane.setLeftAnchor(clipContent, 0.0);
+		AnchorPane.setRightAnchor(clipContent, 0.0);
 		clipView.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, null, null)));
 		placeClip(clipView, clip);
 		clip.addToViewAll(clipView);
@@ -132,7 +139,7 @@ public abstract class ChannelContentView extends Pane {
 		clipView.setPrefWidth(outX-inX);
 	}
 	
-	public abstract Node drawClipRegion(Clip clip);
+	public abstract Node drawClipContent(Clip clip);
 	
 	public Channel getChannel() {
 		return this.ch;

@@ -9,14 +9,17 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import view.common.AlertDispatcher;
 import view.common.ChannelsView;
 import view.common.JsonFilePicker;
+import view.common.MarkersPane;
 import view.common.TimeAxisSetter;
 
+import java.awt.Toolkit;
 import java.io.IOException;
 
 public class PlanningController {
@@ -41,17 +44,25 @@ public class PlanningController {
     public Button launchEditViewButton;
     private TimeAxisSetter timeAxisSetter;
     private JsonFilePicker filePicker;
-    private ChannelsView channelsView;
+    private MarkersPane markersPane;
 
     public void initialize() {
-        timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
-        timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 1);
-        timelineToChannelsAligner.setPadding(new Insets(0,0,0,20));
-        timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);
-        channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
-            timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
-        });
-        this.channelsView = new PlanningChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane);
+    	//--------------setting time axis------------
+		timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
+		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 5, 0, 0));
+		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 2);
+		timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);
+		timelineToChannelsAligner.setMaxWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth()*0.8);
+		//--------set markers pane---------
+		markersPane = new MarkersPane(timeAxisSetter.getAxis());
+		timelineToChannelsAligner.add(markersPane, 0, 1, 1, 3);
+		GridPane.setVgrow(markersPane, Priority.ALWAYS);
+		//--------set channels view----------
+        new PlanningChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane);
+      //--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
+  		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
+  			timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
+  		});
     }
 
     private void switchScene() {

@@ -27,7 +27,7 @@ public abstract class ChannelInfosView extends Pane {
 		this.setBorder(new Border(new BorderStroke(null, null, borderColor, null, 
 				null, null, BorderStrokeStyle.SOLID, null, CornerRadii.EMPTY, null, null)));
 		//set content
-		infos.getChildren().add(drawInfosRegion(ch));
+		infos.getChildren().add(drawChannelInfos(ch));
 		this.getChildren().add(new VBox(new Label(ch.getTitle()), infos));
 		//set context menu
 		MenuItem remove = new MenuItem("Remove");
@@ -35,7 +35,7 @@ public abstract class ChannelInfosView extends Pane {
 		this.setOnContextMenuRequested(e -> menu.show(this, e.getScreenX(), e.getScreenY()));
 	}
 	
-	public abstract Node drawInfosRegion(Channel ch);
+	public abstract Node drawChannelInfos(Channel ch);
 
 	public Channel getChannel() {
 		return this.ch;
