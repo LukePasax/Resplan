@@ -16,8 +16,6 @@ import planning.RPRole;
 import view.common.AlertDispatcher;
 import view.common.App;
 import view.common.ViewDataImpl;
-import view.edit.EditViewController;
-import view.planning.PlanningController;
 
 import java.io.File;
 import java.io.IOException;

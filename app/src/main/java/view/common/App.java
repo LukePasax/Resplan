@@ -26,7 +26,6 @@ public class App extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader planningLoader = new FXMLLoader(getClass().getResource("/view/PlanningView.fxml"));
         this.activeScene = new Scene(planningLoader.load());
-        Starter.getController().setPlanningController(planningLoader.getController());
         stage.setScene(activeScene);
         stage.getIcons().add(new Image("/images/icon.png"));
         stage.setTitle("Resplan");
