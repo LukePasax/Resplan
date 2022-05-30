@@ -38,10 +38,10 @@ public class ControllerImpl implements Controller {
      * Sets up the application and initializes a new project (see newProject).
      */
     public ControllerImpl() {
-        this.newProject();
-        this.manager.getMixer().connectToSystem();
         this.loader = new ProjectLoaderImpl();
         this.downloader = new ProjectDownloaderImpl();
+        this.newProject();
+        this.manager.getMixer().connectToSystem();
         this.engine = new Engine((ChannelLinker) this.manager.getChannelLinker());
     }
 
