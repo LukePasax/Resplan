@@ -18,6 +18,8 @@ import java.util.Optional;
  */
 public class BasicChannel implements RPChannel {
 
+    private static final float DEFAULT_GAIN_IN = 0.9f;
+
     private final Panner pan;
     private final Type type;
     private Optional<ProcessingUnit> pu;
@@ -35,7 +37,7 @@ public class BasicChannel implements RPChannel {
         this.type = type;
         this.enabled = true;
         this.pu = Optional.empty();
-        this.gainIn = new Gain(AudioContextManager.getAudioContext(), 2).setGain(0.9f);
+        this.gainIn = new Gain(AudioContextManager.getAudioContext(), 2).setGain(DEFAULT_GAIN_IN);
         this.gainOut = new Gain(AudioContextManager.getAudioContext(), 2).setGain(1.0f);
         this.setStructure();
     }
