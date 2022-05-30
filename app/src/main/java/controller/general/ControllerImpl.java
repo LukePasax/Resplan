@@ -1,24 +1,24 @@
 package controller.general;
 
-import Resplan.Starter;
+import controller.storing.ReadFromFileImpl;
+import controller.storing.WriteToFile;
+import controller.storing.WriteToFileImpl;
 import daw.core.clip.ClipNotFoundException;
 import daw.engine.Engine;
 import daw.engine.RPEngine;
 import daw.manager.ChannelLinker;
-import view.common.AlertDispatcher;
-import view.common.App;
-import controller.storing.ReadFromFileImpl;
-import controller.storing.WriteToFile;
-import controller.storing.WriteToFileImpl;
-import net.beadsproject.beads.data.audiofile.FileFormatException;
-import view.common.ViewDataImpl;
-import view.edit.EditViewController;
-import view.planning.PlanningController;
 import daw.manager.ImportException;
 import daw.manager.Manager;
+import net.beadsproject.beads.data.audiofile.FileFormatException;
 import planning.Element;
 import planning.RPPart;
 import planning.RPRole;
+import view.common.AlertDispatcher;
+import view.common.App;
+import view.common.ViewDataImpl;
+import view.edit.EditViewController;
+import view.planning.PlanningController;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -31,9 +31,7 @@ public class ControllerImpl implements Controller {
     private final ProjectDownloader downloader;
     private final ProjectLoader loader;
     private Manager manager;
-    private RPEngine engine;
-    private PlanningController planningController;
-    private EditViewController editController;
+    private final RPEngine engine;
     private File currentProject;
     private final File appSettings = new File(WORKING_DIRECTORY + SEP + APP_SETTINGS);
 
@@ -63,16 +61,6 @@ public class ControllerImpl implements Controller {
         } catch (IOException | FileFormatException e) {
             this.manager = new Manager();
         }
-    }
-
-    @Override
-    public PlanningController getPlanningController() {
-        return planningController;
-    }
-
-    @Override
-    public EditViewController getEditController() {
-        return editController;
     }
 
     @Override
@@ -129,16 +117,6 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void setPlanningController(PlanningController planningController) {
-        this.planningController = planningController;
-    }
-
-    @Override
-    public void setEditController(EditViewController editController) {
-        this.editController = editController;
-    }
-
-    @Override
     public void newChannel(String type, String title, String description) throws IllegalArgumentException {
         RPRole.RoleType roleType;
         if (type.equals("Speaker")) {
@@ -150,7 +128,6 @@ public class ControllerImpl implements Controller {
         }
         Optional<String> desc = description.equals("") ? Optional.empty() : Optional.of(description);
         this.manager.addChannel(roleType, title, desc);
-        this.planningController.addChannel(type, title, description);
         App.getData().addChannel(new ViewDataImpl.Channel(title));
     }
 
@@ -168,7 +145,6 @@ public class ControllerImpl implements Controller {
         Optional<String> desc = description.equals("") ? Optional.empty() : Optional.of(description);
         Optional<File> file = content == null ? Optional.empty() : Optional.of(content);
         this.manager.addClip(partType, title, desc, channel, time, file);
-        this.planningController.addClip(title, description, channel, time);
         App.getData().addClip(App.getData().getChannel(channel),new ViewDataImpl.Clip(title, time, duration, time));
     }
 

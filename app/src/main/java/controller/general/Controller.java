@@ -18,10 +18,6 @@ public interface Controller {
      */
     void newProject();
 
-    PlanningController getPlanningController();
-
-    EditViewController getEditController();
-
     void updateView();
 
     /**
@@ -46,10 +42,6 @@ public interface Controller {
      * @throws LoadingException if an error has occurred when trying to read from file.
      */
     void openProject(File file) throws LoadingException;
-
-    void setPlanningController(PlanningController planningController);
-
-    void setEditController(EditViewController editController);
 
     void newChannel(String type, String title, String description) throws IllegalArgumentException;
 
