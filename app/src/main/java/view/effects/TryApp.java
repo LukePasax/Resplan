@@ -11,8 +11,8 @@ public class TryApp extends Application{
 	public void start(Stage stage) throws Exception {
 		
 		VBox root = new VBox();
-		KnobPane knobpane = new KnobPane(0, 100);
-		root.getChildren().addAll(knobpane);
+		CompressorPane pane = new CompressorPane();
+		root.getChildren().addAll(pane);
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();

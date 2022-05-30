@@ -3,14 +3,14 @@ package view.effects;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import view.effects.Knob.KnobType;
 
 public class KnobController {
 	
 	final private static double ONEQUARTER = 0.25;
 	final private static double HALF = 0.5;
 	final private static double THREEQUARTER = 0.75;
-	final private static int VOLUME = 100;
-	final private static int DEGREE = 360;
+	final private static double DEGREE = 360;
 
 	
 	@FXML
@@ -22,30 +22,75 @@ public class KnobController {
 	@FXML
 	Label threequarter;
 	@FXML
-	Label value;
+	Label lvalue;
+	
+	@FXML
+	Label lname;
 	
 	@FXML
 	Pane rotator;
 	
-	private int val;
-	private int min;
-	private int max;
+	private double min;
+	private double max;
 	
-	public void init(final int min, final int max) {
+	public void init(final double min, final double max, final String name, final KnobType type) {
 		this.min = min;
 		this.max = max;
 		
-		minmax.setText(min + " / " + max);
-		onequarter.setText("" + (int) ((min + max) * ONEQUARTER));
-		half.setText("" + (int) ((min + max) * HALF));
-		threequarter.setText("" + (int) ((min + max) * THREEQUARTER));
+		if(type.equals(KnobType.RATIO)) {
+			minmax.setText("1:1");
+			lvalue.setText("1:1");
+		} else {
+			if(min == Double.NEGATIVE_INFINITY) {
+				minmax.setText("-inf / " + max);
+			} else {
+				minmax.setText(min + " / " + max);
+			}
+		}
+		
+		if(type.equals(KnobType.VOLUME)) {
+			onequarter.setText("" + ((min + max) * ONEQUARTER));
+			half.setText("" + ((min + max) * HALF));
+			threequarter.setText("" + ((min + max) * THREEQUARTER));
+		}
+		if(type.equals(KnobType.RATIO)) {
+			onequarter.setText("2:1");
+			half.setText("4:1");
+			threequarter.setText("8:1");
+		}
+		
+		lname.setText(name);
 	}
 	
-	public void rotate(final int volume) {
-		if(volume >= min && volume <= max) {
-			val = volume;
-			rotator.setRotate(val * DEGREE / VOLUME);
-			value.setText("" + val);
+	public void rotate(final double value) {
+		if(value >= min && value <= max) {
+			rotator.setRotate(value * DEGREE / (min + max));
+			lvalue.setText("" + value);
+		}
+	}
+	
+	public void setRatio(final String ratio) {
+		switch (ratio) {
+		case "1:1":
+			rotator.setRotate(0);
+			lvalue.setText("1:1");
+			break;
+		case "2:1":
+			rotator.setRotate(90);
+			lvalue.setText("2:1");
+			break;
+		case "4:1":
+			rotator.setRotate(180);
+			lvalue.setText("4:1");
+			break;
+		case "8:1":
+			rotator.setRotate(270);
+			lvalue.setText("8:1");
+			break;
+		default:
+			rotator.setRotate(0);
+			lvalue.setText("1:1");
+			break;
 		}
 	}
 }

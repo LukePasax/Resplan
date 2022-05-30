@@ -2,35 +2,49 @@ package view.effects;
 
 import java.io.IOException;
 import java.net.URL;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import view.effects.Knob.KnobType;
 
 public class KnobPane extends VBox {
 	
-	public KnobPane(final int min, final int max) throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		URL url = this.getClass().getResource("/view/Knob.fxml");
+	public KnobPane(final double min, final double max, final String name, final KnobType type) throws IOException {
+		final FXMLLoader loader = new FXMLLoader();
+		final URL url = this.getClass().getResource("/view/Knob.fxml");
 		loader.setLocation(url);
-		Pane knob = loader.load();
-		TextField volume = new TextField();
-		volume.setPromptText("Input an integer volume");
+		final Pane knob = loader.load();
+		final TextField value = new TextField();
+		value.setPromptText("Insert a value");
 		this.setAlignment(Pos.CENTER);
-		volume.setMaxWidth(150);
-		volume.setPrefWidth(150);
-		volume.setAlignment(Pos.CENTER);
-		Button refresh = new Button("Refresh");
+		value.setMaxWidth(150);
+		value.setPrefWidth(150);
+		value.setAlignment(Pos.CENTER);
+		final Button refresh = new Button("Refresh");
 		
-		KnobController controller = loader.getController();
-		controller.init(0, 100);
+		final ComboBox<String> ratio = new ComboBox<>();
+		ratio.setPromptText("Choose a ratio");
+		ratio.setItems(FXCollections.observableArrayList("1:1", "2:1", "4:1", "8:1"));
+		
+		final KnobController controller = loader.getController();
+		controller.init(min, max, name, type);
 		refresh.setOnMouseClicked(e -> {
 			try {
-				controller.rotate(Integer.parseInt(volume.getText()));
+				controller.rotate(Double.parseDouble(value.getText()));
 			} catch (Exception exception) {}
 		});
-		this.getChildren().addAll(volume, refresh, knob);
+		ratio.setOnAction(e -> {
+			controller.setRatio(ratio.getSelectionModel().getSelectedItem());
+		});
+		if(!(type.equals(KnobType.RATIO))) {
+			this.getChildren().addAll(value, refresh, knob);
+		} else {
+			this.getChildren().addAll(ratio, knob);
+		}
 	}
 }
