@@ -96,7 +96,7 @@ public class BasicChannel implements RPChannel {
      */
     @Override
     public int getVolume() {
-        return (int) this.gainOut.getGain()*100;
+        return (int) Math.floor(this.gainOut.getGain() * 100);
     }
 
     /**
