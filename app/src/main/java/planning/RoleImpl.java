@@ -30,7 +30,8 @@ public abstract class RoleImpl implements RPRole {
 	 * @param type
 	 * the type of the role
 	 */
-	public RoleImpl(@JsonProperty("title") final String title, @JsonProperty("description") String description,
+	public RoleImpl(@JsonProperty("title") final String title,
+					@JsonProperty("description") final String description,
 					@JsonProperty("type") final RoleType type) {
 		this.title = title;
 		this.description = Optional.of(description);
