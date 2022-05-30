@@ -35,7 +35,9 @@ public abstract class AbstractFilter extends RPEffect {
      */
     @Override
     public void setParameters(Map<String, Float> parameters) {
-        this.filter.sendData(new DataBead(parameters));
+        final DataBead db = new DataBead();
+        parameters.entrySet().forEach(i -> db.put(i.getKey(), i.getValue()));
+        this.filter.sendData(db);
     }
 
     /**

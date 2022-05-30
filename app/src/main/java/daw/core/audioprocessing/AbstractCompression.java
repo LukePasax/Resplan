@@ -2,6 +2,8 @@ package daw.core.audioprocessing;
 
 import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.Compressor;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractCompression extends RPEffect {
@@ -31,7 +33,9 @@ public abstract class AbstractCompression extends RPEffect {
      */
     @Override
     public void setParameters(Map<String, Float> parameters) {
-        this.compressor.sendData(new DataBead(parameters));
+        final DataBead db = new DataBead();
+        parameters.entrySet().forEach(i -> db.put(i.getKey(), i.getValue()));
+        this.compressor.sendData(db);
     }
 
     /**

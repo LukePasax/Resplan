@@ -1,11 +1,5 @@
 package daw.core.audioprocessing;
 
-import daw.utilities.AudioContextManager;
-import net.beadsproject.beads.data.DataBead;
-import net.beadsproject.beads.ugens.Compressor;
-
-import java.util.Map;
-
 /**
  * This class models compression, that is an audio signal processing operation which reduces the volume of
  * loud sounds or amplifies quiet sounds, thus reducing or compressing an audio signal's dynamic range.
