@@ -81,6 +81,7 @@ public class Manager implements RPManager {
         if (!this.channelLinker.channelExists(title)) {
             throw new NoSuchElementException("The Channel does not exist");
         }
+        this.channelLinker.getTapeChannel(this.channelLinker.getRole(title)).clearTape();
         this.getGroupList(this.getGroupName(this.channelLinker.getRole(title))).remove(this.channelLinker.getRole(title));
         this.channelLinker.removeChannel(this.channelLinker.getRole(title));
     }
