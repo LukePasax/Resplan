@@ -29,6 +29,7 @@ public class ControllerImpl implements Controller {
     private final ProjectDownloader downloader;
     private final ProjectLoader loader;
     private Manager manager;
+    private App app;
     private final RPEngine engine;
     private File currentProject;
     private final File appSettings = new File(WORKING_DIRECTORY + SEP + APP_SETTINGS);
@@ -41,6 +42,11 @@ public class ControllerImpl implements Controller {
         this.downloader = new ProjectDownloaderImpl();
         this.newProject();
         this.engine = new Engine((ChannelLinker) this.manager.getChannelLinker());
+    }
+
+    @Override
+    public void setApp(App app) {
+        this.app = app;
     }
 
     /**
@@ -232,7 +238,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updatePlaybackTime(Double time) {
-        
+        app.updatePlaybackTime(time);
     }
 
     @Override

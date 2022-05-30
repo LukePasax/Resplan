@@ -1,6 +1,7 @@
 package controller.general;
 
 import daw.manager.ImportException;
+import view.common.App;
 
 import java.io.File;
 import java.util.List;
@@ -10,6 +11,8 @@ public interface Controller {
     String SEP = System.getProperty("file.separator");
     String WORKING_DIRECTORY = System.getProperty("user.dir");
     String APP_SETTINGS = "settings.json";
+
+    void setApp(App app);
 
     /**
      * Creates a new project. The new project is the template project if there is one,

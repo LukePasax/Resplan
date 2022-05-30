@@ -1,5 +1,6 @@
 package view.common;
 
+import Resplan.Starter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,6 +39,7 @@ public class App extends Application {
         activeScene.setOnKeyPressed(this::switchScene);
         this.planningController = planningLoader.getController();
         this.editController = editLoader.getController();
+        Starter.getController().setApp(this);
     }
 
     private void switchScene(KeyEvent keyEvent) {
