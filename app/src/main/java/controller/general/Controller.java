@@ -51,10 +51,14 @@ public interface Controller {
 
     void setEditController(EditViewController editController);
 
-    void newPlanningChannel(String type, String title, String description) throws IllegalArgumentException;
+    void newChannel(String type, String title, String description) throws IllegalArgumentException;
 
-    void newPlanningClip(String type, String title, String description, String channel, Double startTime,
-                         Double duration, File content) throws IllegalArgumentException, ImportException;
+    void newClip(String type, String title, String description, String channel, Double startTime,
+                 Double duration, File content) throws IllegalArgumentException, ImportException;
+
+    void deleteChannel(String title);
+
+    void deleteClip(String title, String channel, Double time);
 
     List<String> getChannelList();
 
@@ -71,5 +75,17 @@ public interface Controller {
     Double getClipTime(String clip, String channel);
 
     Double getClipDuration(String clip);
+
+    void start();
+
+    void pause();
+
+    void stop();
+
+    void setPlaybackTime(Double time);
+
+    Double getPlaybackTime();
+
+    Boolean isPaused();
 
 }

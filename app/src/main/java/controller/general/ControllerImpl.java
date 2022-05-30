@@ -1,5 +1,11 @@
 package controller.general;
 
+import Resplan.Starter;
+import daw.core.clip.ClipNotFoundException;
+import daw.engine.Engine;
+import daw.engine.RPEngine;
+import daw.manager.ChannelLinker;
+import view.common.AlertDispatcher;
 import view.common.App;
 import controller.storing.ReadFromFileImpl;
 import controller.storing.WriteToFile;
@@ -16,6 +22,7 @@ import planning.RPRole;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -24,6 +31,7 @@ public class ControllerImpl implements Controller {
     private final ProjectDownloader downloader;
     private final ProjectLoader loader;
     private Manager manager;
+    private RPEngine engine;
     private PlanningController planningController;
     private EditViewController editController;
     private File currentProject;
@@ -36,6 +44,7 @@ public class ControllerImpl implements Controller {
         this.loader = new ProjectLoaderImpl();
         this.downloader = new ProjectDownloaderImpl();
         this.newProject();
+        this.engine = new Engine((ChannelLinker) this.manager.getChannelLinker());
     }
 
     /**
@@ -130,7 +139,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void newPlanningChannel(String type, String title, String description) throws IllegalArgumentException {
+    public void newChannel(String type, String title, String description) throws IllegalArgumentException {
         RPRole.RoleType roleType;
         if (type.equals("Speaker")) {
             roleType = RPRole.RoleType.SPEECH;
@@ -146,7 +155,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void newPlanningClip(String type, String title, String description, String channel, Double time, Double duration, File content)
+    public void newClip(String type, String title, String description, String channel, Double time, Double duration, File content)
             throws IllegalArgumentException, ImportException {
         RPPart.PartType partType;
         if (type.equals("Speaker")) {
@@ -161,6 +170,26 @@ public class ControllerImpl implements Controller {
         this.manager.addClip(partType, title, desc, channel, time, file);
         this.planningController.addClip(title, description, channel, time);
         App.getData().addClip(App.getData().getChannel(channel),new ViewDataImpl.Clip(title, time, duration, time));
+    }
+
+    @Override
+    public void deleteChannel(String title) {
+        try {
+            this.manager.removeChannel(title);
+            App.getData().removeChannel(App.getData().getChannel(title));
+        } catch (NoSuchElementException e) {
+            AlertDispatcher.dispatchError(e.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    public void deleteClip(String title, String channel, Double time) {
+        try {
+            this.manager.removeClip(channel, title, time);
+            //App.getData().removeClip(App.getData().getChannel(channel), );
+        } catch (NoSuchElementException | ClipNotFoundException e) {
+            AlertDispatcher.dispatchError(e.getLocalizedMessage());
+        }
     }
 
     @Override
@@ -200,6 +229,36 @@ public class ControllerImpl implements Controller {
     @Override
     public Double getClipDuration(String clip) {
         return this.manager.getClipDuration(clip);
+    }
+
+    @Override
+    public void start() {
+        this.engine.start();
+    }
+
+    @Override
+    public void pause() {
+        this.engine.pause();
+    }
+
+    @Override
+    public void stop() {
+        this.engine.stop();
+    }
+
+    @Override
+    public void setPlaybackTime(Double time) {
+        this.engine.setPlaybackTime(time);
+    }
+
+    @Override
+    public Double getPlaybackTime() {
+        return this.engine.getPlaybackTime();
+    }
+
+    @Override
+    public Boolean isPaused() {
+        return this.engine.isPaused();
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES
