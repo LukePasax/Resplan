@@ -1,20 +1,28 @@
 package planning;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * It's an interface that represents a guest, a soundtrack, or effects in high level
  */
-@JsonDeserialize(as = RoleImpl.class)
+@JsonTypeInfo(
+		use = JsonTypeInfo.Id.NAME,
+		property = "type name")
+@JsonSubTypes({
+		@JsonSubTypes.Type(value = EffectsRole.class, name = "effects"),
+		@JsonSubTypes.Type(value = SoundtrackRole.class, name = "soundtrack"),
+		@JsonSubTypes.Type(value = SpeechRole.class, name = "speech")
+})
 public interface RPRole extends Element {
 	
 	/**
 	 * Represents the three possible types of a RPRole
 	 */
-	public enum RoleType{
+	enum RoleType{
 		SPEECH, SOUNDTRACK, EFFECTS
 	}
 	
@@ -23,6 +31,7 @@ public interface RPRole extends Element {
 	 * 
 	 * @return the chosen type of the role
 	 */
+	@JsonIgnore
 	RoleType getType();
 	
 	/**

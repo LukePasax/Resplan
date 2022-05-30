@@ -1,5 +1,7 @@
 package planning;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Optional;
 
 /**
@@ -26,7 +28,7 @@ public class EffectsRole extends RoleImpl {
 	 * @param title
 	 * the title of the role
 	 */
-	public EffectsRole(final String title) {
+	public EffectsRole(@JsonProperty(value = "title") final String title) {
 		super(title, RoleType.EFFECTS);
 	}
 	

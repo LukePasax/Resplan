@@ -287,6 +287,7 @@ public class Manager implements RPManager {
     /**
      * @return the {@link ChannelLinker} of this Manager
      */
+    @JsonIgnore
     @Override
     public RPChannelLinker getChannelLinker() {
         return this.channelLinker;
@@ -295,6 +296,7 @@ public class Manager implements RPManager {
     /**
      * @return the {@link RPClipLinker} of this manager
      */
+    @JsonIgnore
     @Override
     public RPClipLinker getClipLinker() {
         return this.clipLinker;

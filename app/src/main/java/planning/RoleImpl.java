@@ -1,5 +1,8 @@
 package planning;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +30,8 @@ public abstract class RoleImpl implements RPRole {
 	 * @param type
 	 * the type of the role
 	 */
-	public RoleImpl(final String title, final String description, final RoleType type) {
+	public RoleImpl(@JsonProperty("title") final String title, @JsonProperty("description") String description,
+					@JsonProperty("type") final RoleType type) {
 		this.title = title;
 		this.description = Optional.of(description);
 		this.type = type;
