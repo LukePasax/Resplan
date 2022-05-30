@@ -67,8 +67,10 @@ public class Engine implements RPEngine {
 	 */
 	@Override
 	public void pause() {
-		this.conductor.get().notifyStopped();
-		this.conductor = Optional.empty();
+		if(!isPaused()) {
+			this.conductor.get().notifyStopped();
+			this.conductor = Optional.empty();	
+		}
 	}
 
 	/**
@@ -102,7 +104,7 @@ public class Engine implements RPEngine {
 	 */
 	@Override
 	public boolean isPaused() {
-		return this.conductor.isPresent();
+		return this.conductor.isEmpty();
 	}
 	
 	private void updateObservers() {

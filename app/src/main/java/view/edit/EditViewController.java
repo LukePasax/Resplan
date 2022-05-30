@@ -4,7 +4,6 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import Resplan.Starter;
 import javafx.fxml.*;
 import javafx.geometry.Insets;
@@ -52,7 +51,7 @@ public class EditViewController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		//playButton
 		this.play.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
-		this.setPlaybackMarkerPosition(0);
+		
 		//--------------setting time axis------------
 		timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
 		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 5, 0, 0));
@@ -71,10 +70,11 @@ public class EditViewController implements Initializable{
 		});
 		//-------PLAYBACK TIME SET-----
 		channelsContentPane.setOnMouseClicked(e->{
-			if(/*!App.getController().isPlaying()*/ true) {
+			if(Starter.getController().isPaused()) {
 				markersPane.updatePlaybackMarker(timeAxisSetter.getAxis().getValueForDisplay(e.getX()).doubleValue());
 			}
 		});
+		this.setPlaybackMarkerPosition(0);
 	}
 	
 	/**

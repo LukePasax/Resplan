@@ -71,8 +71,8 @@ public class Conductor extends Thread {
 	 * Stop this conductor.
 	 */
 	public void notifyStopped() {
-		this.interrupt();
-		stopped = true;		
+		stopped = true;	
+		this.interrupt();	
 	}
 	
 	/**
