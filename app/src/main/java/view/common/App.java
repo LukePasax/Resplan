@@ -1,6 +1,5 @@
 package view.common;
 
-import Resplan.Starter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,10 +8,10 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import view.edit.EditViewController;
+import view.planning.PlanningController;
 
 public class App extends Application {
-	
-	private final static String SEP = System.getProperty("file.separator");
     
     static final ViewData viewData = new ViewDataImpl();
     
@@ -22,6 +21,10 @@ public class App extends Application {
 
     private Scene activeScene;
     private Parent sleepingRoot;
+    
+    private EditViewController editController;
+    private PlanningController planningController;
+    
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader planningLoader = new FXMLLoader(getClass().getResource("/view/PlanningView.fxml"));
@@ -33,6 +36,8 @@ public class App extends Application {
         FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
         this.sleepingRoot = (Parent) editLoader.load();
         activeScene.setOnKeyPressed(this::switchScene);
+        this.planningController = planningLoader.getController();
+        this.editController = editLoader.getController();
     }
 
     private void switchScene(KeyEvent keyEvent) {
@@ -41,5 +46,9 @@ public class App extends Application {
             this.activeScene.setRoot(sleepingRoot);
             this.sleepingRoot = temp;
         }
+    }
+    
+    public void updatePlaybackTime(double time) {
+    	editController.setPlaybackMarkerPosition(time);
     }
 }

@@ -2,6 +2,7 @@ package daw.engine;
 
 import java.util.concurrent.TimeUnit;
 
+import Resplan.Starter;
 import javafx.util.Pair;
 
 /**
@@ -51,7 +52,7 @@ public class Conductor extends Thread {
 		this.stopped = false;
 		while(!stopped) {
 			notifier.update();
-			System.out.println(clock.getTime());
+			Starter.getController().updatePlaybackTime(clock.getTime());
 			try {
 				Thread.sleep(this.sleepTime.getKey(), this.sleepTime.getValue());
 			} catch(Exception e) {
@@ -85,7 +86,7 @@ public class Conductor extends Thread {
 	
 	private Pair<Long,Integer> fromDoubleMsToMsAndNs(Double milliseconds) {
 		Long ms = milliseconds.longValue();
-		Integer ns = Long.valueOf(TimeUnit.NANOSECONDS.convert(Double.valueOf(milliseconds-milliseconds.longValue()).longValue(), null)).intValue();
+		Integer ns = Long.valueOf(TimeUnit.NANOSECONDS.convert(Double.valueOf(milliseconds-ms).longValue(), TimeUnit.MILLISECONDS)).intValue();
 		return new Pair<Long,Integer>(ms,ns);
 	}
 }

@@ -4,6 +4,8 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import Resplan.Starter;
 import javafx.fxml.*;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -39,6 +41,7 @@ public class EditViewController implements Initializable{
 	@FXML private Button stop;
 	@FXML private Button play;
 	@FXML private Button pause;
+	@FXML private Label playbackTimeLabel;
 	/**
 	 * Asse del tempo.
 	 */
@@ -49,6 +52,7 @@ public class EditViewController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		//playButton
 		this.play.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+		this.setPlaybackMarkerPosition(0);
 		//--------------setting time axis------------
 		timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
 		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 5, 0, 0));
@@ -96,21 +100,22 @@ public class EditViewController implements Initializable{
 	}
 	
 	public void stop() {
-		//App.getController().stop();
+		Starter.getController().stop();
 		this.play.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 	}
 	
 	public void play() {
-		//App.getController().play();
+		Starter.getController().start();
 		this.play.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, null, null)));
 	}
 	
 	public void pause() {
-		//App.getController().pause();
+		Starter.getController().pause();
 		this.play.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 	}
 	
 	public void setPlaybackMarkerPosition(double time) {
 		this.markersPane.updatePlaybackMarker(time);
+		this.playbackTimeLabel.setText(timeAxisSetter.getAxis().getTickLabelFormatter().toString(time));
 	}
 }
