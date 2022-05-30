@@ -38,6 +38,7 @@ public class ControllerImpl implements Controller {
      * Sets up the application and initializes a new project (see newProject).
      */
     public ControllerImpl() {
+        this.manager.getMixer().connectToSystem();
         this.loader = new ProjectLoaderImpl();
         this.downloader = new ProjectDownloaderImpl();
         this.newProject();
@@ -242,7 +243,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public Boolean isPaused() {
+    public boolean isPaused() {
         return this.engine.isPaused();
     }
 

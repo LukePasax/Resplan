@@ -70,4 +70,6 @@ public interface RPMixer {
      */
     void linkToSidechained(RPChannel channel, RPChannel sidechainedChannel);
 
+    void connectToSystem();
+
 }

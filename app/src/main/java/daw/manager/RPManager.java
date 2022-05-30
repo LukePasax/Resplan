@@ -2,6 +2,7 @@ package daw.manager;
 
 import daw.core.channel.RPChannel;
 import daw.core.clip.ClipNotFoundException;
+import daw.core.mixer.RPMixer;
 import planning.RPPart;
 import planning.RPRole;
 
@@ -126,6 +127,12 @@ public interface RPManager {
      * @return the {@link RPClipLinker} of this manager
      */
     RPClipLinker getClipLinker();
+
+    /**
+     *
+     * @return the {@link RPMixer} of this manager
+     */
+    RPMixer getMixer();
 
     /**
      *

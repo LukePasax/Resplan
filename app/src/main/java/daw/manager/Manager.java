@@ -307,6 +307,14 @@ public class Manager implements RPManager {
         return this.clipLinker;
     }
 
+    /**
+     * @return the {@link RPMixer} of this manager
+     */
+    @Override
+    public RPMixer getMixer() {
+        return this.mixer;
+    }
+
     @Override
     @JsonIgnore
     public List<RPRole> getRoleList() {

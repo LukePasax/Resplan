@@ -115,7 +115,7 @@ public class EditViewController implements Initializable{
 	}
 	
 	public void setPlaybackMarkerPosition(double time) {
-		this.markersPane.updatePlaybackMarker(time);
-		this.playbackTimeLabel.setText(timeAxisSetter.getAxis().getTickLabelFormatter().toString(time));
+		//this.markersPane.updatePlaybackMarker(time);
+		//this.playbackTimeLabel.setText(timeAxisSetter.getAxis().getTickLabelFormatter().toString(time));
 	}
 }

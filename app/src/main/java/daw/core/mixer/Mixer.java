@@ -3,6 +3,7 @@ package daw.core.mixer;
 import daw.core.channel.BasicChannelFactory;
 import daw.core.channel.ChannelFactory;
 import daw.core.channel.RPChannel;
+import daw.utilities.AudioContextManager;
 
 public class Mixer implements RPMixer {
 
@@ -123,6 +124,11 @@ public class Mixer implements RPMixer {
      */
     @Override
     public void linkToSidechained(RPChannel channel, RPChannel sidechainedChannel) {
+    }
+
+    @Override
+    public void connectToSystem() {
+        AudioContextManager.getAudioContext().out.addInput(this.masterChannel.getOutput());
     }
 
 }
