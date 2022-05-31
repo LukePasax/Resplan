@@ -134,7 +134,7 @@ public class PlanningController {
     public void resetTemplatePressed(ActionEvent event) {
 
     }
-    
+
     public void saveProjectPressed(ActionEvent event) {
         this.saveProject();
     }
