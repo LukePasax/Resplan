@@ -37,14 +37,14 @@ public class BasicChannel implements RPChannel {
         this.type = type;
         this.enabled = true;
         this.pu = Optional.empty();
-        this.gainIn = new Gain(AudioContextManager.getAudioContext(), 2).setGain(DEFAULT_GAIN_IN);
-        this.gainOut = new Gain(AudioContextManager.getAudioContext(), 2).setGain(1.0f);
+        this.gainIn = new Gain(AudioContextManager.getAudioContext(), 1).setGain(DEFAULT_GAIN_IN);
+        this.gainOut = new Gain(AudioContextManager.getAudioContext(), 1).setGain(1.0f);
         this.setStructure();
     }
 
     private void setStructure() {
-        this.gainOut.addInput(pan);
-        this.pan.addInput(gainIn);
+        this.gainOut.addInput(this.pan);
+        this.pan.addInput(this.gainIn);
     }
 
     /**
@@ -184,4 +184,11 @@ public class BasicChannel implements RPChannel {
         return this.type;
     }
 
+    @Override
+    public String toString() {
+        return "BasicChannel{" +
+                "type=" + type +
+                ", gainOut=" + gainOut +
+                '}';
+    }
 }
