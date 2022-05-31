@@ -58,6 +58,14 @@ public interface RPClip<X> {
 	 */
 	double getContentPosition();
 	
+	/**Get this content duration.
+	 * 
+	 * @return The content duration.
+	 * 
+	 * @throws  UnsupportedOperationException  If this RPClip is Empty or content type has no duration.
+	 */
+	double getContentDuration();
+	
 	/**
 	 * Check if this RPClip is empty.
 	 * 

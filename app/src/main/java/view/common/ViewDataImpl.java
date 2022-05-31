@@ -3,8 +3,8 @@ package view.common;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
-import daw.core.clip.RPClip;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
@@ -13,7 +13,6 @@ import javafx.collections.ObservableMap;
 import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener;
 import javafx.scene.Node;
-import planning.RPPart;
 
 public class ViewDataImpl implements ViewData {
 	
@@ -161,22 +160,21 @@ public class ViewDataImpl implements ViewData {
 		private String title;
 		private Double position;
 		private Double duration;
-		private Double contentPosition;
+		private Optional<Double> contentPosition;
+		private Optional<Double> contentDuration;
 		private Set<Node> view = new HashSet<>();
 		
 		
-		public Clip(String title, Double position, Double duration, Double contentPosition) {
+		public Clip(String title, Double position, Double duration, Optional<Double> contentPosition, Optional<Double> contentDuration) {
 			super();
 			this.title = title;
 			this.position = position;
 			this.duration = duration;
+			if(contentDuration.isEmpty() != contentPosition.isEmpty()) {
+				throw new IllegalArgumentException("If the clip is empty no content position and duration must be specified. Else both content position and duration must be specified.");
+			}
 			this.contentPosition = contentPosition;
-		}
-
-		public Clip(RPClip<?> clip, RPPart part) {
-			this.title = part.getTitle();
-			this.duration = clip.getDuration();
-			this.contentPosition = clip.getContentPosition();
+			this.contentDuration = contentDuration;
 		}
 		
 		public String getTitle() {
@@ -191,8 +189,16 @@ public class ViewDataImpl implements ViewData {
 			return duration;
 		}
 
+		public boolean isEmpty() {
+			return contentPosition.isEmpty();
+		}
+		
 		public Double getContentPosition() {
-			return contentPosition;
+			return contentPosition.get();
+		}
+		
+		public Double getContentDuration() {
+			return contentDuration.get();
 		}
 		
 		public void addToViewAll(Node... nodes) {

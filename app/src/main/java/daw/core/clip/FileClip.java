@@ -90,6 +90,7 @@ public class FileClip implements RPClip<File> {
 	public void setContentPosition(double milliseconds) {
 		this.contentPosition = milliseconds;
 	}
+
 	
 	/**
 	 * {@inheritDoc}
@@ -105,6 +106,14 @@ public class FileClip implements RPClip<File> {
 	@Override
 	public double getContentPosition() {
 		return this.contentPosition;
+	}
+	
+	/**
+	 *{@inheritDoc}
+	 */
+	@Override
+	public double getContentDuration() {
+		throw new UnsupportedOperationException("A file content has no duration");
 	}
 
 	/**

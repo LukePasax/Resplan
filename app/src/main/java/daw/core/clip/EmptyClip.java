@@ -49,6 +49,14 @@ public class EmptyClip implements RPClip<NoContent> {
 	public double getContentPosition() {
 		throw new UnsupportedOperationException("Can't get the Content Position. This is an Empty Clip. Conver the clip into one with content then retry.");
 	}
+	
+	/**
+	 *{@inheritDoc}
+	 */
+	@Override
+	public double getContentDuration() {
+		throw new UnsupportedOperationException("A file content has no duration");
+	}
 
 	/**
 	 * {@inheritDoc}

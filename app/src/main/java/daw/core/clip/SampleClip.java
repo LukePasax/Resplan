@@ -150,6 +150,14 @@ public class SampleClip implements RPClip<Sample> {
 	public double getContentPosition() {
 		return this.clip.getContentPosition();
 	}
+	
+	/**
+	 *{@inheritDoc}
+	 */
+	@Override
+	public double getContentDuration() {
+		return this.sample.getLength();
+	}
 
 	/**
 	 * {@inheritDoc}

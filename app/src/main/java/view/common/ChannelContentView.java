@@ -192,6 +192,18 @@ public abstract class ChannelContentView extends Pane {
 		private void mouseReleased(MouseEvent e) {
 			if(mod.equals(Modality.TIMEIN)) {
 				//in event
+				try {
+					double newTimeIn = clip.getPosition()+timeDelta;
+					if(clip.isEmpty() && newTimeIn<0) {
+						newTimeIn = 0;
+					} else if (clip.isEmpty() && newTimeIn+clip.getDuration()>Starter.getController().getProjectLength()) {
+						newTimeIn = Starter.getController().getProjectLength()-clip.getDuration();
+					}
+					
+					Starter.getController().moveClip(clip.getTitle(), ch.getTitle(), newTimeIn);
+				} catch (ClipNotFoundException | ImportException e1) {
+					updateClips();
+				}
 			} else if(mod.equals(Modality.TIMEOUT)) {
 				//out event
 			} else {
@@ -220,17 +232,18 @@ public abstract class ChannelContentView extends Pane {
 		
 		private void mouseDragged(MouseEvent e) {
 			if(dragging) {
+				this.timeDelta = axis.getValueForDisplay(e.getScreenX()).doubleValue()-axis.getValueForDisplay(initialX).doubleValue();
 				if(mod.equals(Modality.TIMEIN)) {
 					//in event
-					this.timeDelta = axis.getValueForDisplay(e.getScreenX()).doubleValue()-axis.getValueForDisplay(initialX).doubleValue();
-					if(true) {
-						
+					if(clip.isEmpty() || (clip.getContentPosition()+timeDelta>=0 && clip.getContentPosition()+timeDelta<=clip.getContentDuration()-clip.getContentPosition())) {
+						this.setLayoutX(initialLayoutX+e.getScreenX()-initialX);
+						this.setPrefWidth(initialWidth+initialX-e.getScreenX());
 					}
 				} else if(mod.equals(Modality.TIMEOUT)) {
 					//out event
+					
 				} else {
 					//move event
-					this.timeDelta = axis.getValueForDisplay(e.getScreenX()).doubleValue()-axis.getValueForDisplay(initialX).doubleValue();
 					if(clip.getPosition()+timeDelta >= 0 && clip.getPosition()+clip.getDuration()+timeDelta <= Starter.getController().getProjectLength()) {
 						this.setLayoutX(initialLayoutX+e.getScreenX()-initialX);
 					}
