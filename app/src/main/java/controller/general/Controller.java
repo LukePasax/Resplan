@@ -1,5 +1,6 @@
 package controller.general;
 
+import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
 import view.common.App;
 
@@ -85,4 +86,13 @@ public interface Controller {
     boolean isPaused();
 
     double getProjectLength();
+
+    void moveClip(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException, ImportException;
+
+    void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException, ImportException;
+
+    void setClipTimeOut(String clip, String channel, Double finalTimeOut) throws ClipNotFoundException, ImportException;
+
+    void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException, ImportException;
+
 }

@@ -372,6 +372,30 @@ public class Manager implements RPManager {
     }
 
     @Override
+    public void moveClip(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException {
+        this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
+                .move(this.getClipTime(clip,channel),finalTimeIn);
+    }
+
+    @Override
+    public void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException {
+        this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
+                .setTimeIn(this.getClipTime(clip,channel),finalTimeIn);
+    }
+
+    @Override
+    public void setClipTimeOut(String clip, String channel, Double finalTimeOut) throws ClipNotFoundException {
+        this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
+                .setTimeOut(this.getClipTime(clip,channel),finalTimeOut);
+    }
+
+    @Override
+    public void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException {
+        this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
+                .split(this.getClipTime(clip,channel),splittingTime);
+    }
+
+    @Override
     public void updateProjectLength(String title, String channel) {
         if (this.getClipTime(title, channel) + this.getClipDuration(title) > this.projectLength) {
             this.projectLength = this.getClipTime(title, channel) + this.getClipDuration(title) + MIN_SPACING;

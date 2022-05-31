@@ -165,4 +165,12 @@ public interface RPManager {
     void updateProjectLength(String title, String channel);
 
     double getProjectLength();
+
+    void moveClip(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException;
+
+    void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException;
+
+    void setClipTimeOut(String clip, String channel, Double finalTimeOut) throws ClipNotFoundException;
+
+    void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException;
 }

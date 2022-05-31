@@ -256,6 +256,54 @@ public class ControllerImpl implements Controller {
         return this.manager.getProjectLength();
     }
 
+    @Override
+    public void moveClip(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException, ImportException {
+        String type = "Speaker";
+        String description = this.manager.getClipLinker().getPart(clip).getDescription().orElse("");
+        Double time = this.manager.getClipTime(clip,channel);
+        Double duration = this.manager.getClipDuration(clip);
+        File content = (File) this.manager.getClipLinker().getClipFromPart(this.manager.getClipLinker().getPart(clip)).getContent();
+        this.deleteClip(clip,channel,time);
+        this.manager.moveClip(clip,channel,finalTimeIn);
+        this.newClip(type, clip, description, channel, time, duration, content);
+    }
+
+    @Override
+    public void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException, ImportException {
+        String type = "Speaker";
+        String description = this.manager.getClipLinker().getPart(clip).getDescription().orElse("");
+        Double time = this.manager.getClipTime(clip,channel);
+        Double duration = this.manager.getClipDuration(clip);
+        File content = (File) this.manager.getClipLinker().getClipFromPart(this.manager.getClipLinker().getPart(clip)).getContent();
+        this.deleteClip(clip,channel,time);
+        this.manager.setClipTimeIn(clip,channel,finalTimeIn);
+        this.newClip(type, clip, description, channel, time, duration, content);
+    }
+
+    @Override
+    public void setClipTimeOut(String clip, String channel, Double finalTimeOut) throws ClipNotFoundException, ImportException {
+        String type = "Speaker";
+        String description = this.manager.getClipLinker().getPart(clip).getDescription().orElse("");
+        Double time = this.manager.getClipTime(clip,channel);
+        Double duration = this.manager.getClipDuration(clip);
+        File content = (File) this.manager.getClipLinker().getClipFromPart(this.manager.getClipLinker().getPart(clip)).getContent();
+        this.deleteClip(clip,channel,time);
+        this.manager.setClipTimeOut(clip,channel,finalTimeOut);
+        this.newClip(type, clip, description, channel, time, duration, content);
+    }
+
+    @Override
+    public void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException, ImportException {
+        String type = "Speaker";
+        String description = this.manager.getClipLinker().getPart(clip).getDescription().orElse("");
+        Double time = this.manager.getClipTime(clip,channel);
+        Double duration = this.manager.getClipDuration(clip);
+        File content = (File) this.manager.getClipLinker().getClipFromPart(this.manager.getClipLinker().getPart(clip)).getContent();
+        this.deleteClip(clip,channel,time);
+        this.manager.splitClip(clip,channel,splittingTime);
+        this.newClip(type, clip, description, channel, time, duration, content);
+    }
+
     // ONLY FOR TEMPORARY TESTING PURPOSES
     public Manager getManager() {
         return this.manager;
