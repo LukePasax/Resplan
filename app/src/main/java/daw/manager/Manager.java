@@ -26,6 +26,9 @@ public class Manager implements RPManager {
     private final Map<RPRole, List<RPRole>> groupMap;
     @JsonIgnore
     private final RPClipConverter clipConverter;
+    private double projectLength;
+    private static final double MIN_LENGTH = 600000;
+    private static final double MIN_SPACING = 120000;
 
     public Manager() {
         this.mixer = new Mixer();
@@ -33,6 +36,7 @@ public class Manager implements RPManager {
         this.clipLinker = new ClipLinker();
         this.groupMap = new HashMap<>();
         this.clipConverter = new ClipConverter();
+        this.projectLength = MIN_LENGTH;
         this.initializeGroups();
     }
 
@@ -209,6 +213,7 @@ public class Manager implements RPManager {
         }
         this.clipLinker.addClipReferences(clip, part);
         channelLinker.getTapeChannel(channelLinker.getRole(channel)).insertRPClip(clip, time);
+        this.updateProjectLength(title, channel);
     }
 
     /**
@@ -359,6 +364,18 @@ public class Manager implements RPManager {
     @Override
     public Double getClipDuration(String clip) {
         return this.clipLinker.getClipFromPart(this.clipLinker.getPart(clip)).getDuration();
+    }
+
+    @Override
+    public double getProjectLength() {
+        return projectLength;
+    }
+
+    @Override
+    public void updateProjectLength(String title, String channel) {
+        if (this.getClipTime(title, channel) + this.getClipDuration(title) > this.projectLength) {
+            this.projectLength = this.getClipTime(title, channel) + this.getClipDuration(title) + MIN_SPACING;
+        }
     }
 
     @Override

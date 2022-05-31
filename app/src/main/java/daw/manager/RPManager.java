@@ -161,4 +161,8 @@ public interface RPManager {
      * @return the duration of a clip
      */
     Double getClipDuration(String clip);
+
+    void updateProjectLength(String title, String channel);
+
+    double getProjectLength();
 }
