@@ -1,6 +1,5 @@
 package view.common;
 
-import javafx.scene.control.TextFormatter;
 import static javafx.scene.control.TextFormatter.Change;
 import javafx.util.StringConverter;
 

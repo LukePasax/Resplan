@@ -1,7 +1,5 @@
 package view.common;
 
-import java.util.concurrent.TimeUnit;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.chart.NumberAxis;
@@ -63,31 +61,7 @@ public class TimeAxisSetter {
 		//------CALCULATE TICK WHEN RESIZE AXIS-------
 		axis.needsLayoutProperty().addListener((obs, old, needsLayout) -> {calculateTicks(); updateScroller();});
 		//-----PRINT TIME INSTEAD OF MILLISECONDS-----
-		axis.setTickLabelFormatter(new StringConverter<Number>() {
-
-			@Override
-			public String toString(Number milliseconds) {
-				Long min = TimeUnit.MILLISECONDS.toMinutes(milliseconds.longValue());
-				Long sec = TimeUnit.MILLISECONDS.toSeconds(milliseconds.longValue());
-				Long ms = milliseconds.longValue()-TimeUnit.SECONDS.toMillis(sec);
-				sec -= TimeUnit.MINUTES.toSeconds(min);
-				if(ms.equals(Long.valueOf(0))) {
-					return String.format("%02d", min) + ":" + String.format("%02d", sec);
-				}
-				return String.format("%02d", min) + ":" + String.format("%02d", sec) + "(+" + ms + "ms)";
-			}
-
-			@Override
-			public Number fromString(String string) {
-				String[] s = string.split(":");
-				long min = s.length >= 1 ? Long.decode(s[0].replaceFirst("^0*", "").isEmpty() ? "0" : s[0].replaceFirst("^0*", "")) : 0;
-				long sec = s.length >= 2 ? Long.decode(s[1].replaceFirst("^0*", "").isEmpty() ? "0" : s[1].replaceFirst("^0*", "")) : 0;
-				long ms = s.length >= 3 ? Long.decode(s[2].replaceFirst("^0*", "").isEmpty() ? "0" : s[2].replaceFirst("^0*", "")) : 0;
-					return TimeUnit.SECONDS.toMillis(
-								TimeUnit.MINUTES.toSeconds(min) + sec) + ms;
-			}
-			
-		});
+		axis.setTickLabelFormatter(new NumberFormatConverter());
 		//------SET PRECISION NAVIGATION---------
 		axis.setOnMouseClicked(e->{
 			if(e.getButton().equals(MouseButton.SECONDARY)) {

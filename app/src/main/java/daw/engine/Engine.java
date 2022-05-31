@@ -1,14 +1,9 @@
 package daw.engine;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
-
-import Resplan.Starter;
-import controller.general.ControllerImpl;
 import daw.manager.ChannelLinker;
 import daw.utilities.AudioContextManager;
-import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.data.Sample;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
