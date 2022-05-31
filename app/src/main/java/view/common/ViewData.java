@@ -23,6 +23,8 @@ public interface ViewData {
 	void removeClip(Channel channel, Clip clip);
 
 	Channel getChannel(String title);
+	
+	Clip getClip(String channelTitle, String clipTitle);
 
 	void addChannelsDataListener(MapChangeListener<Channel, ObservableList<Clip>> listener);
 

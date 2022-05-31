@@ -58,6 +58,13 @@ public class ViewDataImpl implements ViewData {
 	}
 	
 	@Override
+	public Clip getClip(String ch, String cl) {
+		var channel = getChannel(ch);
+		var clip = data.get(channel).stream().filter(x->x.getTitle().equals(cl)).findFirst();
+		return  clip.isEmpty() ? null : clip.get();
+	}
+	
+	@Override
 	public void addChannelsDataListener(MapChangeListener<Channel, ObservableList<Clip>> mapChangeListener) {
 		data.addListener(mapChangeListener);
 	}
