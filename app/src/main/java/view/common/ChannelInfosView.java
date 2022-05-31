@@ -1,5 +1,6 @@
 package view.common;
 
+import Resplan.Starter;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -31,6 +32,7 @@ public abstract class ChannelInfosView extends Pane {
 		this.getChildren().add(new VBox(new Label(ch.getTitle()), infos));
 		//set context menu
 		MenuItem remove = new MenuItem("Remove");
+		remove.setOnAction(a->Starter.getController().deleteChannel(this.ch.getTitle()));
 		ContextMenu menu = new ContextMenu(remove);
 		this.setOnContextMenuRequested(e -> menu.show(this, e.getScreenX(), e.getScreenY()));
 	}

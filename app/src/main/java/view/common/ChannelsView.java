@@ -45,6 +45,7 @@ public abstract class ChannelsView {
 				}
 				if(c.wasRemoved()) {
 					//-------REMOVE FROM VIEW
+					channelsContentPane.getChildren().removeAll(c.getKey().getViewSet());
 					channelsInfoPane.getChildren().removeAll(c.getKey().getViewSet());
 				}
 			}

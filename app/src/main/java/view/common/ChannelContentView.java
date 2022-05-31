@@ -2,11 +2,14 @@ package view.common;
 
 import java.util.List;
 
+import Resplan.Starter;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -85,27 +88,29 @@ public abstract class ChannelContentView extends Pane {
 	 * The clip.view set will be updated with currently displayed clips.
 	 */
 	public void updateClips() {
-		ObservableList<Clip> clips = App.getData().getUnmodifiableClips(ch);
-		clips.stream().filter(clipFromData->{
-			return clipFromData.getPosition()<axis.getUpperBound() && (clipFromData.getPosition()+clipFromData.getDuration())>axis.getLowerBound();
-		}).forEach(clipInTimeRange->{
-			if(clipInTimeRange.getViewSet().stream().anyMatch(x->getChildren().contains(x))) {
-				clipInTimeRange.getViewSet().stream().filter(x->getChildren().contains(x)).forEach(drawedClip->{
-					placeClip((Pane)drawedClip, clipInTimeRange);
-				});
-			} else {
-				drawClip(clipInTimeRange);
-			}
-		});
-		clips.stream().filter(clipFromData->{
-			return clipFromData.getPosition()>=axis.getUpperBound() || (clipFromData.getPosition()+clipFromData.getDuration())<=axis.getLowerBound();
-		}).forEach(nonInTimeClip->{
-			nonInTimeClip.getViewSet().stream().forEach(view->{
-				if(getChildren().contains(view)) {
-					getChildren().remove(view);
+		if(App.getData().getUnmodifiableChannels().contains(ch)){
+			ObservableList<Clip> clips = App.getData().getUnmodifiableClips(ch);
+			clips.stream().filter(clipFromData->{
+				return clipFromData.getPosition()<axis.getUpperBound() && (clipFromData.getPosition()+clipFromData.getDuration())>axis.getLowerBound();
+			}).forEach(clipInTimeRange->{
+				if(clipInTimeRange.getViewSet().stream().anyMatch(x->getChildren().contains(x))) {
+					clipInTimeRange.getViewSet().stream().filter(x->getChildren().contains(x)).forEach(drawedClip->{
+						placeClip((Pane)drawedClip, clipInTimeRange);
+					});
+				} else {
+					drawClip(clipInTimeRange);
 				}
 			});
-		});
+			clips.stream().filter(clipFromData->{
+				return clipFromData.getPosition()>=axis.getUpperBound() || (clipFromData.getPosition()+clipFromData.getDuration())<=axis.getLowerBound();
+			}).forEach(nonInTimeClip->{
+				nonInTimeClip.getViewSet().stream().forEach(view->{
+					if(getChildren().contains(view)) {
+						getChildren().remove(view);
+					}
+				});
+			});
+		}
 	}
 	
 	/**
@@ -114,13 +119,7 @@ public abstract class ChannelContentView extends Pane {
 	 */
 	private void drawClip(Clip clip) {
 		Node clipContent = drawClipContent(clip);
-		AnchorPane clipView = new AnchorPane(clipContent);
-		clipView.setBorder(new Border(new BorderStroke(null, BorderStrokeStyle.SOLID, null, null)));
-		AnchorPane.setBottomAnchor(clipContent, 0.0);
-		AnchorPane.setTopAnchor(clipContent, 0.0);
-		AnchorPane.setLeftAnchor(clipContent, 0.0);
-		AnchorPane.setRightAnchor(clipContent, 0.0);
-		clipView.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, null, null)));
+		AnchorPane clipView = new ClipView(clipContent, clip);
 		placeClip(clipView, clip);
 		clip.addToViewAll(clipView);
 		getChildren().add(clipView);
@@ -142,5 +141,26 @@ public abstract class ChannelContentView extends Pane {
 	
 	public Channel getChannel() {
 		return this.ch;
+	}
+	
+	private class ClipView extends AnchorPane {
+
+		public ClipView(Node content, Clip clip) {
+			super(content);
+			//clip border
+			this.setBorder(new Border(new BorderStroke(null, BorderStrokeStyle.SOLID, null, null)));
+			//content layout
+			AnchorPane.setBottomAnchor(content, 0.0);
+			AnchorPane.setTopAnchor(content, 0.0);
+			AnchorPane.setLeftAnchor(content, 0.0);
+			AnchorPane.setRightAnchor(content, 0.0);
+			//clip color fill
+			this.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, null, null)));
+			//remove clip
+			MenuItem remove = new MenuItem("Remove");
+			remove.setOnAction(a->Starter.getController().deleteClip(clip.getTitle(), ch.getTitle(), clip.getPosition()));
+			ContextMenu menu = new ContextMenu(remove);
+			this.setOnContextMenuRequested(e -> menu.show(this, e.getScreenX(), e.getScreenY()));
+		}
 	}
 }
