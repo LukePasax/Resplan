@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" stylesheets="@../stylesheets/planning.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.planning.PlanningController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" stylesheets="@../stylesheets/planning.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.planning.PlanningController">
    <children>
       <AnchorPane maxHeight="25.0" prefHeight="25.0">
          <children>
@@ -52,9 +52,6 @@
                <children>
                   <Button fx:id="newChannelButton" mnemonicParsing="false" onAction="#newChannelPressed" prefHeight="25.0" prefWidth="100.0" text="New Channel" />
                   <Button fx:id="newClipButton" mnemonicParsing="false" onAction="#newClipPressed" prefWidth="100.0" text="New Clip" />
-                  <Button fx:id="delChannelButton" mnemonicParsing="false" onAction="#delChannelPressed" prefWidth="100.0" text="Delete Channel" />
-                  <Button fx:id="delClipButton" mnemonicParsing="false" onAction="#delClipPressed" prefWidth="100.0" text="Delete Clip" />
-                  <Button fx:id="launchEditViewButton" mnemonicParsing="false" onAction="#launchEditViewPressed" prefWidth="100.0" text="Edit View" />
                </children>
                <padding>
                   <Insets left="2.5" right="2.5" top="10.0" />

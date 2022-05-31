@@ -64,15 +64,6 @@ public class PlanningController {
   		});
     }
 
-    private void switchScene() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
-        try {
-            menuBar.getScene().setRoot(loader.load());
-        } catch (IOException e) {
-            AlertDispatcher.dispatchError(e.getLocalizedMessage());
-        }
-    }
-
     public void newChannelPressed(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/NewChannelWindow.fxml"));
         Scene scene = new Scene(loader.load());
@@ -97,13 +88,6 @@ public class PlanningController {
             stage.initOwner(menuBar.getScene().getWindow());
             stage.showAndWait();
         }
-    }
-
-    public void addChannel(String type, String title, String description) {
-
-    }
-
-    public void addClip(String title, String description, String channel, Double time) {
     }
 
     public void newProjectPressed(ActionEvent event) {
@@ -150,16 +134,7 @@ public class PlanningController {
     public void resetTemplatePressed(ActionEvent event) {
 
     }
-
-    public void delChannelPressed(ActionEvent event) {
-    }
-
-    public void delClipPressed(ActionEvent event) {
-    }
-
-    public void launchEditViewPressed(ActionEvent event) {
-        this.switchScene();
-    }
+    
     public void saveProjectPressed(ActionEvent event) {
         this.saveProject();
     }
