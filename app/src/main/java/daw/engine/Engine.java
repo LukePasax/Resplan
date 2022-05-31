@@ -63,21 +63,6 @@ public class Engine implements RPEngine {
 	 */
 	@Override
 	public void start() {
-		final String SEP = System.getProperty("file.separator");
-		try {
-			SamplePlayer samplePlayer = new SamplePlayer(AudioContextManager.getAudioContext(),
-					new Sample(System.getProperty("user.dir") + SEP + "app" + SEP + "src" + SEP + "test" + SEP
-					+ "resources" + SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"));
-			//final var cont = (ControllerImpl) Starter.getController();
-			AudioContextManager.getAudioContext().out.addInput(samplePlayer);
-			samplePlayer.start();
-		} catch (FileFormatException e) {
-			e.printStackTrace();
-		} catch (OperationUnsupportedException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		this.updateObservers();
 		this.conductor = Optional.of(new Conductor(notifier.get(), clock));
 		this.conductor.get().start();
