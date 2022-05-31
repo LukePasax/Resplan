@@ -35,6 +35,7 @@ public class NewClipController {
         this.channelPicker.setValue(this.channelPicker.getItems().get(0));
         this.typePicker.getItems().addAll("Speaker", "Effects", "Soundtrack");
         this.typePicker.setValue(this.typePicker.getItems().get(0));
+        this.converter = new NumberFormatConverter();
         startTimePicker.setTextFormatter(new TextFormatter<>(converter.getFormatterUnaryOperator()));
         durationPicker.setTextFormatter(new TextFormatter<>(converter.getFormatterUnaryOperator()));
 
