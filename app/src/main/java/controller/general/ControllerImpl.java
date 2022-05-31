@@ -168,7 +168,7 @@ public class ControllerImpl implements Controller {
     public void deleteClip(String title, String channel, Double time) {
         try {
             this.manager.removeClip(channel, title, time);
-            //App.getData().removeClip(App.getData().getChannel(channel), );
+            App.getData().removeClip(App.getData().getChannel(channel), App.getData().getClip(channel,title));
         } catch (NoSuchElementException | ClipNotFoundException e) {
             AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
