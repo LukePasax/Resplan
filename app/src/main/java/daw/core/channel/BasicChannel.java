@@ -33,7 +33,7 @@ public class BasicChannel implements RPChannel {
      * @param type a {@link Type}.
      */
     protected BasicChannel(final Type type) {
-        this.pan = new Panner();
+        this.pan = new Panner(AudioContextManager.getAudioContext());
         this.type = type;
         this.enabled = true;
         this.pu = Optional.empty();
@@ -43,8 +43,8 @@ public class BasicChannel implements RPChannel {
     }
 
     private void setStructure() {
-        this.gainOut.addInput(this.pan);
         this.pan.addInput(this.gainIn);
+        this.gainOut.addInput(this.gainIn);
     }
 
     /**
