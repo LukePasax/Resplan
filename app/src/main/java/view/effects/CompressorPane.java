@@ -18,6 +18,8 @@ import view.effects.Knob.KnobType;
 
 public class CompressorPane extends BorderPane {
 	public CompressorPane() throws IOException {
+		final HBox titlebox = new HBox(new Label("CompressorPane"));
+		titlebox.setAlignment(Pos.CENTER);
 		final HBox firstrow = new HBox();
 		final HBox secondrow = new HBox();
 		final HBox thirdrow = new HBox();
@@ -39,7 +41,7 @@ public class CompressorPane extends BorderPane {
 		final KnobPane decay = new KnobPane(0.2, 40, "DECAY", KnobType.OTHER);
 		thirdrow.getChildren().addAll(ratio, decay);
 		
-		firstcolumn.getChildren().addAll(firstrow, secondrow, thirdrow);
+		firstcolumn.getChildren().addAll(titlebox, firstrow, secondrow, thirdrow);
 		
 		final Label title = new Label("SIDECHAIN");
 		final ComboBox<String> channels = new ComboBox<>();
