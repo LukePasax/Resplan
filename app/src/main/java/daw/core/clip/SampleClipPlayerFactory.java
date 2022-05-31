@@ -3,6 +3,7 @@ package daw.core.clip;
 import java.util.Optional;
 
 import daw.core.channel.RPChannel;
+import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.data.Sample;
 import net.beadsproject.beads.ugens.SamplePlayer;
@@ -65,7 +66,7 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 		 * @param  sampleClip  The {@link SampleClip} to play.
 		 */
 		private SampleClipPlayer(SampleClip sampleClip) {
-			this.player = new SamplePlayer(sampleClip.getContent());
+			this.player = new SamplePlayer(AudioContextManager.getAudioContext(), sampleClip.getContent());
 			this.player.setLoopType(LoopType.NO_LOOP_FORWARDS);
 			this.clip = sampleClip;
 			this.cutTime = Optional.empty();

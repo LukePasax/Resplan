@@ -9,6 +9,7 @@ import daw.engine.RPEngine;
 import daw.manager.ChannelLinker;
 import daw.manager.ImportException;
 import daw.manager.Manager;
+import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import planning.Element;
 import planning.RPPart;
@@ -214,17 +215,20 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void start() {
+    	AudioContextManager.getAudioContext().start();
         this.engine.start();
     }
 
     @Override
     public void pause() {
         this.engine.pause();
+        AudioContextManager.getAudioContext().stop();
     }
 
     @Override
     public void stop() {
         this.engine.stop();
+        AudioContextManager.getAudioContext().stop();
     }
 
     @Override
