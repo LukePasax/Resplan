@@ -1,8 +1,6 @@
 package channel;
 
-import daw.utilities.AudioContextManager;
 import daw.core.audioprocessing.*;
-import net.beadsproject.beads.ugens.*;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +11,6 @@ public class TestProcessingUnitMoveAndSwap {
     private TestReflection ref = new TestReflection();
     private ProcessingUnit pu = new BasicProcessingUnitBuilder()
             .reverb(2)
-            .sidechain(new SamplePlayer(AudioContextManager.getAudioContext(), 2), 2)
             .lowPassFilter(2, 100.0f)
             .highPassFilter(2, 150.0f)
             .build();

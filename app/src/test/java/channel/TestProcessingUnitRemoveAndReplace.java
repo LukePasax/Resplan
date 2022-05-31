@@ -13,7 +13,6 @@ public class TestProcessingUnitRemoveAndReplace {
 
     private TestReflection ref = new TestReflection();
     private ProcessingUnit pu = new BasicProcessingUnitBuilder()
-            .sidechain(new SamplePlayer(1), 1)
             .reverb(1)
             .highPassFilter(1, 100.0f)
             .gate(2)
@@ -28,7 +27,7 @@ public class TestProcessingUnitRemoveAndReplace {
         assertEquals(Set.of(HighPassFilter.class), this.ref.getSet(this.pu.getEffectAtPosition(2).getConnectedInputs()));
         this.pu.removeEffectAtPosition(0);
         assertEquals(List.of(HighPassFilter.class, LowPassFilter.class), this.ref.getList(this.pu.getEffects()));
-        assertEquals(Set.of(BasicSidechaining.class), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
+        assertEquals(Set.of(), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
     }
 
     @Test
@@ -58,7 +57,7 @@ public class TestProcessingUnitRemoveAndReplace {
         this.pu.replace(0, new Compression(1));
         assertEquals(List.of(Compression.class, HighPassFilter.class, Gate.class, DigitalReverb.class),
                 this.ref.getList(this.pu.getEffects()));
-        assertEquals(Set.of(BasicSidechaining.class), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
+        assertEquals(Set.of(), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
     }
 
     @Test
@@ -81,7 +80,7 @@ public class TestProcessingUnitRemoveAndReplace {
         assertFalse(this.pu.isSidechainingPresent());
         assertEquals(Set.of(), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
         this.pu.addSidechaining(new BasicSidechaining(new SamplePlayer(1), 1));
-        assertEquals(Set.of(BasicSidechaining.class), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
+        assertEquals(Set.of(), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
     }
 
 }
