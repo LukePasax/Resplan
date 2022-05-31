@@ -153,17 +153,15 @@ public abstract class ChannelContentView extends Pane {
 	private class ClipView extends AnchorPane {
 		
 		private static final int RESIZE_MARGIN = 5;
+		private static final int CLIP_MIN_LENGHT = 10;
 		
 		private double initialX;
 		private double initialLayoutX;
 		private double initialWidth;
 		private double timeDelta;
-		private Modality mod;
+		private ClipDragModality mod;
 		private boolean dragging = false;
 		private Clip clip;
-		private enum Modality {
-			TIMEIN,TIMEOUT,MOVE
-		}
 		
 		public ClipView(Node content, Clip clip) {
 			super(content);
@@ -190,26 +188,43 @@ public abstract class ChannelContentView extends Pane {
 		}
 		
 		private void mouseReleased(MouseEvent e) {
-			if(mod.equals(Modality.TIMEIN)) {
+			double newTimeIn = clip.getPosition()+timeDelta;
+			if(mod.equals(ClipDragModality.TIMEIN)) {
 				//in event
 				try {
-					double newTimeIn = clip.getPosition()+timeDelta;
-					if(clip.isEmpty() && newTimeIn<0) {
-						newTimeIn = 0;
-					} else if (clip.isEmpty() && newTimeIn+clip.getDuration()>Starter.getController().getProjectLength()) {
-						newTimeIn = Starter.getController().getProjectLength()-clip.getDuration();
+					if(timeDelta>=clip.getDuration()) {
+						newTimeIn = clip.getPosition()+clip.getDuration()-CLIP_MIN_LENGHT;
 					}
-					
+					if(clip.getPosition()+timeDelta < 0) {
+						newTimeIn = 0;
+					}
+					if(!clip.isEmpty() && clip.getContentPosition()+timeDelta<0) {
+						newTimeIn = clip.getPosition()-clip.getContentPosition();
+					}
 					Starter.getController().moveClip(clip.getTitle(), ch.getTitle(), newTimeIn);
 				} catch (ClipNotFoundException | ImportException e1) {
 					updateClips();
 				}
-			} else if(mod.equals(Modality.TIMEOUT)) {
+			} else if(mod.equals(ClipDragModality.TIMEOUT)) {
 				//out event
+				double newTimeOut = newTimeIn+clip.getDuration();
+				try {
+					if(newTimeOut>Starter.getController().getProjectLength()) {
+						newTimeOut = Starter.getController().getProjectLength();
+					}
+					if(clip.getDuration()+timeDelta<=0) {
+						newTimeOut = clip.getPosition()+CLIP_MIN_LENGHT;
+					}
+					if(!clip.isEmpty() && timeDelta >= clip.getContentDuration()-clip.getContentPosition()-clip.getDuration()) {
+						newTimeOut = clip.getPosition()+clip.getContentDuration()-clip.getContentPosition();
+					}
+					Starter.getController().setClipTimeOut(clip.getTitle(), ch.getTitle(), newTimeOut);
+				} catch (ClipNotFoundException | ImportException e1) {
+					 updateClips();
+				}
 			} else {
 				//move event
 				try {
-					double newTimeIn = clip.getPosition()+timeDelta;
 					if(newTimeIn<0) {
 						newTimeIn = 0;
 					} else if (newTimeIn+clip.getDuration()>Starter.getController().getProjectLength()) {
@@ -233,15 +248,21 @@ public abstract class ChannelContentView extends Pane {
 		private void mouseDragged(MouseEvent e) {
 			if(dragging) {
 				this.timeDelta = axis.getValueForDisplay(e.getScreenX()).doubleValue()-axis.getValueForDisplay(initialX).doubleValue();
-				if(mod.equals(Modality.TIMEIN)) {
+				if(mod.equals(ClipDragModality.TIMEIN)) {
 					//in event
-					if(clip.isEmpty() || (clip.getContentPosition()+timeDelta>=0 && clip.getContentPosition()+timeDelta<=clip.getContentDuration()-clip.getContentPosition())) {
-						this.setLayoutX(initialLayoutX+e.getScreenX()-initialX);
-						this.setPrefWidth(initialWidth+initialX-e.getScreenX());
+					if(clip.isEmpty() || clip.getContentPosition()+timeDelta>=0) {
+						if(timeDelta<clip.getDuration() && clip.getPosition()+timeDelta >= 0) {
+							this.setLayoutX(initialLayoutX+e.getScreenX()-initialX);
+							this.setPrefWidth(initialWidth+initialX-e.getScreenX());
+						}
 					}
-				} else if(mod.equals(Modality.TIMEOUT)) {
+				} else if(mod.equals(ClipDragModality.TIMEOUT)) {
 					//out event
-					
+					if(clip.isEmpty() || timeDelta < clip.getContentDuration()-clip.getContentPosition()-clip.getDuration()) {
+						if(clip.getDuration()+timeDelta>0 && clip.getDuration()+clip.getPosition()+timeDelta<=Starter.getController().getProjectLength()) {
+							this.setPrefWidth(initialWidth+initialX-e.getScreenX());
+						}
+					}
 				} else {
 					//move event
 					if(clip.getPosition()+timeDelta >= 0 && clip.getPosition()+clip.getDuration()+timeDelta <= Starter.getController().getProjectLength()) {
@@ -257,11 +278,11 @@ public abstract class ChannelContentView extends Pane {
 			initialLayoutX = this.getLayoutX();
 			initialWidth = this.getWidth();
 			if(isOnTimeIn(e)) {
-				this.mod = Modality.TIMEIN;
+				this.mod = ClipDragModality.TIMEIN;
 			} else if(isOnTimeOut(e)) {
-				this.mod = Modality.TIMEOUT;
+				this.mod = ClipDragModality.TIMEOUT;
 			} else {
-				this.mod = Modality.MOVE;
+				this.mod = ClipDragModality.MOVE;
 			}
 		}
 		
