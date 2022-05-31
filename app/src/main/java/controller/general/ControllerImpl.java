@@ -251,6 +251,11 @@ public class ControllerImpl implements Controller {
         return this.engine.isPaused();
     }
 
+    @Override
+    public double getProjectLength() {
+        return this.manager.getProjectLength();
+    }
+
     // ONLY FOR TEMPORARY TESTING PURPOSES
     public Manager getManager() {
         return this.manager;

@@ -84,4 +84,5 @@ public interface Controller {
 
     boolean isPaused();
 
+    double getProjectLength();
 }
