@@ -189,8 +189,8 @@ public class Manager implements RPManager {
      */
     @Override
     public void addClip(RPPart.PartType type, String title, Optional<String> description,String channel,Double time,
-                        Optional<File> content) throws ImportException, IllegalArgumentException {
-        RPClip clip = new EmptyClip();
+                        Double duration, Optional<File> content) throws ImportException, IllegalArgumentException {
+        RPClip clip = new EmptyClip(duration);
         if (this.clipLinker.clipExists(title)) {
             throw new IllegalArgumentException("Clip already exists");
         } else if (title.equals("")) {

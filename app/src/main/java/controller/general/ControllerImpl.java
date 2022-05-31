@@ -150,7 +150,7 @@ public class ControllerImpl implements Controller {
         }
         Optional<String> desc = description.equals("") ? Optional.empty() : Optional.of(description);
         Optional<File> file = content == null ? Optional.empty() : Optional.of(content);
-        this.manager.addClip(partType, title, desc, channel, time, file);
+        this.manager.addClip(partType, title, desc, channel, time, duration, file);
         App.getData().addClip(App.getData().getChannel(channel),new ViewDataImpl.Clip(title, time, duration, time));
     }
 
@@ -258,35 +258,35 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void moveClip(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException, ImportException {
-        Double time = this.manager.getClipTime(clip,channel);
-        Double duration = this.manager.getClipDuration(clip);
         App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.moveClip(clip,channel,finalTimeIn);
+        Double time = this.manager.getClipTime(clip,channel);
+        Double duration = this.manager.getClipDuration(clip);
         App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration, time));
     }
 
     @Override
     public void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException, ImportException {
-        Double time = this.manager.getClipTime(clip,channel);
-        Double duration = this.manager.getClipDuration(clip);
         App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.setClipTimeIn(clip,channel,finalTimeIn);
+        Double time = this.manager.getClipTime(clip,channel);
+        Double duration = this.manager.getClipDuration(clip);
         App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration, time));    }
 
     @Override
     public void setClipTimeOut(String clip, String channel, Double finalTimeOut) throws ClipNotFoundException, ImportException {
-        Double time = this.manager.getClipTime(clip,channel);
-        Double duration = this.manager.getClipDuration(clip);
         App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.setClipTimeOut(clip,channel,finalTimeOut);
+        Double time = this.manager.getClipTime(clip,channel);
+        Double duration = this.manager.getClipDuration(clip);
         App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration, time));    }
 
     @Override
     public void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException, ImportException {
-        Double time = this.manager.getClipTime(clip,channel);
-        Double duration = this.manager.getClipDuration(clip);
         App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.splitClip(clip,channel,splittingTime);
+        Double time = this.manager.getClipTime(clip,channel);
+        Double duration = this.manager.getClipDuration(clip);
         App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration, time));
     }
 
