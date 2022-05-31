@@ -58,6 +58,7 @@ public class Engine implements RPEngine {
 		
 	public Engine(ChannelLinker channelLinker) {
 		this.channelLinker = channelLinker;
+		this.conductor = Optional.empty();
 		this.clock = new Clock();
 		this.playersMapBuilder = new PlayersMapBuilderImpl();
 	}

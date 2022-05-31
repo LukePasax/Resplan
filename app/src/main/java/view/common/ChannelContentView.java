@@ -6,10 +6,12 @@ import Resplan.Starter;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -143,10 +145,20 @@ public abstract class ChannelContentView extends Pane {
 		return this.ch;
 	}
 	
+	/**
+	 *	Clip U.I. common code
+	 */
 	private class ClipView extends AnchorPane {
+		
+		private static final int RESIZE_MARGIN = 5;
+		
+		private double initialX;
+		private boolean dragging = false;
+		private Clip clip;
 
 		public ClipView(Node content, Clip clip) {
 			super(content);
+			this.clip = clip;
 			//clip border
 			this.setBorder(new Border(new BorderStroke(null, BorderStrokeStyle.SOLID, null, null)));
 			//content layout
@@ -161,6 +173,34 @@ public abstract class ChannelContentView extends Pane {
 			remove.setOnAction(a->Starter.getController().deleteClip(clip.getTitle(), ch.getTitle(), clip.getPosition()));
 			ContextMenu menu = new ContextMenu(remove);
 			this.setOnContextMenuRequested(e -> menu.show(this, e.getScreenX(), e.getScreenY()));
+			//drag and drop controls
+			this.setOnMouseReleased(this::mouseReleased);
+			this.setOnMouseMoved(this::mouseOver);
+			this.setOnMouseDragged(this::mouseDragged);
+			this.setOnMousePressed(this::mousePressed);
 		}
+		
+		private void mouseReleased(MouseEvent e) {
+			
+		}
+		
+		private void mouseOver(MouseEvent e) {
+			this.setCursor(Cursor.OPEN_HAND);
+		}
+		
+		private void mouseDragged(MouseEvent e) {
+			if(dragging) {
+				double timeDelta = axis.getValueForDisplay(e.getScreenX()).doubleValue()-axis.getValueForDisplay(initialX).doubleValue();
+				if(clip.getPosition()+timeDelta >= 0 && clip.getPosition()+clip.getDuration()+timeDelta <= Starter.getController().getProjectLength()) {
+					this.setLayoutX(e.getScreenX()-initialX);
+				}
+			}
+		}
+		
+		private void mousePressed(MouseEvent e) {
+			dragging = true;
+			initialX = e.getScreenX();
+		}
+		
 	}
 }
