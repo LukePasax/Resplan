@@ -10,7 +10,8 @@ import daw.core.clip.RPClipPlayer;
 public interface RPClipPlayerNotifier {
 	
 	/**
-	 * Read the step from the clock and play all the players registered at that step.
+	 * Notify all the players associated with the given step to play or stop.
+	 * Then remove them from the observers.
 	 */
 	void update(Long step);
 	

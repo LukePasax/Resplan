@@ -40,16 +40,22 @@ public class ClipPlayerNotifier implements RPClipPlayerNotifier {
 	 */
 	@Override
 	public void update(Long step) {
-		if(observers.containsStep(step)) {
-			this.play(this.observers.getClipPlayersAt(step));
-			final Long s = step;
-			this.observers.getClipPlayersAt(step).forEach(p->{
-				addToStop(s, p);
+		observers.entrySet().stream().filter(entry->{
+			return entry.getKey()<=step;
+		}).forEach(entry->{
+			//play
+			this.play(entry.getValue());
+			//add stop observer
+			entry.getValue().forEach(player->{
+				addToStop(entry.getKey(), player);
 			});
-		}
-		if(toStop.containsStep(step)) {
-			this.stop(this.toStop.getClipPlayersAt(step));
-		}	
+		});
+		toStop.entrySet().stream().filter(entry->{
+			return entry.getKey()<=step;
+		}).forEach(entry->{
+			//stop
+			this.stop(entry.getValue());
+		});
 	}
 
 	/**

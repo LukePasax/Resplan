@@ -134,6 +134,7 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 				throw new IllegalArgumentException("The supplied time must be a non-zero and positive value.");
 			}
 			this.cutTime = Optional.of(time);
+			this.setPlaybackPosition(cutTime.get());
 		}
 
 		/**
