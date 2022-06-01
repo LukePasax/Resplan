@@ -55,7 +55,6 @@ public abstract class ChannelContentView extends Pane {
 				});
 				c.getRemoved().forEach(clip->{
 					getChildren().removeAll(clip.getViewSet());
-					clip.clearViewSet();
 				});
 			}
 		});
@@ -153,7 +152,6 @@ public abstract class ChannelContentView extends Pane {
 	private class ClipView extends AnchorPane {
 		
 		private static final int RESIZE_MARGIN = 5;
-		private static final int CLIP_MIN_LENGHT = 10;
 		
 		private double initialX;
 		private double initialLayoutX;
@@ -193,7 +191,7 @@ public abstract class ChannelContentView extends Pane {
 				//in event
 				try {
 					if(timeDelta>=clip.getDuration()) {
-						newTimeIn = clip.getPosition()+clip.getDuration()-CLIP_MIN_LENGHT;
+						newTimeIn = clip.getPosition()+clip.getDuration()-getMinDuration();
 					}
 					if(clip.getPosition()+timeDelta < 0) {
 						newTimeIn = 0;
@@ -201,7 +199,7 @@ public abstract class ChannelContentView extends Pane {
 					if(!clip.isEmpty() && clip.getContentPosition()+timeDelta<0) {
 						newTimeIn = clip.getPosition()-clip.getContentPosition();
 					}
-					Starter.getController().moveClip(clip.getTitle(), ch.getTitle(), newTimeIn);
+					Starter.getController().setClipTimeIn(clip.getTitle(), ch.getTitle(), newTimeIn);
 				} catch (ClipNotFoundException | ImportException e1) {
 					updateClips();
 				}
@@ -213,7 +211,7 @@ public abstract class ChannelContentView extends Pane {
 						newTimeOut = Starter.getController().getProjectLength();
 					}
 					if(clip.getDuration()+timeDelta<=0) {
-						newTimeOut = clip.getPosition()+CLIP_MIN_LENGHT;
+						newTimeOut = clip.getPosition()+getMinDuration();
 					}
 					if(!clip.isEmpty() && timeDelta >= clip.getContentDuration()-clip.getContentPosition()-clip.getDuration()) {
 						newTimeOut = clip.getPosition()+clip.getContentDuration()-clip.getContentPosition();
@@ -251,7 +249,7 @@ public abstract class ChannelContentView extends Pane {
 				if(mod.equals(ClipDragModality.TIMEIN)) {
 					//in event
 					if(clip.isEmpty() || clip.getContentPosition()+timeDelta>=0) {
-						if(timeDelta<clip.getDuration() && clip.getPosition()+timeDelta >= 0) {
+						if(timeDelta<clip.getDuration()-getMinDuration() && clip.getPosition()+timeDelta >= 0) {
 							this.setLayoutX(initialLayoutX+e.getScreenX()-initialX);
 							this.setPrefWidth(initialWidth+initialX-e.getScreenX());
 						}
@@ -259,8 +257,8 @@ public abstract class ChannelContentView extends Pane {
 				} else if(mod.equals(ClipDragModality.TIMEOUT)) {
 					//out event
 					if(clip.isEmpty() || timeDelta < clip.getContentDuration()-clip.getContentPosition()-clip.getDuration()) {
-						if(clip.getDuration()+timeDelta>0 && clip.getDuration()+clip.getPosition()+timeDelta<=Starter.getController().getProjectLength()) {
-							this.setPrefWidth(initialWidth+initialX-e.getScreenX());
+						if(clip.getDuration()+timeDelta>getMinDuration() && clip.getDuration()+clip.getPosition()+timeDelta<=Starter.getController().getProjectLength()) {
+							this.setPrefWidth(initialWidth+e.getScreenX()-initialX);
 						}
 					}
 				} else {
@@ -292,6 +290,10 @@ public abstract class ChannelContentView extends Pane {
 		
 		private boolean isOnTimeOut(MouseEvent e) {
 			return e.getX()>= this.getWidth()-RESIZE_MARGIN;
+		}
+		
+		private double getMinDuration() {
+			return axis.getTickUnit()/10;
 		}
 		
 	}

@@ -2,6 +2,7 @@ package view.edit;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.FlowPane;
@@ -28,7 +29,7 @@ public class EditChannelsView extends ChannelsView {
 	
 	@Override
 	public Node drawClip(Clip clip) {
-		return new EditClipView(clip);
+		return new Label(clip.getTitle());
 	}
 
 	@Override

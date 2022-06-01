@@ -379,7 +379,7 @@ public class Manager implements RPManager {
 
     @Override
     public void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException {
-        this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
+    	this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
                 .setTimeIn(this.getClipTime(clip,channel),finalTimeIn);
     }
 

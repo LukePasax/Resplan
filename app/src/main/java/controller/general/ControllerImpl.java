@@ -286,8 +286,8 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException, ImportException {
-        App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
-        this.manager.setClipTimeIn(clip,channel,finalTimeIn);
+    	App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
+    	this.manager.setClipTimeIn(clip,channel,finalTimeIn);
         createClipView(clip, channel);
     }
 

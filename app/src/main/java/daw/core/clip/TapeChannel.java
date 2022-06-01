@@ -153,7 +153,9 @@ public class TapeChannel implements RPTapeChannel {
 		}
 		double newDuration = this.getClipTimeOut(initialClipTimeIn) - finalClipTimeIn;
 		this.removeClip(initialClipTimeIn);
-		clip.setContentPosition(clip.getContentPosition()+(clip.getDuration()-newDuration));
+		if(!clip.isEmpty()) {
+			clip.setContentPosition(clip.getContentPosition()+(clip.getDuration()-newDuration));
+		}
 		clip.setDuration(newDuration);
 		this.insertRPClip(clip, finalClipTimeIn);
 	}
