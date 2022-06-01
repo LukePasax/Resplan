@@ -10,6 +10,8 @@ public class ClipPlayerNotifier implements RPClipPlayerNotifier {
 	
 	private final RPPlayersMap toStop = new PlayersMap();
 	
+	private Long oldStep = -1l;
+	
 	/**
 	 * The players to notify.
 	 */
@@ -41,7 +43,7 @@ public class ClipPlayerNotifier implements RPClipPlayerNotifier {
 	@Override
 	public void update(Long step) {
 		observers.entrySet().stream().filter(entry->{
-			return entry.getKey()<=step;
+			return entry.getKey()<=step && entry.getKey()>oldStep;
 		}).forEach(entry->{
 			//play
 			this.play(entry.getValue());
@@ -51,11 +53,12 @@ public class ClipPlayerNotifier implements RPClipPlayerNotifier {
 			});
 		});
 		toStop.entrySet().stream().filter(entry->{
-			return entry.getKey()<=step;
+			return entry.getKey()<=step && entry.getKey()>oldStep;
 		}).forEach(entry->{
 			//stop
 			this.stop(entry.getValue());
 		});
+		oldStep = step;
 	}
 
 	/**
