@@ -396,6 +396,11 @@ public class Manager implements RPManager {
     }
 
     @Override
+    public RPClip getClip(String title) {
+        return this.getClipLinker().getClipFromPart(this.getClipLinker().getPart(title));
+    }
+
+    @Override
     public void updateProjectLength(String title, String channel) {
         if (this.getClipTime(title, channel) + this.getClipDuration(title) > this.projectLength) {
             this.projectLength = this.getClipTime(title, channel) + this.getClipDuration(title) + MIN_SPACING;

@@ -2,6 +2,7 @@ package daw.manager;
 
 import daw.core.channel.RPChannel;
 import daw.core.clip.ClipNotFoundException;
+import daw.core.clip.RPClip;
 import daw.core.mixer.RPMixer;
 import planning.RPPart;
 import planning.RPRole;
@@ -173,4 +174,6 @@ public interface RPManager {
     void setClipTimeOut(String clip, String channel, Double finalTimeOut) throws ClipNotFoundException;
 
     void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException;
+
+    RPClip getClip(String title);
 }

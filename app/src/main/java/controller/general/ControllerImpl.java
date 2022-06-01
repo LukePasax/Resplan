@@ -4,6 +4,7 @@ import controller.storing.ReadFromFileImpl;
 import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;
 import daw.core.clip.ClipNotFoundException;
+import daw.core.clip.RPClip;
 import daw.engine.Engine;
 import daw.engine.RPEngine;
 import daw.manager.ChannelLinker;
@@ -151,7 +152,14 @@ public class ControllerImpl implements Controller {
         Optional<String> desc = description.equals("") ? Optional.empty() : Optional.of(description);
         Optional<File> file = content == null ? Optional.empty() : Optional.of(content);
         this.manager.addClip(partType, title, desc, channel, time, duration, file);
-        App.getData().addClip(App.getData().getChannel(channel),new ViewDataImpl.Clip(title, time, duration, time));
+        RPClip clip = this.manager.getClip(title);
+        if (clip.isEmpty()) {
+            App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time, duration,
+                    Optional.empty(), Optional.empty()));
+        } else {
+            App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time, duration,
+                    Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration())));
+        }
     }
 
     @Override
@@ -260,34 +268,41 @@ public class ControllerImpl implements Controller {
     public void moveClip(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException, ImportException {
         App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.moveClip(clip,channel,finalTimeIn);
+        createClipView(clip, channel);
+    }
+
+    private void createClipView(String clip, String channel) {
         Double time = this.manager.getClipTime(clip,channel);
         Double duration = this.manager.getClipDuration(clip);
-        App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration, time));
+        RPClip rpClip = this.manager.getClip(clip);
+        if (clip.isEmpty()) {
+            App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration,
+                    Optional.empty(), Optional.empty()));
+        } else {
+            App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration,
+                    Optional.of(rpClip.getContentPosition()), Optional.of(rpClip.getContentDuration())));
+        }
     }
 
     @Override
     public void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException, ImportException {
         App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.setClipTimeIn(clip,channel,finalTimeIn);
-        Double time = this.manager.getClipTime(clip,channel);
-        Double duration = this.manager.getClipDuration(clip);
-        App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration, time));    }
+        createClipView(clip, channel);
+    }
 
     @Override
     public void setClipTimeOut(String clip, String channel, Double finalTimeOut) throws ClipNotFoundException, ImportException {
         App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.setClipTimeOut(clip,channel,finalTimeOut);
-        Double time = this.manager.getClipTime(clip,channel);
-        Double duration = this.manager.getClipDuration(clip);
-        App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration, time));    }
+        createClipView(clip, channel);
+    }
 
     @Override
     public void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException, ImportException {
         App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.splitClip(clip,channel,splittingTime);
-        Double time = this.manager.getClipTime(clip,channel);
-        Double duration = this.manager.getClipDuration(clip);
-        App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration, time));
+        createClipView(clip, channel);
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES
