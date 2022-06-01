@@ -8,10 +8,7 @@ import daw.core.clip.RPClipPlayer;
  */
 public class ClipPlayerNotifier implements RPClipPlayerNotifier {
 	
-	/**
-	 * The clock.
-	 */
-	private final RPClock clock;
+	private final RPPlayersMap toStop = new PlayersMap();
 	
 	/**
 	 * The players to notify.
@@ -25,8 +22,7 @@ public class ClipPlayerNotifier implements RPClipPlayerNotifier {
 	 * 
 	 * @param  observers  The clip players to register.
 	 */
-	public ClipPlayerNotifier(RPClock clock, RPPlayersMap observers) {
-		this.clock = clock;
+	public ClipPlayerNotifier(RPPlayersMap observers) {
 		this.observers = observers;
 	}
 	
@@ -35,39 +31,53 @@ public class ClipPlayerNotifier implements RPClipPlayerNotifier {
 	 * 
 	 * @param  clock  The clock to read the current step from
 	 */
-	public ClipPlayerNotifier(RPClock clock) {
-		this(clock, new PlayersMap());
+	public ClipPlayerNotifier() {
+		this(new PlayersMap());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void update() {
-		Long step = this.clock.getStep();
+	public void update(Long step) {
 		if(observers.containsStep(step)) {
 			this.play(this.observers.getClipPlayersAt(step));
+			final Long s = step;
+			this.observers.getClipPlayersAt(step).forEach(p->{
+				addToStop(s, p);
+			});
 		}
+		if(toStop.containsStep(step)) {
+			this.stop(this.toStop.getClipPlayersAt(step));
+		}	
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	private void play(Set<RPClipPlayer> set) {
-		set.parallelStream().forEach(player->{
+		set.stream().forEach(player->{
 			player.play();
 		});
 	}
+	
+	private void stop(Set<RPClipPlayer> set) {
+		set.stream().forEach(player->{
+			player.stop();
+		});
+	}
 
+	private void addToStop(Long step, RPClipPlayer player) {
+		toStop.putClipPlayer(step+Clock.Utility.timeToClockSteps(player.getPlaybackDuration()), player);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void notifyStopped() {
-		this.observers.entrySet().parallelStream().forEach(e->{
-			e.getValue().parallelStream().forEach(p->{
-				p.stop();
-			});
+		this.observers.entrySet().stream().forEach(e->{
+			stop(e.getValue());
 		});
 	}
 

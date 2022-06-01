@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -220,7 +221,7 @@ public abstract class ChannelContentView extends Pane {
 				} catch (ClipNotFoundException | ImportException e1) {
 					 updateClips();
 				}
-			} else {
+			} else if (mod.equals(ClipDragModality.MOVE)) {
 				//move event
 				try {
 					if(newTimeIn<0) {
@@ -261,7 +262,7 @@ public abstract class ChannelContentView extends Pane {
 							this.setPrefWidth(initialWidth+e.getScreenX()-initialX);
 						}
 					}
-				} else {
+				} else if (mod.equals(ClipDragModality.MOVE)){
 					//move event
 					if(clip.getPosition()+timeDelta >= 0 && clip.getPosition()+clip.getDuration()+timeDelta <= Starter.getController().getProjectLength()) {
 						this.setLayoutX(initialLayoutX+e.getScreenX()-initialX);
@@ -271,16 +272,20 @@ public abstract class ChannelContentView extends Pane {
 		}
 		
 		private void mousePressed(MouseEvent e) {
-			dragging = true;
-			initialX = e.getScreenX();
-			initialLayoutX = this.getLayoutX();
-			initialWidth = this.getWidth();
-			if(isOnTimeIn(e)) {
-				this.mod = ClipDragModality.TIMEIN;
-			} else if(isOnTimeOut(e)) {
-				this.mod = ClipDragModality.TIMEOUT;
+			if(e.getButton().equals(MouseButton.SECONDARY)) {
+				this.mod = ClipDragModality.MENU;
 			} else {
-				this.mod = ClipDragModality.MOVE;
+				dragging = true;
+				initialX = e.getScreenX();
+				initialLayoutX = this.getLayoutX();
+				initialWidth = this.getWidth();
+				if(isOnTimeIn(e)) {
+					this.mod = ClipDragModality.TIMEIN;
+				} else if(isOnTimeOut(e)) {
+					this.mod = ClipDragModality.TIMEOUT;
+				} else {
+					this.mod = ClipDragModality.MOVE;
+				}
 			}
 		}
 		

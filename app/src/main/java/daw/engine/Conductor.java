@@ -52,15 +52,18 @@ public class Conductor extends Thread {
 	@Override
 	public void run() {
 		this.stopped = false;
-		this.startTime = System.currentTimeMillis();
+		this.startTime = System.currentTimeMillis()-clock.getTime().longValue();
 		while(!stopped) {
-			notifier.update();
+			//notifier update
+			notifier.update(clock.getStep());
 			Starter.getController().updatePlaybackTime(clock.getTime());
 			try {
+				//sleep
 				Thread.sleep(this.sleepTime.getKey(), this.sleepTime.getValue());
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
+			//update time
 			clock.setTime(Long.valueOf(System.currentTimeMillis()-startTime).doubleValue());
 		}
 		this.interrupt();

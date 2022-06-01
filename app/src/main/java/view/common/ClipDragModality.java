@@ -1,5 +1,5 @@
 package view.common;
 
 enum ClipDragModality {
-	TIMEIN,TIMEOUT,MOVE
+	TIMEIN, TIMEOUT, MOVE, MENU
 }

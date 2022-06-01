@@ -39,17 +39,11 @@ public class Engine implements RPEngine {
 	 * The thread whitch updates clock ad notifier every CLOCK_STEP_UNIT.
 	 */
 	private Optional<Conductor> conductor;
-	
-	/**
-	 * The players map builder.
-	 */
-	private final PlayersMapBuilder playersMapBuilder;
 		
 	public Engine(ChannelLinker channelLinker) {
 		this.channelLinker = channelLinker;
 		this.conductor = Optional.empty();
 		this.clock = new Clock();
-		this.playersMapBuilder = new PlayersMapBuilderImpl();
 	}
 
 	/**
@@ -70,6 +64,8 @@ public class Engine implements RPEngine {
 		if(!isPaused()) {
 			this.conductor.get().notifyStopped();
 			this.conductor = Optional.empty();
+			this.notifier.get().notifyStopped();
+			this.notifier = Optional.empty();
 		}
 	}
 
@@ -108,9 +104,8 @@ public class Engine implements RPEngine {
 	}
 	
 	private void updateObservers() {
-		this.notifier = Optional.of(new ClipPlayerNotifier(
-			this.clock, 
-			this.playersMapBuilder.setChannelLinker(channelLinker)
+		this.notifier = Optional.of(new ClipPlayerNotifier( 
+			new PlayersMapBuilderImpl().setChannelLinker(channelLinker)
 				.addSampleClipsBetween(Optional.of(this.getPlaybackTime()), Optional.empty())
 				.build()
 		));

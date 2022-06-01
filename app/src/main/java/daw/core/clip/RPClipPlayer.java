@@ -89,6 +89,13 @@ public interface RPClipPlayer {
 	double getCutTime();
 	
 	/**
+	 * Get the duration of this player's clip.
+	 * 
+	 * @return  The duration of this player's clip
+	 */
+	double getPlaybackDuration();
+	
+	/**
 	 * Get the UGen for connecting this player to any channel.
 	 * 
 	 * @return  The wrapped UGen.

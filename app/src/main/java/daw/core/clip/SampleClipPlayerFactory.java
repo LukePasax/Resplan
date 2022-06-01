@@ -180,6 +180,11 @@ public class SampleClipPlayerFactory implements ClipPlayerFactory {
 			}
 			return this.cutTime.get();
 		}
+
+		@Override
+		public double getPlaybackDuration() {
+			return this.clip.getDuration();
+		}
 	}
 
 

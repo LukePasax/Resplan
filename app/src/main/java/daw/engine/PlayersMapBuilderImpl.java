@@ -12,7 +12,7 @@ import daw.manager.ChannelLinker;
  */
 public class PlayersMapBuilderImpl implements PlayersMapBuilder {
 	
-	private final RPPlayersMap playersMap = new PlayersMap();
+	private RPPlayersMap playersMap = new PlayersMap();
 	
 	private Optional<ChannelLinker> channelLinker = Optional.empty();
 	
@@ -24,7 +24,9 @@ public class PlayersMapBuilderImpl implements PlayersMapBuilder {
 	 */
 	@Override
 	public RPPlayersMap build() {
-		return this.playersMap;
+		RPPlayersMap current = this.playersMap;
+		this.playersMap = new PlayersMap();
+		return current;
 	}
 
 	/**

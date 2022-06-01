@@ -72,7 +72,7 @@ public class EditViewController implements Initializable{
 		//-------PLAYBACK TIME SET-----
 		channelsContentPane.setOnMouseClicked(e->{
 			if(Starter.getController().isPaused()) {
-				markersPane.updatePlaybackMarker(timeAxisSetter.getAxis().getValueForDisplay(e.getX()).doubleValue());
+				Starter.getController().setPlaybackTime(timeAxisSetter.getAxis().getValueForDisplay(e.getX()).doubleValue());
 			}
 		});
 		this.setPlaybackMarkerPosition(0);

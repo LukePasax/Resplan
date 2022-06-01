@@ -242,6 +242,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void setPlaybackTime(Double time) {
         this.engine.setPlaybackTime(time);
+        updatePlaybackTime(time);
     }
 
     @Override

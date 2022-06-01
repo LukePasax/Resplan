@@ -12,7 +12,7 @@ public interface RPClipPlayerNotifier {
 	/**
 	 * Read the step from the clock and play all the players registered at that step.
 	 */
-	void update();
+	void update(Long step);
 	
 	/**
 	 * Stop all the subscribed players
