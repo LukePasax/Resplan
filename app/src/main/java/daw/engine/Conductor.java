@@ -1,7 +1,5 @@
 package daw.engine;
 
-import java.util.concurrent.TimeUnit;
-
 import Resplan.Starter;
 import javafx.util.Pair;
 
@@ -11,6 +9,8 @@ import javafx.util.Pair;
  *
  */
 public class Conductor extends Thread {
+	
+	private final static int MS_TO_NS = 1000000;
 	
 	/**
 	 * The clip player notifier to update.
@@ -32,6 +32,8 @@ public class Conductor extends Thread {
 	 */
 	private final Pair<Long,Integer> sleepTime;
 
+	private long startTime;
+
 	/**
 	 * Creates a new conductor from a notifier and a clock.
 	 * 
@@ -50,6 +52,7 @@ public class Conductor extends Thread {
 	@Override
 	public void run() {
 		this.stopped = false;
+		this.startTime = System.currentTimeMillis();
 		while(!stopped) {
 			notifier.update();
 			Starter.getController().updatePlaybackTime(clock.getTime());
@@ -58,21 +61,19 @@ public class Conductor extends Thread {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-			try {
-				clock.step();
-			} catch (ClockException e) {
-				this.notifyStopped();
-				e.printStackTrace();
-			}
+			clock.setTime(Long.valueOf(System.currentTimeMillis()-startTime).doubleValue());
 		}
+		this.interrupt();
 	}
 
 	/**
 	 * Stop this conductor.
 	 */
 	public void notifyStopped() {
-		stopped = true;	
-		this.interrupt();	
+		stopped = true;
+		while(!this.isInterrupted()) {
+			
+		}
 	}
 	
 	/**
@@ -86,7 +87,7 @@ public class Conductor extends Thread {
 	
 	private Pair<Long,Integer> fromDoubleMsToMsAndNs(Double milliseconds) {
 		Long ms = milliseconds.longValue();
-		Integer ns = Long.valueOf(TimeUnit.NANOSECONDS.convert(Double.valueOf(milliseconds-ms).longValue(), TimeUnit.MILLISECONDS)).intValue();
+		Integer ns = Double.valueOf((milliseconds-ms)*MS_TO_NS).intValue();
 		return new Pair<Long,Integer>(ms,ns);
 	}
 }

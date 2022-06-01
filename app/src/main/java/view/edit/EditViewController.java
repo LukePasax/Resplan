@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import Resplan.Starter;
+import javafx.application.Platform;
 import javafx.fxml.*;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -101,6 +102,7 @@ public class EditViewController implements Initializable{
 	
 	public void stop() {
 		Starter.getController().stop();
+		setPlaybackMarkerPosition(Starter.getController().getPlaybackTime());
 		this.play.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 	}
 	
@@ -115,7 +117,9 @@ public class EditViewController implements Initializable{
 	}
 	
 	public void setPlaybackMarkerPosition(double time) {
-		//this.markersPane.updatePlaybackMarker(time);
-		//this.playbackTimeLabel.setText(timeAxisSetter.getAxis().getTickLabelFormatter().toString(time));
+		Platform.runLater(()->{
+			this.markersPane.updatePlaybackMarker(time);
+			this.playbackTimeLabel.setText(timeAxisSetter.getAxis().getTickLabelFormatter().toString(time));
+		});
 	}
 }

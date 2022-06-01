@@ -1,13 +1,7 @@
 package daw.engine;
 
-import java.io.IOException;
 import java.util.Optional;
 import daw.manager.ChannelLinker;
-import daw.utilities.AudioContextManager;
-import net.beadsproject.beads.data.Sample;
-import net.beadsproject.beads.data.audiofile.FileFormatException;
-import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
-import net.beadsproject.beads.ugens.SamplePlayer;
 
 /**
  * Implementation of {@link RPEngine}.
@@ -75,7 +69,7 @@ public class Engine implements RPEngine {
 	public void pause() {
 		if(!isPaused()) {
 			this.conductor.get().notifyStopped();
-			this.conductor = Optional.empty();	
+			this.conductor = Optional.empty();
 		}
 	}
 
