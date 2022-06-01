@@ -275,7 +275,7 @@ public class ControllerImpl implements Controller {
         Double time = this.manager.getClipTime(clip,channel);
         Double duration = this.manager.getClipDuration(clip);
         RPClip rpClip = this.manager.getClip(clip);
-        if (clip.isEmpty()) {
+        if (rpClip.isEmpty()) {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration,
                     Optional.empty(), Optional.empty()));
         } else {
