@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -97,10 +98,40 @@
             </FlowPane>
             <SplitPane id="orizzontal fx-edit split" dividerPositions="0.8294892915980231" orientation="VERTICAL" VBox.vgrow="ALWAYS">
                <items>
-                  <SplitPane id="vertical browser-edit split" dividerPositions="0.18812709030100336" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                    <items>
-                      <AnchorPane id="browser" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
-                        <GridPane id="edit view" fx:id="timelineToChannelsAligner" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                  <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                     <children>
+                        <ToolBar maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" orientation="VERTICAL" style="-fx-background-color: WHITE;" HBox.hgrow="NEVER">
+                          <items>
+                              <Button fx:id="cursorButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#cursorToolSelected" prefHeight="20.0" prefWidth="20.0">
+                                 <graphic>
+                                    <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/cursorButton.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                            <Button fx:id="moveClipsButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#moveToolSelected" prefHeight="20.0" prefWidth="20.0">
+                                 <graphic>
+                                    <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/moveButton.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="addClipsButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#addClipsToolSelected" prefHeight="20.0" prefWidth="20.0">
+                                 <graphic>
+                                    <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../icons/newClipButton.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                          </items>
+                        </ToolBar>
+                        <GridPane id="edit view" fx:id="timelineToChannelsAligner" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: WHITE;" HBox.hgrow="ALWAYS">
                           <columnConstraints>
                             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="50.0" />
                             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="25.0" />
@@ -130,8 +161,8 @@
                               <Insets />
                            </opaqueInsets>
                         </GridPane>
-                    </items>
-                  </SplitPane>
+                     </children>
+                  </HBox>
                   <HBox id="effects" fx:id="fxPanel" minHeight="-Infinity" prefHeight="100.0" prefWidth="200.0" />
                </items>
             </SplitPane>

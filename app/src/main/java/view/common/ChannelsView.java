@@ -9,7 +9,7 @@ import view.common.ViewDataImpl.Clip;
 
 public abstract class ChannelsView {
 	
-	public ChannelsView(TimeAxisSetter timeAxisSetter, VBox channelsContentPane, VBox channelsInfoPane) {
+	public ChannelsView(TimeAxisSetter timeAxisSetter, VBox channelsContentPane, VBox channelsInfoPane, ToolBarSetter toolBarSetter) {
 		App.getData().addChannelsDataListener(new MapChangeListener<Channel, ObservableList<Clip>>() {
 
 			@Override
@@ -17,7 +17,7 @@ public abstract class ChannelsView {
 				if(c.wasAdded()) {
 					//--------CREATE VIEW COMPONENT-----
 					Channel ch = c.getKey();
-					ChannelContentView cw = new ChannelContentView(ch, timeAxisSetter.getAxis()){
+					ChannelContentView cw = new ChannelContentView(ch, timeAxisSetter.getAxis(), toolBarSetter){
 
 						@Override
 						public Node drawClipContent(Clip clip) {

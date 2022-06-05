@@ -10,7 +10,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import view.edit.EditViewController;
-import view.planning.PlanningController;
 
 public class App extends Application {
     
@@ -24,7 +23,7 @@ public class App extends Application {
     private Parent sleepingRoot;
     
     private EditViewController editController;
-    private PlanningController planningController;
+    //private PlanningController planningController;
     
     @Override
     public void start(Stage stage) throws Exception {
@@ -37,7 +36,7 @@ public class App extends Application {
         FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
         this.sleepingRoot = (Parent) editLoader.load();
         activeScene.setOnKeyPressed(this::switchScene);
-        this.planningController = planningLoader.getController();
+        //this.planningController = planningLoader.getController();
         this.editController = editLoader.getController();
         Starter.getController().setApp(this);
     }

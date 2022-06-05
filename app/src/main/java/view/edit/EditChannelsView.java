@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import view.common.ChannelsView;
 import view.common.TimeAxisSetter;
+import view.common.ToolBarSetter;
 import view.common.ViewDataImpl.Channel;
 import view.common.ViewDataImpl.Clip;
 
@@ -23,8 +24,8 @@ public class EditChannelsView extends ChannelsView {
 	private boolean muted;
 	private boolean solo;
 	
-	public EditChannelsView(TimeAxisSetter timeAxisSetter, VBox channelsContentPane, VBox channelsInfoPane) {
-		super(timeAxisSetter, channelsContentPane, channelsInfoPane);
+	public EditChannelsView(TimeAxisSetter timeAxisSetter, VBox channelsContentPane, VBox channelsInfoPane, ToolBarSetter toolBarSetter) {
+		super(timeAxisSetter, channelsContentPane, channelsInfoPane, toolBarSetter);
 	}
 	
 	@Override

@@ -17,6 +17,7 @@ import view.common.AlertDispatcher;
 import view.common.JsonFilePicker;
 import view.common.MarkersPane;
 import view.common.TimeAxisSetter;
+import view.common.ToolBarSetter;
 
 import java.awt.Toolkit;
 import java.io.IOException;
@@ -44,6 +45,7 @@ public class PlanningController {
     private TimeAxisSetter timeAxisSetter;
     private JsonFilePicker filePicker;
     private MarkersPane markersPane;
+    private ToolBarSetter toolBarSetter = new ToolBarSetter();
 
     public void initialize() {
     	//--------------setting time axis------------
@@ -57,7 +59,7 @@ public class PlanningController {
 		timelineToChannelsAligner.add(markersPane, 0, 1, 1, 3);
 		GridPane.setVgrow(markersPane, Priority.ALWAYS);
 		//--------set channels view----------
-        new PlanningChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane);
+        new PlanningChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane, toolBarSetter);
       //--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
   		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
   			timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);

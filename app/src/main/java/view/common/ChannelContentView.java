@@ -33,11 +33,13 @@ public abstract class ChannelContentView extends Pane {
 	private final static Paint borderColor = Paint.valueOf("#999999");
 	private final NumberAxis axis;
 	private final Channel ch;
+	private final ToolBarSetter toolBarSetter;
 
-	public ChannelContentView(Channel ch, NumberAxis axis) {
+	public ChannelContentView(Channel ch, NumberAxis axis, ToolBarSetter toolBarSetter) {
 		super();
 		this.ch = ch;
 		this.axis = axis;
+		this.toolBarSetter = toolBarSetter;
 		//borderLayout
 		this.setBorder(new Border(new BorderStroke(null, null, borderColor, null, 
 				null, null, BorderStrokeStyle.SOLID, null, CornerRadii.EMPTY, null, null)));
@@ -237,10 +239,14 @@ public abstract class ChannelContentView extends Pane {
 		}
 		
 		private void mouseOver(MouseEvent e) {
-			if(isOnTimeOut(e) || isOnTimeIn(e)) {
-				this.setCursor(Cursor.H_RESIZE);
+			if(toolBarSetter.getCurrentTool().equals(Tool.MOVE)) {
+				if(isOnTimeOut(e) || isOnTimeIn(e)) {
+					this.setCursor(Cursor.H_RESIZE);
+				} else {
+					this.setCursor(Cursor.OPEN_HAND);
+				}	
 			} else {
-				this.setCursor(Cursor.OPEN_HAND);
+				this.setCursor(Cursor.DEFAULT);
 			}
 		}
 		
@@ -272,8 +278,8 @@ public abstract class ChannelContentView extends Pane {
 		}
 		
 		private void mousePressed(MouseEvent e) {
-			if(e.getButton().equals(MouseButton.SECONDARY)) {
-				this.mod = ClipDragModality.MENU;
+			if(e.getButton().equals(MouseButton.SECONDARY) || !toolBarSetter.getCurrentTool().equals(Tool.MOVE)) {
+				this.mod = ClipDragModality.NODRAG;
 			} else {
 				dragging = true;
 				initialX = e.getScreenX();

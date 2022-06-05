@@ -15,6 +15,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import view.common.TimeAxisSetter;
+import view.common.Tool;
+import view.common.ToolBarSetter;
 import view.common.MarkersPane;
 
 public class EditViewController implements Initializable{
@@ -38,6 +40,9 @@ public class EditViewController implements Initializable{
 	 */
 	@FXML private VBox channelsInfoPane;
 	@FXML private HBox fxPanel;
+	@FXML private Button cursorButton;
+	@FXML private Button moveClipsButton;
+	@FXML private Button addClipsButton;
 	@FXML private Button stop;
 	@FXML private Button play;
 	@FXML private Button pause;
@@ -47,12 +52,16 @@ public class EditViewController implements Initializable{
 	 */
 	private TimeAxisSetter timeAxisSetter;
 	private MarkersPane markersPane;
+	private ToolBarSetter toolBarSetter = new ToolBarSetter();
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		//playButton
+		//set buttons and tools
 		this.play.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
-		
+		this.toolBarSetter.addTool(Tool.CURSOR, cursorButton)
+							.addTool(Tool.MOVE, moveClipsButton)
+							.addTool(Tool.ADDCLIPS, addClipsButton);
+		this.cursorToolSelected();
 		//--------------setting time axis------------
 		timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
 		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 5, 0, 0));
@@ -64,14 +73,14 @@ public class EditViewController implements Initializable{
 		timelineToChannelsAligner.add(markersPane, 0, 1, 1, 3);
 		GridPane.setVgrow(markersPane, Priority.ALWAYS);
 		//--------set channels view----------
-		new EditChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane);
+		new EditChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane, toolBarSetter);
 		//--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
 		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
 			timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
 		});
 		//-------PLAYBACK TIME SET-----
 		channelsContentPane.setOnMouseClicked(e->{
-			if(Starter.getController().isPaused()) {
+			if(Starter.getController().isPaused() && toolBarSetter.getCurrentTool().equals(Tool.CURSOR)) {
 				Starter.getController().setPlaybackTime(timeAxisSetter.getAxis().getValueForDisplay(e.getX()).doubleValue());
 			}
 		});
@@ -96,21 +105,37 @@ public class EditViewController implements Initializable{
 	        stage.showAndWait();
 	}
 	
-	public void addClip() {
-		//TODO
+	//tools
+	@FXML
+	public void cursorToolSelected() {
+		toolBarSetter.selectTool(Tool.CURSOR);
 	}
 	
+	@FXML
+	public void moveToolSelected() {
+		toolBarSetter.selectTool(Tool.MOVE);
+	}
+	
+	@FXML
+	public void addClipsToolSelected() {
+		toolBarSetter.selectTool(Tool.ADDCLIPS);
+	}
+	
+	//engine
+	@FXML
 	public void stop() {
 		Starter.getController().stop();
 		setPlaybackMarkerPosition(Starter.getController().getPlaybackTime());
 		this.play.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 	}
 	
+	@FXML
 	public void play() {
 		Starter.getController().start();
 		this.play.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, null, null)));
 	}
 	
+	@FXML
 	public void pause() {
 		Starter.getController().pause();
 		this.play.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));

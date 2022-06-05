@@ -6,11 +6,12 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import view.common.ChannelsView;
 import view.common.TimeAxisSetter;
+import view.common.ToolBarSetter;
 import view.common.ViewDataImpl;
 
 public class PlanningChannelsView extends ChannelsView {
-    public PlanningChannelsView(TimeAxisSetter timeAxisSetter, VBox channelsContentPane, VBox channelsInfoPane) {
-        super(timeAxisSetter, channelsContentPane, channelsInfoPane);
+    public PlanningChannelsView(TimeAxisSetter timeAxisSetter, VBox channelsContentPane, VBox channelsInfoPane, ToolBarSetter toolBarSetter) {
+        super(timeAxisSetter, channelsContentPane, channelsInfoPane, toolBarSetter);
     }
 
     @Override

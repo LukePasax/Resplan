@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -68,15 +67,7 @@ public class TimeAxisSetter {
 				class AxisMenu extends Pane {
 					TextField lb = new TextField();
 					TextField ub = new TextField();
-					java.util.function.UnaryOperator<Change> f = change -> {
-					    String text = change.getText();
-
-					    if (text.matches("[0-9:]*")) {
-					        return change;
-					    }
-
-					    return null;
-					};
+					NumberFormatConverter fc = new NumberFormatConverter();
 					AxisMenu() {
 						//buttons
 						HBox buttons = new HBox();
@@ -93,13 +84,13 @@ public class TimeAxisSetter {
 						buttons.getChildren().addAll(reset, ok);
 						//lower bound
 						HBox lowerBoundSetter = new HBox();	
-						lb.setPromptText(axis.getTickLabelFormatter().toString(axis.getLowerBound()));
-						lb.setTextFormatter(new TextFormatter<>(f));
+						lb.setPromptText(fc.toString(axis.getLowerBound()));
+						lb.setTextFormatter(new TextFormatter<>(fc.getFormatterUnaryOperator()));
 						lowerBoundSetter.getChildren().addAll(new Label("from: "), lb);
 						//upper bound
 						HBox upperBoundSetter = new HBox();
-						ub.setPromptText(axis.getTickLabelFormatter().toString(axis.getUpperBound()));
-						ub.setTextFormatter(new TextFormatter<>(f));
+						ub.setPromptText(fc.toString(axis.getUpperBound()));
+						ub.setTextFormatter(new TextFormatter<>(fc.getFormatterUnaryOperator()));
 						upperBoundSetter.getChildren().addAll(new Label("to: "), ub);
 						//pop-up
 						VBox v = new VBox();
