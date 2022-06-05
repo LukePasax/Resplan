@@ -1,5 +1,6 @@
 package view.common;
 
+import java.io.IOException;
 import java.util.List;
 
 import Resplan.Starter;
@@ -7,9 +8,12 @@ import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -25,8 +29,11 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import view.common.ViewDataImpl.Channel;
 import view.common.ViewDataImpl.Clip;
+import view.planning.NewClipController;
 
 public abstract class ChannelContentView extends Pane {
 
@@ -61,6 +68,53 @@ public abstract class ChannelContentView extends Pane {
 				});
 			}
 		});
+		//insert empty clip
+		class EmptyClipCreator implements EventHandler<MouseEvent> {
+			
+			private boolean secondClick = false;
+			private Double in;
+			private Double out;
+			
+			public EmptyClipCreator() {
+				toolBarSetter.addToolChangeListener(()->{
+					secondClick = false;
+				});
+			}
+
+			@Override
+			public void handle(MouseEvent e) {
+				if(toolBarSetter.getCurrentTool().equals(Tool.ADDCLIPS)) {
+					if(secondClick) {
+						out = axis.getValueForDisplay(e.getX()).doubleValue();
+						if(out<=in) {
+							return;
+						}
+						secondClick = false;
+						FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/NewClipWindow.fxml"));
+			            Scene scene;
+						try {
+							scene = new Scene(loader.load());
+							Stage stage = new Stage();
+							NewClipController controller = ((NewClipController)loader.getController());
+				            stage.setScene(scene);
+				            stage.initModality(Modality.WINDOW_MODAL);
+				            stage.setTitle("New Clip");
+				            stage.initOwner(getScene().getWindow());
+				            controller.channelPicker.setValue(ch.getTitle());
+							controller.durationPicker.setText(new NumberFormatConverter().toString(out-in));
+							controller.startTimePicker.setText(new NumberFormatConverter().toString(in));
+				            stage.showAndWait();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					} else {
+						in = axis.getValueForDisplay(e.getX()).doubleValue();
+						secondClick = true;
+					}
+				}
+			}
+		};
+		this.setOnMouseClicked(new EmptyClipCreator());
 	}
 	
 	//LAYOUT CLIPS

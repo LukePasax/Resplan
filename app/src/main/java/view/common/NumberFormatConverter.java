@@ -31,7 +31,7 @@ public class NumberFormatConverter extends StringConverter<Number> {
         if(ms.equals(0L)) {
             return String.format("%02d", min) + ":" + String.format("%02d", sec);
         }
-        return String.format("%02d", min) + ":" + String.format("%02d", sec) + "(+" + ms + "ms)";
+        return String.format("%02d", min) + ":" + String.format("%02d", sec) + ":" + ms;
     }
 
     @Override
