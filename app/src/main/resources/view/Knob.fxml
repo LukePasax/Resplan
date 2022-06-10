@@ -40,7 +40,7 @@
       </Label>
       <Pane fx:id="rotator" layoutX="74.0" layoutY="34.0" prefHeight="154.0" prefWidth="154.0">
          <children>
-            <Circle fill="#ff1f32" layoutX="77.0" layoutY="14.0" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="#ff1f32" layoutX="39.0" layoutY="116.0" radius="11.0" stroke="BLACK" strokeType="INSIDE" />
          </children>
       </Pane>
    </children>

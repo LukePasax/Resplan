@@ -1,4 +1,4 @@
-package view.effects;
+package view.effectstry;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,7 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import view.effects.Knob.KnobType;
+import view.effectstry.Knob.KnobType;
 
 public class CompressorPane extends BorderPane {
 	public CompressorPane() throws IOException {

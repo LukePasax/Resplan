@@ -1,4 +1,4 @@
-package view.effects;
+package view.effectstry;
 
 import java.net.URL;
 import java.util.ResourceBundle;

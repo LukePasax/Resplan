@@ -1,4 +1,4 @@
-package view.effects;
+package view.effectstry;
 
 public interface Knob {
 	public enum KnobType{

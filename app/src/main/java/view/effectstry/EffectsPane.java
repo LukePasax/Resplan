@@ -1,4 +1,4 @@
-package view.effects;
+package view.effectstry;
 
 import java.io.IOException;
 import java.util.HashMap;

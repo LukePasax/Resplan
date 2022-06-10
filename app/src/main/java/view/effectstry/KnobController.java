@@ -1,9 +1,9 @@
-package view.effects;
+package view.effectstry;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import view.effects.Knob.KnobType;
+import view.effectstry.Knob.KnobType;
 
 public class KnobController {
 	
