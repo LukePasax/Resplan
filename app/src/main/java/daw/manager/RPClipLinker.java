@@ -1,11 +1,13 @@
 package daw.manager;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import daw.core.clip.RPClip;
 import planning.RPPart;
 
 /**
  * This interface represents a class to link a {@link RPPart} to its corresponding {@link RPClip}.
  */
+@JsonDeserialize(as = ClipLinker.class)
 public interface RPClipLinker {
 
 	/**
