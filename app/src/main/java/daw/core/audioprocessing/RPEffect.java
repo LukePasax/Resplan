@@ -10,7 +10,7 @@ import java.util.Map;
  * This class is an extension of {@link UGen}. In the context of this software, this class is the one
  * all effects must extend. Non-abstract subclasses must provide an implementation for method calculateBuffer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, property = "type", visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Compression.class, name = "compression"),
         @JsonSubTypes.Type(value = HighPassFilter.class, name = "high pass"),
