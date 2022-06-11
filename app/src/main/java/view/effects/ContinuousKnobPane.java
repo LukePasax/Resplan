@@ -1,5 +1,8 @@
 package view.effects;
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -7,7 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class KnobPane extends Pane {
+public class ContinuousKnobPane extends Pane {
 	
 	private double min;
 	private double max;
@@ -16,21 +19,29 @@ public class KnobPane extends Pane {
 	final Label lvalue;
 	private final static double correctionx = 25;
 	private final static double correctiony = correctionx/1.5;
+	private final static double size = 150.0;
+	private final static double half = size/2;
+	private final static double radius = 40.0;
 	
 	private double initialValue = 0.0;
 	private double current = 0.0;
+	
 
-	public KnobPane(final double min, final double max, final int tickCount, final String name) {
+	public ContinuousKnobPane(final double min, final double max, final int tickCount, final String name) {
+		if(Double.compare(min, max) >= 0) {
+			throw new IllegalArgumentException();
+		}
 		this.min = min;
 		this.max = max;
+		double currentangle = min;
 		
-		this.setPrefHeight(150);
-		this.setPrefWidth(150);
+		this.setPrefHeight(size);
+		this.setPrefWidth(size);
 		
 		//Big circle
-		final Circle circle = new Circle(40.0);
-		circle.setLayoutX(75.0);
-		circle.setLayoutY(75.0);
+		final Circle circle = new Circle(radius);
+		circle.setLayoutX(half);
+		circle.setLayoutY(half);
 		circle.setFill(Color.WHITE);
 		circle.setStroke(Color.BLACK);
 		
@@ -57,16 +68,19 @@ public class KnobPane extends Pane {
 		lmax.setLayoutY(105);
 		//Value label
 		lvalue = new Label("" + value);
-		lvalue.setLayoutX(68);
-		lvalue.setLayoutY(68);
+		lvalue.setLayoutX(55);
+		lvalue.setLayoutY(half-10);
+		lvalue.setPrefWidth(radius);
+		lvalue.setAlignment(Pos.CENTER);
 		
 		rotation.getChildren().addAll(little);
 		this.getChildren().addAll(circle, rotation, lmin, lmax, lvalue);
 		
 		//Tick labels
 		for(int i = 0; i < tickCount; i++) {
-			setValue(Math.round((max-min)/(tickCount+1)*(i+1)));
-			double angle = rotation.getRotate();
+			double unit = Math.round((max-min)/(tickCount+1));
+			currentangle += unit;
+			var angle = setValue(currentangle);
 			Pane pane = new Pane();
 			pane.setLayoutX(35);
 			pane.setLayoutY(35);
@@ -79,16 +93,16 @@ public class KnobPane extends Pane {
 			pane.setRotate(angle);
 			label.setRotate(360-angle);
 			
-			if(label.getLayoutX() < 75 && label.getLayoutY() >= 75) {
+			if(label.getLayoutX() < half && label.getLayoutY() >= half) {
 				label.setLayoutX(label.getLayoutX()+correctionx);
 				label.setLayoutY(label.getLayoutY()+correctiony);
-			} else if(label.getLayoutX() < 75 && label.getLayoutY() < 75) {
+			} else if(label.getLayoutX() < half && label.getLayoutY() < half) {
 				label.setLayoutX(label.getLayoutX()-correctionx);
 				label.setLayoutY(label.getLayoutY()+correctiony);
-			} else if(label.getLayoutX() >= 75 && label.getLayoutY() < 75) {
+			} else if(label.getLayoutX() >= half && label.getLayoutY() < half) {
 				label.setLayoutX(label.getLayoutX()-correctionx);
 				label.setLayoutY(label.getLayoutY()+correctiony);
-			} else if(label.getLayoutX() >= 75 && label.getLayoutY() >= 75) {
+			} else if(label.getLayoutX() >= half && label.getLayoutY() >= half) {
 				label.setLayoutX(label.getLayoutX()-correctionx);
 				label.setLayoutY(label.getLayoutY()-correctiony);
 			}
@@ -96,7 +110,7 @@ public class KnobPane extends Pane {
 			this.getChildren().add(pane);
 		}
 
-		setValue(0);
+		setValue(min);
 		
 		//Drag and drop
 		this.setOnMousePressed(this::mousePressed);
@@ -106,35 +120,43 @@ public class KnobPane extends Pane {
 		//Name label
 		final Label lname = new Label(name);
 		lname.setLayoutY(130);
-		lname.setPrefWidth(150);
+		lname.setPrefWidth(size);
 		lname.setAlignment(Pos.CENTER);
 		this.getChildren().add(lname);
 	}
 	
-	public void setValue(double value) {
-		if(value >= min && value <= max) {
-			value = Math.round(value);
+	public double setValue(double value) {
+		double minangle;
+		double newangle = 0.0;
+		if(min < 0) {
+			minangle = (270*-min)/(max-min);
+		} else {
+			minangle = (270*min)/(max-min);
+		}
+		if(value >= min && value <= max) {			
+			value = (double)Math.round(value*100)/100;
 			this.value = value;
 			lvalue.setText("" + value);
-			rotation.setRotate((270*value)/(max-min));
+			newangle = minangle + ((270*value)/(max-min));
+			rotation.setRotate(newangle);
 		}
+		return newangle;
 	}
 	
 	public double getValue() {
 		return this.value;
 	}
 	
-	public void mousePressed(MouseEvent e) {
+	private void mousePressed(MouseEvent e) {
 		initialValue = e.getSceneY();
 		current = getValue();
 	}
 	
-	public void mouseDragged(MouseEvent e) {
-		setValue(current + (((-e.getSceneY())+initialValue)*0.5));
+	private void mouseDragged(MouseEvent e) {
+		setValue(current + (((-e.getSceneY())+initialValue)*((max-min)/100)));
 	}
 	
-	public void mouseReleased(MouseEvent e) {
+	private void mouseReleased(MouseEvent e) {
 		initialValue = 0.0;
-		//current = getValue();
 	}
 }
