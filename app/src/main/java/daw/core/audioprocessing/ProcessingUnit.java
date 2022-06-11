@@ -1,5 +1,6 @@
 package daw.core.audioprocessing;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import daw.core.channel.RPChannel;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
@@ -11,6 +12,7 @@ import java.util.List;
  * It is important to note that the order the effects are stored by is relevant to the processing
  * and ultimately to the output of the unit.
  */
+@JsonDeserialize(as = BasicProcessingUnit.class)
 public interface ProcessingUnit {
 
     /**

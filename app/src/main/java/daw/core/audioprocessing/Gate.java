@@ -1,5 +1,7 @@
 package daw.core.audioprocessing;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.Compressor;
@@ -17,7 +19,8 @@ public class Gate extends AbstractCompression {
      * Constructs a gate and sets its parameters to the current default.
      * @param channels the number of inputs and outputs of this effect.
      */
-    public Gate(int channels) {
+    @JsonCreator
+    public Gate(@JsonProperty("ins") int channels) {
         super(channels);
     }
 

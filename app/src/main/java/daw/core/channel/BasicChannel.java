@@ -2,6 +2,7 @@ package daw.core.channel;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import daw.utilities.AudioContextManager;
 import daw.core.audioprocessing.ProcessingUnit;
 import net.beadsproject.beads.core.UGen;
@@ -34,12 +35,17 @@ public class BasicChannel implements RPChannel {
      * no {@link ProcessingUnit}.
      * @param type a {@link Type}.
      */
-    @JsonCreator
     protected BasicChannel(@JsonProperty("type") final Type type) {
+        this(type, null);
+    }
+
+    @JsonCreator
+    protected BasicChannel(@JsonProperty("type") final Type type, @JsonProperty("processingUnit")
+                        final ProcessingUnit processingUnit) {
         this.pan = new Panner(AudioContextManager.getAudioContext());
         this.type = type;
         this.enabled = true;
-        this.pu = Optional.empty();
+        this.pu = (processingUnit == null) ? Optional.empty() : Optional.of(processingUnit);
         this.gainIn = new Gain(AudioContextManager.getAudioContext(), 1).setGain(DEFAULT_GAIN_IN);
         this.gainOut = new Gain(AudioContextManager.getAudioContext(), 1).setGain(1.0f);
         this.setStructure();

@@ -1,5 +1,7 @@
 package daw.core.audioprocessing;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
 import java.util.*;
@@ -19,7 +21,8 @@ public class BasicProcessingUnit implements ProcessingUnit {
      * Constructs a {@link ProcessingUnit} that is sidechained.
      * @param effects the effects to be added to the sequence. Order of the list in input is preserved.
      */
-    protected BasicProcessingUnit(final List<RPEffect> effects) {
+    @JsonCreator
+    protected BasicProcessingUnit(@JsonProperty("effects") final List<RPEffect> effects) {
         for (final var effect: effects) {
             if (effect instanceof BasicSidechaining) {
                 this.addSidechaining((BasicSidechaining) effect);

@@ -1,5 +1,8 @@
 package daw.core.audioprocessing;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * This class models compression, that is an audio signal processing operation which reduces the volume of
  * loud sounds or amplifies quiet sounds, thus reducing or compressing an audio signal's dynamic range.
@@ -12,7 +15,8 @@ public class Compression extends AbstractCompression {
      * Constructs a compressor and sets its parameters to the current default.
      * @param channels the number of inputs and outputs of this effect.
      */
-    public Compression(int channels) {
+    @JsonCreator
+    public Compression(@JsonProperty("ins") int channels) {
         super(channels);
     }
 

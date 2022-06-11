@@ -1,5 +1,7 @@
 package daw.core.audioprocessing;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.Reverb;
 import java.util.Map;
@@ -18,7 +20,8 @@ public class DigitalReverb extends RPEffect {
      * Constructs a reverb and sets its parameters to the current default.
      * @param channels the number of inputs and outputs of this effect.
      */
-    public DigitalReverb(int channels) {
+    @JsonCreator
+    public DigitalReverb(@JsonProperty("ins") int channels) {
         super(channels);
         this.rev = new Reverb(channels);
     }

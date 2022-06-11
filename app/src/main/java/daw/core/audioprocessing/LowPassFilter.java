@@ -1,5 +1,7 @@
 package daw.core.audioprocessing;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.OnePoleFilter;
@@ -18,7 +20,8 @@ public class LowPassFilter extends AbstractFilter {
      * @param channels the number of inputs and outputs of this effect.
      * @param cutoffFrequency the frequency of cutoff.
      */
-    public LowPassFilter(int channels, float cutoffFrequency) {
+    @JsonCreator
+    public LowPassFilter(@JsonProperty("ins") int channels, @JsonProperty("frequency") float cutoffFrequency) {
         super(channels, cutoffFrequency);
     }
 

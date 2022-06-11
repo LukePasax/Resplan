@@ -21,7 +21,6 @@ public class EffectSerializer extends StdSerializer<RPEffect> {
 
     @Override
     public void serialize(RPEffect value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeStringField("type", value.getClass().toString());
         for (final var parameter: value.getParameters().entrySet()) {
             gen.writeNumberField(parameter.getKey(), parameter.getValue());
         }
