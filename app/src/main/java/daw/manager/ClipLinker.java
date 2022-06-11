@@ -18,11 +18,6 @@ public class ClipLinker implements RPClipLinker{
         clipMap = new HashMap<>();
     }
 
-    @JsonCreator
-    ClipLinker(@JsonProperty("clipMap") Map<RPPart, RPClip> map) {
-        this.clipMap = new HashMap<>(map);
-    }
-
     /**
      * This method links the given {@link RPPart} to the given {@link RPClip}.
      *

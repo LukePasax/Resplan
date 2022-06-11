@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.Map.Entry;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import javafx.util.Pair;
 
 /**
@@ -13,6 +14,7 @@ import javafx.util.Pair;
  * <p>The time in and time out refers to the starting and ending position of a clip in the timeline.
  * Each clip is identified from his time in.
  */
+@JsonDeserialize(as = TapeChannel.class)
 public interface RPTapeChannel {
 	
 	/**

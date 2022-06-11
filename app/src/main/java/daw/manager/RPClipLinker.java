@@ -8,7 +8,7 @@ import planning.RPPart;
 /**
  * This interface represents a class to link a {@link RPPart} to its corresponding {@link RPClip}.
  */
-//@JsonDeserialize(as = ClipLinker.class)
+@JsonDeserialize(as = ClipLinker.class)
 public interface RPClipLinker {
 
 	/**

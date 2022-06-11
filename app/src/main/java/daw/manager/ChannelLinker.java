@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import controller.storing.deserialization.RoleKeyDeserializer;
 import daw.core.channel.RPChannel;
 import daw.core.clip.RPTapeChannel;
-import javafx.util.Pair;
+import daw.utilities.Pair;
 import planning.RPRole;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -41,7 +41,7 @@ public class ChannelLinker implements RPChannelLinker {
      */
     @Override
     public RPChannel getChannel(RPRole role) {
-        return channelMap.get(role).getKey();
+        return (RPChannel) channelMap.get(role).getKey();
     }
 
     /**
@@ -52,7 +52,7 @@ public class ChannelLinker implements RPChannelLinker {
      */
     @Override
     public RPTapeChannel getTapeChannel(RPRole role) {
-        return channelMap.get(role).getValue();
+        return (RPTapeChannel) channelMap.get(role).getValue();
     }
 
     /**
