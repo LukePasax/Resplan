@@ -225,7 +225,7 @@ public class Manager implements RPManager {
      */
     @Override
     public void addFileToClip(String title, File content) throws ImportException , NoSuchElementException {
-        if (this.clipLinker.clipExists(title)) {
+        if (!this.clipLinker.clipExists(title)) {
             throw new NoSuchElementException("The Clip does not exist");
         }
         this.removeFileFromClip(title);

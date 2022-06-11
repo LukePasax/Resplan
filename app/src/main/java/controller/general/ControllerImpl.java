@@ -5,12 +5,15 @@ import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;
 import daw.core.clip.ClipNotFoundException;
 import daw.core.clip.RPClip;
+import daw.core.clip.RPRecorder;
+import daw.core.clip.Recorder;
 import daw.engine.Engine;
 import daw.engine.RPEngine;
 import daw.manager.ChannelLinker;
 import daw.manager.ImportException;
 import daw.manager.Manager;
 import daw.utilities.AudioContextManager;
+import javafx.stage.FileChooser;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import planning.Element;
 import planning.RPPart;
@@ -304,6 +307,27 @@ public class ControllerImpl implements Controller {
         App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.splitClip(clip,channel,splittingTime);
         createClipView(clip, channel);
+    }
+
+    @Override
+    public void addContentToClip(String clip, File content) throws ImportException {
+        this.manager.addFileToClip(clip,content);
+    }
+
+    @Override
+    public void removeContentFromClip(String clip) {
+        this.manager.removeFileFromClip(clip);
+    }
+
+    @Override
+    public void startRecording(String text) {
+        RPRecorder recorder = new Recorder();
+        recorder.record();
+    }
+
+    @Override
+    public void stopRecording(String text) {
+
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES

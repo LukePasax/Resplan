@@ -95,4 +95,11 @@ public interface Controller {
 
     void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException, ImportException;
 
+    void addContentToClip(String clip, File content) throws ImportException;
+
+    void removeContentFromClip(String clip);
+
+    void startRecording(String text);
+
+    void stopRecording(String text);
 }
