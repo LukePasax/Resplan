@@ -22,6 +22,8 @@ public class JerkyKnobPane extends Pane{
 	private final static double half = size/2;
 	private final static double radius = 40.0;
 	
+	private boolean drag = false;
+	
 	private double initialValue = 0.0;
 	private String current;
 
@@ -140,22 +142,21 @@ public class JerkyKnobPane extends Pane{
 		double poslimit = 10.0;
 		double neglimit = -10.0;
 		double move = ((-e.getSceneY())+initialValue)*0.1;
-		if(move > poslimit){
+		if(move > poslimit && !drag){
 			if(values.indexOf(current) < values.size()-1) {
-				current = values.get(values.indexOf(current)+1);
-				setValue(current);
-				poslimit += 200;
+				setValue(values.get(values.indexOf(current)+1));
+				drag = true;
 			}
-		} else if(move < neglimit){
+		} else if(move < neglimit && !drag){
 			if(values.indexOf(current) > 0) {
-				current = values.get(values.indexOf(current)-1);
-				setValue(current);
-				neglimit -= 200;
+				setValue(values.get(values.indexOf(current)-1));
+				drag = true;
 			}
 		}
 	}
 	
 	private void mouseReleased(MouseEvent e) {
 		initialValue = 0.0;
+		drag = false;
 	}
 }
