@@ -1,6 +1,5 @@
 package view.effects;
 
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -14,6 +13,8 @@ public class KnobPane extends Pane {
 	final Pane rotation;
 	private int tickCount;
 	final Label lvalue;
+	private final static double correctionx = 25;
+	private final static double correctiony = correctionx/1.5;
 
 	public KnobPane(final double min, final double max, final int tickCount) {
 		this.min = min;
@@ -56,24 +57,44 @@ public class KnobPane extends Pane {
 		lvalue.setLayoutX(68);
 		lvalue.setLayoutY(68);
 		
+		rotation.getChildren().addAll(little);
+		this.getChildren().addAll(circle, rotation, lmin, lmax, lvalue);
+		
 		//Tick labels
 		for(int i = 0; i < tickCount; i++) {
 			setValue(Math.round((max-min)/(tickCount+1)*(i+1)));
-			System.out.println(Math.round((max-min)/(tickCount+1)*(i+1)));
-			System.out.println(little.getLayoutX()-(getValue()/(max-min)));
-			System.out.println(little.getLayoutY()-(getValue()/(max-min)));
-			double posx = (getValue());
-			double posy = (getValue());
-			final Label tick = new Label("" + getValue());
-			tick.setLayoutX(posx-0);
-			tick.setLayoutY(posy-0);
-			this.getChildren().add(tick);
+			double angle = rotation.getRotate();
+			Pane pane = new Pane();
+			pane.setLayoutX(35);
+			pane.setLayoutY(35);
+			pane.setPrefHeight(80);
+			pane.setPrefWidth(80);
+			Label label = new Label("" + getValue());
+			label.setLayoutX(25.0);
+			label.setLayoutY(62.0);
+			pane.getChildren().add(label);
+			pane.setRotate(angle);
+			label.setRotate(360-angle);
+			
+			if(label.getLayoutX() < 75 && label.getLayoutY() >= 75) {
+				label.setLayoutX(label.getLayoutX()+correctionx);
+				label.setLayoutY(label.getLayoutY()+correctiony);
+			} else if(label.getLayoutX() < 75 && label.getLayoutY() < 75) {
+				label.setLayoutX(label.getLayoutX()-correctionx);
+				label.setLayoutY(label.getLayoutY()+correctiony);
+			} else if(label.getLayoutX() >= 75 && label.getLayoutY() < 75) {
+				label.setLayoutX(label.getLayoutX()-correctionx);
+				label.setLayoutY(label.getLayoutY()+correctiony);
+			} else if(label.getLayoutX() >= 75 && label.getLayoutY() >= 75) {
+				label.setLayoutX(label.getLayoutX()-correctionx);
+				label.setLayoutY(label.getLayoutY()-correctiony);
+			}
+			
+			this.getChildren().add(pane);
 		}
+
+		setValue(0);
 		
-		//setValue(25);
-		
-		rotation.getChildren().addAll(little);
-		this.getChildren().addAll(circle, rotation, lmin, lmax, lvalue);
 	}
 	
 	public void setValue(final double value) {
