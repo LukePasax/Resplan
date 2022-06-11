@@ -21,7 +21,6 @@ public abstract class AbstractJacksonDeserializer<T> implements Deserializer<T> 
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .registerModule(new Jdk8Module())
                 .registerModule(new SimpleModule()
-                        .addDeserializer(RPChannel.class, new ChannelDeserializer())
                         .addDeserializer(RPChannelLinker.class, new ChannelLinkerDeserializer())
                         .addDeserializer(RPClip.class, new ClipDeserializer())
                         .addKeyDeserializer(RPRole.class, new RoleKeyDeserializer())

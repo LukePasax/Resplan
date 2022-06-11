@@ -1,5 +1,6 @@
 package daw.core.channel;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import daw.core.audioprocessing.ProcessingUnit;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
@@ -10,6 +11,7 @@ import java.util.Optional;
  * This interface models a channel, which is a representation of sound coming from an input and going to an output.
  * Different forms of channel need to be supported by this interface.
  */
+@JsonDeserialize(as = BasicChannel.class)
 public interface RPChannel {
 
     /**
