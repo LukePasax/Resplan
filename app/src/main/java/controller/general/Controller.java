@@ -99,7 +99,7 @@ public interface Controller {
 
     void removeContentFromClip(String clip);
 
-    void startRecording(String text);
+    void startRecording();
 
-    void stopRecording(String text);
+    void stopRecording(String text) throws ImportException;
 }

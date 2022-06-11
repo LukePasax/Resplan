@@ -39,6 +39,8 @@ public class ControllerImpl implements Controller {
     private File currentProject;
     private final File appSettings = new File(WORKING_DIRECTORY + SEP + APP_SETTINGS);
 
+    private RPRecorder recorder;
+
     /**
      * Sets up the application and initializes a new project (see newProject).
      */
@@ -320,14 +322,15 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void startRecording(String text) {
-        RPRecorder recorder = new Recorder();
-        recorder.record();
+    public void startRecording() {
+        this.recorder = new Recorder();
+        this.recorder.record();
     }
 
     @Override
-    public void stopRecording(String text) {
-
+    public void stopRecording(String clip) throws ImportException {
+        this.recorder.pause();
+        this.addContentToClip(clip, new File(this.recorder.getSample().getFileName()));
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES
