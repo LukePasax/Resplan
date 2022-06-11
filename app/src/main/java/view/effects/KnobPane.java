@@ -1,6 +1,7 @@
 package view.effects;
 
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -95,6 +96,9 @@ public class KnobPane extends Pane {
 
 		setValue(0);
 		
+		//Drag and drop
+		rotation.setOnDragEntered(this::dragEntered);
+		
 	}
 	
 	public void setValue(final double value) {
@@ -107,5 +111,9 @@ public class KnobPane extends Pane {
 	
 	public double getValue() {
 		return this.value;
+	}
+	
+	public void dragEntered(MouseEvent e) {
+		
 	}
 }
