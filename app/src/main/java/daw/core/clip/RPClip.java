@@ -5,9 +5,9 @@ import java.io.File;
 /**
  * A container for each content (such as an audio/MIDI file) you want to 
  * add to any {@link RPTapeChannel}.
- * <p>Every RPClip stores it's duration, it's content and it's content position.
- * <br>The duration of an RPClip could be different than it's content duration, so the section 
- * of the content you want to fill the clip is setted adjusting the duration through {@link #setDuration} 
+ * <p>Every RPClip stores its duration, its content and its content position.
+ * <br>The duration of an RPClip could be different from its content duration, so the section
+ * of the content you want to fill the clip is set adjusting the duration through {@link #setDuration}
  * and the content starting position through {@link #setContentPosition}.
  * <p>An RPClip could also be empty.
  * An empty RPClip is used for reserving space in any {@link RPTapeChannel}, so it can be filled later.
