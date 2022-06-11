@@ -1,10 +1,14 @@
 package controller.storing.serialization;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.WritableTypeId;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import daw.core.audioprocessing.RPEffect;
 import java.io.IOException;
+import static com.fasterxml.jackson.core.JsonToken.START_OBJECT;
 
 public class EffectSerializer extends StdSerializer<RPEffect> {
 
@@ -19,12 +23,22 @@ public class EffectSerializer extends StdSerializer<RPEffect> {
     @Override
     public void serialize(RPEffect value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
+        gen.writeStringField("type", value.getClass().toString());
         for (final var parameter: value.getParameters().entrySet()) {
             gen.writeNumberField(parameter.getKey(), parameter.getValue());
         }
         gen.writeNumberField("ins", value.getIns());
         gen.writeNumberField("outs", value.getOuts());
         gen.writeEndObject();
+    }
+
+    @Override
+    public void serializeWithType(RPEffect value, JsonGenerator gen, SerializerProvider provider, TypeSerializer typeSer)
+            throws IOException, JsonProcessingException {
+        WritableTypeId typeId = typeSer.typeId(value, START_OBJECT);
+        typeSer.writeTypePrefix(gen, typeId);
+        this.serialize(value, gen, provider);
+        typeSer.writeTypeSuffix(gen, typeId);
     }
 
 }

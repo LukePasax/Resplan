@@ -1,5 +1,7 @@
 package daw.core.audioprocessing;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.core.UGen;
 import java.util.Map;
@@ -8,6 +10,16 @@ import java.util.Map;
  * This class is an extension of {@link UGen}. In the context of this software, this class is the one
  * all effects must extend. Non-abstract subclasses must provide an implementation for method calculateBuffer.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Compression.class, name = "compression"),
+        @JsonSubTypes.Type(value = HighPassFilter.class, name = "high pass"),
+        @JsonSubTypes.Type(value = LowPassFilter.class, name = "low pass"),
+        @JsonSubTypes.Type(value = Gate.class, name = "gate"),
+        @JsonSubTypes.Type(value = DigitalReverb.class, name = "reverb"),
+        @JsonSubTypes.Type(value = BasicSidechaining.class, name = "sidechaining")
+}
+)
 public abstract class RPEffect extends UGen implements AudioElement {
 
     /**
