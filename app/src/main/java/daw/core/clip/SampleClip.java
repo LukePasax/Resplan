@@ -3,6 +3,8 @@ package daw.core.clip;
 import java.io.File;
 import java.io.IOException;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.beadsproject.beads.data.Sample;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
@@ -77,7 +79,7 @@ public class SampleClip implements RPClip<Sample> {
 	/**
 	 * Creates a Sample Clip just specifing an audio file. The duration will be fitted to the audio file duration.
 	 * 
-	 * @param  file  The audio file content.
+	 * @param  content  The audio file content.
 	 * 
 	 * @throws  IOException  If some I/O exception has occurred.
 	 * 
@@ -85,7 +87,8 @@ public class SampleClip implements RPClip<Sample> {
 	 * 
 	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
-	public SampleClip(File content) throws IOException, OperationUnsupportedException, FileFormatException {
+	public SampleClip(File content)
+			throws IOException, OperationUnsupportedException, FileFormatException {
 		this(new FileClip(content));
 		this.setDuration(sample.getLength());
 	}
@@ -105,14 +108,17 @@ public class SampleClip implements RPClip<Sample> {
 	 * 
 	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
-	public SampleClip(double duration, File file) throws IOException, OperationUnsupportedException, FileFormatException {
+	@JsonCreator
+	public SampleClip(@JsonProperty("duration") double duration, @JsonProperty("content name") File file)
+			throws IOException, OperationUnsupportedException, FileFormatException {
 		this(new FileClip(duration, file));
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @throws  IllegalArgumentException  If the specified duration is zero, a negative value or if the specified duration is bigger than the content duration. 
+	 * @throws  IllegalArgumentException  If the specified duration is zero, a negative value or if the
+	 * specified duration is bigger than the content duration.
 	 */
 	@Override
 	public void setDuration(double milliseconds) {
@@ -130,7 +136,8 @@ public class SampleClip implements RPClip<Sample> {
 	@Override
 	public void setContentPosition(double milliseconds) {
 		if(sample.getLength()<=milliseconds) {
-			throw new IllegalArgumentException("the new content position can't be bigger or equal than the content duration");
+			throw new IllegalArgumentException("the new content position can't be bigger or equal " +
+					"than the content duration");
 		}
 		this.clip.setContentPosition(milliseconds);
 	}
@@ -188,4 +195,5 @@ public class SampleClip implements RPClip<Sample> {
 	public RPClip<Sample> duplicate() throws IOException, OperationUnsupportedException, FileFormatException {
 			return new SampleClip(this.clip);
 	}
+
 }

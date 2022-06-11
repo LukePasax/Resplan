@@ -1,8 +1,11 @@
 package daw.core.clip;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * An {@link RPClip} without a content.
- * <p>Since there's no content an EmptyClip stores only it's duration.
+ * <p>Since there's no content an EmptyClip stores only its duration.
  */
 public class EmptyClip implements RPClip<NoContent> {
 
@@ -23,8 +26,9 @@ public class EmptyClip implements RPClip<NoContent> {
 	 * 
 	 * @param  duration  The duration of this clip in milliseconds.
 	 */
-	public EmptyClip(double duration) {
-		if(duration <= 0) {
+	@JsonCreator
+	public EmptyClip(@JsonProperty("duration") double duration) {
+		if (Double.compare(duration,0.0) < 0) {
 			throw new IllegalArgumentException("The duration of a clip must be a non-zero and positive value.");
 		}
 		this.duration = duration;
@@ -37,7 +41,8 @@ public class EmptyClip implements RPClip<NoContent> {
 	 */
 	@Override
 	public void setContentPosition(double milliseconds) {
-		throw new UnsupportedOperationException("Can't set Content Position in an Empty Clip. Conver the clip into one with content then retry.");
+		throw new UnsupportedOperationException("Can't set Content Position in an Empty Clip. " +
+				"Convert the clip into one with content then retry.");
 	}
 
 	/**
@@ -47,11 +52,12 @@ public class EmptyClip implements RPClip<NoContent> {
 	 */
 	@Override
 	public double getContentPosition() {
-		throw new UnsupportedOperationException("Can't get the Content Position. This is an Empty Clip. Conver the clip into one with content then retry.");
+		throw new UnsupportedOperationException("Can't get the Content Position. This is an Empty Clip. " +
+				"Convert the clip into one with content then retry.");
 	}
 	
 	/**
-	 *{@inheritDoc}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public double getContentDuration() {
@@ -65,7 +71,8 @@ public class EmptyClip implements RPClip<NoContent> {
 	 */
 	@Override
 	public NoContent getContent() {
-		throw new UnsupportedOperationException("Can't get the Content of an Empty Clip. Conver the clip into one with content then retry.");
+		throw new UnsupportedOperationException("Can't get the Content of an Empty Clip. " +
+				"Convert the clip into one with content then retry.");
 	}
 
 	/**
