@@ -1,10 +1,8 @@
 package daw.manager;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import daw.core.clip.RPClip;
 import planning.RPPart;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;

@@ -299,6 +299,7 @@ public class Manager implements RPManager {
      * @return the {@link ChannelLinker} of this Manager
      */
     @Override
+    @JsonIgnore
     public RPChannelLinker getChannelLinker() {
         return this.channelLinker;
     }

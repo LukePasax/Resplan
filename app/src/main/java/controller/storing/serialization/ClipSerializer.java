@@ -22,11 +22,11 @@ public class ClipSerializer extends StdSerializer<RPClip> {
     public void serialize(RPClip value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
         if (value instanceof EmptyClip) {
-            gen.writeStringField("type", "empty clip");
+            //gen.writeStringField("type", "empty clip");
         } else if (value instanceof SampleClip) {
-            gen.writeStringField("type", "sample clip");
-            gen.writeNumberField("content position", value.getContentPosition());
-            gen.writeObjectField("content name", new File(((Sample) value.getContent()).getFileName()));
+            //gen.writeStringField("type", "sample clip");
+            //gen.writeNumberField("content position", value.getContentPosition());
+            //gen.writeObjectField("content name", new File(((Sample) value.getContent()).getFileName()));
         }
         gen.writeNumberField("duration", value.getDuration());
         gen.writeEndObject();

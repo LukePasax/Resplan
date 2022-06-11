@@ -23,7 +23,6 @@ public abstract class AbstractJacksonDeserializer<T> implements Deserializer<T> 
                 .registerModule(new SimpleModule()
                         .addDeserializer(RPChannelLinker.class, new ChannelLinkerDeserializer())
                         .addDeserializer(RPClip.class, new ClipDeserializer())
-                        .addDeserializer(RPClipLinker.class, new ClipLinkerDeserializer())
                         .addKeyDeserializer(RPRole.class, new RoleKeyDeserializer())
                         .addKeyDeserializer(RPPart.class, new PartKeyDeserializer()));
     }

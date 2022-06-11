@@ -13,7 +13,7 @@ public class ClipDeserializer extends JsonDeserializer<RPClip> {
 
     @Override
     public RPClip deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        return new ObjectMapper().readValue(p, checkInstance(p));
+        return new ObjectMapper().readValue(p, EmptyClip.class);
     }
 
     private Class<? extends RPClip> checkInstance(JsonParser p) throws IOException {
