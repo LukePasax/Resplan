@@ -1,5 +1,6 @@
 package daw.manager;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import daw.core.clip.RPClip;
 import planning.RPPart;

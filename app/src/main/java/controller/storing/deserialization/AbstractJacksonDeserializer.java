@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import daw.core.channel.RPChannel;
 import daw.core.clip.RPClip;
 import daw.manager.RPChannelLinker;
 import planning.RPPart;
@@ -23,6 +22,7 @@ public abstract class AbstractJacksonDeserializer<T> implements Deserializer<T> 
                 .registerModule(new SimpleModule()
                         .addDeserializer(RPChannelLinker.class, new ChannelLinkerDeserializer())
                         .addDeserializer(RPClip.class, new ClipDeserializer())
+                        //.addDeserializer(RPClipLinker.class, new ClipLinkerDeserializer())
                         .addKeyDeserializer(RPRole.class, new RoleKeyDeserializer())
                         .addKeyDeserializer(RPPart.class, new PartKeyDeserializer()));
     }
