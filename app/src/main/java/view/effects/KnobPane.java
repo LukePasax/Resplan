@@ -1,5 +1,6 @@
 package view.effects;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -12,15 +13,16 @@ public class KnobPane extends Pane {
 	private double max;
 	private double value = 0;
 	final Pane rotation;
-	private int tickCount;
 	final Label lvalue;
 	private final static double correctionx = 25;
 	private final static double correctiony = correctionx/1.5;
+	
+	private double initialValue = 0.0;
+	private double current = 0.0;
 
-	public KnobPane(final double min, final double max, final int tickCount) {
+	public KnobPane(final double min, final double max, final int tickCount, final String name) {
 		this.min = min;
 		this.max = max;
-		this.tickCount = tickCount;
 		
 		this.setPrefHeight(150);
 		this.setPrefWidth(150);
@@ -97,12 +99,21 @@ public class KnobPane extends Pane {
 		setValue(0);
 		
 		//Drag and drop
-		rotation.setOnDragEntered(this::dragEntered);
+		this.setOnMousePressed(this::mousePressed);
+		this.setOnMouseDragged(this::mouseDragged);
+		this.setOnMouseReleased(this::mouseReleased);
 		
+		//Name label
+		final Label lname = new Label(name);
+		lname.setLayoutY(130);
+		lname.setPrefWidth(150);
+		lname.setAlignment(Pos.CENTER);
+		this.getChildren().add(lname);
 	}
 	
-	public void setValue(final double value) {
+	public void setValue(double value) {
 		if(value >= min && value <= max) {
+			value = Math.round(value);
 			this.value = value;
 			lvalue.setText("" + value);
 			rotation.setRotate((270*value)/(max-min));
@@ -113,7 +124,17 @@ public class KnobPane extends Pane {
 		return this.value;
 	}
 	
-	public void dragEntered(MouseEvent e) {
-		
+	public void mousePressed(MouseEvent e) {
+		initialValue = e.getSceneY();
+		current = getValue();
+	}
+	
+	public void mouseDragged(MouseEvent e) {
+		setValue(current + (((-e.getSceneY())+initialValue)*0.5));
+	}
+	
+	public void mouseReleased(MouseEvent e) {
+		initialValue = 0.0;
+		//current = getValue();
 	}
 }

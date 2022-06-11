@@ -10,7 +10,7 @@ public class TryApp extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		KnobPane root = new KnobPane(0,100,5);
+		KnobPane root = new KnobPane(0,100,5, "Volume");
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
