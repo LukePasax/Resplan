@@ -1,5 +1,6 @@
 package daw.manager;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import daw.core.clip.RPClip;
 import planning.RPPart;
@@ -15,6 +16,11 @@ public class ClipLinker implements RPClipLinker{
 
     ClipLinker() {
         clipMap = new HashMap<>();
+    }
+
+    @JsonCreator
+    ClipLinker(@JsonProperty("clipMap") Map<RPPart, RPClip> map) {
+        this.clipMap = new HashMap<>(map);
     }
 
     /**

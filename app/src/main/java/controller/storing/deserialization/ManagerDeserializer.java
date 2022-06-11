@@ -13,7 +13,6 @@ public class ManagerDeserializer extends AbstractJacksonDeserializer<Manager> {
             e.printStackTrace();
             throw new RuntimeException("Deserialization of manager has gone wrong.");
         }
-        //return new Manager();
     }
 
 }
