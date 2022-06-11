@@ -1,13 +1,15 @@
 package controller.storing.serialization;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.type.WritableTypeId;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import daw.core.clip.*;
 import net.beadsproject.beads.data.Sample;
-import java.io.File;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
+
+import static com.fasterxml.jackson.core.JsonToken.START_OBJECT;
 
 public class ClipSerializer extends StdSerializer<RPClip> {
 
@@ -20,16 +22,20 @@ public class ClipSerializer extends StdSerializer<RPClip> {
 
     @Override
     public void serialize(RPClip value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-        gen.writeStartObject();
-        if (value instanceof EmptyClip) {
-            //gen.writeStringField("type", "empty clip");
-        } else if (value instanceof SampleClip) {
-            //gen.writeStringField("type", "sample clip");
-            //gen.writeNumberField("content position", value.getContentPosition());
-            //gen.writeObjectField("content name", new File(((Sample) value.getContent()).getFileName()));
+        if (value instanceof SampleClip) {
+            gen.writeNumberField("content position", value.getContentPosition());
+            gen.writeStringField("content name", ((Sample) value.getContent()).getFileName());
         }
         gen.writeNumberField("duration", value.getDuration());
-        gen.writeEndObject();
+    }
+
+    @Override
+    public void serializeWithType(RPClip value, JsonGenerator gen, SerializerProvider provider, TypeSerializer typeSer)
+            throws IOException {
+        WritableTypeId typeId = typeSer.typeId(value, START_OBJECT);
+        typeSer.writeTypePrefix(gen, typeId);
+        this.serialize(value, gen, provider);
+        typeSer.writeTypeSuffix(gen, typeId);
     }
 
 }

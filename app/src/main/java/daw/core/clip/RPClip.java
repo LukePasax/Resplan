@@ -1,5 +1,7 @@
 package daw.core.clip;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.io.File;
 
 /**
@@ -15,6 +17,11 @@ import java.io.File;
  * 
  * @param <X>  The content Type.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "type", visible = true)
+@JsonSubTypes({
+		@JsonSubTypes.Type(value = EmptyClip.class, name = "empty"),
+		@JsonSubTypes.Type(value = SampleClip.class, name = "sample")
+})
 public interface RPClip<X> {
 	
 	/**

@@ -1,7 +1,6 @@
 package controller.storing.serialization;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.WritableTypeId;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
@@ -34,7 +33,7 @@ public class EffectSerializer extends StdSerializer<RPEffect> {
 
     @Override
     public void serializeWithType(RPEffect value, JsonGenerator gen, SerializerProvider provider, TypeSerializer typeSer)
-            throws IOException, JsonProcessingException {
+            throws IOException {
         WritableTypeId typeId = typeSer.typeId(value, START_OBJECT);
         typeSer.writeTypePrefix(gen, typeId);
         this.serialize(value, gen, provider);
