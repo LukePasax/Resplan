@@ -64,9 +64,9 @@ public class TestSerializeAndDeserialize {
                     "test" + Controller.SEP + "resources" + Controller.SEP + "audio" + Controller.SEP +
                     "Alergy - Brain in the Jelly.wav");
             man.addClip(RPPart.PartType.EFFECTS,"part1", Optional.empty(),
-                    "claps",0.00,Optional.empty());
+                    "claps",0.00, 0.20,Optional.empty());
             man.addClip(RPPart.PartType.EFFECTS, "part2", Optional.empty(),
-                    "claps", 10.50, Optional.of(file));
+                    "claps", 10.50, 0.50, Optional.of(file));
         } catch (ImportException e) {
             e.printStackTrace();
         }

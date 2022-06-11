@@ -49,10 +49,10 @@ class TestClipPlayerNotifier {
 	
 	@Test
 	void randomObserversPlay() {
-		ClipPlayerNotifier cpn = new ClipPlayerNotifier(clock, playersMap);
+		ClipPlayerNotifier cpn = new ClipPlayerNotifier(playersMap);
 		playersMap.entrySet().stream().forEach(x->{
 			clock.setTime(Clock.Utility.clockStepToTime(x.getKey()));
-			cpn.update();
+			cpn.update(1l);
 			x.getValue().forEach(player->{
 				assertFalse(player.isPaused(), "clipTime: " + x.getKey());
 			});
@@ -61,7 +61,7 @@ class TestClipPlayerNotifier {
 	
 	@Test
 	void randomObserversPause() {
-		ClipPlayerNotifier cpn = new ClipPlayerNotifier(clock, playersMap);
+		ClipPlayerNotifier cpn = new ClipPlayerNotifier(playersMap);
 		playersMap.entrySet().stream().forEach(x->{
 			x.getValue().forEach(player->{
 				player.play();

@@ -26,7 +26,7 @@ public class TestApplication {
         //System.out.println(((Mixer) controller.getManager().getMixer()).getConnectedInputsToMaster());
         try {
             controller.getManager().addClip(RPPart.PartType.EFFECTS, "part1", Optional.empty(), "ciao",
-                    0.0, Optional.of(FILE));
+                    0.0, 0.50, Optional.of(FILE));
             controller.start();
         } catch (ImportException e) {
             e.printStackTrace();
