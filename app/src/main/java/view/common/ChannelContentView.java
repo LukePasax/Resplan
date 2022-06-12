@@ -230,10 +230,30 @@ public abstract class ChannelContentView extends Pane {
 			AnchorPane.setRightAnchor(content, 0.0);
 			//clip color fill
 			this.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, null, null)));
-			//remove clip
+			//clip menù
 			MenuItem remove = new MenuItem("Remove");
 			remove.setOnAction(a->Starter.getController().deleteClip(clip.getTitle(), ch.getTitle(), clip.getPosition()));
-			ContextMenu menu = new ContextMenu(remove);
+			MenuItem loadAudioFile = new MenuItem("Load Audio File");
+			loadAudioFile.setOnAction(a->{
+				//TODO load file in clip
+			});
+			MenuItem record = new MenuItem("Record");
+			record.setOnAction(a->{
+				Starter.getController()/*TODO .recordClip()*/;
+				//TODO gestisci clear e record buttons.
+			});
+			MenuItem clear = new MenuItem("Clear");
+			clear.setOnAction(a->{
+				Starter.getController()/*TODO .clearClip()*/;
+				//TODO gestisci clear e record buttons.
+			});
+			ContextMenu menu = new ContextMenu(remove, record, loadAudioFile, clear);
+			if(clip.isEmpty()) {
+				clear.setDisable(true);
+			} else {
+				record.setDisable(true);
+				loadAudioFile.setDisable(true);
+			}
 			this.setOnContextMenuRequested(e -> menu.show(this, e.getScreenX(), e.getScreenY()));
 			//drag and drop controls
 			this.setOnMouseReleased(this::mouseReleased);
