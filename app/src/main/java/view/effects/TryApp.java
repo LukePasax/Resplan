@@ -15,7 +15,9 @@ public class TryApp extends Application {
 		HBox root = new HBox();
 		ContinuousKnobPane cont = new ContinuousKnobPane(0.2,40,5, "Volume");
 		JerkyKnobPane jerky = new JerkyKnobPane(List.of("1:1", "2:2", "3:3", "4:4"), "Ratio");
-		root.getChildren().addAll(cont, jerky);
+		CompressorPane comp = new CompressorPane(-600, 0);
+		comp.setValue(-300);
+		root.getChildren().addAll(cont, jerky, comp);
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
