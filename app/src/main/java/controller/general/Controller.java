@@ -5,6 +5,7 @@ import daw.manager.ImportException;
 import view.common.App;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public interface Controller {
@@ -102,4 +103,6 @@ public interface Controller {
     void startRecording();
 
     void stopRecording(String text) throws ImportException;
+
+    void exportAudio(File file) throws InterruptedException, IOException;
 }

@@ -14,7 +14,11 @@ import daw.manager.ImportException;
 import daw.manager.Manager;
 import daw.utilities.AudioContextManager;
 import javafx.stage.FileChooser;
+import net.beadsproject.beads.core.AudioContext;
+import net.beadsproject.beads.data.Sample;
+import net.beadsproject.beads.data.audiofile.AudioFileType;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
+import net.beadsproject.beads.ugens.RecordToSample;
 import planning.Element;
 import planning.RPPart;
 import planning.RPRole;
@@ -331,6 +335,21 @@ public class ControllerImpl implements Controller {
     public void stopRecording(String clip) throws ImportException {
         this.recorder.pause();
         this.addContentToClip(clip, new File(this.recorder.getSample().getFileName()));
+    }
+
+    @Override
+    public void exportAudio(File file) throws InterruptedException, IOException {
+        AudioContext ac = AudioContextManager.getAudioContext();
+        Sample sample = new Sample(this.manager.getProjectLength());
+        RecordToSample exporter = new RecordToSample(ac, sample, RecordToSample.Mode.FINITE);
+        exporter.addInput(this.manager.getMixer().getMasterChannel().getOutput());
+        ac.out.addDependent(exporter);
+        ac.runForNMillisecondsNonRealTime(this.manager.getProjectLength());
+        exporter.start();
+        wait((long) this.manager.getProjectLength());
+        exporter.pause(true);
+        exporter.clip();
+        exporter.getSample().write(file.getAbsolutePath(), AudioFileType.WAV);
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES
