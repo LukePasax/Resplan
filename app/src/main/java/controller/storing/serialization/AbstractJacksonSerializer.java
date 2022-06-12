@@ -26,8 +26,7 @@ public abstract class AbstractJacksonSerializer<T> implements Serializer<T> {
                         .addSerializer(RPEffect.class, new EffectSerializer())
                         .addSerializer(Panner.class, new PannerSerializer())
                         .addSerializer(Gain.class, new GainSerializer())
-                        .addSerializer(RPClip.class, new ClipSerializer())
-                        .addSerializer(BasicSidechaining.class, new SidechainingSerializer()));
+                        .addSerializer(RPClip.class, new ClipSerializer()));
         if (!enabledGetters) {
             this.mapper.disable(MapperFeature.AUTO_DETECT_GETTERS).disable(MapperFeature.AUTO_DETECT_IS_GETTERS);
         }

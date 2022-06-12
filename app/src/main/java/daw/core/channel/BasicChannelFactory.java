@@ -71,7 +71,8 @@ public class BasicChannelFactory implements ChannelFactory {
                 .lowPassFilter(1, 100.0f)
                 .highPassFilter(1, 100.0f)
                 .compressor(1)
-                .compressor(1).build());
+                .compressor(1)
+                .build());
         bc.getProcessingUnit().get()
                 .getEffectAtPosition(3)
                 .setParameters(Map.of("ratio", Float.POSITIVE_INFINITY));

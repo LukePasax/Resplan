@@ -1,12 +1,8 @@
 package daw.core.audioprocessing;
 
-import daw.utilities.AudioContextManager;
-import net.beadsproject.beads.core.AudioContext;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.beadsproject.beads.core.UGen;
-import net.beadsproject.beads.data.DataBead;
-import net.beadsproject.beads.ugens.Compressor;
-
-import java.util.Map;
 
 /**
  * Basic implementation of {@link Sidechaining}, that allows for the sidechained source to be changed after
@@ -25,6 +21,11 @@ public class BasicSidechaining extends AbstractCompression implements Sidechaini
     public BasicSidechaining(UGen u, int channels) {
         super(channels);
         this.compressor.setSideChain(u);
+    }
+
+    @JsonCreator
+    public BasicSidechaining(@JsonProperty("ins") int channels) {
+        super(channels);
     }
 
     /**
