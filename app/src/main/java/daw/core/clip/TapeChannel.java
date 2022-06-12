@@ -6,7 +6,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Predicate;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javafx.util.Pair;
 
 /**
@@ -17,6 +18,7 @@ public class TapeChannel implements RPTapeChannel {
 	/**
 	 * The clips of this tape channel.
 	 */
+	@JsonProperty
 	private final Map<Double, RPClip<?>> timeline;
 	
 	/**
@@ -89,6 +91,7 @@ public class TapeChannel implements RPTapeChannel {
 	 * {@inheritDoc}
 	 */
 	@Override
+	@JsonIgnore
 	public Iterator<Pair<Double, RPClip<?>>> getClipWithTimeIterator() {	
 		return this.getClipWithTimeIteratorFiltered(x->true);
 	}

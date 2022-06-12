@@ -1,14 +1,13 @@
 package daw.core.channel;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import daw.utilities.AudioContextManager;
 import daw.core.audioprocessing.ProcessingUnit;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.Panner;
-
 import java.util.Optional;
 
 /**
@@ -80,6 +79,7 @@ public class BasicChannel implements RPChannel {
      * @throws IllegalStateException if the channel is not enabled or if no input has been provided.
      */
     @Override
+    @JsonIgnore
     public Gain getOutput() {
         if (this.isEnabled()) {
             return this.gainOut;

@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 public class Manager implements RPManager {
 
-    @JsonProperty
     private final RPMixer mixer;
     private final RPChannelLinker channelLinker;
     private final RPClipLinker clipLinker;
@@ -212,7 +211,7 @@ public class Manager implements RPManager {
             part = description.map(s -> new SoundtrackPart(title, s)).orElseGet(() -> new SoundtrackPart(title));
         }
         this.clipLinker.addClipReferences(clip, part);
-        channelLinker.getTapeChannel(channelLinker.getRole(channel)).insertRPClip(clip, time);
+        this.channelLinker.getTapeChannel(channelLinker.getRole(channel)).insertRPClip(clip, time);
         this.updateProjectLength(title, channel);
     }
 
@@ -299,7 +298,6 @@ public class Manager implements RPManager {
      * @return the {@link ChannelLinker} of this Manager
      */
     @Override
-    @JsonIgnore
     public RPChannelLinker getChannelLinker() {
         return this.channelLinker;
     }
