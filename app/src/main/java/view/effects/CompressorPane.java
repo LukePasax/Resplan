@@ -16,11 +16,18 @@ public class CompressorPane extends Pane {
 	private final ProgressBar compressor = new ProgressBar();
 	private final Label lcurrent;
 	
-	public CompressorPane(final double lowerbound, final double upperbound) {
+	public CompressorPane(final Double lowerbound, final Double upperbound) {
 		if(Double.compare(lowerbound, upperbound) >= 0) {
 			throw new IllegalArgumentException();
 		}
-		this.lowerbound = lowerbound;
+		final Label llower;
+		if(lowerbound.equals(Double.NEGATIVE_INFINITY)) {
+			this.lowerbound = -100.0;
+			llower = new Label("-Infinity");
+		} else {
+			this.lowerbound = lowerbound;
+			llower = new Label("" + lowerbound);			
+		}
 		this.upperbound = upperbound;
 		compressor.setRotate(180);
 		compressor.setProgress(upperbound);
@@ -31,7 +38,6 @@ public class CompressorPane extends Pane {
 		
 		//Value, min, max labels
 		lcurrent = new Label("" + upperbound);
-		final Label llower = new Label("" + lowerbound);
 		final Label lupper = new Label("" + upperbound);
 
 		lcurrent.setPrefWidth(compressor.getPrefWidth());
