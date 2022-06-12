@@ -14,11 +14,10 @@ import java.util.stream.Collectors;
 public class ChannelLinker implements RPChannelLinker {
 
     @JsonProperty
-    @JsonDeserialize(keyUsing = RoleKeyDeserializer.class)
     private final Map<RPRole, Pair<RPChannel, RPTapeChannel>> channelMap;
 
     ChannelLinker() {
-        channelMap = new HashMap<>();
+        this.channelMap = new HashMap<>();
     }
 
     /**
