@@ -243,57 +243,60 @@ public abstract class ChannelContentView extends Pane {
 		}
 		
 		private void mouseReleased(MouseEvent e) {
-			double newTimeIn = clip.getPosition()+timeDelta;
-			if(mod.equals(ClipDragModality.TIMEIN)) {
-				//in event
-				try {
-					if(timeDelta>=clip.getDuration()) {
-						newTimeIn = clip.getPosition()+clip.getDuration()-getMinDuration();
+			if(Starter.getController().isPaused()) {
+				double newTimeIn = clip.getPosition()+timeDelta;
+				if(mod.equals(ClipDragModality.TIMEIN)) {
+					//in event
+					try {
+						if(timeDelta>=clip.getDuration()) {
+							newTimeIn = clip.getPosition()+clip.getDuration()-getMinDuration();
+						}
+						if(clip.getPosition()+timeDelta < 0) {
+							newTimeIn = 0;
+						}
+						if(!clip.isEmpty() && clip.getContentPosition()+timeDelta<0) {
+							newTimeIn = clip.getPosition()-clip.getContentPosition();
+						}
+						Starter.getController().setClipTimeIn(clip.getTitle(), ch.getTitle(), newTimeIn);
+					} catch (ClipNotFoundException | ImportException e1) {
+						updateClips();
 					}
-					if(clip.getPosition()+timeDelta < 0) {
-						newTimeIn = 0;
+				} else if(mod.equals(ClipDragModality.TIMEOUT)) {
+					//out event
+					double newTimeOut = newTimeIn+clip.getDuration();
+					try {
+						if(newTimeOut>Starter.getController().getProjectLength()) {
+							newTimeOut = Starter.getController().getProjectLength();
+						}
+						if(clip.getDuration()+timeDelta<=0) {
+							newTimeOut = clip.getPosition()+getMinDuration();
+						}
+						if(!clip.isEmpty() && timeDelta >= clip.getContentDuration()-clip.getContentPosition()-clip.getDuration()) {
+							newTimeOut = clip.getPosition()+clip.getContentDuration()-clip.getContentPosition();
+						}
+						Starter.getController().setClipTimeOut(clip.getTitle(), ch.getTitle(), newTimeOut);
+					} catch (ClipNotFoundException | ImportException e1) {
+						 updateClips();
 					}
-					if(!clip.isEmpty() && clip.getContentPosition()+timeDelta<0) {
-						newTimeIn = clip.getPosition()-clip.getContentPosition();
+				} else if (mod.equals(ClipDragModality.MOVE)) {
+					//move event
+					try {
+						if(newTimeIn<0) {
+							newTimeIn = 0;
+						} else if (newTimeIn+clip.getDuration()>Starter.getController().getProjectLength()) {
+							newTimeIn = Starter.getController().getProjectLength()-clip.getDuration();
+						}
+						Starter.getController().moveClip(clip.getTitle(), ch.getTitle(), newTimeIn);
+					} catch (ClipNotFoundException | ImportException e1) {
+						updateClips();
 					}
-					Starter.getController().setClipTimeIn(clip.getTitle(), ch.getTitle(), newTimeIn);
-				} catch (ClipNotFoundException | ImportException e1) {
-					updateClips();
 				}
-			} else if(mod.equals(ClipDragModality.TIMEOUT)) {
-				//out event
-				double newTimeOut = newTimeIn+clip.getDuration();
-				try {
-					if(newTimeOut>Starter.getController().getProjectLength()) {
-						newTimeOut = Starter.getController().getProjectLength();
-					}
-					if(clip.getDuration()+timeDelta<=0) {
-						newTimeOut = clip.getPosition()+getMinDuration();
-					}
-					if(!clip.isEmpty() && timeDelta >= clip.getContentDuration()-clip.getContentPosition()-clip.getDuration()) {
-						newTimeOut = clip.getPosition()+clip.getContentDuration()-clip.getContentPosition();
-					}
-					Starter.getController().setClipTimeOut(clip.getTitle(), ch.getTitle(), newTimeOut);
-				} catch (ClipNotFoundException | ImportException e1) {
-					 updateClips();
-				}
-			} else if (mod.equals(ClipDragModality.MOVE)) {
-				//move event
-				try {
-					if(newTimeIn<0) {
-						newTimeIn = 0;
-					} else if (newTimeIn+clip.getDuration()>Starter.getController().getProjectLength()) {
-						newTimeIn = Starter.getController().getProjectLength()-clip.getDuration();
-					}
-					Starter.getController().moveClip(clip.getTitle(), ch.getTitle(), newTimeIn);
-				} catch (ClipNotFoundException | ImportException e1) {
-					updateClips();
-				}
+				dragging = false;
 			}
 		}
 		
 		private void mouseOver(MouseEvent e) {
-			if(toolBarSetter.getCurrentTool().equals(Tool.MOVE)) {
+			if(toolBarSetter.getCurrentTool().equals(Tool.MOVE) && Starter.getController().isPaused()) {
 				if(isOnTimeOut(e) || isOnTimeIn(e)) {
 					this.setCursor(Cursor.H_RESIZE);
 				} else {
@@ -332,19 +335,21 @@ public abstract class ChannelContentView extends Pane {
 		}
 		
 		private void mousePressed(MouseEvent e) {
-			if(e.getButton().equals(MouseButton.SECONDARY) || !toolBarSetter.getCurrentTool().equals(Tool.MOVE)) {
-				this.mod = ClipDragModality.NODRAG;
-			} else {
-				dragging = true;
-				initialX = e.getScreenX();
-				initialLayoutX = this.getLayoutX();
-				initialWidth = this.getWidth();
-				if(isOnTimeIn(e)) {
-					this.mod = ClipDragModality.TIMEIN;
-				} else if(isOnTimeOut(e)) {
-					this.mod = ClipDragModality.TIMEOUT;
+			if(Starter.getController().isPaused()) {
+				if(e.getButton().equals(MouseButton.SECONDARY) || !toolBarSetter.getCurrentTool().equals(Tool.MOVE)) {
+					this.mod = ClipDragModality.NODRAG;
 				} else {
-					this.mod = ClipDragModality.MOVE;
+					dragging = true;
+					initialX = e.getScreenX();
+					initialLayoutX = this.getLayoutX();
+					initialWidth = this.getWidth();
+					if(isOnTimeIn(e)) {
+						this.mod = ClipDragModality.TIMEIN;
+					} else if(isOnTimeOut(e)) {
+						this.mod = ClipDragModality.TIMEOUT;
+					} else {
+						this.mod = ClipDragModality.MOVE;
+					}
 				}
 			}
 		}

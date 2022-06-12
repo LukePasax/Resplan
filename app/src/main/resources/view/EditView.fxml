@@ -47,7 +47,7 @@
                <children>
                 <Button fx:id="stop" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#stop" prefHeight="15.0" prefWidth="15.0" style="-fx-background-color: #FFFFFF;" text="Button">
                      <FlowPane.margin>
-                        <Insets left="5.0" right="5.0" />
+                        <Insets left="40.0" right="5.0" />
                      </FlowPane.margin>
                      <graphic>
                         <ImageView fitHeight="8.0" fitWidth="8.0" pickOnBounds="true" preserveRatio="true" style="-fx-translate-x: -4;">
@@ -87,7 +87,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Label fx:id="playbackTimeLabel" text="Label" />
+                  <Label fx:id="playbackTimeLabel" maxWidth="90.0" minWidth="90.0" prefWidth="90.0" text="00:00:0000" />
                </children>
                <VBox.margin>
                   <Insets />
