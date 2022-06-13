@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.core.UGen;
+import net.beadsproject.beads.ugens.Gain;
+
 import java.util.Map;
 
 /**
@@ -57,6 +59,12 @@ public abstract class RPEffect extends UGen implements AudioElement {
      * @return an integer that represents the number of outputs.
      */
     public abstract int getOuts();
+
+    /**
+     * {@inheritDoc}
+     * @return the {@link Gain} that represents the audio processed by the element.
+     */
+    public abstract Gain getOutput();
 
     /**
      * {@inheritDoc}

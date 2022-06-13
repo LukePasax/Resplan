@@ -1,5 +1,8 @@
 package daw.core.audioprocessing;
 
+import net.beadsproject.beads.core.UGen;
+import net.beadsproject.beads.ugens.Gain;
+
 import java.util.Map;
 
 /**
@@ -35,5 +38,11 @@ public interface AudioElement {
      * @return an integer that represents the number of outputs.
      */
     int getOuts();
+
+    /**
+     * Gets the output of the audio element.
+     * @return the {@link Gain} that represents the audio processed by the element.
+     */
+    Gain getOutput();
 
 }

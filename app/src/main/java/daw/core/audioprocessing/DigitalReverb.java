@@ -2,6 +2,7 @@ package daw.core.audioprocessing;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.Reverb;
@@ -27,8 +28,8 @@ public class DigitalReverb extends RPEffect {
     public DigitalReverb(@JsonProperty("ins") int channels) {
         super(channels);
         this.rev = new Reverb(channels);
-        this.in = new Gain(1);
-        this.out = new Gain(1);
+        this.in = new Gain(AudioContextManager.getAudioContext(), 1);
+        this.out = new Gain(AudioContextManager.getAudioContext(), 1);
         this.rev.addInput(this.in);
         this.out.addInput(this.in);
         this.out.addInput(this.rev);
@@ -71,6 +72,15 @@ public class DigitalReverb extends RPEffect {
     @Override
     public int getOuts() {
         return this.rev.getOuts();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @return the {@link Gain} that represents the audio processed by the element.
+     */
+    @Override
+    public Gain getOutput() {
+        return this.out;
     }
 
     /**

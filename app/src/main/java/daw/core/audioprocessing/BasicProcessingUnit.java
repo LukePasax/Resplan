@@ -150,7 +150,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
 
     private void connectEffects(RPEffect from, RPEffect to) {
         to.clearInputConnections();
-        to.addInput(from);
+        to.addInput(from.getOutput());
     }
 
     /**

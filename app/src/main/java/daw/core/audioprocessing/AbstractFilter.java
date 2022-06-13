@@ -1,6 +1,8 @@
 package daw.core.audioprocessing;
 
+import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.data.DataBead;
+import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.OnePoleFilter;
 import java.util.Map;
 
@@ -58,6 +60,16 @@ public abstract class AbstractFilter extends RPEffect {
     @Override
     public int getOuts() {
         return this.filter.getOuts();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @return the {@link Gain} that represents the audio processed by the element.
+     */
+    public Gain getOutput() {
+        final var out = new Gain(AudioContextManager.getAudioContext(), 1);
+        out.addInput(this.filter);
+        return out;
     }
 
     /**
