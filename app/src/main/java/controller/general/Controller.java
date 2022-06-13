@@ -1,5 +1,6 @@
 package controller.general;
 
+import daw.core.channel.RPChannel;
 import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
 import view.common.App;
@@ -105,4 +106,35 @@ public interface Controller {
     void stopRecording(String text) throws ImportException;
 
     void exportAudio(File file) throws InterruptedException, IOException;
+
+    /**
+     * Inverts the muteness of the given channel. This means that if the channel is currently disabled (muted),
+     * then this method enables it. On the other hand, if the channel is currently enabled (not muted), then
+     * this method disables it. This method can also be effectively called when the project is in a solo
+     * environment. However, if this is the case, then the muteness will be changed only after the project
+     * returns to the non-solo environment.
+     * @param channel the name of the {@link RPChannel} that has to be enabled or disabled.
+     */
+    void setMute(String channel);
+
+    /**
+     * Makes the given channel enabled in a solo environment. Calling this method has the effect of muting every
+     * channel, except for the one in input and all the channels that were previously set as solo. Effectively,
+     * repeated calls to this method with different channels will create a set of solo channels.
+     * If the given channel is already solo, then this method does nothing.
+     * @param channel The name of the {@link RPChannel} to be set as solo.
+     * @throws IllegalStateException if the given channel is muted. In that case, first call
+     * {@link #setMute(String)} and then this method.
+     */
+    void setSolo(String channel);
+
+    /**
+     * Removes the given channel from the set of solo channels. If there are no solo channels after this operation
+     * is over, then the project returns to a non-solo environment. As stated in {@link #setMute(String)},
+     * this would make channels' muteness return to the state it was before {@link #setSolo(String)} was called.
+     * If the given channel is already non-solo, then this method does nothing.
+     * @param channel The name of the {@link RPChannel} to be set as non-solo.
+     */
+    void removeSolo(String channel);
+
 }

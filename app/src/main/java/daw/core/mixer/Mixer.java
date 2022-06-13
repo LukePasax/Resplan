@@ -11,8 +11,8 @@ public class Mixer implements RPMixer {
     private final RPChannel masterChannel;
 
     public Mixer() {
-        channelFactory = new BasicChannelFactory();
-        masterChannel = channelFactory.masterChannel();
+        this.channelFactory = new BasicChannelFactory();
+        this.masterChannel = this.channelFactory.masterChannel();
     }
 
     /**
@@ -22,7 +22,7 @@ public class Mixer implements RPMixer {
      */
     @Override
     public RPChannel createBasicChannel() {
-        RPChannel channel = channelFactory.basic();
+        RPChannel channel = this.channelFactory.basic();
         this.linkToMaster(channel);
         return channel;
     }
@@ -34,7 +34,7 @@ public class Mixer implements RPMixer {
      */
     @Override
     public RPChannel createGatedChannel() {
-        RPChannel channel = channelFactory.gated();
+        RPChannel channel = this.channelFactory.gated();
         this.linkToMaster(channel);
         return channel;
     }
@@ -46,13 +46,13 @@ public class Mixer implements RPMixer {
      */
     @Override
     public RPChannel createReturnChannel() {
-        RPChannel channel = channelFactory.returnChannel();
+        RPChannel channel = this.channelFactory.returnChannel();
         this.linkToMaster(channel);
         return channel;
     }
 
     private void linkToMaster(RPChannel channel) {
-        masterChannel.connectSource(channel.getOutput());
+        this.masterChannel.connectSource(channel.getOutput());
     }
 
     /**
@@ -63,9 +63,9 @@ public class Mixer implements RPMixer {
      */
     @Override
     public RPChannel createSidechained(RPChannel channel) {
-        RPChannel Schannel = channelFactory.sidechained(channel.getOutput());
-        this.linkToMaster(Schannel);
-        return Schannel;
+        RPChannel sidechained = this.channelFactory.sidechained(channel.getOutput());
+        this.linkToMaster(sidechained);
+        return sidechained;
     }
 
     /**
@@ -100,7 +100,7 @@ public class Mixer implements RPMixer {
      */
     @Override
     public void linkToGroup(RPChannel channel, RPChannel group) {
-        masterChannel.disconnectSource(channel.getOutput());
+        this.masterChannel.disconnectSource(channel.getOutput());
         group.connectSource(channel.getOutput());
     }
 
@@ -113,7 +113,7 @@ public class Mixer implements RPMixer {
     @Override
     public void unlinkFromGroup(RPChannel channel, RPChannel group) {
         group.disconnectSource(channel.getOutput());
-        masterChannel.connectSource(channel.getOutput());
+        this.masterChannel.connectSource(channel.getOutput());
     }
 
     /**

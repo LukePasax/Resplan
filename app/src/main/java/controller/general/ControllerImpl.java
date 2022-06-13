@@ -3,6 +3,7 @@ package controller.general;
 import controller.storing.ReadFromFileImpl;
 import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;
+import daw.core.channel.RPChannel;
 import daw.core.clip.ClipNotFoundException;
 import daw.core.clip.RPClip;
 import daw.core.clip.RPRecorder;
@@ -14,7 +15,6 @@ import daw.manager.ImportException;
 import daw.manager.Manager;
 import daw.utilities.AudioContextManager;
 import javafx.scene.control.Alert;
-import javafx.stage.FileChooser;
 import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.data.Sample;
 import net.beadsproject.beads.data.audiofile.AudioFileType;
@@ -26,12 +26,9 @@ import planning.RPRole;
 import view.common.AlertDispatcher;
 import view.common.App;
 import view.common.ViewDataImpl;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ControllerImpl implements Controller {
@@ -43,8 +40,10 @@ public class ControllerImpl implements Controller {
     private final RPEngine engine;
     private File currentProject;
     private final File appSettings = new File(WORKING_DIRECTORY + SEP + APP_SETTINGS);
-
     private RPRecorder recorder;
+    private final Set<RPChannel> mutedChannels = new HashSet<>();
+    private final Set<RPChannel> soloChannels = new HashSet<>();
+    private boolean solo = false;
 
     /**
      * Sets up the application and initializes a new project (see newProject).
@@ -276,7 +275,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void moveClip(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException, ImportException {
+    public void moveClip(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException {
         App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.moveClip(clip,channel,finalTimeIn);
         createClipView(clip, channel);
@@ -296,21 +295,21 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException, ImportException {
+    public void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException {
     	App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
     	this.manager.setClipTimeIn(clip,channel,finalTimeIn);
         createClipView(clip, channel);
     }
 
     @Override
-    public void setClipTimeOut(String clip, String channel, Double finalTimeOut) throws ClipNotFoundException, ImportException {
+    public void setClipTimeOut(String clip, String channel, Double finalTimeOut) throws ClipNotFoundException {
         App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.setClipTimeOut(clip,channel,finalTimeOut);
         createClipView(clip, channel);
     }
 
     @Override
-    public void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException, ImportException {
+    public void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException {
         App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.splitClip(clip,channel,splittingTime);
         createClipView(clip, channel);
@@ -339,7 +338,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void exportAudio(File file) throws InterruptedException, IOException {
+    public void exportAudio(File file) throws IOException {
         AudioContext ac = AudioContextManager.getAudioContext();
         Sample sample = new Sample(0);
         RecordToSample exporter = new RecordToSample(ac, sample, RecordToSample.Mode.INFINITE);
@@ -355,6 +354,60 @@ public class ControllerImpl implements Controller {
         ac.out.addInput(this.manager.getMixer().getMasterChannel().getOutput());
         exporter.clip();
         exporter.getSample().write(file.getAbsolutePath(), AudioFileType.WAV);
+    }
+
+    @Override
+    public void setMute(String channel) {
+        RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
+        if (App.getData().getChannel(channel).isMuted()) {
+            this.mutedChannels.add(ch);
+        } else {
+            this.mutedChannels.remove(ch);
+        }
+        if (this.solo) {
+            this.manageMuteInSoloEnvironment();
+        } else {
+            this.manageMuteInNonSoloEnvironment();
+        }
+    }
+
+    private void manageMuteInNonSoloEnvironment() {
+        this.mutedChannels.forEach(RPChannel::disable);
+        this.manager.getChannelLinker().getAudioSet().stream()
+                .map(i -> (RPChannel) i.getKey())
+                .filter(i -> !this.mutedChannels.contains(i))
+                .forEach(RPChannel::enable);
+    }
+
+    private void manageMuteInSoloEnvironment() {
+        this.soloChannels.forEach(RPChannel::enable);
+        this.manager.getChannelLinker().getAudioSet().stream()
+                .map(i -> (RPChannel) i.getKey())
+                .filter(i -> !this.soloChannels.contains(i))
+                .forEach(RPChannel::disable);
+    }
+
+    @Override
+    public void setSolo(String channel) {
+        RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
+        if (this.mutedChannels.contains(ch)) {
+            throw new IllegalStateException("Cannot solo a muted channel. Unmute it first, then call this method.");
+        }
+        this.solo = true;
+        this.soloChannels.add(ch);
+        this.manageMuteInSoloEnvironment();
+    }
+
+    @Override
+    public void removeSolo(String channel) {
+        RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
+        this.soloChannels.remove(ch);
+        if (this.soloChannels.isEmpty()) {
+            this.solo = false;
+            this.manageMuteInNonSoloEnvironment();
+        } else {
+            this.manageMuteInSoloEnvironment();
+        }
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES
