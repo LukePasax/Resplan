@@ -95,12 +95,12 @@ public class Gate extends AbstractCompression {
                 float x1 = (p - tok) * ikp1 + tok;
                 target = ((ktrm1 * x1 + tt1mr) * (p - x1) / (x1 * (knee - 1)) + x1) / p;
             }
-            if (currval > target) {
+            if (currval < target) {
                 currval *= downstep;
                 if (currval < target) {
                     currval = target;
                 }
-            } else if (currval < target) {
+            } else if (currval > target) {
                 currval *= upstep;
                 if (currval > target) {
                     currval = target;
