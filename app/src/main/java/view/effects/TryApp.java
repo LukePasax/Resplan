@@ -19,7 +19,8 @@ public class TryApp extends Application {
 		comp.setValue(-60);*/
 		LimiterPane lpane = new LimiterPane();
 		PassPane ppane = new PassPane();
-		root.getChildren().addAll(lpane, ppane);
+		ReverbPane rpane = new ReverbPane();
+		root.getChildren().addAll(lpane, ppane, rpane);
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
