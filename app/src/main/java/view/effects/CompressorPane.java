@@ -1,13 +1,9 @@
 package view.effects;
 
-import javax.swing.plaf.FontUIResource;
-
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 public class CompressorPane extends Pane {
 
@@ -23,7 +19,8 @@ public class CompressorPane extends Pane {
 		final Label llower;
 		if(lowerbound.equals(Double.NEGATIVE_INFINITY)) {
 			this.lowerbound = -100.0;
-			llower = new Label("-Infinity");
+			llower = new Label("-∞");
+			llower.setStyle("-fx-font-size: 15");
 		} else {
 			this.lowerbound = lowerbound;
 			llower = new Label("" + lowerbound);			

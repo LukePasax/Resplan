@@ -2,6 +2,7 @@ package view.effects;
 
 import java.util.List;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -32,6 +33,7 @@ public class JerkyKnobPane extends Pane{
 		this.max = values.get(values.size()-1);
 		this.values = values;
 		
+		this.setPadding(new Insets(45));
 		this.setPrefHeight(size);
 		this.setPrefWidth(size);
 		

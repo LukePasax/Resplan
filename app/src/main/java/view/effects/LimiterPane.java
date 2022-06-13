@@ -1,13 +1,10 @@
 package view.effects;
 
-import java.net.URL;
-
-import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class LimiterPane extends BorderPane {
@@ -34,5 +31,7 @@ public class LimiterPane extends BorderPane {
 		
 		firstcolumn.getChildren().addAll(titlebox, firstrow, secondrow, thirdrow);
 		this.setCenter(firstcolumn);
+		this.setPadding(new Insets(5));
+		this.setStyle("-fx-border-color: black");
 	}
 }
