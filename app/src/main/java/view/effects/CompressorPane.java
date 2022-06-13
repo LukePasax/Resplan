@@ -12,6 +12,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class CompressorPane extends BorderPane {
+	
+	final private VUMeterPane compressor;
 
 	public CompressorPane() {
 		final HBox titlebox = new HBox(new Label("CompressorPane"));
@@ -22,7 +24,7 @@ public class CompressorPane extends BorderPane {
 		final VBox firstcolumn = new VBox();
 		final VBox secondcolumn = new VBox(20);
 		
-		final VUMeterPane compressor = new VUMeterPane(Double.NEGATIVE_INFINITY, 0.0);
+		compressor = new VUMeterPane(Double.NEGATIVE_INFINITY, 0.0);
 		firstrow.setAlignment(Pos.CENTER);
 		firstrow.getChildren().add(compressor);
 		
@@ -58,5 +60,9 @@ public class CompressorPane extends BorderPane {
 		
 		this.setPadding(new Insets(10));
 		this.setStyle("-fx-border-color: black");
+	}
+	
+	public void setValue(final Double value) {
+		this.compressor.setValue(value);
 	}
 }

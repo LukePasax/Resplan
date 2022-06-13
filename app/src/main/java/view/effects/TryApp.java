@@ -18,6 +18,7 @@ public class TryApp extends Application {
 		CompressorPane comp = new CompressorPane(-100.0, 0.0);
 		comp.setValue(-60);*/
 		CompressorPane cpane = new CompressorPane();
+		cpane.setValue(-60.0);
 		LimiterPane lpane = new LimiterPane();
 		PassPane ppane = new PassPane();
 		ReverbPane rpane = new ReverbPane();
