@@ -17,12 +17,13 @@ public class TryApp extends Application {
 		JerkyKnobPane jerky = new JerkyKnobPane(List.of("1:1", "2:2", "3:3", "4:4"), "Ratio");
 		CompressorPane comp = new CompressorPane(-100.0, 0.0);
 		comp.setValue(-60);*/
-		CompressorPane cpane = new CompressorPane();
+		/*CompressorPane cpane = new CompressorPane();
 		cpane.setValue(-60.0);
 		LimiterPane lpane = new LimiterPane();
 		PassPane ppane = new PassPane();
-		ReverbPane rpane = new ReverbPane();
-		root.getChildren().addAll(cpane, lpane, ppane, rpane);
+		ReverbPane rpane = new ReverbPane();*/
+		EffectsPane effects = new EffectsPane();
+		root.getChildren().addAll(effects);
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();

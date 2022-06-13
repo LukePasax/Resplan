@@ -1,4 +1,4 @@
-package view.effectstry;
+package view.effects;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -82,4 +82,5 @@ public class EffectsPane extends VBox {
 		
 		this.getChildren().addAll(panes, position, set, root);		
 	}
+
 }
