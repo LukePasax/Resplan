@@ -39,6 +39,7 @@
                     <MenuItem id="closeFile" fx:id="closeFile" mnemonicParsing="false" onAction="#closeProjectPressed" text="Close project" />
                         <MenuItem fx:id="setTemplate" mnemonicParsing="false" onAction="#setTemplatePressed" text="Set current project as Template" />
                         <MenuItem fx:id="resetTemplate" mnemonicParsing="false" onAction="#resetTemplatePressed" text="Reset Template" />
+                        <MenuItem fx:id="exportAudio" mnemonicParsing="false" onAction="#exportPressed" text="Export" />
                   </items>
                 </Menu>
               </menus>

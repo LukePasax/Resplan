@@ -12,6 +12,7 @@ import javafx.util.StringConverter;
 import view.common.AlertDispatcher;
 import view.common.NumberFormatConverter;
 import view.common.TimeAxisSetter;
+import view.common.WavFilePicker;
 
 import java.io.File;
 import java.util.NoSuchElementException;
@@ -59,8 +60,8 @@ public class NewClipController {
     }
 
     public void pickFilePressed(ActionEvent event) {
-        FileChooser chooser = new FileChooser();
-        file = chooser.showOpenDialog(channelPicker.getScene().getWindow());
+        WavFilePicker picker = new WavFilePicker();
+        file = picker.getFileChooser().showOpenDialog(channelPicker.getScene().getWindow());
         clipFileUrl.setText(file.getAbsolutePath());
     }
 }

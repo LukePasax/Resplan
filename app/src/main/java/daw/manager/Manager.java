@@ -210,8 +210,8 @@ public class Manager implements RPManager {
         } else {
             part = description.map(s -> new SoundtrackPart(title, s)).orElseGet(() -> new SoundtrackPart(title));
         }
-        this.clipLinker.addClipReferences(clip, part);
         this.channelLinker.getTapeChannel(channelLinker.getRole(channel)).insertRPClip(clip, time);
+        this.clipLinker.addClipReferences(clip, part);
         this.updateProjectLength(title, channel);
     }
 

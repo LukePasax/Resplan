@@ -13,6 +13,7 @@ import daw.manager.ChannelLinker;
 import daw.manager.ImportException;
 import daw.manager.Manager;
 import daw.utilities.AudioContextManager;
+import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.data.Sample;
@@ -247,7 +248,7 @@ public class ControllerImpl implements Controller {
         this.engine.stop();
         AudioContextManager.getAudioContext().stop();
     }
-
+    
     @Override
     public void setPlaybackTime(Double time) {
         this.engine.setPlaybackTime(time);
@@ -340,14 +341,18 @@ public class ControllerImpl implements Controller {
     @Override
     public void exportAudio(File file) throws InterruptedException, IOException {
         AudioContext ac = AudioContextManager.getAudioContext();
-        Sample sample = new Sample(this.manager.getProjectLength());
-        RecordToSample exporter = new RecordToSample(ac, sample, RecordToSample.Mode.FINITE);
+        Sample sample = new Sample(0);
+        RecordToSample exporter = new RecordToSample(ac, sample, RecordToSample.Mode.INFINITE);
         exporter.addInput(this.manager.getMixer().getMasterChannel().getOutput());
         ac.out.addDependent(exporter);
-        ac.runForNMillisecondsNonRealTime(this.manager.getProjectLength());
+        ac.out.removeAllConnections(this.manager.getMixer().getMasterChannel().getOutput());
+        this.start();
         exporter.start();
-        wait((long) this.manager.getProjectLength());
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.showAndWait();
         exporter.pause(true);
+        this.stop();
+        ac.out.addInput(this.manager.getMixer().getMasterChannel().getOutput());
         exporter.clip();
         exporter.getSample().write(file.getAbsolutePath(), AudioFileType.WAV);
     }
