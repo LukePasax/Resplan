@@ -41,6 +41,7 @@ public class ControllerImpl implements Controller {
     private File currentProject;
     private final File appSettings = new File(WORKING_DIRECTORY + SEP + APP_SETTINGS);
     private RPRecorder recorder;
+    private RecordToSample exporter;
     private final Set<RPChannel> mutedChannels = new HashSet<>();
     private final Set<RPChannel> soloChannels = new HashSet<>();
     private boolean solo = false;
@@ -251,7 +252,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void setPlaybackTime(Double time) {
         this.engine.setPlaybackTime(time);
-        updatePlaybackTime(time);
+        this.updatePlaybackTime(time);
     }
 
     @Override
@@ -261,7 +262,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void updatePlaybackTime(Double time) {
-        app.updatePlaybackTime(time);
+        this.app.updatePlaybackTime(time);
     }
 
     @Override
@@ -338,28 +339,32 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void exportAudio(File file) throws IOException {
+    public void startExport(Double startTime) {
         AudioContext ac = AudioContextManager.getAudioContext();
         Sample sample = new Sample(0);
-        RecordToSample exporter = new RecordToSample(ac, sample, RecordToSample.Mode.INFINITE);
-        exporter.addInput(this.manager.getMixer().getMasterChannel().getOutput());
-        ac.out.addDependent(exporter);
+        this.exporter = new RecordToSample(ac, sample, RecordToSample.Mode.INFINITE);
+        this.exporter.addInput(this.manager.getMixer().getMasterChannel().getOutput());
+        ac.out.addDependent(this.exporter);
         ac.out.removeAllConnections(this.manager.getMixer().getMasterChannel().getOutput());
+        this.setPlaybackTime(startTime);
         this.start();
-        exporter.start();
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.showAndWait();
-        exporter.pause(true);
+        this.exporter.start();
+    }
+
+    @Override
+    public void stopExport(File file) throws IOException {
+        AudioContext ac = AudioContextManager.getAudioContext();
+        this.exporter.pause(true);
         this.stop();
         ac.out.addInput(this.manager.getMixer().getMasterChannel().getOutput());
-        exporter.clip();
-        exporter.getSample().write(file.getAbsolutePath(), AudioFileType.WAV);
+        this.exporter.clip();
+        this.exporter.getSample().write(file.getAbsolutePath(), AudioFileType.WAV);
     }
 
     @Override
     public void setMute(String channel) {
         RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
-        if (App.getData().getChannel(channel).isMuted()) {
+        /*if (App.getData().getChannel(channel).isMuted()) {
             this.mutedChannels.add(ch);
         } else {
             this.mutedChannels.remove(ch);
@@ -369,6 +374,7 @@ public class ControllerImpl implements Controller {
         } else {
             this.manageMuteInNonSoloEnvironment();
         }
+         */
     }
 
     private void manageMuteInNonSoloEnvironment() {

@@ -105,7 +105,9 @@ public interface Controller {
 
     void stopRecording(String text) throws ImportException;
 
-    void exportAudio(File file) throws InterruptedException, IOException;
+    void startExport(Double startTime) throws InterruptedException;
+
+    void stopExport(File file) throws IOException;
 
     /**
      * Inverts the muteness of the given channel. This means that if the channel is currently disabled (muted),

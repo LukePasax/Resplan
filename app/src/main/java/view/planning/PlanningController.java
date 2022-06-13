@@ -13,14 +13,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import view.common.AlertDispatcher;
-import view.common.JsonFilePicker;
-import view.common.MarkersPane;
-import view.common.TimeAxisSetter;
-import view.common.ToolBarSetter;
+import view.common.*;
 
 import java.awt.Toolkit;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 public class PlanningController {
 
@@ -42,6 +39,7 @@ public class PlanningController {
     public Button delChannelButton;
     public Button delClipButton;
     public Button launchEditViewButton;
+    public MenuItem exportAudio;
     private TimeAxisSetter timeAxisSetter;
     private JsonFilePicker filePicker;
     private MarkersPane markersPane;
@@ -67,28 +65,14 @@ public class PlanningController {
     }
 
     public void newChannelPressed(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/NewChannelWindow.fxml"));
-        Scene scene = new Scene(loader.load());
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.initModality(Modality.WINDOW_MODAL);
-        stage.setTitle("New Channel");
-        stage.initOwner(menuBar.getScene().getWindow());
-        stage.showAndWait();
+        this.launchWindow("view/NewChannelWindow.fxml","New Channel");
     }
 
     public void newClipPressed(ActionEvent event) throws IOException {
         if (Starter.getController().getChannelList().isEmpty()) {
             AlertDispatcher.dispatchError("No channels present");
         } else {
-            FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/NewClipWindow.fxml"));
-            Scene scene = new Scene(loader.load());
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.setTitle("New Clip");
-            stage.initOwner(menuBar.getScene().getWindow());
-            stage.showAndWait();
+            this.launchWindow("view/NewClipWindow.fxml","New Clip");
         }
     }
 
@@ -139,5 +123,21 @@ public class PlanningController {
 
     public void saveProjectPressed(ActionEvent event) {
         this.saveProject();
+    }
+
+    public void exportPressed(ActionEvent actionEvent) throws IOException {
+        this.launchWindow("view/ExportView.fxml","Export");
+    }
+
+    private void launchWindow(String fxml, String title) throws IOException {
+        FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource(fxml));
+        Scene scene = new Scene(loader.load());
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setTitle(title);
+        stage.initOwner(menuBar.getScene().getWindow());
+        stage.setResizable(false);
+        stage.showAndWait();
     }
 }
