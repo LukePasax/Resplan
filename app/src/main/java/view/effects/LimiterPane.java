@@ -17,7 +17,7 @@ public class LimiterPane extends BorderPane {
 		final HBox thirdrow = new HBox();
 		final VBox firstcolumn = new VBox();
 		
-		final CompressorPane compressor = new CompressorPane(Double.NEGATIVE_INFINITY, 0.0);
+		final VUMeterPane compressor = new VUMeterPane(Double.NEGATIVE_INFINITY, 0.0);
 
 		firstrow.setAlignment(Pos.CENTER);
 		firstrow.getChildren().add(compressor);

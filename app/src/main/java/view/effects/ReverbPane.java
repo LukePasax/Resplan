@@ -14,6 +14,7 @@ public class ReverbPane extends BorderPane {
 		titlebox.setAlignment(Pos.CENTER);
 		final HBox firstrow = new HBox();
 		final HBox secondrow = new HBox();
+		final HBox thirdrow = new HBox();
 		final VBox firstcolumn = new VBox();
 		
 		final ContinuousKnobPane damping = new ContinuousKnobPane(0.0, 100.0, 3, "DAMPING");
@@ -24,7 +25,11 @@ public class ReverbPane extends BorderPane {
 		final ContinuousKnobPane late = new ContinuousKnobPane(0.0, 100.0, 3, "LATE REF");
 		secondrow.getChildren().addAll(early, late);
 		
-		firstcolumn.getChildren().addAll(titlebox, firstrow, secondrow);
+		final ContinuousKnobPane dry = new ContinuousKnobPane(0.0, 100.0, 3, "DRY");
+		final ContinuousKnobPane wet = new ContinuousKnobPane(0.0, 100.0, 3, "WET");
+		thirdrow.getChildren().addAll(dry, wet);
+		
+		firstcolumn.getChildren().addAll(titlebox, firstrow, secondrow, thirdrow);
 		this.setCenter(firstcolumn);
 		
 		this.setPadding(new Insets(10));

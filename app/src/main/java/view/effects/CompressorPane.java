@@ -1,61 +1,62 @@
 package view.effects;
 
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
-public class CompressorPane extends Pane {
+public class CompressorPane extends BorderPane {
 
-	private double lowerbound;
-	private double upperbound;
-	private final ProgressBar compressor = new ProgressBar();
-	private final Label lcurrent;
-	
-	public CompressorPane(final Double lowerbound, final Double upperbound) {
-		if(Double.compare(lowerbound, upperbound) >= 0) {
-			throw new IllegalArgumentException();
-		}
-		final Label llower;
-		if(lowerbound.equals(Double.NEGATIVE_INFINITY)) {
-			this.lowerbound = -100.0;
-			llower = new Label("-∞");
-			llower.setStyle("-fx-font-size: 15");
-		} else {
-			this.lowerbound = lowerbound;
-			llower = new Label("" + lowerbound);			
-		}
-		this.upperbound = upperbound;
-		compressor.setRotate(180);
-		compressor.setProgress(upperbound);
-		compressor.setLayoutY(10);
-		compressor.setPrefWidth(100);
-		compressor.setPrefHeight(20);
-		compressor.setStyle("-fx-accent: #00fa9a;");
+	public CompressorPane() {
+		final HBox titlebox = new HBox(new Label("CompressorPane"));
+		titlebox.setAlignment(Pos.CENTER);
+		final HBox firstrow = new HBox();
+		final HBox secondrow = new HBox();
+		final HBox thirdrow = new HBox();
+		final VBox firstcolumn = new VBox();
+		final VBox secondcolumn = new VBox(20);
 		
-		//Value, min, max labels
-		lcurrent = new Label("" + upperbound);
-		final Label lupper = new Label("" + upperbound);
-
-		lcurrent.setPrefWidth(compressor.getPrefWidth());
-		lcurrent.setAlignment(Pos.CENTER);
-		lcurrent.setLayoutX(0);
-		lcurrent.setLayoutY(10);
-		lcurrent.setStyle("-fx-font-weight: bold;");
-		llower.setLayoutX(compressor.getLayoutX()-10);
-		llower.setLayoutY(compressor.getPrefHeight()+10);
-		lupper.setLayoutX(compressor.getPrefWidth()-10);
-		lupper.setLayoutY(compressor.getPrefHeight()+10);
+		final VUMeterPane compressor = new VUMeterPane(Double.NEGATIVE_INFINITY, 0.0);
+		firstrow.setAlignment(Pos.CENTER);
+		firstrow.getChildren().add(compressor);
 		
-		this.getChildren().addAll(compressor, lcurrent, llower, lupper);
-	}
-	
-	public void setValue(final double value) {
-		if(value >= lowerbound && value <= upperbound) {
-			compressor.setProgress(-value/(-lowerbound));
-		} else if (value < lowerbound) {
-			compressor.setProgress(-lowerbound);
-		}
-		lcurrent.setText("" + value);
+		final ContinuousKnobPane threshold = new ContinuousKnobPane(Double.NEGATIVE_INFINITY, 0.0, 0, "THRESHOLD");
+		final ContinuousKnobPane attack = new ContinuousKnobPane(0.2, 20.0, 3, "ATTACK");
+		secondrow.getChildren().addAll(threshold, attack);
+		
+		final JerkyKnobPane ratio = new JerkyKnobPane(List.of("1:1", "2:1", "4:1", "8:1"), "RATIO");
+		final ContinuousKnobPane decay = new ContinuousKnobPane(0.2, 40.0, 3, "DECAY");
+		thirdrow.getChildren().addAll(ratio, decay);
+		
+		firstcolumn.getChildren().addAll(titlebox, firstrow, secondrow, thirdrow);
+		
+		final Label title = new Label("SIDECHAIN");
+		final ComboBox<String> channels = new ComboBox<>();
+		channels.getItems().addAll(FXCollections.observableArrayList("channel1", "channel2", "channel3")); //TO COMPLETE with real channels
+		final Button switcher = new Button("Disable");
+		switcher.setOnMouseClicked(e -> {
+			if(switcher.getText().equals("Disable")) {
+				switcher.setText("Enable");
+				channels.setDisable(true);
+			} else {
+				switcher.setText("Disable");
+				channels.setDisable(false);
+			}
+		});
+		
+		secondcolumn.setAlignment(Pos.CENTER);
+		secondcolumn.getChildren().addAll(title, channels, switcher);
+		
+		this.setCenter(firstcolumn);
+		this.setRight(secondcolumn);
+		
+		this.setPadding(new Insets(10));
+		this.setStyle("-fx-border-color: black");
 	}
 }
