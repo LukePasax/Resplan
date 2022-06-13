@@ -17,11 +17,11 @@ public class JerkyKnobPane extends Pane{
 	private List<String> values;
 	final Pane rotation;
 	final Label lvalue;
-	private final static double correctionx = 25;
+	private final static double correctionx = 18;
 	private final static double correctiony = correctionx/1.5;
-	private final static double size = 150.0;
+	private final static double size = 80.0;
 	private final static double half = size/2;
-	private final static double radius = 40.0;
+	private final static double radius = 25.0;
 	
 	private boolean drag = false;
 	
@@ -46,31 +46,34 @@ public class JerkyKnobPane extends Pane{
 		
 		//Pane for little circle
 		rotation = new Pane();
-		rotation.setLayoutX(35);
-		rotation.setLayoutY(35);
-		rotation.setPrefHeight(80);
-		rotation.setPrefWidth(80);
+		rotation.setLayoutX(15);
+		rotation.setLayoutY(15);
+		rotation.setPrefHeight(50);
+		rotation.setPrefWidth(50);
 		//Little circle
-		final Circle little = new Circle(7.0);
+		final Circle little = new Circle(4.0);
 		little.setFill(Color.RED);
 		little.setStroke(Color.BLACK);
-		little.setLayoutX(25.0);
-		little.setLayoutY(62.0);
+		little.setLayoutX(15.0);
+		little.setLayoutY(35.0);
 		
 		//Min label
 		final Label lmin = new Label(min);
-		lmin.setLayoutX(30);
-		lmin.setLayoutY(105);
+		lmin.setLayoutX(8.0);
+		lmin.setLayoutY(56.0);
+		lmin.setStyle("-fx-font-size: 11;");
 		//Max label
 		final Label lmax = new Label(max);
-		lmax.setLayoutX(110);
-		lmax.setLayoutY(105);
+		lmax.setLayoutX(56.0);
+		lmax.setLayoutY(56.0);
+		lmax.setStyle("-fx-font-size: 11;");
 		//Value label
 		lvalue = new Label(value);
-		lvalue.setLayoutX(55);
+		lvalue.setLayoutX(15);
 		lvalue.setLayoutY(half-10);
-		lvalue.setPrefWidth(radius);
+		lvalue.setPrefWidth(radius*2);
 		lvalue.setAlignment(Pos.CENTER);
+		lvalue.setStyle("-fx-font-weight: bold; -fx-font-size: 11;");
 		
 		rotation.getChildren().addAll(little);
 		this.getChildren().addAll(circle, rotation, lmin, lmax, lvalue);
@@ -80,13 +83,14 @@ public class JerkyKnobPane extends Pane{
 			setValue(values.get(i));
 			double angle = rotation.getRotate();
 			Pane pane = new Pane();
-			pane.setLayoutX(35);
-			pane.setLayoutY(35);
-			pane.setPrefHeight(80);
-			pane.setPrefWidth(80);
+			pane.setLayoutX(15);
+			pane.setLayoutY(15);
+			pane.setPrefHeight(50);
+			pane.setPrefWidth(50);
 			Label label = new Label(getValue());
-			label.setLayoutX(25.0);
-			label.setLayoutY(62.0);
+			label.setLayoutX(15.0);
+			label.setLayoutY(35.0);
+			label.setStyle("-fx-font-size: 10");
 			pane.getChildren().add(label);
 			pane.setRotate(angle);
 			label.setRotate(360-angle);
@@ -117,9 +121,10 @@ public class JerkyKnobPane extends Pane{
 		
 		//Name label
 		final Label lname = new Label(name);
-		lname.setLayoutY(130);
+		lname.setLayoutY(70);
 		lname.setPrefWidth(size);
 		lname.setAlignment(Pos.CENTER);
+		lname.setStyle("-fx-font-size: 10");
 		this.getChildren().add(lname);
 	}
 	
@@ -141,8 +146,8 @@ public class JerkyKnobPane extends Pane{
 	}
 	
 	private void mouseDragged(MouseEvent e) {
-		double poslimit = 10.0;
-		double neglimit = -10.0;
+		double poslimit = 5.0;
+		double neglimit = -5.0;
 		double move = ((-e.getSceneY())+initialValue)*0.1;
 		if(move > poslimit && !drag){
 			if(values.indexOf(current) < values.size()-1) {
