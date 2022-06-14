@@ -87,16 +87,18 @@ public class ExportViewController {
         this.window = this.progressBar.getScene().getWindow();
         ScheduledFuture<?> handler = executor.scheduleAtFixedRate(
                 this::updateProgress, 0, tickTime.longValue(), TimeUnit.MILLISECONDS);
-        Runnable canceller = () -> {
-            handler.cancel(true);
-            try {
-                Starter.getController().stopExport(this.file);
-                this.window.hide();
-            } catch (IOException e) {
-                AlertDispatcher.dispatchError(e.getLocalizedMessage());
-            }
-        };
+        Runnable canceller = () -> cancelBar(handler);
         executor.schedule(canceller, duration.longValue(), TimeUnit.MILLISECONDS);
+    }
+
+    private void cancelBar(ScheduledFuture<?> handler) {
+        handler.cancel(true);
+        try {
+            Starter.getController().stopExport(this.file);
+            this.window.hide();
+        } catch (IOException e) {
+            AlertDispatcher.dispatchError(e.getLocalizedMessage());
+        }
     }
 
     private void updateProgress() {
