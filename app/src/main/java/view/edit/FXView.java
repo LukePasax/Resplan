@@ -3,6 +3,7 @@ package view.edit;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import view.common.App;
 import view.common.ChannelsView;
 
@@ -26,6 +27,9 @@ public class FXView {
 
 	private void ChangeFXView() {
 		this.fxPanel.getChildren().clear();
-		this.fxPanel.getChildren().add(App.getData().getChannel(selectedChannel).getFxView());
+		var fxView = App.getData().getChannel(selectedChannel).getFxView();
+		this.fxPanel.getChildren().add(fxView);
+		HBox.setHgrow(fxView, Priority.ALWAYS);
+		fxPanel.setFillHeight(true);
 	}
 }

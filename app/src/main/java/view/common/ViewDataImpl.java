@@ -2,14 +2,11 @@ package view.common;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
@@ -30,7 +27,7 @@ public class ViewDataImpl implements ViewData {
 	@Override
 	public void addChannel(Channel channel) {
 		data.put(channel, FXCollections.observableArrayList());
-		//channel.setFxView(new EffectsPane(channel.getTitle()));
+		channel.setFxView(new EffectsPane(channel.getTitle()));
 	}
 
 	@Override
