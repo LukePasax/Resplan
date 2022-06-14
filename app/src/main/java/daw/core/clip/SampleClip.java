@@ -109,7 +109,8 @@ public class SampleClip implements RPClip<Sample> {
 	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
 	@JsonCreator
-	public SampleClip(@JsonProperty("duration") double duration, @JsonProperty("content name") File file, String title)
+	public SampleClip(@JsonProperty("duration") double duration, @JsonProperty("content name") File file,
+					  @JsonProperty("name") String title)
 			throws IOException, OperationUnsupportedException, FileFormatException {
 		this(new FileClip(duration, file, title));
 	}

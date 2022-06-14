@@ -30,7 +30,7 @@ public class EmptyClip implements RPClip<NoContent> {
 	 * @param  duration  The duration of this clip in milliseconds.
 	 */
 	@JsonCreator
-	public EmptyClip(@JsonProperty("duration") double duration, String title) {
+	public EmptyClip(@JsonProperty("duration") double duration, @JsonProperty("name") String title) {
 		if (Double.compare(duration,0.0) < 0) {
 			throw new IllegalArgumentException("The duration of a clip must be a non-zero and positive value.");
 		}

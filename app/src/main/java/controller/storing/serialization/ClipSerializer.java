@@ -27,6 +27,7 @@ public class ClipSerializer extends StdSerializer<RPClip> {
             gen.writeStringField("content name", ((Sample) value.getContent()).getFileName());
         }
         gen.writeNumberField("duration", value.getDuration());
+        gen.writeStringField("name", value.getTitle());
     }
 
     @Override
