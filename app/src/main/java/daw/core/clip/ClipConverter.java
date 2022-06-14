@@ -56,7 +56,7 @@ public class ClipConverter implements RPClipConverter {
 	 */
 	@Override
 	public EmptyClip fromFileToEmptyClip(FileClip fileClip) {
-		return new EmptyClip(fileClip.getDuration());
+		return new EmptyClip(fileClip.getDuration(), fileClip.getTitle());
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class ClipConverter implements RPClipConverter {
 	 */
 	@Override
 	public EmptyClip fromSampleToEmptyClip(SampleClip sampleClip) {
-		return new EmptyClip(sampleClip.getDuration());
+		return new EmptyClip(sampleClip.getDuration(), sampleClip.getTitle());
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class ClipConverter implements RPClipConverter {
 	 */
 	@Override
 	public FileClip fromSampleToFileClip(SampleClip sampleClip) {
-		FileClip clip = new FileClip(new File(sampleClip.getContent().getFileName()), new EmptyClip(sampleClip.getDuration()));
+		FileClip clip = new FileClip(new File(sampleClip.getContent().getFileName()), new EmptyClip(sampleClip.getDuration(), sampleClip.getTitle()));
 		clip.setContentPosition(sampleClip.getContentPosition());
 		return clip;
 	}

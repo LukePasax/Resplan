@@ -87,9 +87,9 @@ public class SampleClip implements RPClip<Sample> {
 	 * 
 	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
-	public SampleClip(File content)
+	public SampleClip(File content, String title)
 			throws IOException, OperationUnsupportedException, FileFormatException {
-		this(new FileClip(content));
+		this(new FileClip(content, title));
 		this.setDuration(sample.getLength());
 	}
 	
@@ -109,9 +109,9 @@ public class SampleClip implements RPClip<Sample> {
 	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
 	@JsonCreator
-	public SampleClip(@JsonProperty("duration") double duration, @JsonProperty("content name") File file)
+	public SampleClip(@JsonProperty("duration") double duration, @JsonProperty("content name") File file, String title)
 			throws IOException, OperationUnsupportedException, FileFormatException {
-		this(new FileClip(duration, file));
+		this(new FileClip(duration, file, title));
 	}
 	
 	/**
@@ -194,6 +194,11 @@ public class SampleClip implements RPClip<Sample> {
 	@Override
 	public RPClip<Sample> duplicate() throws IOException, OperationUnsupportedException, FileFormatException {
 			return new SampleClip(this.clip);
+	}
+
+	@Override
+	public String getTitle() {
+		return clip.getTitle();
 	}
 
 }

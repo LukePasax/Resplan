@@ -29,6 +29,13 @@ public interface RPClip<X> {
 	 */
 	double DEFAULT_DURATION = 5000;
 	
+	/**
+	 * Title of this clip.
+	 * 
+	 * @return the title of this clip.
+	 */
+	String getTitle();
+	
 	/** 
 	 * Set this RPClip duration.
 	 * 
@@ -96,4 +103,6 @@ public interface RPClip<X> {
 	 * @return  a duplicate of this RPClip.
 	 */
 	RPClip<X> duplicate() throws Exception;
+
+	
 }

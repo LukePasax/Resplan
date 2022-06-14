@@ -14,11 +14,14 @@ public class EmptyClip implements RPClip<NoContent> {
 	 */
 	private double duration;
 	
+	private final String title;
+	
 	/**
 	 * Creates an EmptyClip with a duration of {@value RPClip#DEFAULT_DURATION}
 	 */
-	public EmptyClip() {
+	public EmptyClip(String title) {
 		this.duration = RPClip.DEFAULT_DURATION;
+		this.title = title;
 	}
 	
 	/**
@@ -27,11 +30,17 @@ public class EmptyClip implements RPClip<NoContent> {
 	 * @param  duration  The duration of this clip in milliseconds.
 	 */
 	@JsonCreator
-	public EmptyClip(@JsonProperty("duration") double duration) {
+	public EmptyClip(@JsonProperty("duration") double duration, String title) {
 		if (Double.compare(duration,0.0) < 0) {
 			throw new IllegalArgumentException("The duration of a clip must be a non-zero and positive value.");
 		}
 		this.duration = duration;
+		this.title = title;
+	}
+	
+	@Override
+	public String getTitle() {
+		return this.title;
 	}
 	
 	/**
@@ -109,7 +118,7 @@ public class EmptyClip implements RPClip<NoContent> {
 	 */
 	@Override
 	public RPClip<NoContent> duplicate() {
-		return new EmptyClip(this.duration);
+		return new EmptyClip(this.duration, this.title);
 	}
 
 }

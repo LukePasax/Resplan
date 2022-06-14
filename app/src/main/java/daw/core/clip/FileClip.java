@@ -56,8 +56,8 @@ public class FileClip implements RPClip<File> {
 	 * 
 	 * @param  content  The File content of this RPClip.
 	 */
-	public FileClip(File content) {
-		this(content, new EmptyClip());
+	public FileClip(File content, String title) {
+		this(content, new EmptyClip(title));
 	}
 	
 	/**
@@ -67,8 +67,8 @@ public class FileClip implements RPClip<File> {
 	 * 
 	 * @param  content  The File content of this RPClip.
 	 */
-	public FileClip(double duration, File content) {
-		this(content, new EmptyClip(duration));
+	public FileClip(double duration, File content, String title) {
+		this(content, new EmptyClip(duration, title));
 	}
 	
 	/**
@@ -140,5 +140,10 @@ public class FileClip implements RPClip<File> {
 		RPClip<File> newClip = new FileClip(this.content, this.clip);
 		newClip.setContentPosition(this.contentPosition);
 		return newClip;
+	}
+
+	@Override
+	public String getTitle() {
+		return clip.getTitle();
 	}
 }
