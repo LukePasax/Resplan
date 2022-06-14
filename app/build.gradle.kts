@@ -45,6 +45,8 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.13.1")
     implementation("net.beadsproject:beads:3.2")
+	implementation("org.controlsfx:controlsfx:11.0.3")
+    
     // JUnit API and testing engine
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")

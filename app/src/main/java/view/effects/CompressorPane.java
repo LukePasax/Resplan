@@ -4,12 +4,12 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.controlsfx.control.*;
 
 public class CompressorPane extends BorderPane {
 	
@@ -41,14 +41,15 @@ public class CompressorPane extends BorderPane {
 		final Label title = new Label("SIDECHAIN");
 		final ComboBox<String> channels = new ComboBox<>();
 		channels.getItems().addAll(FXCollections.observableArrayList("channel1", "channel2", "channel3")); //TO COMPLETE with real channels
-		final Button switcher = new Button("Disable");
+		final ToggleSwitch switcher = new ToggleSwitch("Internal");
+		channels.setDisable(true);
 		switcher.setOnMouseClicked(e -> {
-			if(switcher.getText().equals("Disable")) {
-				switcher.setText("Enable");
-				channels.setDisable(true);
-			} else {
-				switcher.setText("Disable");
+			if(switcher.getText().equals("Internal")) {
+				switcher.setText("External");
 				channels.setDisable(false);
+			} else {
+				switcher.setText("Internal");
+				channels.setDisable(true);
 			}
 		});
 		

@@ -4,21 +4,28 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.collections.ListChangeListener;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import view.common.App;
 import view.common.ViewDataImpl.Effect;
 
-public class EffectsPane extends HBox {
+public class EffectsPane extends ScrollPane {
 	
-	private final Map<String, Class<? extends Pane>> effectsType = createEffects();
+	private final static Map<String, Class<? extends Pane>> effectsType = createEffects();
 	private final Map<Effect, Node> effects = new HashMap<>();
 
 	public EffectsPane(final String channel) {
-		App.getData().getChannel(channel).addFxListListener(new ListChangeListener<Effect>() {
+		/*App.getData().getChannel(channel).addFxListListener(new ListChangeListener<Effect>() {
 
 			@Override
 			public void onChanged(Change<? extends Effect> c) {
@@ -36,10 +43,30 @@ public class EffectsPane extends HBox {
 				}
 			}
 			
+		});*/
+		final HBox root = new HBox();
+		final Button add = new Button("+");
+		VBox left = new VBox();
+		left.getChildren().add(add);
+		left.setAlignment(Pos.CENTER);
+		root.getChildren().add(left);
+		final ContextMenu menu = new ContextMenu();
+		add.setContextMenu(menu);
+		effectsType.forEach((e, c) -> {
+			MenuItem item = new MenuItem(e);
+			menu.getItems().add(item);
 		});
+		add.setOnMouseClicked(e -> {
+			menu.show(this.getScene().getWindow(), e.getScreenX(), e.getScreenY());
+		});
+		root.getChildren().add(new EffectPane(new CompressorPane()));
+		//root.autosize();
+		//this.autosize();
+		this.setContent(root);
+		
 	}
 	
-	private Map<String, Class<? extends Pane>> createEffects(){
+	private static Map<String, Class<? extends Pane>> createEffects(){
 		Map<String, Class<? extends Pane>> effects = new HashMap<>();
 		effects.put("Compressor", CompressorPane.class);
 		effects.put("Limiter", LimiterPane.class);
@@ -71,12 +98,33 @@ public class EffectsPane extends HBox {
 		
 		public EffectPane(final BorderPane effect) {
 			final HBox firstrow = new HBox();
-			final Button remove = new Button("-");
+			firstrow.setAlignment(Pos.CENTER);
+			final Button remove = new Button("X");
+			remove.setShape(new Circle(1.5));
 			final Button moveLeft = new Button("<");
+			moveLeft.setShape(new Circle(1.5));
 			final Button moveRight = new Button(">");
+			moveRight.setShape(new Circle(1.5));
+			HBox.setMargin(remove, new Insets(0,0,0,10));
+			
+			VBox right = new VBox();
+			Button add = new Button("+");
+			right.getChildren().add(add);
+			right.setAlignment(Pos.CENTER);
+
+			final ContextMenu menu = new ContextMenu();
+			add.setContextMenu(menu);
+			effectsType.forEach((e, c) -> {
+				MenuItem item = new MenuItem(e);
+				menu.getItems().add(item);
+			});
+			add.setOnMouseClicked(e -> {
+				menu.show(this.getScene().getWindow(), e.getScreenX(), e.getScreenY());
+			});
 			
 			firstrow.getChildren().addAll(moveLeft, moveRight, remove);
 			
+			this.setRight(right);
 			this.setTop(firstrow);
 			this.setCenter(effect);
 		}
