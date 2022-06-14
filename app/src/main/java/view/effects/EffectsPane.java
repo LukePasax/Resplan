@@ -1,17 +1,19 @@
 package view.effects;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.collections.ListChangeListener;
+import javafx.scene.Node;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import view.common.App;
 import view.common.ViewDataImpl.Effect;
 
-public class EffectsPane extends VBox {
+public class EffectsPane extends HBox {
 	
-	private final Map<String, Pane> effects = createEffects();
-	private final EffectsPane rootPane = this;
+	private final Map<String, Class<? extends Pane>> effectsType = createEffects();
+	private final Map<Effect, Node> effects = new HashMap<>();
 
 	public EffectsPane(final String channel) {
 		App.getData().getChannel(channel).addFxListListener(new ListChangeListener<Effect>() {
@@ -20,29 +22,46 @@ public class EffectsPane extends VBox {
 			public void onChanged(Change<? extends Effect> c) {
 				c.next();
 				if(c.wasAdded()) {
-					c.getAddedSubList().forEach(e -> rootPane.getChildren().add(effects.get(e.getType())));
+					c.getAddedSubList().forEach(e -> addEffect(e));
 				}
 				
 				if(c.wasRemoved()) {
-					c.getAddedSubList().forEach(e -> rootPane.getChildren().remove(effects.get(e.getType())));
+					c.getAddedSubList().forEach(e -> removeEffect(e));
 				}
 				
 				if(c.wasPermutated()) {
-					c.getAddedSubList().forEach(e -> {
-						rootPane.getChildren().set(rootPane.getChildren().indexOf(effects.get(e.getType())), effects.get(e.getType()));
-					});
+					c.getAddedSubList().forEach(e -> setEffect(c.getPermutation(c.getList().indexOf(e)), e));
 				}
 			}
 			
 		});
 	}
 	
-	private Map<String, Pane> createEffects(){
-		Map<String, Pane> effects = new HashMap<>();
-		effects.put("Compressor", new CompressorPane());
-		effects.put("Limiter", new LimiterPane());
-		effects.put("Pass", new PassPane());
-		effects.put("Reverb", new ReverbPane());
+	private Map<String, Class<? extends Pane>> createEffects(){
+		Map<String, Class<? extends Pane>> effects = new HashMap<>();
+		effects.put("Compressor", CompressorPane.class);
+		effects.put("Limiter", LimiterPane.class);
+		effects.put("Pass", PassPane.class);
+		effects.put("Reverb", ReverbPane.class);
 		return effects;
+	}
+	
+	private void addEffect(final Effect effect) {
+		try {
+			effects.put(effect, effectsType.get(effect.getType()).getDeclaredConstructor().newInstance());
+			this.getChildren().add(effects.get(effect));
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void removeEffect(final Effect effect) {
+		effects.remove(effect);
+		this.getChildren().remove(effects.get(effect));
+	}
+	
+	private void setEffect(final int newPos, Effect effect) {
+		this.getChildren().set(newPos, effects.get(effect));
 	}
 }
