@@ -2,6 +2,7 @@ package view.common;
 
 import java.util.Set;
 
+import javafx.beans.InvalidationListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
@@ -28,6 +29,8 @@ public interface ViewData {
 
 	void addChannelsDataListener(MapChangeListener<Channel, ObservableList<Clip>> listener);
 
+	void addChannelsInvalidateListener(InvalidationListener invalidationListener);
+	
 	void addClipsDataListener(Channel channel, ListChangeListener<Clip> listener);
 
 	Set<Channel> getUnmodifiableChannels();
@@ -42,4 +45,5 @@ public interface ViewData {
 	void addSectionDataListener(SetChangeListener<Section> listener);
 	
 	ObservableSet<Section> getUnmodifiableSections();
+
 }
