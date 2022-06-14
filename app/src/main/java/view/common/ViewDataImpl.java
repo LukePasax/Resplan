@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
@@ -28,6 +30,7 @@ public class ViewDataImpl implements ViewData {
 	@Override
 	public void addChannel(Channel channel) {
 		data.put(channel, FXCollections.observableArrayList());
+		//channel.setFxView(new EffectsPane(channel.getTitle()));
 	}
 
 	@Override
@@ -122,14 +125,11 @@ public class ViewDataImpl implements ViewData {
 		private Set<Node> view = new HashSet<>();
 		private ObservableList<Effect> effects = FXCollections.observableArrayList();
 		private Node fxView;
+		private final Set<ChangeListener<Channel>> listeners = new HashSet<>();
 		
-		public Channel(String title, String group, List<Effect> effects) {
+		public Channel(String title, String group) {
 			this.title = title;
 			this.group = group;
-			//fxView = new EffectsPane(title); TODO
-			if(effects != null) {
-				effects.addAll(effects);	
-			}
 		}
 		
 		public String getTitle() {
@@ -146,6 +146,7 @@ public class ViewDataImpl implements ViewData {
 		
 		public void setMute(boolean muted) {
 			this.muted = muted;
+			this.listeners.forEach(l->l.changed(null, null, this));
 		}
 		
 		public boolean isSolo() {
@@ -154,6 +155,7 @@ public class ViewDataImpl implements ViewData {
 		
 		public void setSolo(boolean solo) {
 			this.solo = solo;
+			this.listeners.forEach(l->l.changed(null, null, this));
 		}
 		
 		public void addToViewAll(Node... nodes) {
@@ -180,7 +182,7 @@ public class ViewDataImpl implements ViewData {
 			return fxView;
 		}
 		
-		public void SetFxView(Node node) {
+		public void setFxView(Node node) {
 			this.fxView = node;
 		}
 		
@@ -190,6 +192,10 @@ public class ViewDataImpl implements ViewData {
 		
 		public void addFxListListener(ListChangeListener<Effect> listChangeListener) {
 			effects.addListener(listChangeListener);
+		}
+		
+		public void setChangeListener(ChangeListener<Channel> changeListener) {
+			listeners.add(changeListener);
 		}
 		
 		@Override

@@ -59,7 +59,12 @@ public abstract class ChannelsView {
 					RegionHeightResizer.makeResizable(iw);
 					//select channel
 					iw.setOnMouseClicked(e->selected.set(ch.getTitle()));
-					cw.setOnMouseClicked(e->selected.set(ch.getTitle()));
+					cw.setOnMouseClicked(e->{
+						if(toolBarSetter.getCurrentTool().equals(Tool.CURSOR)) {
+							selected.set(ch.getTitle());
+						}
+						cw.clickEvent(e);
+					});
 					//--------ADDING TO VIEW-----
 					if(!groupIndexes.containsKey(ch.getGroup())) {
 						groupIndexes.put(ch.getGroup(), channelsInfoPane.getChildren().size());

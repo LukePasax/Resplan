@@ -145,7 +145,7 @@ public class ControllerImpl implements Controller {
         }
         Optional<String> desc = description.equals("") ? Optional.empty() : Optional.of(description);
         this.manager.addChannel(roleType, title, desc);
-        App.getData().addChannel(new ViewDataImpl.Channel(title, type, null));
+        App.getData().addChannel(new ViewDataImpl.Channel(title, type));
     }
 
     @Override

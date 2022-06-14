@@ -42,6 +42,7 @@ public abstract class ChannelContentView extends Pane {
 	private final Channel ch;
 	private final ToolBarSetter toolBarSetter;
 	private final Color groupColor;
+	private final EventHandler<MouseEvent> clickEvent;
 
 	public ChannelContentView(Channel ch, NumberAxis axis, ToolBarSetter toolBarSetter, Color color) {
 		super();
@@ -85,7 +86,6 @@ public abstract class ChannelContentView extends Pane {
 
 			@Override
 			public void handle(MouseEvent e) {
-				System.out.println("ciao");
 				if(toolBarSetter.getCurrentTool().equals(Tool.ADDCLIPS)) {
 					if(secondClick) {
 						out = axis.getValueForDisplay(e.getX()).doubleValue();
@@ -117,7 +117,11 @@ public abstract class ChannelContentView extends Pane {
 				}
 			}
 		};
-		this.setOnMouseClicked(new EmptyClipCreator()); //TODO
+		this.clickEvent = new EmptyClipCreator();
+	}
+	
+	public void clickEvent(MouseEvent e) {
+		this.clickEvent.handle(e);
 	}
 	
 	//LAYOUT CLIPS
