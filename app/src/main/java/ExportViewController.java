@@ -1,4 +1,7 @@
 import Resplan.Starter;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -28,6 +31,7 @@ public class ExportViewController {
     private NumberFormatConverter converter;
     private Double progress;
     private Window window;
+    private boolean finished;
 
     public void initialize() {
         this.converter = new NumberFormatConverter();
@@ -77,6 +81,7 @@ public class ExportViewController {
     private void startProgressBar(Double duration, Double tickTime) {
         this.pane = new AnchorPane();
         this.progressBar = new ProgressBar(this.progress);
+        this.progressBar.progressProperty().addListener(this::changed);
         AnchorPane.setTopAnchor(this.progressBar,140.0);
         AnchorPane.setBottomAnchor(this.progressBar,140.0);
         AnchorPane.setRightAnchor(this.progressBar,10.0);
@@ -87,17 +92,22 @@ public class ExportViewController {
         this.window = this.progressBar.getScene().getWindow();
         ScheduledFuture<?> handler = executor.scheduleAtFixedRate(
                 this::updateProgress, 0, tickTime.longValue(), TimeUnit.MILLISECONDS);
-        Runnable canceller = () -> cancelBar(handler);
-        executor.schedule(canceller, duration.longValue(), TimeUnit.MILLISECONDS);
+        executor.schedule(() -> cancelBar(handler, executor), duration.longValue(), TimeUnit.MILLISECONDS);
     }
 
-    private void cancelBar(ScheduledFuture<?> handler) {
-        handler.cancel(true);
+    private void cancelBar(ScheduledFuture<?> handler, ScheduledExecutorService executor) {
         try {
             Starter.getController().stopExport(this.file);
-            this.window.hide();
         } catch (IOException e) {
             AlertDispatcher.dispatchError(e.getLocalizedMessage());
+        }
+        handler.cancel(false);
+        executor.shutdown();
+    }
+
+    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+        if (newValue.doubleValue() >= 1.0) {
+            Platform.runLater(() -> this.window.hide());
         }
     }
 
