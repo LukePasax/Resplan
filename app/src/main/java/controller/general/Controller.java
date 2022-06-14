@@ -23,7 +23,7 @@ public interface Controller {
      */
     void newProject();
 
-    void updateView();
+    void loadViewData();
 
     /**
      * Saves the current project on the file associated to it,

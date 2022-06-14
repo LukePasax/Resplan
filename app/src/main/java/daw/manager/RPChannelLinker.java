@@ -78,5 +78,5 @@ public interface RPChannelLinker {
 	 */
 	boolean channelExists(String title);
 
-    List<RPRole> getRoleList();
+    List<RPRole> getRolesAndGroups();
 }

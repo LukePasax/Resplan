@@ -139,7 +139,7 @@ public interface RPManager {
      *
      * @return the list of {@link RPRole}  of all channels excluded groups
      */
-    List<RPRole> getRoleList();
+    List<RPRole> getRoles();
 
     /**
      *

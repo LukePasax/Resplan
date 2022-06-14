@@ -73,6 +73,7 @@ public class ControllerImpl implements Controller {
             } else {
                 this.currentProject = new File(fileName);
                 this.manager = this.loader.load(this.currentProject);
+                this.loadViewData();
             }
         } catch (IOException | FileFormatException e) {
             this.manager = new Manager();
@@ -80,8 +81,22 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void updateView() {
-
+    public void loadViewData() {
+        this.manager.getRoles().forEach(c -> {
+            App.getData().addChannel(new ViewDataImpl.Channel(c.getTitle(), c.getType().name()));
+            this.manager.getPartList(c.getTitle()).forEach(p -> {
+                final var clip = this.manager.getClip(p.getTitle());
+                if (clip.isEmpty()) {
+                    App.getData().addClip(App.getData().getChannel(c.getTitle()), new ViewDataImpl.Clip(
+                            p.getTitle(), this.manager.getClipTime(p.getTitle(), c.getTitle()), clip.getDuration(),
+                            Optional.empty(), Optional.empty()));
+                } else {
+                    App.getData().addClip(App.getData().getChannel(c.getTitle()), new ViewDataImpl.Clip(
+                            p.getTitle(), this.manager.getClipTime(p.getTitle(), c.getTitle()), clip.getDuration(),
+                            Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration())));
+                }
+            });
+        });
     }
 
     /**
@@ -127,6 +142,7 @@ public class ControllerImpl implements Controller {
         try {
             this.manager = this.loader.load(file);
             this.currentProject = file;
+            this.loadViewData();
         } catch (IOException | FileFormatException e) {
             throw new LoadingException(e.getMessage());
         }
@@ -194,7 +210,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public List<String> getChannelList() {
-        return this.manager.getRoleList().stream().map(Element::getTitle).collect(Collectors.toList());
+        return this.manager.getRoles().stream().map(Element::getTitle).collect(Collectors.toList());
     }
 
     /**

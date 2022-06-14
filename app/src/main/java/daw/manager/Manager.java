@@ -8,9 +8,11 @@ import daw.core.channel.RPChannel;
 import daw.core.clip.*;
 import daw.core.mixer.Mixer;
 import daw.core.mixer.RPMixer;
+import net.beadsproject.beads.data.Sample;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 import planning.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -193,18 +195,20 @@ public class Manager implements RPManager {
     @Override
     public void addClip(RPPart.PartType type, String title, Optional<String> description,String channel,Double time,
                         Double duration, Optional<File> content) throws ImportException, IllegalArgumentException {
-        RPClip clip = new EmptyClip(duration);
         if (this.clipLinker.clipExists(title)) {
             throw new IllegalArgumentException("Clip already exists");
         } else if (title.equals("")) {
             throw new IllegalArgumentException("Title is mandatory");
         }
+        RPClip clip;
         if (content.isPresent()) {
             try {
-                clip = this.clipConverter.fromEmptyToSampleClip((EmptyClip) clip, content.get());
+                clip = new SampleClip(content.get(),title);
             } catch (FileFormatException | OperationUnsupportedException | IOException exception) {
                 throw new ImportException("Error in loading file");
             }
+        } else {
+            clip = new EmptyClip(duration,title);
         }
         final RPPart part;
         if (type.equals(RPPart.PartType.SPEECH)) {
@@ -324,8 +328,8 @@ public class Manager implements RPManager {
 
     @Override
     @JsonIgnore
-    public List<RPRole> getRoleList() {
-        return this.channelLinker.getRoleList().stream()
+    public List<RPRole> getRoles() {
+        return this.channelLinker.getRolesAndGroups().stream()
                 .filter(k -> !this.groupMap.containsKey(k))
                 .collect(Collectors.toList());
     }

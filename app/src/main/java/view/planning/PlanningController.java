@@ -82,7 +82,6 @@ public class PlanningController {
 
     public void openProjectPressed(ActionEvent event) {
         this.filePicker = new JsonFilePicker();
-        this.saveProject();
         try {
             Starter.getController().openProject(this.filePicker.getFileChooser().showOpenDialog(this.menuBar.getScene().getWindow()));
         } catch (LoadingException e) {

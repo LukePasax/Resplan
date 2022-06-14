@@ -110,7 +110,7 @@ public class ChannelLinker implements RPChannelLinker {
 
     @Override
     @JsonIgnore
-    public List<RPRole> getRoleList() {
+    public List<RPRole> getRolesAndGroups() {
         return new ArrayList<>(this.channelMap.keySet());
     }
 }
