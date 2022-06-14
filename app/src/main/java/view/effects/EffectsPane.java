@@ -25,6 +25,9 @@ public class EffectsPane extends ScrollPane {
 	private final Map<Effect, Node> effects = new HashMap<>();
 
 	public EffectsPane(final String channel) {
+		this.setFitToHeight(true);
+		this.setFitToWidth(true);
+		this.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		/*App.getData().getChannel(channel).addFxListListener(new ListChangeListener<Effect>() {
 
 			@Override
@@ -78,7 +81,7 @@ public class EffectsPane extends ScrollPane {
 	private void addEffect(final Effect effect) {
 		try {
 			effects.put(effect, effectsType.get(effect.getType()).getDeclaredConstructor().newInstance());
-			this.getChildren().add(effects.get(effect));
+			this.getChildren().add(new EffectPane(effects.get(effect)));
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
@@ -96,7 +99,7 @@ public class EffectsPane extends ScrollPane {
 	
 	public static class EffectPane extends BorderPane {
 		
-		public EffectPane(final BorderPane effect) {
+		public EffectPane(final Node effect) {
 			final HBox firstrow = new HBox();
 			firstrow.setAlignment(Pos.CENTER);
 			final Button remove = new Button("X");
