@@ -5,7 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.core.UGen;
+import net.beadsproject.beads.data.DataBead;
+import net.beadsproject.beads.data.DataBeadReceiver;
 import net.beadsproject.beads.ugens.BiquadFilter;
+import net.beadsproject.beads.ugens.Compressor;
+
 import java.util.Map;
 
 /**
@@ -15,14 +19,15 @@ import java.util.Map;
  */
 public class Gate extends AbstractCompression {
 
-    private final int channels;
-    private final int memSize;
-    private int index = 0;
-    private final float[][] delayMem;
-    private UGen powerUGen;
+    private int channels;
+    private int memSize, index = 0;
+    private float[][] delayMem;
     private BiquadFilter pf;
-    private float downstep = .9998f, upstep = 1.0002f, ratio = .5f, threshold = .5f, knee = 1;
+    private float downstep = .9998f, upstep = 1.0002f, ratio = .5f,
+            threshold = .5f, knee = 1;
     private float tok, kt, ikp1, ktrm1, tt1mr;
+
+    private float attack, decay;
     private float currval = 1, target = 1, delay;
     private int delaySamps;
     private UGen myInputs;
@@ -61,6 +66,85 @@ public class Gate extends AbstractCompression {
         this.calcVals();
     }
 
+    /**
+     * {@inheritDoc}
+     * @param parameters the {@link Map} that contains the parameters that must be modified.
+     */
+    @Override
+    public void setParameters(Map<String, Float> parameters) {
+        final DataBead db = new DataBead();
+        parameters.entrySet().forEach(i -> db.put(i.getKey(), i.getValue()));
+        this.sendData(db);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @return a {@link Map} where the keys are the parameters and the values are the
+     * current value of each parameter of the effect.
+     */
+    @Override
+    public Map<String, Float> getParameters() {
+        return Map.of("threshold", this.threshold, "ratio", this.ratio, "attack", this.attack,
+                "decay", this.decay,"current compression", this.currval);
+    }
+
+    private void calcVals() {
+        tok = threshold / knee;
+        kt = knee * threshold;
+        ikp1 = 1 / (knee + 1);
+        ktrm1 = knee * ratio - 1;
+        tt1mr = threshold * (1 - ratio);
+    }
+
+    public Gate setAttack(float attack) {
+        if (attack < .0001f) {
+            attack = .0001f;
+        }
+        this.attack = attack;
+        this.downstep = (float) Math.pow(Math.pow(10,attack/20f), -1000f/context.getSampleRate());
+        return this;
+    }
+
+    private Gate setDecay(float decay) {
+        if (decay < .0001f) {
+            decay = .0001f;
+        }
+        this.decay = decay;
+        this.upstep = (float) Math.pow(Math.pow(10,decay/20f), 1000f/context.getSampleRate());
+        return this;
+    }
+
+    private Gate setRatio(float ratio) {
+        if (ratio <= 0) {
+            ratio = .01f;
+        }
+        this.ratio = 1 / ratio;
+        this.calcVals();
+        return this;
+    }
+
+    private Gate setThreshold(float threshold) {
+        this.threshold = threshold;
+        this.calcVals();
+        return this;
+    }
+
+    private Gate setKnee(float knee) {
+        this.knee = knee + 1;
+        this.calcVals();
+        return this;
+    }
+
+    private void sendData(DataBead db) {
+        if (db != null) {
+            this.setThreshold(db.getFloat("threshold", threshold));
+            this.setRatio(db.getFloat("ratio", ratio));
+            this.setAttack(db.getFloat("attack", attack));
+            this.setDecay(db.getFloat("decay", decay));
+            this.setKnee(db.getFloat("knee", knee));
+        }
+    }
+
     @Override
     public void calculateBuffer() {
         pf.update();
@@ -92,14 +176,6 @@ public class Gate extends AbstractCompression {
             bo[i] = dm[(index + delaySamps) % memSize] * currval;
             index = (index + 1) % memSize;
         }
-    }
-
-    private void calcVals() {
-        tok = threshold / knee;
-        kt = knee * threshold;
-        ikp1 = 1 / (knee + 1);
-        ktrm1 = knee * ratio - 1;
-        tt1mr = threshold * (1 - ratio);
     }
 
 }
