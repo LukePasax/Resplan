@@ -3,6 +3,7 @@ package view.effects;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -17,6 +18,8 @@ public class CompressorPane extends FlowPane {
 	final private VUMeterPane compressor;
 
 	public CompressorPane() {
+		this.setOrientation(Orientation.VERTICAL);
+		this.setAlignment(Pos.TOP_CENTER);
 		final HBox titlebox = new HBox(new Label("CompressorPane"));
 		titlebox.setAlignment(Pos.CENTER);
 		final HBox firstrow = new HBox();
