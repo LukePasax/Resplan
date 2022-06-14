@@ -7,11 +7,12 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.*;
 
-public class CompressorPane extends BorderPane {
+public class CompressorPane extends FlowPane {
 	
 	final private VUMeterPane compressor;
 
@@ -56,8 +57,9 @@ public class CompressorPane extends BorderPane {
 		secondcolumn.setAlignment(Pos.CENTER);
 		secondcolumn.getChildren().addAll(title, channels, switcher);
 		
-		this.setCenter(firstcolumn);
-		this.setRight(secondcolumn);
+		/*this.setCenter(firstcolumn);
+		this.setRight(secondcolumn);*/
+		this.getChildren().addAll(firstcolumn, secondcolumn);
 		
 		this.setPadding(new Insets(10));
 		this.setStyle("-fx-border-color: black");
