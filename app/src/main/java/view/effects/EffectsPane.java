@@ -27,7 +27,7 @@ public class EffectsPane extends ScrollPane {
 	public EffectsPane(final String channel) {
 		this.setFitToHeight(true);
 		this.setFitToWidth(true);
-		this.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		this.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		/*App.getData().getChannel(channel).addFxListListener(new ListChangeListener<Effect>() {
 
 			@Override
