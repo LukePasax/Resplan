@@ -27,6 +27,7 @@ public class BasicChannel implements RPChannel {
     private Optional<ProcessingUnit> pu;
     private final Gain gainIn;
     private final Gain gainOut;
+    private final Gain gainMute;
     private boolean enabled;
 
     /**
@@ -47,12 +48,14 @@ public class BasicChannel implements RPChannel {
         this.pu = (processingUnit == null) ? Optional.empty() : Optional.of(processingUnit);
         this.gainIn = new Gain(AudioContextManager.getAudioContext(), 1).setGain(DEFAULT_GAIN_IN);
         this.gainOut = new Gain(AudioContextManager.getAudioContext(), 1).setGain(1.0f);
+        this.gainMute = new Gain(AudioContextManager.getAudioContext(), 1).setGain(1.0f);
         this.setStructure();
     }
 
     private void setStructure() {
         this.pan.addInput(this.gainIn);
         this.gainOut.addInput(this.gainIn);
+        this.gainMute.addInput(this.gainOut);
     }
 
     /**
@@ -124,6 +127,7 @@ public class BasicChannel implements RPChannel {
     @Override
     public void enable() {
         this.enabled = true;
+        this.gainMute.setGain(1.0f);
     }
 
     /**
@@ -132,6 +136,7 @@ public class BasicChannel implements RPChannel {
     @Override
     public void disable() {
         this.enabled = false;
+        this.gainMute.setGain(0.0f);
     }
 
     /**
