@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import view.common.App;
@@ -63,5 +65,20 @@ public class EffectsPane extends HBox {
 	
 	private void setEffect(final int newPos, Effect effect) {
 		this.getChildren().set(newPos, effects.get(effect));
+	}
+	
+	public static class EffectPane extends BorderPane {
+		
+		public EffectPane(final BorderPane effect) {
+			final HBox firstrow = new HBox();
+			final Button remove = new Button("-");
+			final Button moveLeft = new Button("<");
+			final Button moveRight = new Button(">");
+			
+			firstrow.getChildren().addAll(moveLeft, moveRight, remove);
+			
+			this.setTop(firstrow);
+			this.setCenter(effect);
+		}
 	}
 }
