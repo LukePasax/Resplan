@@ -140,12 +140,13 @@ public class ControllerImpl implements Controller {
             roleType = RPRole.RoleType.SPEECH;
         } else if (type.equals("Effect")) {
             roleType = RPRole.RoleType.EFFECTS;
+            type = "Effects";
         } else {
             roleType = RPRole.RoleType.SOUNDTRACK;
         }
         Optional<String> desc = description.equals("") ? Optional.empty() : Optional.of(description);
         this.manager.addChannel(roleType, title, desc);
-        App.getData().addChannel(new ViewDataImpl.Channel(title));
+        App.getData().addChannel(new ViewDataImpl.Channel(title,type));
     }
 
     @Override
