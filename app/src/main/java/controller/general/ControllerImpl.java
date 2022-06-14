@@ -364,12 +364,15 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void setMute(String channel) {
-        RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
-        if (App.getData().getChannel(channel).isMuted()) {
+        final RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
+        final var viewChannel = App.getData().getChannel(channel);
+        final var isMuted = viewChannel.isMuted();
+        if (isMuted) {
             this.mutedChannels.add(ch);
         } else {
             this.mutedChannels.remove(ch);
         }
+        viewChannel.setMute(!isMuted);
         if (this.solo) {
             this.manageMuteInSoloEnvironment();
         } else {
@@ -395,19 +398,21 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void setSolo(String channel) {
-        RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
+        final RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
         if (this.mutedChannels.contains(ch)) {
             throw new IllegalStateException("Cannot solo a muted channel. Unmute it first, then call this method.");
         }
         this.solo = true;
         this.soloChannels.add(ch);
+        App.getData().getChannel(channel).setSolo(true);
         this.manageMuteInSoloEnvironment();
     }
 
     @Override
     public void removeSolo(String channel) {
-        RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
+        final RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
         this.soloChannels.remove(ch);
+        App.getData().getChannel(channel).setSolo(false);
         if (this.soloChannels.isEmpty()) {
             this.solo = false;
             this.manageMuteInNonSoloEnvironment();
