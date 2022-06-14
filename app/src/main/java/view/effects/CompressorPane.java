@@ -23,9 +23,9 @@ public class CompressorPane extends FlowPane {
 		final HBox titlebox = new HBox(new Label("CompressorPane"));
 		titlebox.setAlignment(Pos.CENTER);
 		final HBox firstrow = new HBox();
-		final HBox secondrow = new HBox();
-		final HBox thirdrow = new HBox();
-		final VBox firstcolumn = new VBox();
+		final FlowPane secondrow = new FlowPane();
+		final FlowPane thirdrow = new FlowPane();
+		final FlowPane firstcolumn = new FlowPane();
 		final VBox secondcolumn = new VBox(20);
 		
 		compressor = new VUMeterPane(Double.NEGATIVE_INFINITY, 0.0);
