@@ -47,15 +47,16 @@ public class BasicChannel implements RPChannel {
         this.enabled = true;
         this.pu = (processingUnit == null) ? Optional.empty() : Optional.of(processingUnit);
         this.gainIn = new Gain(AudioContextManager.getAudioContext(), 1).setGain(DEFAULT_GAIN_IN);
-        this.gainOut = new Gain(AudioContextManager.getAudioContext(), 1).setGain(1.0f);
         this.gainMute = new Gain(AudioContextManager.getAudioContext(), 1).setGain(1.0f);
+        this.gainOut = new Gain(AudioContextManager.getAudioContext(), 1).setGain(1.0f);
         this.setStructure();
     }
 
     private void setStructure() {
+        // in -> pan -> mute -> out
         this.pan.addInput(this.gainIn);
-        this.gainOut.addInput(this.gainIn);
-        this.gainMute.addInput(this.gainOut);
+        this.gainMute.addInput(this.pan);
+        this.gainOut.addInput(this.gainMute);
     }
 
     /**
@@ -79,16 +80,11 @@ public class BasicChannel implements RPChannel {
     /**
      * {@inheritDoc}
      * @return a {@link Gain} that represents the output.
-     * @throws IllegalStateException if the channel is not enabled or if no input has been provided.
      */
     @Override
     @JsonIgnore
     public Gain getOutput() {
-        if (this.isEnabled()) {
-            return this.gainOut;
-        } else {
-            throw new IllegalStateException("Cannot produce output.");
-        }
+        return this.gainOut;
     }
 
     /**

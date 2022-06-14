@@ -38,7 +38,6 @@ public interface RPChannel {
      * Channel parameters are used in order to set the volume and the pan of the output.
      * Remember that the {@link ProcessingUnit} modifies the input data according to the sequence of the effects.
      * @return a {@link Gain} that represents the output.
-     * @throws IllegalStateException if the channel is not enabled or if no input has been provided.
      */
     Gain getOutput();
 
