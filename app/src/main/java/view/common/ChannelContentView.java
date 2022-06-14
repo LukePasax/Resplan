@@ -85,6 +85,7 @@ public abstract class ChannelContentView extends Pane {
 
 			@Override
 			public void handle(MouseEvent e) {
+				System.out.println("ciao");
 				if(toolBarSetter.getCurrentTool().equals(Tool.ADDCLIPS)) {
 					if(secondClick) {
 						out = axis.getValueForDisplay(e.getX()).doubleValue();
@@ -116,7 +117,7 @@ public abstract class ChannelContentView extends Pane {
 				}
 			}
 		};
-		this.setOnMouseClicked(new EmptyClipCreator());
+		this.setOnMouseClicked(new EmptyClipCreator()); //TODO
 	}
 	
 	//LAYOUT CLIPS

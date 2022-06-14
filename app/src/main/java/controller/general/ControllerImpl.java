@@ -14,7 +14,6 @@ import daw.manager.ChannelLinker;
 import daw.manager.ImportException;
 import daw.manager.Manager;
 import daw.utilities.AudioContextManager;
-import javafx.scene.control.Alert;
 import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.data.Sample;
 import net.beadsproject.beads.data.audiofile.AudioFileType;
@@ -163,7 +162,7 @@ public class ControllerImpl implements Controller {
         Optional<String> desc = description.equals("") ? Optional.empty() : Optional.of(description);
         Optional<File> file = content == null ? Optional.empty() : Optional.of(content);
         this.manager.addClip(partType, title, desc, channel, time, duration, file);
-        RPClip clip = this.manager.getClip(title);
+        RPClip<?> clip = this.manager.getClip(title);
         if (clip.isEmpty()) {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time, duration,
                     Optional.empty(), Optional.empty()));
@@ -286,7 +285,7 @@ public class ControllerImpl implements Controller {
     private void createClipView(String clip, String channel) {
         Double time = this.manager.getClipTime(clip,channel);
         Double duration = this.manager.getClipDuration(clip);
-        RPClip rpClip = this.manager.getClip(clip);
+        RPClip<?> rpClip = this.manager.getClip(clip);
         if (rpClip.isEmpty()) {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration,
                     Optional.empty(), Optional.empty()));
@@ -365,7 +364,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void setMute(String channel) {
         RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
-        /*if (App.getData().getChannel(channel).isMuted()) {
+        if (App.getData().getChannel(channel).isMuted()) {
             this.mutedChannels.add(ch);
         } else {
             this.mutedChannels.remove(ch);
@@ -375,7 +374,6 @@ public class ControllerImpl implements Controller {
         } else {
             this.manageMuteInNonSoloEnvironment();
         }
-         */
     }
 
     private void manageMuteInNonSoloEnvironment() {

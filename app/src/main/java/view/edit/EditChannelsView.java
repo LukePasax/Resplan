@@ -38,8 +38,8 @@ public class EditChannelsView extends ChannelsView {
 		Button soloButton = new Button("S");
 		muteButton.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 		soloButton.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
-		//TODO muteButton.setOnAction(e->Starter.getController().mute());
-		//soloButton.setOnAction(e->Starter.getController().solo());
+		muteButton.setOnAction(e->Starter.getController().setMute(ch.getTitle()));
+		soloButton.setOnAction(e->Starter.getController().setSolo(ch.getTitle()));
 		App.getData().addChannelsInvalidateListener(x->{
 			if(ch.isSolo()) {
 				soloButton.setBackground(new Background(new BackgroundFill(soloColor, null, null)));
