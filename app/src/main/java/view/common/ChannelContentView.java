@@ -41,12 +41,14 @@ public abstract class ChannelContentView extends Pane {
 	private final NumberAxis axis;
 	private final Channel ch;
 	private final ToolBarSetter toolBarSetter;
+	private final Color groupColor;
 
-	public ChannelContentView(Channel ch, NumberAxis axis, ToolBarSetter toolBarSetter) {
+	public ChannelContentView(Channel ch, NumberAxis axis, ToolBarSetter toolBarSetter, Color color) {
 		super();
 		this.ch = ch;
 		this.axis = axis;
 		this.toolBarSetter = toolBarSetter;
+		this.groupColor = color;
 		//borderLayout
 		this.setBorder(new Border(new BorderStroke(null, null, borderColor, null, 
 				null, null, BorderStrokeStyle.SOLID, null, CornerRadii.EMPTY, null, null)));
@@ -229,7 +231,7 @@ public abstract class ChannelContentView extends Pane {
 			AnchorPane.setLeftAnchor(content, 0.0);
 			AnchorPane.setRightAnchor(content, 0.0);
 			//clip color fill
-			this.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, null, null)));
+			this.setBackground(new Background(new BackgroundFill(groupColor, null, null)));
 			//clip menù
 			MenuItem remove = new MenuItem("Remove");
 			remove.setOnAction(a->Starter.getController().deleteClip(clip.getTitle(), ch.getTitle(), clip.getPosition()));

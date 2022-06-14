@@ -9,10 +9,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import view.common.ViewDataImpl.Channel;
@@ -35,7 +31,12 @@ public abstract class ChannelsView {
 				if(c.wasAdded()) {
 					//--------CREATE VIEW COMPONENT-----
 					Channel ch = c.getKey();
-					ChannelContentView cw = new ChannelContentView(ch, timeAxisSetter.getAxis(), toolBarSetter){
+					//set ch group color
+					if(groupColors.get(ch.getGroup())==null) {
+						var rand = new Random();
+						groupColors.put(ch.getGroup(), Color.rgb(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
+					}
+					ChannelContentView cw = new ChannelContentView(ch, timeAxisSetter.getAxis(), toolBarSetter, groupColors.get(ch.getGroup())){
 
 						@Override
 						public Node drawClipContent(Clip clip) {
@@ -43,7 +44,7 @@ public abstract class ChannelsView {
 						}
 						
 					};
-					ChannelInfosView iw = new ChannelInfosView(ch) {
+					ChannelInfosView iw = new ChannelInfosView(ch, groupColors.get(ch.getGroup())) {
 
 						@Override
 						public Node drawChannelInfos(Channel ch) {
@@ -51,12 +52,6 @@ public abstract class ChannelsView {
 						}
 						
 					};
-					//set ch group color
-					if(groupColors.get(ch.getGroup())==null) {
-						var rand = new Random();
-						groupColors.put(ch.getGroup(), Color.rgb(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255)));
-					}
-					iw.setBorder(new Border(new BorderStroke(null, groupColors.get(ch.getGroup()), null, null, null, BorderStrokeStyle.SOLID, null, BorderStrokeStyle.NONE, null,new BorderWidths(6), null)));
 					//set resize
 					iw.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
 						cw.setMinHeight(iw.getHeight());
@@ -83,9 +78,7 @@ public abstract class ChannelsView {
 				if(c.wasRemoved()) {
 					//-------REMOVE FROM VIEW
 					Channel ch = c.getKey();
-					if(groupIndexes.get(ch.getGroup()).equals(0) || groupIndexes.containsValue(groupIndexes.get(ch.getGroup())-1)) {
-						groupIndexes.remove(ch.getGroup()); //TODO
-					}
+					boolean last = (groupIndexes.get(ch.getGroup()) <= 0 || groupIndexes.containsValue(groupIndexes.get(ch.getGroup())-1));
 					groupIndexes.entrySet().stream().filter(entry->{
 						if(groupIndexes.get(ch.getGroup())==null) {
 							return false;
@@ -93,8 +86,10 @@ public abstract class ChannelsView {
 						return groupIndexes.get(ch.getGroup())<=entry.getValue();
 					}).forEach(entry->{
 						groupIndexes.put(entry.getKey(), entry.getValue()-1);
-						System.out.println("map: " + entry.getKey() + "gr index: " + groupIndexes.get(entry.getKey()));
 					});
+					if(last) {
+						groupIndexes.remove(ch.getGroup());
+					}
 					channelsContentPane.getChildren().removeAll(c.getKey().getViewSet());
 					channelsInfoPane.getChildren().removeAll(c.getKey().getViewSet());
 				}

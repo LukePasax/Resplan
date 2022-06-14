@@ -8,9 +8,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import view.common.ViewDataImpl.Channel;
 
@@ -21,12 +23,12 @@ public abstract class ChannelInfosView extends Pane {
 	private final Channel ch;
 	private final VBox infos = new VBox();
 	
-	public ChannelInfosView(Channel ch) {
+	public ChannelInfosView(Channel ch, Color color) {
 		super();
 		this.ch = ch;
 		//borderLayout
-		this.setBorder(new Border(new BorderStroke(null, null, borderColor, null, 
-				null, null, BorderStrokeStyle.SOLID, null, CornerRadii.EMPTY, null, null)));
+		this.setBorder(new Border(new BorderStroke(borderColor, color, borderColor, color, 
+				BorderStrokeStyle.NONE, BorderStrokeStyle.SOLID, BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE, null, new BorderWidths(0, 6, 1, 0), null)));
 		//set content
 		infos.getChildren().add(drawChannelInfos(ch));
 		this.getChildren().add(new VBox(new Label(ch.getTitle()), infos));

@@ -2,6 +2,7 @@ package view.common;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -15,6 +16,7 @@ import javafx.collections.ObservableMap;
 import javafx.collections.ObservableSet;
 import javafx.collections.SetChangeListener;
 import javafx.scene.Node;
+import view.effects.EffectsPane;
 
 public class ViewDataImpl implements ViewData {
 	
@@ -121,9 +123,13 @@ public class ViewDataImpl implements ViewData {
 		private ObservableList<Effect> effects = FXCollections.observableArrayList();
 		private Node fxView;
 		
-		public Channel(String title, String group) {
+		public Channel(String title, String group, List<Effect> effects) {
 			this.title = title;
 			this.group = group;
+			//fxView = new EffectsPane(title); TODO
+			if(effects != null) {
+				effects.addAll(effects);	
+			}
 		}
 		
 		public String getTitle() {
