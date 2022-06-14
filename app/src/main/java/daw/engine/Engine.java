@@ -51,9 +51,11 @@ public class Engine implements RPEngine {
 	 */
 	@Override
 	public void start() {
-		this.updateObservers();
-		this.conductor = Optional.of(new Conductor(notifier.get(), clock));
-		this.conductor.get().start();
+		if(isPaused()) {
+			this.updateObservers();
+			this.conductor = Optional.of(new Conductor(notifier.get(), clock));
+			this.conductor.get().start();
+		}
 	}
 
 	/**
