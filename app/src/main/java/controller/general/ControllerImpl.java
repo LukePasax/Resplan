@@ -357,6 +357,7 @@ public class ControllerImpl implements Controller {
         this.exporter.pause(true);
         this.stop();
         ac.out.addInput(this.manager.getMixer().getMasterChannel().getOutput());
+        ac.out.removeDependent(this.exporter);
         this.exporter.clip();
         this.exporter.getSample().write(file.getAbsolutePath(), AudioFileType.WAV);
     }
