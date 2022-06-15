@@ -2,18 +2,22 @@ package daw.core.audioprocessing;
 
 import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.data.DataBead;
-import net.beadsproject.beads.ugens.OnePoleFilter;
+import net.beadsproject.beads.ugens.CrossoverFilter;
 import java.util.Map;
 
 public abstract class AbstractFilter extends RPEffect {
 
-    protected final OnePoleFilter filter;
+    protected CrossoverFilter filter;
 
-    protected AbstractFilter(int channels, float cutoffFrequency) {
+    protected AbstractFilter(int channels, float cutoffFrequency, boolean low) {
         super(channels);
-        this.filter = new OnePoleFilter(AudioContextManager.getAudioContext(), cutoffFrequency);
+        this.filter = new CrossoverFilter(AudioContextManager.getAudioContext(), 1, cutoffFrequency);
         this.filter.addInput(this.getGainIn());
-        this.getGainOut().addInput(this.filter);
+        if (low) {
+            this.filter.drawFromLowOutput(this.getGainOut());
+        } else {
+            this.filter.drawFromHighOutput(this.getGainOut());
+        }
     }
 
     /**
@@ -47,6 +51,8 @@ public abstract class AbstractFilter extends RPEffect {
      * {@inheritDoc}
      */
     @Override
-    public abstract void calculateBuffer();
+    public void calculateBuffer() {
+        this.filter.calculateBuffer();
+    }
 
 }

@@ -17,15 +17,7 @@ public class LowPassFilter extends AbstractFilter {
      */
     @JsonCreator
     public LowPassFilter(@JsonProperty("ins") int channels, @JsonProperty("frequency") float cutoffFrequency) {
-        super(channels, cutoffFrequency);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void calculateBuffer() {
-        this.filter.calculateBuffer();
+        super(channels, cutoffFrequency, true);
     }
 
 }
