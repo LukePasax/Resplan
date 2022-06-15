@@ -1,7 +1,5 @@
 package daw.core.audioprocessing;
 
-import net.beadsproject.beads.core.UGen;
-
 /**
  * Sidechaining is a compression technique that makes the sound coming in from a source
  * duck the output signal of another source. It is useful when the volume of a source needs to be tied
@@ -12,12 +10,4 @@ import net.beadsproject.beads.core.UGen;
  * the method setSidechain.
  */
 public interface Sidechaining {
-
-    /**
-     * After this method is called, the channel that uses this sidechaining will be sidechained to
-     * the source given as input, regardless if it was already sidechained to another source or not.
-     * @param u
-     */
-    void setSidechain(UGen u);
-
 }
