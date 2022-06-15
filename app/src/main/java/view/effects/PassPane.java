@@ -18,7 +18,8 @@ public class PassPane extends BorderPane {
 	public PassPane() {
 		final HBox titlebox = new HBox();
 		titlebox.setAlignment(Pos.CENTER);
-		final Label title = new Label("Limiter");
+		final Label title = new Label("Pass");
+		title.setStyle("-fx-font-weight: bold");
 		titlebox.getChildren().add(title);
 		effects.getChildren().add(titlebox);
 		//Frequency
@@ -54,7 +55,8 @@ public class PassPane extends BorderPane {
 			final HBox titlebox = new HBox(new Label("Pass"));
 			titlebox.setAlignment(Pos.CENTER);
 			final ContinuousKnobPane frequency = new ContinuousKnobPane(10.0, 20000.0, 3, "FREQUENCY");
-			VBox firstcolumn = new VBox(frequency);
+			HBox firstcolumn = new HBox(frequency);
+			firstcolumn.setAlignment(Pos.CENTER);
 			root.setCenter(firstcolumn);
 			
 			root.setTop(titlebox);

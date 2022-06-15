@@ -30,6 +30,7 @@ public class CompressorPane extends BorderPane {
 		final HBox titlebox = new HBox();
 		titlebox.setAlignment(Pos.CENTER);
 		final Label title = new Label("Compressor");
+		title.setStyle("-fx-font-weight: bold");
 		titlebox.getChildren().add(title);
 		effects.getChildren().add(titlebox);
 		//VUMiter

@@ -24,6 +24,7 @@ public class LimiterPane extends BorderPane {
 		final HBox titlebox = new HBox();
 		titlebox.setAlignment(Pos.CENTER);
 		final Label title = new Label("Limiter");
+		title.setStyle("-fx-font-weight: bold");
 		titlebox.getChildren().add(title);
 		effects.getChildren().add(titlebox);
 		//VUMiter
