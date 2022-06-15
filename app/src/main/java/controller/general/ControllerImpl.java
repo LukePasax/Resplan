@@ -43,8 +43,8 @@ public class ControllerImpl implements Controller {
     private final File appSettings = new File(WORKING_DIRECTORY + SEP + APP_SETTINGS);
     private RPRecorder recorder;
     private RecordToSample exporter;
-    private final Set<RPChannel> mutedChannels = new HashSet<>();
-    private final Set<RPChannel> soloChannels = new HashSet<>();
+    private final Set<String> mutedChannels = new HashSet<>();
+    private final Set<String> soloChannels = new HashSet<>();
     private boolean solo = false;
 
     /**
@@ -426,15 +426,47 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void setMute(String channel) {
-        final RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
-        final var viewChannel = App.getData().getChannel(channel);
-        final var isMuted = viewChannel.isMuted().get();
-        if (isMuted) {
-            this.mutedChannels.add(ch);
-        } else {
-            this.mutedChannels.remove(ch);
+        if (this.soloChannels.contains(channel)) {
+            throw new IllegalStateException("Cannot mute a solo channel. Remove solo from it, then call this method.");
         }
-        viewChannel.setMute(!isMuted);
+        if (this.mutedChannels.contains(channel)) {
+            this.mutedChannels.remove(channel);
+            App.getData().getChannel(channel).setMute(false);
+        } else {
+            this.mutedChannels.add(channel);
+            App.getData().getChannel(channel).setMute(true);
+        }
+        this.manageMute();
+    }
+
+    @Override
+    public void setSolo(String channel) {
+        if (this.mutedChannels.contains(channel)) {
+            throw new IllegalStateException("Cannot solo a muted channel. Unmute it first, then call this method.");
+        }
+        if (this.soloChannels.contains(channel)) {
+            this.removeSolo(channel);
+        } else {
+            this.addSolo(channel);
+        }
+        this.manageMute();
+    }
+
+    private void addSolo(String channel) {
+        this.solo = true;
+        this.soloChannels.add(channel);
+        App.getData().getChannel(channel).setSolo(true);
+    }
+
+    private void removeSolo(String channel) {
+        this.soloChannels.remove(channel);
+        App.getData().getChannel(channel).setSolo(false);
+        if (this.soloChannels.isEmpty()) {
+            this.solo = false;
+        }
+    }
+
+    private void manageMute() {
         if (this.solo) {
             this.manageMuteInSoloEnvironment();
         } else {
@@ -443,44 +475,25 @@ public class ControllerImpl implements Controller {
     }
 
     private void manageMuteInNonSoloEnvironment() {
-        this.mutedChannels.forEach(RPChannel::disable);
-        this.manager.getChannelLinker().getAudioSet().stream()
-                .map(i -> (RPChannel) i.getKey())
-                .filter(i -> !this.mutedChannels.contains(i))
-                .forEach(RPChannel::enable);
+        this.manager.getRoles().forEach(i -> {
+            final var channel = this.manager.getChannelLinker().getChannel(i);
+            if (this.mutedChannels.contains(i.getTitle())) {
+                channel.disable();
+            } else {
+                channel.enable();
+            }
+        });
     }
 
     private void manageMuteInSoloEnvironment() {
-        this.soloChannels.forEach(RPChannel::enable);
-        this.manager.getChannelLinker().getAudioSet().stream()
-                .map(i -> (RPChannel) i.getKey())
-                .filter(i -> !this.soloChannels.contains(i))
-                .forEach(RPChannel::disable);
-    }
-
-    @Override
-    public void setSolo(String channel) {
-        final RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
-        if (this.mutedChannels.contains(ch)) {
-            throw new IllegalStateException("Cannot solo a muted channel. Unmute it first, then call this method.");
-        }
-        this.solo = true;
-        this.soloChannels.add(ch);
-        App.getData().getChannel(channel).setSolo(true);
-        this.manageMuteInSoloEnvironment();
-    }
-
-    @Override
-    public void removeSolo(String channel) {
-        final RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
-        this.soloChannels.remove(ch);
-        App.getData().getChannel(channel).setSolo(false);
-        if (this.soloChannels.isEmpty()) {
-            this.solo = false;
-            this.manageMuteInNonSoloEnvironment();
-        } else {
-            this.manageMuteInSoloEnvironment();
-        }
+        this.manager.getRoles().forEach(i -> {
+            final var channel = this.manager.getChannelLinker().getChannel(i);
+            if (this.soloChannels.contains(i.getTitle())) {
+                channel.enable();
+            } else {
+                channel.disable();
+            }
+        });
     }
 
     @Override

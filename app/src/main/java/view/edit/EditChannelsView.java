@@ -45,14 +45,14 @@ public class EditChannelsView extends ChannelsView {
 		muteButton.setOnAction(e->Starter.getController().setMute(ch.getTitle()));
 		soloButton.setOnAction(e->Starter.getController().setSolo(ch.getTitle()));
 		App.getData().getChannel(ch.getTitle()).isMuted().addListener((obs,old,n)->{
-			if(n.booleanValue()) {
+			if (n) {
 				muteButton.setBackground(new Background(new BackgroundFill(muteColor, null, null)));
 			} else {
 				muteButton.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 			}
 		});
 		App.getData().getChannel(ch.getTitle()).isSolo().addListener((obs, old, n)->{
-			if(n.booleanValue()) {
+			if (n) {
 				soloButton.setBackground(new Background(new BackgroundFill(soloColor, null, null)));
 			} else {
 				soloButton.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));

@@ -136,15 +136,6 @@ public interface Controller {
      */
     void setSolo(String channel);
 
-    /**
-     * Removes the given channel from the set of solo channels. If there are no solo channels after this operation
-     * is over, then the project returns to a non-solo environment. As stated in {@link #setMute(String)},
-     * this would make channels' muteness return to the state it was before {@link #setSolo(String)} was called.
-     * If the given channel is already non-solo, then this method does nothing.
-     * @param channel The name of the {@link RPChannel} to be set as non-solo.
-     */
-    void removeSolo(String channel);
-
     void addEffectAtPosition(String channel, RPEffect e, int index);
 
     void removeEffectAtPosition(String channel, int index);
@@ -156,4 +147,5 @@ public interface Controller {
     void setEffectParameters(String channel, int index, Map<String, Float> parameters);
 
     Map<String, Float> getEffectParameters(String channel, int index);
+
 }
