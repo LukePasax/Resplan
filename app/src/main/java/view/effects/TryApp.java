@@ -15,7 +15,8 @@ public class TryApp extends Application {
 		HBox root = new HBox();
 		CompressorPane cpane = new CompressorPane();
 		LimiterPane lpane = new LimiterPane();
-		root.getChildren().addAll(cpane, lpane);
+		PassPane ppane = new PassPane();
+		root.getChildren().addAll(cpane, lpane, ppane);
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();

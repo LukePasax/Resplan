@@ -18,15 +18,15 @@ public class CompressorPane extends BorderPane {
 	
 	final private static VUMeterPane compressor = new VUMeterPane(Double.NEGATIVE_INFINITY, 0.0);
 	
+	final private static VBox effects = new VBox();
+	
 	final private static Label thresholdValue = new Label("0.0");
 	final private static Label attackValue = new Label("0.2");
 	final private static Label ratioValue = new Label("1:1");
 	final private static Label decayValue = new Label("0.2");
 	final private static Label sidechainValue = new Label("OFF");
 
-	public CompressorPane() {
-		final VBox effects = new VBox();
-		
+	public CompressorPane() {		
 		final HBox titlebox = new HBox();
 		titlebox.setAlignment(Pos.CENTER);
 		final Label title = new Label("Compressor");
@@ -152,6 +152,7 @@ public class CompressorPane extends BorderPane {
 				} else {
 					sidechainValue.setText("OFF");
 				}
+				effects.autosize();
 				stage.close();
 			});
 			

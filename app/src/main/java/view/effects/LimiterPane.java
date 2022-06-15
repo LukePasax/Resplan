@@ -14,14 +14,13 @@ public class LimiterPane extends BorderPane {
 	
 	final private static VUMeterPane compressor = new VUMeterPane(Double.NEGATIVE_INFINITY, 0.0);
 	
+	final private static VBox effects = new VBox();
+	
 	final private static Label thresholdValue = new Label("0.0");
 	final private static Label attackValue = new Label("0.2");
 	final private static Label decayValue = new Label("0.2");
 	
 	public LimiterPane() {
-
-		final VBox effects = new VBox();
-		
 		final HBox titlebox = new HBox();
 		titlebox.setAlignment(Pos.CENTER);
 		final Label title = new Label("Limiter");
@@ -112,6 +111,7 @@ public class LimiterPane extends BorderPane {
 				thresholdValue.setText("" + threshold.getValue());
 				attackValue.setText("" + attack.getValue());
 				decayValue.setText("" + decay.getValue());
+				effects.autosize();
 				stage.close();
 			});
 			
