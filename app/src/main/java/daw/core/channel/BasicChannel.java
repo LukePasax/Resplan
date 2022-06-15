@@ -8,6 +8,8 @@ import daw.core.audioprocessing.ProcessingUnit;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.Panner;
+
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -210,4 +212,24 @@ public class BasicChannel implements RPChannel {
                 ", gainOut=" + gainOut +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BasicChannel that = (BasicChannel) o;
+        return enabled == that.enabled &&
+                Objects.equals(pan, that.pan) &&
+                type == that.type &&
+                Objects.equals(pu, that.pu) &&
+                Objects.equals(gainIn, that.gainIn) &&
+                Objects.equals(gainOut, that.gainOut) &&
+                Objects.equals(gainMute, that.gainMute);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pan, type, pu, gainIn, gainOut, gainMute, enabled);
+    }
+
 }
