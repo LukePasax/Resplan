@@ -51,7 +51,7 @@ public interface Controller {
     void newChannel(String type, String title, String description) throws IllegalArgumentException;
 
     void newClip(String type, String title, String description, String channel, Double startTime,
-                 Double duration, File content) throws IllegalArgumentException, ImportException;
+                 Double duration, File content) throws IllegalArgumentException, ImportException, ClipNotFoundException;
 
     void deleteChannel(String title);
 
@@ -97,9 +97,9 @@ public interface Controller {
 
     void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException, ImportException;
 
-    void addContentToClip(String clip, File content) throws ImportException;
+    void addContentToClip(String clip, File content) throws ImportException, ClipNotFoundException;
 
-    void removeContentFromClip(String clip);
+    void removeContentFromClip(String clip) throws ClipNotFoundException;
 
     void newSection(String title, String description, Double initialTime, Double duration);
 
@@ -107,7 +107,7 @@ public interface Controller {
 
     void startRecording();
 
-    void stopRecording(String text) throws ImportException;
+    void stopRecording(String text) throws ImportException, ClipNotFoundException;
 
     void startExport(Double startTime) throws InterruptedException;
 

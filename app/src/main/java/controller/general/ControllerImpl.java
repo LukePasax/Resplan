@@ -169,7 +169,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void newClip(String type, String title, String description, String channel, Double time,
-                        Double duration, File content) throws IllegalArgumentException, ImportException {
+                        Double duration, File content) throws IllegalArgumentException, ImportException, ClipNotFoundException {
         RPPart.PartType partType;
         if (type.equals("Speaker")) {
             partType = RPPart.PartType.SPEECH;
@@ -347,12 +347,12 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void addContentToClip(String clip, File content) throws ImportException {
+    public void addContentToClip(String clip, File content) throws ImportException, ClipNotFoundException {
         this.manager.addFileToClip(clip,content);
     }
 
     @Override
-    public void removeContentFromClip(String clip) {
+    public void removeContentFromClip(String clip) throws ClipNotFoundException {
         this.manager.removeFileFromClip(clip);
     }
 
@@ -378,7 +378,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void stopRecording(String clip) throws ImportException {
+    public void stopRecording(String clip) throws ImportException, ClipNotFoundException {
         this.recorder.pause();
         this.addContentToClip(clip, new File(this.recorder.getSample().getFileName()));
     }

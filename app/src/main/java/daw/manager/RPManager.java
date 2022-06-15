@@ -67,7 +67,7 @@ public interface RPManager {
      * @throws IllegalArgumentException if a Clip with the given title already exists
      */
     void addClip(RPPart.PartType type, String title, Optional<String> description,String channel,Double time,
-                 Double duration,  Optional<File> content) throws ImportException,IllegalArgumentException;
+                 Double duration,  Optional<File> content) throws ImportException, IllegalArgumentException, ClipNotFoundException;
 
     /**
      * This method adds a content to a Clip.
@@ -77,7 +77,7 @@ public interface RPManager {
      * @throws NoSuchElementException if no Clip with the given title exists
      * @throws ImportException if there was an error with the file
      */
-    void addFileToClip(String title, File content) throws ImportException;
+    void addFileToClip(String title, File content) throws ImportException, ClipNotFoundException;
 
     /**
      * This method removes the content from a Clip.
@@ -86,7 +86,7 @@ public interface RPManager {
      * @throws IllegalArgumentException if the Clip has no content
      * @throws NoSuchElementException if no Clip with the given title exists
      */
-    void removeFileFromClip(String title);
+    void removeFileFromClip(String title) throws ClipNotFoundException;
 
     /**
      * This method removes the Clip with the given title.
@@ -168,7 +168,7 @@ public interface RPManager {
 
     Set<Map.Entry<Double, RPSection>> getSections();
 
-    void updateProjectLength(String title, String channel);
+    void updateProjectLength() throws ClipNotFoundException;
 
     double getProjectLength();
 

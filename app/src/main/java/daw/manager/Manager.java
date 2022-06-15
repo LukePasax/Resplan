@@ -195,7 +195,7 @@ public class Manager implements RPManager {
      */
     @Override
     public void addClip(RPPart.PartType type, String title, Optional<String> description,String channel,Double time,
-                        Double duration, Optional<File> content) throws ImportException, IllegalArgumentException {
+                        Double duration, Optional<File> content) throws ImportException, IllegalArgumentException, ClipNotFoundException {
         if (this.clipLinker.clipExists(title)) {
             throw new IllegalArgumentException("Clip already exists");
         } else if (title.equals("")) {
@@ -221,7 +221,7 @@ public class Manager implements RPManager {
         }
         this.channelLinker.getTapeChannel(channelLinker.getRole(channel)).insertRPClip(clip, time);
         this.clipLinker.addClipReferences(clip, part);
-        this.updateProjectLength(title, channel);
+        this.updateProjectLength();
     }
 
     /**
@@ -232,7 +232,7 @@ public class Manager implements RPManager {
      * @throws NoSuchElementException if no Clip with the given title exists
      */
     @Override
-    public void addFileToClip(String title, File content) throws ImportException , NoSuchElementException {
+    public void addFileToClip(String title, File content) throws ImportException, NoSuchElementException, ClipNotFoundException {
         if (!this.clipLinker.clipExists(title)) {
             throw new NoSuchElementException("The Clip does not exist");
         }
@@ -244,6 +244,7 @@ public class Manager implements RPManager {
         } catch (OperationUnsupportedException | FileFormatException | IOException exception) {
             throw new ImportException("Error in loading file");
         }
+        this.updateProjectLength();
     }
 
     /**
@@ -254,7 +255,7 @@ public class Manager implements RPManager {
      * @throws NoSuchElementException   if no Clip with the given title exists
      */
     @Override
-    public void removeFileFromClip(String title) throws NoSuchElementException, IllegalArgumentException {
+    public void removeFileFromClip(String title) throws NoSuchElementException, IllegalArgumentException, ClipNotFoundException {
         if (!this.clipLinker.clipExists(title)) {
             throw new NoSuchElementException("The Clip does not exist");
         }
@@ -262,6 +263,7 @@ public class Manager implements RPManager {
             throw new IllegalArgumentException("The Clip has no content");
         }
         this.clipConverter.fromSampleToEmptyClip((SampleClip) this.clipLinker.getClipFromPart(this.clipLinker.getPart(title)));
+        this.updateProjectLength();
     }
 
     /**
@@ -276,6 +278,7 @@ public class Manager implements RPManager {
     public void removeClip(String channel, String clip, double time) throws ClipNotFoundException {
         this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel)).removeClip(time);
         this.clipLinker.removeClip(this.getClipLinker().getPart(clip));
+        this.updateProjectLength();
     }
 
     /**
@@ -384,18 +387,21 @@ public class Manager implements RPManager {
     public void moveClip(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException {
         this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
                 .move(this.getClipTime(clip,channel),finalTimeIn);
+        this.updateProjectLength();
     }
 
     @Override
     public void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException {
     	this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
                 .setTimeIn(this.getClipTime(clip,channel),finalTimeIn);
+        this.updateProjectLength();
     }
 
     @Override
     public void setClipTimeOut(String clip, String channel, Double finalTimeOut) throws ClipNotFoundException {
         this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
                 .setTimeOut(this.getClipTime(clip,channel),finalTimeOut);
+        this.updateProjectLength();
     }
 
     @Override
@@ -437,10 +443,41 @@ public class Manager implements RPManager {
     }
 
     @Override
-    public void updateProjectLength(String title, String channel) {
-        if (this.getClipTime(title, channel) + this.getClipDuration(title) > this.projectLength) {
-            this.projectLength = this.getClipTime(title, channel) + this.getClipDuration(title) + MIN_SPACING;
+    public void updateProjectLength() throws ClipNotFoundException {
+        if (this.furthestClipTime() + MIN_SPACING > MIN_LENGTH) {
+            this.projectLength = this.furthestClipTime() + MIN_SPACING;
         }
+    }
+
+    private Double furthestClipTime() throws ClipNotFoundException {
+        double time = 0.0;
+        for (var r : this.getRoles()) {
+            var i = this.channelLinker.getTapeChannel(r).getClipWithTimeIterator();
+            while (i.hasNext()) {
+                var clip = i.next().getValue();
+                if (Double.compare(this.clipEndTime(clip),time) > 0) {
+                    time = this.clipEndTime(clip);
+                }
+            }
+        }
+        return time;
+    }
+
+    private Double clipEndTime(RPClip clip) throws ClipNotFoundException {
+        String channel = this.getClipChannel(clip.getTitle());
+        return this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
+                .getClipTimeOut(this.getClipTime(clip.getTitle(), channel));
+    }
+
+    private String getClipChannel(String clip) {
+        for (var r : this.getRoles()) {
+            var i = this.channelLinker.getTapeChannel(r)
+                    .getClipWithTimeIteratorFiltered(c -> c.getValue().getTitle().equals(clip));
+            if (i.hasNext()) {
+                return r.getTitle();
+            }
+        }
+        return null;
     }
 
     @Override
