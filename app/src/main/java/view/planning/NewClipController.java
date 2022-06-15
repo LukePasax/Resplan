@@ -15,6 +15,7 @@ import view.common.TimeAxisSetter;
 import view.common.WavFilePicker;
 
 import java.io.File;
+import java.util.AbstractList;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
@@ -43,15 +44,20 @@ public class NewClipController {
     }
 
     public void okButtonPressed(ActionEvent event) {
-        try {
-
-            Starter.getController().newClip(this.typePicker.getValue(),
-                    this.clipTitleSelection.getText(), this.clipDescriptionSelection.getText(),
-                    this.channelPicker.getValue(), this.converter.fromString(this.startTimePicker.getText()).doubleValue(),
-                    this.converter.fromString(this.durationPicker.getText()).doubleValue(), this.file);
-            this.clipTitleSelection.getScene().getWindow().hide();
-        } catch (IllegalArgumentException | ImportException | NoSuchElementException | IllegalStateException e) {
-            AlertDispatcher.dispatchError(e.getLocalizedMessage());
+        if (this.startTimePicker.getText().equals("")) {
+            AlertDispatcher.dispatchError("Select a start time");
+        } else if (this.durationPicker.getText().equals("")) {
+            AlertDispatcher.dispatchError("Select a duration");
+        } else {
+            try {
+                Starter.getController().newClip(this.typePicker.getValue(),
+                        this.clipTitleSelection.getText(), this.clipDescriptionSelection.getText(),
+                        this.channelPicker.getValue(), this.converter.fromString(this.startTimePicker.getText()).doubleValue(),
+                        this.converter.fromString(this.durationPicker.getText()).doubleValue(), this.file);
+                this.clipTitleSelection.getScene().getWindow().hide();
+            } catch (IllegalArgumentException | ImportException | NoSuchElementException | IllegalStateException e) {
+                AlertDispatcher.dispatchError(e.getLocalizedMessage());
+            }
         }
     }
 
