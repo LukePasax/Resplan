@@ -10,10 +10,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import org.controlsfx.control.*;
 
 public class CompressorPane extends BorderPane {
@@ -28,6 +26,12 @@ public class CompressorPane extends BorderPane {
 
 	public CompressorPane() {
 		final VBox effects = new VBox();
+		
+		final HBox titlebox = new HBox();
+		titlebox.setAlignment(Pos.CENTER);
+		final Label title = new Label("Compressor");
+		titlebox.getChildren().add(title);
+		effects.getChildren().add(titlebox);
 		//VUMiter
 		final HBox firstrow = new HBox();
 		firstrow.getChildren().add(compressor);
@@ -65,7 +69,11 @@ public class CompressorPane extends BorderPane {
 		effects.getChildren().add(hsidechain);
 		
 		final Button expand = new Button("View details");
-		effects.getChildren().add(expand);
+		final HBox hbutton = new HBox();
+		hbutton.getChildren().add(expand);
+		HBox.setMargin(expand, new Insets(10,0,0,0));
+		hbutton.setAlignment(Pos.CENTER);
+		effects.getChildren().add(hbutton);
 		
 		expand.setOnMouseClicked(e -> {
 			Compressor.show();
@@ -83,15 +91,13 @@ public class CompressorPane extends BorderPane {
 	public static class Compressor {
 		public static void show() {
 			BorderPane root = new BorderPane();
-			final HBox titlebox = new HBox(new Label("CompressorPane"));
+			final HBox titlebox = new HBox(new Label("Compressor"));
 			titlebox.setAlignment(Pos.CENTER);
 			
 			final HBox firstrow = new HBox();
 			final HBox secondrow = new HBox();
 			final VBox firstcolumn = new VBox();
-			final VBox secondcolumn = new VBox(20);
-			
-			
+			final VBox secondcolumn = new VBox(20);			
 			
 			final ContinuousKnobPane threshold = new ContinuousKnobPane(Double.NEGATIVE_INFINITY, 0.0, 0, "THRESHOLD");
 			final ContinuousKnobPane attack = new ContinuousKnobPane(0.2, 20.0, 3, "ATTACK");
