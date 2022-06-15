@@ -400,7 +400,7 @@ public class ControllerImpl implements Controller {
     public void setMute(String channel) {
         final RPChannel ch = this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel));
         final var viewChannel = App.getData().getChannel(channel);
-        final var isMuted = viewChannel.isMuted();
+        final var isMuted = viewChannel.isMuted().get();
         if (isMuted) {
             this.mutedChannels.add(ch);
         } else {

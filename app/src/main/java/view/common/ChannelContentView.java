@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -71,6 +72,10 @@ public abstract class ChannelContentView extends Pane {
 				});
 			}
 		});
+		
+		//update clips on data changes
+		//TODO
+		
 		//insert empty clip
 		class EmptyClipCreator implements EventHandler<MouseEvent> {
 			
@@ -237,6 +242,16 @@ public abstract class ChannelContentView extends Pane {
 			AnchorPane.setRightAnchor(content, 0.0);
 			//clip color fill
 			this.setBackground(new Background(new BackgroundFill(groupColor, null, null)));
+			Pane overlay = new Pane();
+			AnchorPane.setBottomAnchor(overlay, 0.0);
+			AnchorPane.setTopAnchor(overlay, 0.0);
+			AnchorPane.setLeftAnchor(overlay, 0.0);
+			AnchorPane.setRightAnchor(overlay, 0.0);
+			overlay.setBackground(new Background(new BackgroundFill(Paint.valueOf("#FFFFFF"), null, null)));
+			overlay.setBlendMode(BlendMode.HARD_LIGHT);
+			overlay.setOpacity(0.5);
+			overlay.setMouseTransparent(true);
+			this.getChildren().add(0, overlay);
 			//clip menù
 			MenuItem remove = new MenuItem("Remove");
 			remove.setOnAction(a->Starter.getController().deleteClip(clip.getTitle(), ch.getTitle(), clip.getPosition()));

@@ -64,7 +64,7 @@ public class EditViewController implements Initializable{
 		this.cursorToolSelected();
 		//--------------setting time axis------------
 		timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
-		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 5, 0, 0));
+		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 16, 0, 0));
 		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 2);
 		timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);
 		timelineToChannelsAligner.setMaxWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth()*0.8);

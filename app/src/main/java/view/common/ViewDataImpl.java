@@ -5,8 +5,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
@@ -73,11 +74,6 @@ public class ViewDataImpl implements ViewData {
 	}
 	
 	@Override
-	public void addChannelsInvalidateListener(InvalidationListener invalidationListener) {
-		data.addListener(invalidationListener);
-	}
-	
-	@Override
 	public void addClipsDataListener(Channel channel, ListChangeListener<Clip> listChangeListener) {
 		data.get(channel).addListener(listChangeListener);
 	}
@@ -117,12 +113,11 @@ public class ViewDataImpl implements ViewData {
 	public static class Channel {
 		private String title;
 		private String group;
-		private boolean muted;
-		private boolean solo;
+		private BooleanProperty muted = new SimpleBooleanProperty(false);
+		private BooleanProperty solo = new SimpleBooleanProperty(false);
 		private Set<Node> view = new HashSet<>();
 		private ObservableList<Effect> effects = FXCollections.observableArrayList();
 		private Node fxView;
-		private final Set<ChangeListener<Channel>> listeners = new HashSet<>();
 		
 		public Channel(String title, String group) {
 			this.title = title;
@@ -137,22 +132,20 @@ public class ViewDataImpl implements ViewData {
 			return group;
 		}
 
-		public boolean isMuted() {
+		public BooleanProperty isMuted() {
 			return muted;
 		}
 		
 		public void setMute(boolean muted) {
-			this.muted = muted;
-			this.listeners.forEach(l->l.changed(null, null, this));
+			this.muted.set(muted);
 		}
 		
-		public boolean isSolo() {
+		public BooleanProperty isSolo() {
 			return solo;
 		}
 		
 		public void setSolo(boolean solo) {
-			this.solo = solo;
-			this.listeners.forEach(l->l.changed(null, null, this));
+			this.solo.set(solo);
 		}
 		
 		public void addToViewAll(Node... nodes) {
@@ -189,10 +182,6 @@ public class ViewDataImpl implements ViewData {
 		
 		public void addFxListListener(ListChangeListener<Effect> listChangeListener) {
 			effects.addListener(listChangeListener);
-		}
-		
-		public void setChangeListener(ChangeListener<Channel> changeListener) {
-			listeners.add(changeListener);
 		}
 		
 		@Override

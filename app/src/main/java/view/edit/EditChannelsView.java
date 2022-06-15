@@ -10,6 +10,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import view.common.App;
 import view.common.ChannelsView;
 import view.common.TimeAxisSetter;
@@ -28,7 +29,8 @@ public class EditChannelsView extends ChannelsView {
 	
 	@Override
 	public Node drawClip(Clip clip) {
-		return new Label(clip.getTitle());
+		Label title = new Label(clip.getTitle());
+		return title;
 	}
 
 	@Override
@@ -40,21 +42,24 @@ public class EditChannelsView extends ChannelsView {
 		soloButton.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 		muteButton.setOnAction(e->Starter.getController().setMute(ch.getTitle()));
 		soloButton.setOnAction(e->Starter.getController().setSolo(ch.getTitle()));
-		App.getData().addChannelsInvalidateListener(x->{
-			if(ch.isSolo()) {
-				soloButton.setBackground(new Background(new BackgroundFill(soloColor, null, null)));
-			} else {
-				soloButton.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
-			}
-			if(ch.isMuted()) {
+		App.getData().getChannel(ch.getTitle()).isMuted().addListener((obs,old,n)->{
+			if(n.booleanValue()) {
 				muteButton.setBackground(new Background(new BackgroundFill(muteColor, null, null)));
 			} else {
 				muteButton.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 			}
 		});
-		
-		
-		return new FlowPane(muteButton, soloButton);
+		App.getData().getChannel(ch.getTitle()).isSolo().addListener((obs, old, n)->{
+			if(n.booleanValue()) {
+				soloButton.setBackground(new Background(new BackgroundFill(soloColor, null, null)));
+			} else {
+				soloButton.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+			}
+		});
+		Label groupLabel = new Label(ch.getGroup());
+		groupLabel.setTextFill(Color.GRAY);
+		groupLabel.setFont(Font.font(12));
+		return new VBox(groupLabel, new FlowPane(muteButton, soloButton));
 	}
 	
 }

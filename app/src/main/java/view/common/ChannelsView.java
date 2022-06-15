@@ -20,7 +20,7 @@ public abstract class ChannelsView {
 	 * Index of last channel of each group.
 	 */
 	private Map<String, Integer> groupIndexes = new HashMap<>();
-	private Map<String, Color> groupColors = new HashMap<>();
+	private static Map<String, Color> groupColors = new HashMap<>();
 	StringProperty selected = new SimpleStringProperty();
 	
 	public ChannelsView(TimeAxisSetter timeAxisSetter, VBox channelsContentPane, VBox channelsInfoPane, ToolBarSetter toolBarSetter) {
@@ -60,7 +60,7 @@ public abstract class ChannelsView {
 					//select channel
 					iw.setOnMouseClicked(e->selected.set(ch.getTitle()));
 					cw.setOnMouseClicked(e->{
-						if(toolBarSetter.getCurrentTool().equals(Tool.CURSOR)) {
+						if(toolBarSetter.getCurrentTool().equals(Tool.CURSOR) || toolBarSetter.getCurrentTool().equals(Tool.MOVE)) {
 							selected.set(ch.getTitle());
 						}
 						cw.clickEvent(e);

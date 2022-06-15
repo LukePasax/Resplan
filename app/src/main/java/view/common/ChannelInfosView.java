@@ -9,7 +9,6 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -31,7 +30,11 @@ public abstract class ChannelInfosView extends Pane {
 				BorderStrokeStyle.NONE, BorderStrokeStyle.SOLID, BorderStrokeStyle.SOLID, BorderStrokeStyle.NONE, null, new BorderWidths(0, 6, 1, 0), null)));
 		//set content
 		infos.getChildren().add(drawChannelInfos(ch));
-		this.getChildren().add(new VBox(new Label(ch.getTitle()), infos));
+		Label titleLabel = new Label(ch.getTitle());
+		titleLabel.setTextFill(Color.BLACK);
+		VBox content = new VBox(titleLabel, infos);
+		content.setMinHeight(60);
+		this.getChildren().add(content);
 		//set context menu
 		MenuItem remove = new MenuItem("Remove");
 		remove.setOnAction(a->Starter.getController().deleteChannel(this.ch.getTitle()));
