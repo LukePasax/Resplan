@@ -49,10 +49,11 @@
       </AnchorPane>
       <SplitPane fx:id="mainPanel" dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <items>
-            <VBox fx:id="commandBox" alignment="TOP_CENTER" maxWidth="150.0" minWidth="-Infinity" prefHeight="450.0" prefWidth="100.0" spacing="10.0" styleClass="tool-container">
+            <VBox fx:id="commandBox" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="120.0" spacing="10.0" styleClass="tool-container">
                <children>
                   <Button fx:id="newChannelButton" mnemonicParsing="false" onAction="#newChannelPressed" prefHeight="25.0" prefWidth="100.0" text="New Channel" />
                   <Button fx:id="newClipButton" mnemonicParsing="false" onAction="#newClipPressed" prefWidth="100.0" text="New Clip" />
+                  <Button fx:id="newSectionButton" layoutX="35.0" layoutY="56.0" mnemonicParsing="false" onAction="#newSectionPressed" prefWidth="100.0" text="New Section" />
                </children>
                <padding>
                   <Insets left="2.5" right="2.5" top="10.0" />
