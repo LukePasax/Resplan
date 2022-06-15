@@ -37,7 +37,7 @@ public class PassPane extends BorderPane {
 		effects.getChildren().add(hbutton);
 		
 		expand.setOnMouseClicked(e -> {
-			Pass.show();
+			Pass.show(Double.parseDouble(frequencyValue.getText()));
 		});
 		hfrequency.autosize();
 		this.setCenter(effects);		
@@ -50,11 +50,11 @@ public class PassPane extends BorderPane {
 	}
 	
 	public static class Pass {
-		public static void show() {
+		public static void show(final double currentFrequency) {
 			BorderPane root = new BorderPane();
 			final HBox titlebox = new HBox(new Label("Pass"));
 			titlebox.setAlignment(Pos.CENTER);
-			final ContinuousKnobPane frequency = new ContinuousKnobPane(10.0, 20000.0, 3, "FREQUENCY");
+			final ContinuousKnobPane frequency = new ContinuousKnobPane(10.0, 20000.0, currentFrequency, 3, "FREQUENCY");
 			HBox firstcolumn = new HBox(frequency);
 			firstcolumn.setAlignment(Pos.CENTER);
 			root.setCenter(firstcolumn);

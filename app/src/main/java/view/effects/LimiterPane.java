@@ -59,7 +59,7 @@ public class LimiterPane extends BorderPane {
 		effects.getChildren().add(hbutton);
 		
 		expand.setOnMouseClicked(e -> {
-			Limiter.show();
+			Limiter.show(Double.parseDouble(thresholdValue.getText()), Double.parseDouble(attackValue.getText()), Double.parseDouble(decayValue.getText()));
 		});
 		this.setCenter(effects);		
 		
@@ -73,7 +73,7 @@ public class LimiterPane extends BorderPane {
 	}
 	
 	public static class Limiter {
-		public static void show() {
+		public static void show(final double currentThreshold, final double currentAttack, final double currentDecay) {
 			BorderPane root = new BorderPane();
 			final HBox titlebox = new HBox(new Label("Limiter"));
 			titlebox.setAlignment(Pos.CENTER);
@@ -83,11 +83,11 @@ public class LimiterPane extends BorderPane {
 			final VBox firstcolumn = new VBox();
 			final VBox secondcolumn = new VBox(20);
 			
-			final ContinuousKnobPane threshold = new ContinuousKnobPane(Double.NEGATIVE_INFINITY, 0.0, 3, "THRESHOLD");
-			final ContinuousKnobPane attack = new ContinuousKnobPane(0.2, 20.0, 3, "ATTACK");
+			final ContinuousKnobPane threshold = new ContinuousKnobPane(Double.NEGATIVE_INFINITY, 0.0, currentThreshold, 3, "THRESHOLD");
+			final ContinuousKnobPane attack = new ContinuousKnobPane(0.2, 20.0, currentAttack, 3, "ATTACK");
 			firstrow.getChildren().addAll(threshold, attack);
 			
-			final ContinuousKnobPane decay = new ContinuousKnobPane(0.2, 40.0, 3, "DECAY");
+			final ContinuousKnobPane decay = new ContinuousKnobPane(0.2, 40.0, currentDecay, 3, "DECAY");
 			secondrow.getChildren().addAll(decay);
 			secondrow.setAlignment(Pos.CENTER);
 			

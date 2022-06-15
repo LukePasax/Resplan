@@ -77,7 +77,7 @@ public class CompressorPane extends BorderPane {
 		effects.getChildren().add(hbutton);
 		
 		expand.setOnMouseClicked(e -> {
-			Compressor.show();
+			Compressor.show(Double.parseDouble(thresholdValue.getText()), Double.parseDouble(attackValue.getText()), Double.parseDouble(decayValue.getText()));
 		});
 		this.setCenter(effects);
 		effects.setPadding(new Insets(10));
@@ -90,7 +90,7 @@ public class CompressorPane extends BorderPane {
 	}
 	
 	public static class Compressor {
-		public static void show() {
+		public static void show(final double currentThreshold, final double currentAttack, final double currentDecay) {
 			BorderPane root = new BorderPane();
 			final HBox titlebox = new HBox(new Label("Compressor"));
 			titlebox.setAlignment(Pos.CENTER);
@@ -100,12 +100,12 @@ public class CompressorPane extends BorderPane {
 			final VBox firstcolumn = new VBox();
 			final VBox secondcolumn = new VBox(20);			
 			
-			final ContinuousKnobPane threshold = new ContinuousKnobPane(Double.NEGATIVE_INFINITY, 0.0, 0, "THRESHOLD");
-			final ContinuousKnobPane attack = new ContinuousKnobPane(0.2, 20.0, 3, "ATTACK");
+			final ContinuousKnobPane threshold = new ContinuousKnobPane(Double.NEGATIVE_INFINITY, 0.0, currentThreshold, 0, "THRESHOLD");
+			final ContinuousKnobPane attack = new ContinuousKnobPane(0.2, 20.0, currentAttack, 3, "ATTACK");
 			firstrow.getChildren().addAll(threshold, attack);
 			
 			final JerkyKnobPane ratio = new JerkyKnobPane(List.of("1:1", "2:1", "4:1", "8:1"), "RATIO");
-			final ContinuousKnobPane decay = new ContinuousKnobPane(0.2, 40.0, 3, "DECAY");
+			final ContinuousKnobPane decay = new ContinuousKnobPane(0.2, 40.0, currentDecay, 3, "DECAY");
 			secondrow.getChildren().addAll(ratio, decay);
 			
 			firstcolumn.getChildren().addAll(firstrow, secondrow);

@@ -73,7 +73,8 @@ public class ReverbPane extends BorderPane {
 		effects.getChildren().add(hbutton);
 		
 		expand.setOnMouseClicked(e -> {
-			Reverb.show();
+			Reverb.show(Double.parseDouble(dampingValue.getText()), Double.parseDouble(roomsizeValue.getText()), Double.parseDouble(earlyValue.getText()),
+						Double.parseDouble(lateValue.getText()), Double.parseDouble(dryValue.getText()), Double.parseDouble(wetValue.getText()));
 		});
 		this.setCenter(effects);
 		effects.setAlignment(Pos.CENTER);
@@ -82,7 +83,8 @@ public class ReverbPane extends BorderPane {
 	}
 	
 	public static class Reverb {
-		public static void show() {
+		public static void show(final double currentDamping, final double currentRoomsize, final double currentEarly,
+								final double currentLate, final double currentDry, final double currentWet) {
 			BorderPane root = new BorderPane();
 			final HBox titlebox = new HBox(new Label("Reverb"));
 			titlebox.setAlignment(Pos.CENTER);
@@ -91,16 +93,16 @@ public class ReverbPane extends BorderPane {
 			final HBox thirdrow = new HBox();
 			final VBox firstcolumn = new VBox();
 			
-			final ContinuousKnobPane damping = new ContinuousKnobPane(0.0, 100.0, 3, "DAMPING");
-			final ContinuousKnobPane roomsize = new ContinuousKnobPane(0.0, 100.0, 3, "ROOMSIZE");
+			final ContinuousKnobPane damping = new ContinuousKnobPane(0.0, 100.0, currentDamping, 3, "DAMPING");
+			final ContinuousKnobPane roomsize = new ContinuousKnobPane(0.0, 100.0, currentRoomsize, 3, "ROOMSIZE");
 			firstrow.getChildren().addAll(damping, roomsize);
 			
-			final ContinuousKnobPane early = new ContinuousKnobPane(0.0, 100.0, 3, "EARLY REF");
-			final ContinuousKnobPane late = new ContinuousKnobPane(0.0, 100.0, 3, "LATE REF");
+			final ContinuousKnobPane early = new ContinuousKnobPane(0.0, 100.0, currentEarly, 3, "EARLY REF");
+			final ContinuousKnobPane late = new ContinuousKnobPane(0.0, 100.0, currentLate, 3, "LATE REF");
 			secondrow.getChildren().addAll(early, late);
 			
-			final ContinuousKnobPane dry = new ContinuousKnobPane(0.0, 100.0, 3, "DRY");
-			final ContinuousKnobPane wet = new ContinuousKnobPane(0.0, 100.0, 3, "WET");
+			final ContinuousKnobPane dry = new ContinuousKnobPane(0.0, 100.0, currentDry, 3, "DRY");
+			final ContinuousKnobPane wet = new ContinuousKnobPane(0.0, 100.0, currentWet, 3, "WET");
 			thirdrow.getChildren().addAll(dry, wet);
 			
 			firstcolumn.getChildren().addAll(titlebox, firstrow, secondrow, thirdrow);

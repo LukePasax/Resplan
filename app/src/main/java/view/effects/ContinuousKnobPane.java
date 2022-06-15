@@ -25,7 +25,7 @@ public class ContinuousKnobPane extends Pane {
 	private double current = 0.0;
 	
 
-	public ContinuousKnobPane(final Double min, final Double max, final int tickCount, final String name) {
+	public ContinuousKnobPane(final Double min, final Double max, final double current, final int tickCount, final String name) {
 		if(Double.compare(min, max) >= 0) {
 			throw new IllegalArgumentException();
 		}
@@ -123,7 +123,7 @@ public class ContinuousKnobPane extends Pane {
 				this.getChildren().add(pane);
 			}
 		}
-		setValue(this.min);
+		setValue(current);
 		
 		//Drag and drop
 		this.setOnMousePressed(this::mousePressed);
