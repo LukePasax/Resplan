@@ -7,6 +7,7 @@ import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This class is an extension of {@link UGen}. In the context of this software, this class is the one
@@ -23,12 +24,17 @@ import java.util.Map;
 })
 public abstract class RPEffect extends UGen implements AudioElement {
 
+    private final Gain gainIn;
+    private final Gain gainOut;
+
     /**
      * Base constructor for all the effects of this software.
      * @param channels the number of inputs and outputs of this effect.
      */
     protected RPEffect(int channels) {
         super(AudioContextManager.getAudioContext(), channels, channels);
+        this.gainIn = new Gain(AudioContextManager.getAudioContext(), channels, 1.0f);
+        this.gainOut = new Gain(AudioContextManager.getAudioContext(), channels, 1.0f);
     }
 
     /**
@@ -52,19 +58,37 @@ public abstract class RPEffect extends UGen implements AudioElement {
      * Allows to get the number of input channels of the effect.
      * @return an integer that represents the number of input.
      */
-    public abstract int getIns();
+    @Override
+    public int getIns() {
+        return this.gainIn.getIns();
+    }
 
     /**
      * Allows to get the number of output channels of the effect.
      * @return an integer that represents the number of outputs.
      */
-    public abstract int getOuts();
+    @Override
+    public int getOuts() {
+        return this.gainOut.getOuts();
+    }
 
     /**
      * {@inheritDoc}
-     * @return the {@link Gain} that represents the audio processed by the element.
+     * @return {@inheritDoc}
      */
-    public abstract Gain getOutput();
+    @Override
+    public Gain getGainIn() {
+        return this.gainIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Override
+    public Gain getGainOut() {
+        return this.gainOut;
+    }
 
     /**
      * {@inheritDoc}

@@ -3,9 +3,6 @@ package daw.core.audioprocessing;
 import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.Compressor;
-import net.beadsproject.beads.ugens.Gain;
-
-import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractCompression extends RPEffect {
@@ -14,7 +11,9 @@ public abstract class AbstractCompression extends RPEffect {
 
     public AbstractCompression(int channels) {
         super(channels);
-        this.compressor = new Compressor(channels);
+        this.compressor = new Compressor(AudioContextManager.getAudioContext(), channels);
+        this.compressor.addInput(this.getGainIn());
+        this.getGainOut().addInput(this.compressor);
     }
 
     /**
@@ -36,37 +35,8 @@ public abstract class AbstractCompression extends RPEffect {
     @Override
     public void setParameters(Map<String, Float> parameters) {
         final DataBead db = new DataBead();
-        parameters.entrySet().forEach(i -> db.put(i.getKey(), i.getValue()));
+        db.putAll(parameters);
         this.compressor.sendData(db);
-    }
-
-    /**
-     * Allows to get the number of input channels of the effect.
-     * @return an integer that represents the number of input.
-     */
-    @Override
-    public int getIns() {
-        return this.compressor.getIns();
-    }
-
-    /**
-     * Allows to get the number of output channels of the effect.
-     * @return an integer that represents the number of outputs.
-     */
-    @Override
-    public int getOuts() {
-        return this.compressor.getOuts();
-    }
-
-    /**
-     * {@inheritDoc}
-     * @return the {@link Gain} that represents the audio processed by the element.
-     */
-    @Override
-    public Gain getOutput() {
-        final var out = new Gain(AudioContextManager.getAudioContext(), 1);
-        out.addInput(this.compressor);
-        return out;
     }
 
     /**

@@ -2,7 +2,6 @@ package daw.core.audioprocessing;
 
 import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.data.DataBead;
-import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.OnePoleFilter;
 import java.util.Map;
 
@@ -12,7 +11,9 @@ public abstract class AbstractFilter extends RPEffect {
 
     protected AbstractFilter(int channels, float cutoffFrequency) {
         super(channels);
-        this.filter = new OnePoleFilter(cutoffFrequency);
+        this.filter = new OnePoleFilter(AudioContextManager.getAudioContext(), cutoffFrequency);
+        this.filter.addInput(this.getGainIn());
+        this.getGainOut().addInput(this.filter);
     }
 
     /**
@@ -38,38 +39,8 @@ public abstract class AbstractFilter extends RPEffect {
     @Override
     public void setParameters(Map<String, Float> parameters) {
         final DataBead db = new DataBead();
-        parameters.entrySet().forEach(i -> db.put(i.getKey(), i.getValue()));
+        db.putAll(parameters);
         this.filter.sendData(db);
-    }
-
-    /**
-     * Allows to get the number of input channels of the effect.
-     *
-     * @return an integer that represents the number of input.
-     */
-    @Override
-    public int getIns() {
-        return this.filter.getIns();
-    }
-
-    /**
-     * Allows to get the number of output channels of the effect.
-     *
-     * @return an integer that represents the number of outputs.
-     */
-    @Override
-    public int getOuts() {
-        return this.filter.getOuts();
-    }
-
-    /**
-     * {@inheritDoc}
-     * @return the {@link Gain} that represents the audio processed by the element.
-     */
-    public Gain getOutput() {
-        final var out = new Gain(AudioContextManager.getAudioContext(), 1);
-        out.addInput(this.filter);
-        return out;
     }
 
     /**

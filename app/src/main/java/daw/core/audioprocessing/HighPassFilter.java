@@ -30,7 +30,7 @@ public class HighPassFilter extends AbstractFilter {
      */
     @Override
     public void calculateBuffer() {
-        // TODO
+        this.filter.calculateBuffer();
     }
 
 }

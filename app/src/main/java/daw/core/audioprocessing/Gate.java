@@ -14,7 +14,7 @@ import java.util.Map;
  * Specifically, a gate parses the audio signal and reduces the volume of all the samples that do not reach
  * a certain volume threshold.
  */
-public class Gate extends AbstractCompression {
+public class Gate extends RPEffect {
 
     private final int memSize;
     private int index = 0;
