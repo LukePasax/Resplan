@@ -37,8 +37,8 @@ public class NewClipController {
         this.typePicker.getItems().addAll("Speaker", "Effects", "Soundtrack");
         this.typePicker.setValue(this.typePicker.getItems().get(0));
         this.converter = new NumberFormatConverter();
-        startTimePicker.setTextFormatter(new TextFormatter<>(converter.getFormatterUnaryOperator()));
-        durationPicker.setTextFormatter(new TextFormatter<>(converter.getFormatterUnaryOperator()));
+        this.startTimePicker.setTextFormatter(new TextFormatter<>(this.converter.getFormatterUnaryOperator()));
+        this.durationPicker.setTextFormatter(new TextFormatter<>(this.converter.getFormatterUnaryOperator()));
 
     }
 
@@ -48,20 +48,22 @@ public class NewClipController {
             Starter.getController().newClip(this.typePicker.getValue(),
                     this.clipTitleSelection.getText(), this.clipDescriptionSelection.getText(),
                     this.channelPicker.getValue(), this.converter.fromString(this.startTimePicker.getText()).doubleValue(),
-                    this.converter.fromString(this.durationPicker.getText()).doubleValue(), file);
-            clipTitleSelection.getScene().getWindow().hide();
+                    this.converter.fromString(this.durationPicker.getText()).doubleValue(), this.file);
+            this.clipTitleSelection.getScene().getWindow().hide();
         } catch (IllegalArgumentException | ImportException | NoSuchElementException | IllegalStateException e) {
             AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
     }
 
     public void cancelButtonPressed(ActionEvent event) {
-        clipTitleSelection.getScene().getWindow().hide();
+        this.clipTitleSelection.getScene().getWindow().hide();
     }
 
     public void pickFilePressed(ActionEvent event) {
         WavFilePicker picker = new WavFilePicker();
-        file = picker.getFileChooser().showOpenDialog(channelPicker.getScene().getWindow());
-        clipFileUrl.setText(file.getAbsolutePath());
+        this.file = picker.getFileChooser().showOpenDialog(this.channelPicker.getScene().getWindow());
+        if (this.file != null) {
+            this.clipFileUrl.setText(this.file.getAbsolutePath());
+        }
     }
 }

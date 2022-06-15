@@ -1,3 +1,5 @@
+package view.planning;
+
 import Resplan.Starter;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -55,7 +57,7 @@ public class ExportViewController {
         if (this.file == null) {
             AlertDispatcher.dispatchError("Select a file first");
         } else {
-            this.window = fileName.getScene().getWindow();
+            this.window = this.fileName.getScene().getWindow();
             try {
                 if (this.projectCheck.isSelected()) {
                     Double tickTime = Starter.getController().getProjectLength() / 100;
