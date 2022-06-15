@@ -6,11 +6,10 @@ import daw.core.clip.RPClip;
 import daw.core.mixer.RPMixer;
 import planning.RPPart;
 import planning.RPRole;
+import planning.RPSection;
 
 import java.io.File;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * This interface represents a manager that takes decisions for the user, simplifying its experience. It is used to
@@ -162,6 +161,12 @@ public interface RPManager {
      * @return the duration of a clip
      */
     Double getClipDuration(String clip);
+
+    void addSection(String title, Optional<String> description, Double initialTime, Double duration);
+
+    void removeSection(Double time);
+
+    Set<Map.Entry<Double, RPSection>> getSections();
 
     void updateProjectLength(String title, String channel);
 

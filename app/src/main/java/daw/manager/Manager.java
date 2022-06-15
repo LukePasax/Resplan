@@ -8,7 +8,6 @@ import daw.core.channel.RPChannel;
 import daw.core.clip.*;
 import daw.core.mixer.Mixer;
 import daw.core.mixer.RPMixer;
-import net.beadsproject.beads.data.Sample;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 import planning.*;
@@ -25,6 +24,7 @@ public class Manager implements RPManager {
     private final RPClipLinker clipLinker;
     @JsonProperty
     private final Map<RPRole, List<RPRole>> groupMap;
+    private final RPTimeline timeline;
     @JsonIgnore
     private final RPClipConverter clipConverter;
     private double projectLength;
@@ -38,6 +38,7 @@ public class Manager implements RPManager {
         this.groupMap = new HashMap<>();
         this.clipConverter = new ClipConverter();
         this.projectLength = MIN_LENGTH;
+        this.timeline = new TimelineImpl();
         this.initializeGroups();
     }
 
@@ -404,6 +405,33 @@ public class Manager implements RPManager {
     @Override
     public RPClip getClip(String title) {
         return this.getClipLinker().getClipFromPart(this.getClipLinker().getPart(title));
+    }
+
+    @Override
+    public void addSection(String title, Optional<String> description, Double initialTime, Double duration) {
+        RPSection section = this.createSection(title, description, duration);
+        boolean flag = this.timeline.addSection(initialTime, section);
+        if (!flag) {
+            throw new IllegalArgumentException("Incompatible arguments for creation of section");
+        }
+    }
+
+    private RPSection createSection(String title, Optional<String> description, Double duration) {
+        return description.map(d -> new SectionImpl(title,d,duration)).orElseGet(() -> new SectionImpl(title,duration));
+    }
+
+    @Override
+    public void removeSection(Double time) {
+        if (this.timeline.getSection(time).isEmpty()) {
+            throw new NoSuchElementException("No section present at that time");
+        } else {
+            this.timeline.removeSection(this.timeline.getSection(time).get());
+        }
+    }
+
+    @Override
+    public Set<Map.Entry<Double, RPSection>> getSections() {
+        return this.timeline.getAllSections();
     }
 
     @Override
