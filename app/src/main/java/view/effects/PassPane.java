@@ -24,7 +24,7 @@ public class PassPane extends BorderPane {
 		effects.getChildren().add(titlebox);
 		//Frequency
 		final HBox hfrequency = new HBox();
-		final Label frequency = new Label("Threshold: ");
+		final Label frequency = new Label("Frequency: ");
 		hfrequency.getChildren().addAll(frequency, frequencyValue);
 		hfrequency.setAlignment(Pos.CENTER);
 		effects.getChildren().add(hfrequency);
