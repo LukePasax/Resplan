@@ -42,8 +42,9 @@ class TestClipPlayerNotifier {
 	private void createRandomPlayersMap() throws IOException, OperationUnsupportedException, FileFormatException {
 		for(int i = 0; i<10; i++) {
 			SampleClip clip = new SampleClip(new File(System.getProperty("user.dir") + SEP + "src" +
-					SEP + "test" + SEP + "resources"+ SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"));
-			this.playersMap.putClipPlayer(Clock.Utility.timeToClockSteps(i/20*Clock.Utility.getClockMaxTime()), new SampleClipPlayerFactory().createClipPlayer(clip, channel));
+					SEP + "test" + SEP + "resources"+ SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"), "ciao");
+			this.playersMap.putClipPlayer(Clock.Utility.timeToClockSteps(i/20*Clock.Utility.getClockMaxTime()),
+					new SampleClipPlayerFactory().createClipPlayer(clip, channel));
 		}
 	}
 	
