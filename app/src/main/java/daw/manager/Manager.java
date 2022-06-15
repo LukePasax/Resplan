@@ -236,7 +236,9 @@ public class Manager implements RPManager {
         if (!this.clipLinker.clipExists(title)) {
             throw new NoSuchElementException("The Clip does not exist");
         }
-        this.removeFileFromClip(title);
+        if (!this.clipLinker.getClipFromPart(this.getClipLinker().getPart(title)).isEmpty()) {
+            this.removeFileFromClip(title);
+        }
         try {
             this.clipConverter.fromEmptyToSampleClip((EmptyClip) this.clipLinker.getClipFromPart(this.clipLinker.getPart(title)), content);
         } catch (OperationUnsupportedException | FileFormatException | IOException exception) {
