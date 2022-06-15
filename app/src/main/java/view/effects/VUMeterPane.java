@@ -3,9 +3,10 @@ package view.effects;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 
-public class VUMeterPane extends Pane {
+public class VUMeterPane extends HBox {
 
 	private double lowerbound;
 	private double upperbound;
@@ -13,6 +14,7 @@ public class VUMeterPane extends Pane {
 	private final Label lcurrent;
 	
 	public VUMeterPane(final Double lowerbound, final Double upperbound) {
+		AnchorPane root = new AnchorPane();
 		if(Double.compare(lowerbound, upperbound) >= 0) {
 			throw new IllegalArgumentException();
 		}
@@ -47,7 +49,8 @@ public class VUMeterPane extends Pane {
 		lupper.setLayoutX(compressor.getPrefWidth()-10);
 		lupper.setLayoutY(compressor.getPrefHeight()+10);
 		
-		this.getChildren().addAll(compressor, lcurrent, llower, lupper);
+		root.getChildren().addAll(compressor, lcurrent, llower, lupper);
+		this.getChildren().add(root);
 	}
 	
 	public void setValue(final double value) {

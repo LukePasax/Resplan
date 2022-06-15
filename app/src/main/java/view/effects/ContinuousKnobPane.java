@@ -29,8 +29,6 @@ public class ContinuousKnobPane extends Pane {
 		if(Double.compare(min, max) >= 0) {
 			throw new IllegalArgumentException();
 		}
-		this.min = min;
-		this.max = max;
 		double currentangle = min;
 		
 		this.setPadding(new Insets(45));
@@ -62,21 +60,20 @@ public class ContinuousKnobPane extends Pane {
 		if(min.equals(Double.NEGATIVE_INFINITY)) {
 			lmin.setText("-∞");
 			lmin.setStyle("-fx-font-weight: bold; -fx-font-size: 15;");
+			this.min = 0.0;
+			this.max = 1.0;
 		} else {
 			lmin.setText("" + min);
 			lmin.setStyle("-fx-font-weight: bold; -fx-font-size: 11;");
+			this.min = min;
+			this.max = max;
 		}
 		lmin.setLayoutX(8.0);
 		lmin.setLayoutY(56.0);
 		//Max label
 		final Label lmax = new Label("" + max);
-		if(max.equals(Double.POSITIVE_INFINITY)) {
-			lmax.setText("∞");
-			lmax.setStyle("-fx-font-weight: bold; -fx-font-size: 15;");
-		} else {
-			lmax.setText("" + max);
-			lmax.setStyle("-fx-font-weight: bold; -fx-font-size: 11;");
-		}
+		lmax.setText("" + max);
+		lmax.setStyle("-fx-font-weight: bold; -fx-font-size: 11;");
 		lmax.setLayoutX(56.0);
 		lmax.setLayoutY(56.0);
 		//Value label
@@ -126,8 +123,7 @@ public class ContinuousKnobPane extends Pane {
 				this.getChildren().add(pane);
 			}
 		}
-
-		setValue(min);
+		setValue(this.min);
 		
 		//Drag and drop
 		this.setOnMousePressed(this::mousePressed);
