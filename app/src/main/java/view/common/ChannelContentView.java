@@ -380,6 +380,13 @@ public abstract class ChannelContentView extends Pane {
 			if(Starter.getController().isPaused()) {
 				if(e.getButton().equals(MouseButton.SECONDARY) || !toolBarSetter.getCurrentTool().equals(Tool.MOVE)) {
 					this.mod = ClipDragModality.NODRAG;
+					if (toolBarSetter.getCurrentTool().equals(Tool.SPLIT)) {
+						try {
+							Starter.getController().splitClip(clip.getTitle(), ch.getTitle(), axis.getValueForDisplay(axis.getDisplayPosition(clip.getPosition())+e.getX()).doubleValue());
+						} catch (ClipNotFoundException | ImportException e1) {
+							e1.printStackTrace();
+						}
+					}
 				} else {
 					dragging = true;
 					initialX = e.getScreenX();

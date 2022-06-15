@@ -43,6 +43,7 @@ public class EditViewController implements Initializable{
 	@FXML private Button cursorButton;
 	@FXML private Button moveClipsButton;
 	@FXML private Button addClipsButton;
+	@FXML private Button splitClipsButton;
 	@FXML private Button stop;
 	@FXML private Button play;
 	@FXML private Button pause;
@@ -60,7 +61,8 @@ public class EditViewController implements Initializable{
 		this.play.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 		this.toolBarSetter.addTool(Tool.CURSOR, cursorButton)
 							.addTool(Tool.MOVE, moveClipsButton)
-							.addTool(Tool.ADDCLIPS, addClipsButton);
+							.addTool(Tool.ADDCLIPS, addClipsButton)
+							.addTool(Tool.SPLIT, splitClipsButton);
 		this.cursorToolSelected();
 		//--------------setting time axis------------
 		timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
@@ -119,6 +121,11 @@ public class EditViewController implements Initializable{
 	@FXML
 	public void addClipsToolSelected() {
 		toolBarSetter.selectTool(Tool.ADDCLIPS);
+	}
+	
+	@FXML
+	public void splitClipsToolSelected() {
+		toolBarSetter.selectTool(Tool.SPLIT);
 	}
 	
 	//engine

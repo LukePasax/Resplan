@@ -120,6 +120,15 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
+                              <Button fx:id="splitClipsButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="10.0" layoutY="59.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#splitClipsToolSelected" prefHeight="20.0" prefWidth="20.0">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" translateY="1.0">
+                                       <image>
+                                          <Image url="@../icons/splitButton.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                               <Button fx:id="addClipsButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#addClipsToolSelected" prefHeight="20.0" prefWidth="20.0">
                                  <graphic>
                                     <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
