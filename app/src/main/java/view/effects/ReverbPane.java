@@ -80,6 +80,8 @@ public class ReverbPane extends BorderPane {
 		effects.setAlignment(Pos.CENTER);
 		this.setPadding(new Insets(10));
 		this.setStyle("-fx-border-color: black");
+		String css = this.getClass().getResource("/stylesheets/planning.css").toExternalForm(); 
+		this.getStylesheets().add(css);
 	}
 	
 	public static class Reverb {
@@ -131,6 +133,8 @@ public class ReverbPane extends BorderPane {
 			});
 			
 			Scene scene = new Scene(root);
+			String css = scene.getClass().getResource("/stylesheets/planning.css").toExternalForm(); 
+			scene.getStylesheets().add(css);
 			stage.setScene(scene);
 			stage.show();
 		}
