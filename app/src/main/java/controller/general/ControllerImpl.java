@@ -100,6 +100,7 @@ public class ControllerImpl implements Controller {
         this.manager.getSections().forEach(s -> {
             App.getData().addSection(new ViewDataImpl.Section(s.getValue().getTitle(), s.getKey()));
         });
+        App.getData().setProjectLenght(this.getProjectLength());
     }
 
     /**
@@ -189,6 +190,7 @@ public class ControllerImpl implements Controller {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time, duration,
                     Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration())));
         }
+        App.getData().setProjectLenght(this.getProjectLength());
     }
 
     @Override
@@ -209,6 +211,7 @@ public class ControllerImpl implements Controller {
         } catch (NoSuchElementException | ClipNotFoundException e) {
             AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
+        App.getData().setProjectLenght(this.getProjectLength());
     }
 
     @Override
@@ -300,6 +303,7 @@ public class ControllerImpl implements Controller {
         this.manager.moveClip(clip,channel,finalTimeIn);
         //createClipView(clip, channel);
         updateChannelClipsView(channel);
+        App.getData().setProjectLenght(this.getProjectLength());
     }
 
     private void updateChannelClipsView(String channel) {
@@ -328,6 +332,7 @@ public class ControllerImpl implements Controller {
     	this.manager.setClipTimeIn(clip,channel,finalTimeIn);
     	updateChannelClipsView(channel);
         //createClipView(clip, channel);
+        App.getData().setProjectLenght(this.getProjectLength());
     }
 
     @Override
@@ -336,6 +341,7 @@ public class ControllerImpl implements Controller {
         this.manager.setClipTimeOut(clip,channel,finalTimeOut);
         //createClipView(clip, channel);
         updateChannelClipsView(channel);
+        App.getData().setProjectLenght(this.getProjectLength());
     }
 
     @Override
@@ -349,11 +355,13 @@ public class ControllerImpl implements Controller {
     @Override
     public void addContentToClip(String clip, File content) throws ImportException, ClipNotFoundException {
         this.manager.addFileToClip(clip,content);
+        App.getData().setProjectLenght(this.getProjectLength());
     }
 
     @Override
     public void removeContentFromClip(String clip) throws ClipNotFoundException {
         this.manager.removeFileFromClip(clip);
+        App.getData().setProjectLenght(this.getProjectLength());
     }
 
     @Override
