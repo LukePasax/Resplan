@@ -26,6 +26,7 @@ public class Recorder implements RPRecorder {
 
 	@Override
 	public void record() {
+		ac.start();
 		recorder.start();
 	}
 
@@ -33,6 +34,7 @@ public class Recorder implements RPRecorder {
 	public void pause() {
 		recorder.pause(true);
 		recorder.clip();
+		ac.stop();
 	}
 
 	@Override
