@@ -386,9 +386,10 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void stopRecording(String clip) throws ImportException, ClipNotFoundException {
+    public void stopRecording(String clip, File file) throws ImportException, ClipNotFoundException, IOException {
         this.recorder.pause();
-        this.addContentToClip(clip, new File(this.recorder.getSample().getFileName()));
+        this.recorder.getSample().write(file.getAbsolutePath(), AudioFileType.WAV);
+        this.addContentToClip(clip, file);
     }
 
     @Override

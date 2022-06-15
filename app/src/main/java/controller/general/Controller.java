@@ -107,7 +107,7 @@ public interface Controller {
 
     void startRecording();
 
-    void stopRecording(String text) throws ImportException, ClipNotFoundException;
+    void stopRecording(String text, File file) throws ImportException, ClipNotFoundException, IOException;
 
     void startExport(Double startTime) throws InterruptedException;
 

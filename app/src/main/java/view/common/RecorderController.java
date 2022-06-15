@@ -1,10 +1,14 @@
 package view.common;
 
 import Resplan.Starter;
+import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+
+import java.io.File;
+import java.io.IOException;
 
 public class RecorderController {
 
@@ -22,9 +26,12 @@ public class RecorderController {
     }
 
     public void stopPressed(ActionEvent actionEvent) {
+        WavFilePicker picker = new WavFilePicker();
+        File file = picker.getFileChooser().showSaveDialog(this.recButton.getScene().getWindow());
         try {
-            Starter.getController().stopRecording(this.clipTitle.getText());
-        } catch (ImportException e) {
+            Starter.getController().stopRecording(this.clipTitle.getText(), file);
+            this.recButton.getScene().getWindow().hide();
+        } catch (ImportException | ClipNotFoundException | IOException e) {
             AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
     }

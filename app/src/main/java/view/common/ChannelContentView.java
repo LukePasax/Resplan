@@ -266,7 +266,7 @@ public abstract class ChannelContentView extends Pane {
 		        if (file != null) {
 		            try {
 						Starter.getController().addContentToClip(clip.getTitle(), file);
-					} catch (ImportException e1) {
+					} catch (ImportException | ClipNotFoundException e1) {
 						e1.printStackTrace();
 					}
 		        }
@@ -291,7 +291,11 @@ public abstract class ChannelContentView extends Pane {
 			});
 			MenuItem clear = new MenuItem("Clear");
 			clear.setOnAction(a->{
-				Starter.getController().removeContentFromClip(clip.getTitle());
+				try {
+					Starter.getController().removeContentFromClip(clip.getTitle());
+				} catch (ClipNotFoundException e) {
+					e.printStackTrace();
+				}
 			});
 			ContextMenu menu = new ContextMenu(remove, record, loadAudioFile, clear);
 			if(clip.isEmpty()) {
