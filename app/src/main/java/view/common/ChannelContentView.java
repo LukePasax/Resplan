@@ -1,5 +1,6 @@
 package view.common;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -260,17 +261,23 @@ public abstract class ChannelContentView extends Pane {
 			remove.setOnAction(a->Starter.getController().deleteClip(clip.getTitle(), ch.getTitle(), clip.getPosition().get()));
 			MenuItem loadAudioFile = new MenuItem("Load Audio File");
 			loadAudioFile.setOnAction(a->{
-				//TODO load file in clip
+				WavFilePicker picker = new WavFilePicker();
+		        File file = picker.getFileChooser().showOpenDialog(this.getScene().getWindow());
+		        if (file != null) {
+		            try {
+						Starter.getController().addContentToClip(clip.getTitle(), file);
+					} catch (ImportException e1) {
+						e1.printStackTrace();
+					}
+		        }
 			});
 			MenuItem record = new MenuItem("Record");
 			record.setOnAction(a->{
-				Starter.getController()/*TODO .recordClip()*/;
-				//TODO gestisci clear e record buttons.
+				Starter.getController().startRecording(); //TODO
 			});
 			MenuItem clear = new MenuItem("Clear");
 			clear.setOnAction(a->{
-				Starter.getController()/*TODO .clearClip()*/;
-				//TODO gestisci clear e record buttons.
+				Starter.getController().removeContentFromClip(clip.getTitle());
 			});
 			ContextMenu menu = new ContextMenu(remove, record, loadAudioFile, clear);
 			if(clip.isEmpty()) {
