@@ -101,6 +101,10 @@ public interface Controller {
 
     void removeContentFromClip(String clip);
 
+    void newSection(String title, String description, Double initialTime, Double duration);
+
+    void deleteSection(Double time);
+
     void startRecording();
 
     void stopRecording(String text) throws ImportException;

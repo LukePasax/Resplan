@@ -408,7 +408,7 @@ public class Manager implements RPManager {
     }
 
     @Override
-    public void addSection(String title, Optional<String> description, Double initialTime, Double duration) {
+    public void addSection(String title, Optional<String> description, Double initialTime, Double duration) throws IllegalArgumentException {
         RPSection section = this.createSection(title, description, duration);
         boolean flag = this.timeline.addSection(initialTime, section);
         if (!flag) {
@@ -421,7 +421,7 @@ public class Manager implements RPManager {
     }
 
     @Override
-    public void removeSection(Double time) {
+    public void removeSection(Double time) throws NoSuchElementException{
         if (this.timeline.getSection(time).isEmpty()) {
             throw new NoSuchElementException("No section present at that time");
         } else {

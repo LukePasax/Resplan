@@ -97,6 +97,9 @@ public class ControllerImpl implements Controller {
                 }
             });
         });
+        this.manager.getSections().forEach(s -> {
+            App.getData().addSection(new ViewDataImpl.Section(s.getValue().getTitle(), s.getKey()));
+        });
     }
 
     /**
@@ -340,6 +343,21 @@ public class ControllerImpl implements Controller {
     @Override
     public void removeContentFromClip(String clip) {
         this.manager.removeFileFromClip(clip);
+    }
+
+    @Override
+    public void newSection(String title, String description, Double initialTime, Double duration) {
+        Optional<String> desc = description.equals("") ? Optional.empty() : Optional.of(description);
+        this.manager.addSection(title, desc, initialTime, duration);
+        App.getData().addSection(new ViewDataImpl.Section(title, initialTime));
+    }
+
+    @Override
+    public void deleteSection(Double time) {
+        this.manager.removeSection(time);
+        App.getData().removeSection(App.getData().getUnmodifiableSections().stream()
+                .filter(s -> s.getPosition().equals(time))
+                .findFirst().orElseThrow(() -> new NoSuchElementException("No section present at that time")));
     }
 
     @Override
