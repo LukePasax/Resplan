@@ -3,6 +3,8 @@ package controller.general;
 import controller.storing.ReadFromFileImpl;
 import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;
+import daw.core.audioprocessing.ProcessingUnit;
+import daw.core.audioprocessing.RPEffect;
 import daw.core.channel.RPChannel;
 import daw.core.clip.ClipNotFoundException;
 import daw.core.clip.RPClip;
@@ -479,6 +481,43 @@ public class ControllerImpl implements Controller {
         } else {
             this.manageMuteInSoloEnvironment();
         }
+    }
+
+    @Override
+    public void addEffectAtPosition(String channel, RPEffect e, int index) {
+        this.getProcessingUnit(channel).addEffectAtPosition(e, index);
+    }
+
+    @Override
+    public void removeEffectAtPosition(String channel, int index) {
+        this.getProcessingUnit(channel).removeEffectAtPosition(index);
+    }
+
+    @Override
+    public void moveEffect(String channel, int index1, int index2) {
+        this.getProcessingUnit(channel).moveEffect(index1, index2);
+    }
+
+    @Override
+    public void replaceEffect(String channel, int index, RPEffect e) {
+        this.getProcessingUnit(channel).replace(index, e);
+    }
+
+    @Override
+    public void setEffectParameters(String channel, int index, Map<String, Float> parameters) {
+        this.getProcessingUnit(channel).getEffectAtPosition(index).setParameters(parameters);
+    }
+
+    @Override
+    public Map<String, Float> getEffectParameters(String channel, int index) {
+        return this.getProcessingUnit(channel).getEffectAtPosition(index).getParameters();
+    }
+
+    private ProcessingUnit getProcessingUnit(String channel) {
+        return this.manager.getChannelLinker().getChannel(this.manager.getRoles().stream()
+                .filter(i -> i.getTitle().equals(channel))
+                .findFirst()
+                .get()).getProcessingUnit().get();
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES

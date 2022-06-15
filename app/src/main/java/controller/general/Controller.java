@@ -1,5 +1,6 @@
 package controller.general;
 
+import daw.core.audioprocessing.RPEffect;
 import daw.core.channel.RPChannel;
 import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
@@ -8,6 +9,7 @@ import view.common.App;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface Controller {
 
@@ -143,4 +145,15 @@ public interface Controller {
      */
     void removeSolo(String channel);
 
+    void addEffectAtPosition(String channel, RPEffect e, int index);
+
+    void removeEffectAtPosition(String channel, int index);
+
+    void moveEffect(String channel, int index1, int index2);
+
+    void replaceEffect(String channel, int index, RPEffect e);
+
+    void setEffectParameters(String channel, int index, Map<String, Float> parameters);
+
+    Map<String, Float> getEffectParameters(String channel, int index);
 }
