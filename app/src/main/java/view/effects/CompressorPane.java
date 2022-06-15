@@ -21,13 +21,14 @@ public class CompressorPane extends BorderPane {
 	final private static Label attackValue = new Label("0.2");
 	final private static Label ratioValue = new Label("1:1");
 	final private static Label decayValue = new Label("0.2");
+	
 
-	public CompressorPane() {		
+	public CompressorPane(final String title) {	
 		final HBox titlebox = new HBox();
 		titlebox.setAlignment(Pos.CENTER);
-		final Label title = new Label("Compressor");
-		title.setStyle("-fx-font-weight: bold");
-		titlebox.getChildren().add(title);
+		final Label ltitle = new Label(title);
+		ltitle.setStyle("-fx-font-weight: bold");
+		titlebox.getChildren().add(ltitle);
 		effects.getChildren().add(titlebox);
 		//VUMiter
 		final HBox firstrow = new HBox();
@@ -67,7 +68,7 @@ public class CompressorPane extends BorderPane {
 		effects.getChildren().add(hbutton);
 		
 		expand.setOnMouseClicked(e -> {
-			Compressor.show(Double.parseDouble(thresholdValue.getText()), Double.parseDouble(attackValue.getText()), Double.parseDouble(decayValue.getText()));
+			Compressor.show(title, Double.parseDouble(thresholdValue.getText()), Double.parseDouble(attackValue.getText()), Double.parseDouble(decayValue.getText()));
 		});
 		this.setCenter(effects);
 		effects.setPadding(new Insets(10));
@@ -82,9 +83,9 @@ public class CompressorPane extends BorderPane {
 	}
 	
 	public static class Compressor {
-		public static void show(final double currentThreshold, final double currentAttack, final double currentDecay) {
+		public static void show(final String title, final double currentThreshold, final double currentAttack, final double currentDecay) {
 			BorderPane root = new BorderPane();
-			final HBox titlebox = new HBox(new Label("Compressor"));
+			final HBox titlebox = new HBox(new Label(title));
 			titlebox.setAlignment(Pos.CENTER);
 			
 			final HBox firstrow = new HBox();

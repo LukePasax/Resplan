@@ -62,10 +62,10 @@ public class EffectsPane extends ScrollPane {
 		add.setOnMouseClicked(e -> {
 			menu.show(this.getScene().getWindow(), e.getScreenX(), e.getScreenY());
 		});
-		root.getChildren().add(new EffectPane(new CompressorPane()));
-		root.getChildren().add(new EffectPane(new LimiterPane()));
-		root.getChildren().add(new EffectPane(new PassPane()));
-		root.getChildren().add(new EffectPane(new ReverbPane()));
+		root.getChildren().add(new EffectPane(new CompressorPane("Compressor")));
+		root.getChildren().add(new EffectPane(new LimiterPane("Limiter")));
+		root.getChildren().add(new EffectPane(new PassPane("Pass")));
+		root.getChildren().add(new EffectPane(new ReverbPane("Reverb")));
 		//root.autosize();
 		//this.autosize();
 		this.setContent(root);

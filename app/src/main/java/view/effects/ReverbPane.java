@@ -21,12 +21,12 @@ public class ReverbPane extends BorderPane {
 	final private static Label dryValue = new Label("0.0");
 	final private static Label wetValue = new Label("0.0");
 	
-	public ReverbPane() {
+	public ReverbPane(final String title) {
 		final HBox titlebox = new HBox();
 		titlebox.setAlignment(Pos.CENTER);
-		final Label title = new Label("Reverb");
-		title.setStyle("-fx-font-weight: bold");
-		titlebox.getChildren().add(title);
+		final Label ltitle = new Label(title);
+		ltitle.setStyle("-fx-font-weight: bold");
+		titlebox.getChildren().add(ltitle);
 		effects.getChildren().add(titlebox);
 		//Damping
 		final HBox hdamping = new HBox();
@@ -73,7 +73,7 @@ public class ReverbPane extends BorderPane {
 		effects.getChildren().add(hbutton);
 		
 		expand.setOnMouseClicked(e -> {
-			Reverb.show(Double.parseDouble(dampingValue.getText()), Double.parseDouble(roomsizeValue.getText()), Double.parseDouble(earlyValue.getText()),
+			Reverb.show(title, Double.parseDouble(dampingValue.getText()), Double.parseDouble(roomsizeValue.getText()), Double.parseDouble(earlyValue.getText()),
 						Double.parseDouble(lateValue.getText()), Double.parseDouble(dryValue.getText()), Double.parseDouble(wetValue.getText()));
 		});
 		this.setCenter(effects);
@@ -85,10 +85,10 @@ public class ReverbPane extends BorderPane {
 	}
 	
 	public static class Reverb {
-		public static void show(final double currentDamping, final double currentRoomsize, final double currentEarly,
+		public static void show(final String title, final double currentDamping, final double currentRoomsize, final double currentEarly,
 								final double currentLate, final double currentDry, final double currentWet) {
 			BorderPane root = new BorderPane();
-			final HBox titlebox = new HBox(new Label("Reverb"));
+			final HBox titlebox = new HBox(new Label(title));
 			titlebox.setAlignment(Pos.CENTER);
 			final HBox firstrow = new HBox();
 			final HBox secondrow = new HBox();

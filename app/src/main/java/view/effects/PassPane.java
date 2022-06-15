@@ -15,12 +15,12 @@ public class PassPane extends BorderPane {
 	final private static Label frequencyValue = new Label("10.0");
 	final private static VBox effects = new VBox();
 
-	public PassPane() {
+	public PassPane(final String title) {
 		final HBox titlebox = new HBox();
 		titlebox.setAlignment(Pos.CENTER);
-		final Label title = new Label("Pass");
-		title.setStyle("-fx-font-weight: bold");
-		titlebox.getChildren().add(title);
+		final Label ltitle = new Label(title);
+		ltitle.setStyle("-fx-font-weight: bold");
+		titlebox.getChildren().add(ltitle);
 		effects.getChildren().add(titlebox);
 		//Frequency
 		final HBox hfrequency = new HBox();
@@ -37,7 +37,7 @@ public class PassPane extends BorderPane {
 		effects.getChildren().add(hbutton);
 		
 		expand.setOnMouseClicked(e -> {
-			Pass.show(Double.parseDouble(frequencyValue.getText()));
+			Pass.show(title, Double.parseDouble(frequencyValue.getText()));
 		});
 		hfrequency.autosize();
 		this.setCenter(effects);		
@@ -52,9 +52,9 @@ public class PassPane extends BorderPane {
 	}
 	
 	public static class Pass {
-		public static void show(final double currentFrequency) {
+		public static void show(final String title, final double currentFrequency) {
 			BorderPane root = new BorderPane();
-			final HBox titlebox = new HBox(new Label("Pass"));
+			final HBox titlebox = new HBox(new Label(title));
 			titlebox.setAlignment(Pos.CENTER);
 			final ContinuousKnobPane frequency = new ContinuousKnobPane(10.0, 20000.0, currentFrequency, 3, "FREQUENCY");
 			HBox firstcolumn = new HBox(frequency);

@@ -20,12 +20,12 @@ public class LimiterPane extends BorderPane {
 	final private static Label attackValue = new Label("0.2");
 	final private static Label decayValue = new Label("0.2");
 	
-	public LimiterPane() {
+	public LimiterPane(final String title) {
 		final HBox titlebox = new HBox();
 		titlebox.setAlignment(Pos.CENTER);
-		final Label title = new Label("Limiter");
-		title.setStyle("-fx-font-weight: bold");
-		titlebox.getChildren().add(title);
+		final Label ltitle = new Label(title);
+		ltitle.setStyle("-fx-font-weight: bold");
+		titlebox.getChildren().add(ltitle);
 		effects.getChildren().add(titlebox);
 		//VUMiter
 		final HBox firstrow = new HBox();
@@ -59,7 +59,7 @@ public class LimiterPane extends BorderPane {
 		effects.getChildren().add(hbutton);
 		
 		expand.setOnMouseClicked(e -> {
-			Limiter.show(Double.parseDouble(thresholdValue.getText()), Double.parseDouble(attackValue.getText()), Double.parseDouble(decayValue.getText()));
+			Limiter.show(title, Double.parseDouble(thresholdValue.getText()), Double.parseDouble(attackValue.getText()), Double.parseDouble(decayValue.getText()));
 		});
 		this.setCenter(effects);		
 		
@@ -75,9 +75,9 @@ public class LimiterPane extends BorderPane {
 	}
 	
 	public static class Limiter {
-		public static void show(final double currentThreshold, final double currentAttack, final double currentDecay) {
+		public static void show(final String title, final double currentThreshold, final double currentAttack, final double currentDecay) {
 			BorderPane root = new BorderPane();
-			final HBox titlebox = new HBox(new Label("Limiter"));
+			final HBox titlebox = new HBox(new Label(title));
 			titlebox.setAlignment(Pos.CENTER);
 			
 			final HBox firstrow = new HBox();
