@@ -7,7 +7,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
@@ -205,8 +207,8 @@ public class ViewDataImpl implements ViewData {
 	public static class Clip {
 		
 		private String title;
-		private Double position;
-		private Double duration;
+		private DoubleProperty position = new SimpleDoubleProperty();
+		private DoubleProperty duration = new SimpleDoubleProperty();;
 		private Optional<Double> contentPosition;
 		private Optional<Double> contentDuration;
 		private Set<Node> view = new HashSet<>();
@@ -215,8 +217,8 @@ public class ViewDataImpl implements ViewData {
 		public Clip(String title, Double position, Double duration, Optional<Double> contentPosition, Optional<Double> contentDuration) {
 			super();
 			this.title = title;
-			this.position = position;
-			this.duration = duration;
+			this.position.set(position);
+			this.duration.set(duration);
 			if(contentDuration.isEmpty() != contentPosition.isEmpty()) {
 				throw new IllegalArgumentException("If the clip is empty no content position and duration must be specified. Else both content position and duration must be specified.");
 			}
@@ -228,12 +230,20 @@ public class ViewDataImpl implements ViewData {
 			return title;
 		}
 
-		public Double getPosition() {
+		public DoubleProperty getPosition() {
 			return position;
 		}
 		
-		public Double getDuration() {
+		public DoubleProperty getDuration() {
 			return duration;
+		}
+		
+		public void setPosition(Double position) {
+			this.position.set(position);
+		}
+		
+		public void setDuration(Double duration) {
+			this.duration.set(duration);
 		}
 
 		public boolean isEmpty() {

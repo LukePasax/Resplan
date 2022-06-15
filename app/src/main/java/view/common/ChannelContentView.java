@@ -63,7 +63,7 @@ public abstract class ChannelContentView extends Pane {
 			public void onChanged(Change<? extends Clip> c) {
 				c.next();
 				c.getAddedSubList().stream().filter(clip->{
-					return clip.getPosition()<axis.getUpperBound() && (clip.getPosition()+clip.getDuration())>axis.getLowerBound();
+					return clip.getPosition().get()<axis.getUpperBound() && (clip.getPosition().get()+clip.getDuration().get())>axis.getLowerBound();
 				}).forEach(clip->{
 					drawClip(clip);
 				});
@@ -72,9 +72,6 @@ public abstract class ChannelContentView extends Pane {
 				});
 			}
 		});
-		
-		//update clips on data changes
-		//TODO
 		
 		//insert empty clip
 		class EmptyClipCreator implements EventHandler<MouseEvent> {
@@ -163,7 +160,7 @@ public abstract class ChannelContentView extends Pane {
 		if(App.getData().getUnmodifiableChannels().contains(ch)){
 			ObservableList<Clip> clips = App.getData().getUnmodifiableClips(ch);
 			clips.stream().filter(clipFromData->{
-				return clipFromData.getPosition()<axis.getUpperBound() && (clipFromData.getPosition()+clipFromData.getDuration())>axis.getLowerBound();
+				return clipFromData.getPosition().get()<axis.getUpperBound() && (clipFromData.getPosition().get()+clipFromData.getDuration().get())>axis.getLowerBound();
 			}).forEach(clipInTimeRange->{
 				if(clipInTimeRange.getViewSet().stream().anyMatch(x->getChildren().contains(x))) {
 					clipInTimeRange.getViewSet().stream().filter(x->getChildren().contains(x)).forEach(drawedClip->{
@@ -174,7 +171,7 @@ public abstract class ChannelContentView extends Pane {
 				}
 			});
 			clips.stream().filter(clipFromData->{
-				return clipFromData.getPosition()>=axis.getUpperBound() || (clipFromData.getPosition()+clipFromData.getDuration())<=axis.getLowerBound();
+				return clipFromData.getPosition().get()>=axis.getUpperBound() || (clipFromData.getPosition().get()+clipFromData.getDuration().get())<=axis.getLowerBound();
 			}).forEach(nonInTimeClip->{
 				nonInTimeClip.getViewSet().stream().forEach(view->{
 					if(getChildren().contains(view)) {
@@ -193,6 +190,12 @@ public abstract class ChannelContentView extends Pane {
 		Node clipContent = drawClipContent(clip);
 		AnchorPane clipView = new ClipView(clipContent, clip);
 		placeClip(clipView, clip);
+		clip.getDuration().addListener(o->{
+			placeClip(clipView, clip);
+		});
+		clip.getPosition().addListener(o->{
+			placeClip(clipView, clip);
+		});
 		clip.addToViewAll(clipView);
 		getChildren().add(clipView);
 	}
@@ -203,8 +206,8 @@ public abstract class ChannelContentView extends Pane {
 	private void placeClip(Pane clipView, Clip clip) {
 		double inX;
 		double outX;
-		inX = axis.getDisplayPosition(clip.getPosition());
-		outX = axis.getDisplayPosition(clip.getPosition()+clip.getDuration());
+		inX = axis.getDisplayPosition(clip.getPosition().get());
+		outX = axis.getDisplayPosition(clip.getPosition().get()+clip.getDuration().get());
 		clipView.relocate(inX, 0);
 		clipView.setPrefWidth(outX-inX);
 	}
@@ -254,7 +257,7 @@ public abstract class ChannelContentView extends Pane {
 			this.getChildren().add(0, overlay);
 			//clip menù
 			MenuItem remove = new MenuItem("Remove");
-			remove.setOnAction(a->Starter.getController().deleteClip(clip.getTitle(), ch.getTitle(), clip.getPosition()));
+			remove.setOnAction(a->Starter.getController().deleteClip(clip.getTitle(), ch.getTitle(), clip.getPosition().get()));
 			MenuItem loadAudioFile = new MenuItem("Load Audio File");
 			loadAudioFile.setOnAction(a->{
 				//TODO load file in clip
@@ -286,18 +289,18 @@ public abstract class ChannelContentView extends Pane {
 		
 		private void mouseReleased(MouseEvent e) {
 			if(Starter.getController().isPaused()) {
-				double newTimeIn = clip.getPosition()+timeDelta;
+				double newTimeIn = clip.getPosition().get()+timeDelta;
 				if(mod.equals(ClipDragModality.TIMEIN)) {
 					//in event
 					try {
-						if(timeDelta>=clip.getDuration()) {
-							newTimeIn = clip.getPosition()+clip.getDuration()-getMinDuration();
+						if(timeDelta>=clip.getDuration().get()) {
+							newTimeIn = clip.getPosition().get()+clip.getDuration().get()-getMinDuration();
 						}
-						if(clip.getPosition()+timeDelta < 0) {
+						if(clip.getPosition().get()+timeDelta < 0) {
 							newTimeIn = 0;
 						}
 						if(!clip.isEmpty() && clip.getContentPosition()+timeDelta<0) {
-							newTimeIn = clip.getPosition()-clip.getContentPosition();
+							newTimeIn = clip.getPosition().get()-clip.getContentPosition();
 						}
 						Starter.getController().setClipTimeIn(clip.getTitle(), ch.getTitle(), newTimeIn);
 					} catch (ClipNotFoundException | ImportException e1) {
@@ -305,16 +308,16 @@ public abstract class ChannelContentView extends Pane {
 					}
 				} else if(mod.equals(ClipDragModality.TIMEOUT)) {
 					//out event
-					double newTimeOut = newTimeIn+clip.getDuration();
+					double newTimeOut = newTimeIn+clip.getDuration().get();
 					try {
 						if(newTimeOut>Starter.getController().getProjectLength()) {
 							newTimeOut = Starter.getController().getProjectLength();
 						}
-						if(clip.getDuration()+timeDelta<=0) {
-							newTimeOut = clip.getPosition()+getMinDuration();
+						if(clip.getDuration().get()+timeDelta<=0) {
+							newTimeOut = clip.getPosition().get()+getMinDuration();
 						}
-						if(!clip.isEmpty() && timeDelta >= clip.getContentDuration()-clip.getContentPosition()-clip.getDuration()) {
-							newTimeOut = clip.getPosition()+clip.getContentDuration()-clip.getContentPosition();
+						if(!clip.isEmpty() && timeDelta >= clip.getContentDuration()-clip.getContentPosition()-clip.getDuration().get()) {
+							newTimeOut = clip.getPosition().get()+clip.getContentDuration()-clip.getContentPosition();
 						}
 						Starter.getController().setClipTimeOut(clip.getTitle(), ch.getTitle(), newTimeOut);
 					} catch (ClipNotFoundException | ImportException e1) {
@@ -325,8 +328,8 @@ public abstract class ChannelContentView extends Pane {
 					try {
 						if(newTimeIn<0) {
 							newTimeIn = 0;
-						} else if (newTimeIn+clip.getDuration()>Starter.getController().getProjectLength()) {
-							newTimeIn = Starter.getController().getProjectLength()-clip.getDuration();
+						} else if (newTimeIn+clip.getDuration().get()>Starter.getController().getProjectLength()) {
+							newTimeIn = Starter.getController().getProjectLength()-clip.getDuration().get();
 						}
 						Starter.getController().moveClip(clip.getTitle(), ch.getTitle(), newTimeIn);
 					} catch (ClipNotFoundException | ImportException e1) {
@@ -355,21 +358,21 @@ public abstract class ChannelContentView extends Pane {
 				if(mod.equals(ClipDragModality.TIMEIN)) {
 					//in event
 					if(clip.isEmpty() || clip.getContentPosition()+timeDelta>=0) {
-						if(timeDelta<clip.getDuration()-getMinDuration() && clip.getPosition()+timeDelta >= 0) {
+						if(timeDelta<clip.getDuration().get()-getMinDuration() && clip.getPosition().get()+timeDelta >= 0) {
 							this.setLayoutX(initialLayoutX+e.getScreenX()-initialX);
 							this.setPrefWidth(initialWidth+initialX-e.getScreenX());
 						}
 					}
 				} else if(mod.equals(ClipDragModality.TIMEOUT)) {
 					//out event
-					if(clip.isEmpty() || timeDelta < clip.getContentDuration()-clip.getContentPosition()-clip.getDuration()) {
-						if(clip.getDuration()+timeDelta>getMinDuration() && clip.getDuration()+clip.getPosition()+timeDelta<=Starter.getController().getProjectLength()) {
+					if(clip.isEmpty() || timeDelta < clip.getContentDuration()-clip.getContentPosition()-clip.getDuration().get()) {
+						if(clip.getDuration().get()+timeDelta>getMinDuration() && clip.getDuration().get()+clip.getPosition().get()+timeDelta<=Starter.getController().getProjectLength()) {
 							this.setPrefWidth(initialWidth+e.getScreenX()-initialX);
 						}
 					}
 				} else if (mod.equals(ClipDragModality.MOVE)){
 					//move event
-					if(clip.getPosition()+timeDelta >= 0 && clip.getPosition()+clip.getDuration()+timeDelta <= Starter.getController().getProjectLength()) {
+					if(clip.getPosition().get()+timeDelta >= 0 && clip.getPosition().get()+clip.getDuration().get()+timeDelta <= Starter.getController().getProjectLength()) {
 						this.setLayoutX(initialLayoutX+e.getScreenX()-initialX);
 					}
 				}
@@ -382,7 +385,7 @@ public abstract class ChannelContentView extends Pane {
 					this.mod = ClipDragModality.NODRAG;
 					if (toolBarSetter.getCurrentTool().equals(Tool.SPLIT)) {
 						try {
-							Starter.getController().splitClip(clip.getTitle(), ch.getTitle(), axis.getValueForDisplay(axis.getDisplayPosition(clip.getPosition())+e.getX()).doubleValue());
+							Starter.getController().splitClip(clip.getTitle(), ch.getTitle(), axis.getValueForDisplay(axis.getDisplayPosition(clip.getPosition().get())+e.getX()).doubleValue());
 						} catch (ClipNotFoundException | ImportException e1) {
 							e1.printStackTrace();
 						}

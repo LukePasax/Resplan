@@ -296,11 +296,19 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void moveClip(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException {
-        App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
+        //App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.moveClip(clip,channel,finalTimeIn);
-        createClipView(clip, channel);
+        //createClipView(clip, channel);
+        updateChannelClipsView(channel);
     }
 
+    private void updateChannelClipsView(String channel) {
+    	this.manager.getChannelLinker().getTapeChannel(this.manager.getChannelLinker().getRole(channel)).getClipWithTimeIterator().forEachRemaining(cwt->{
+    		App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,cwt.getValue().getTitle()));
+    		createClipView(cwt.getValue().getTitle(), channel);
+    	});
+    }
+    
     private void createClipView(String clip, String channel) {
         Double time = this.manager.getClipTime(clip,channel);
         Double duration = this.manager.getClipDuration(clip);
@@ -316,23 +324,26 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException {
-    	App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
+    	//App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
     	this.manager.setClipTimeIn(clip,channel,finalTimeIn);
-        createClipView(clip, channel);
+    	updateChannelClipsView(channel);
+        //createClipView(clip, channel);
     }
 
     @Override
     public void setClipTimeOut(String clip, String channel, Double finalTimeOut) throws ClipNotFoundException {
-        App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
+        //App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.setClipTimeOut(clip,channel,finalTimeOut);
-        createClipView(clip, channel);
+        //createClipView(clip, channel);
+        updateChannelClipsView(channel);
     }
 
     @Override
     public void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException {
-        App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
+        //App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.splitClip(clip,channel,splittingTime);
-        createClipView(clip, channel);
+        //createClipView(clip, channel);
+        updateChannelClipsView(channel);
     }
 
     @Override
