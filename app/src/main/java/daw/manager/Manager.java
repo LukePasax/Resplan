@@ -469,7 +469,8 @@ public class Manager implements RPManager {
                 .getClipTimeOut(this.getClipTime(clip.getTitle(), channel));
     }
 
-    private String getClipChannel(String clip) {
+    @Override
+    public String getClipChannel(String clip) {
         for (var r : this.getRoles()) {
             var i = this.channelLinker.getTapeChannel(r)
                     .getClipWithTimeIteratorFiltered(c -> c.getValue().getTitle().equals(clip));

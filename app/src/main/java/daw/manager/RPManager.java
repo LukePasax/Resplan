@@ -181,4 +181,6 @@ public interface RPManager {
     void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException;
 
     RPClip getClip(String title);
+
+    String getClipChannel(String clip);
 }

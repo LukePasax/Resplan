@@ -354,13 +354,19 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void addContentToClip(String clip, File content) throws ImportException, ClipNotFoundException {
+        String channel = this.manager.getClipChannel(clip);
+        App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.addFileToClip(clip,content);
+        this.createClipView(clip,channel);
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
     @Override
     public void removeContentFromClip(String clip) throws ClipNotFoundException {
+        String channel = this.manager.getClipChannel(clip);
+        App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.removeFileFromClip(clip);
+        this.createClipView(clip,channel);
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
