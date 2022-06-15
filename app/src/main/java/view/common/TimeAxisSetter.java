@@ -34,8 +34,6 @@ public class TimeAxisSetter {
 	private final NumberAxis axis = new NumberAxis();
 	private final AnchorPane navigator = new AnchorPane();
 	private final Rectangle scroller = new Rectangle();
-	
-	//TODO set and update prLenght with model!!!
 	/**
 	 * The time length of the project.
 	 */

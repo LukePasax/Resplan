@@ -48,7 +48,10 @@ public class PlanningController {
 
     public void initialize() {
     	//--------------setting time axis------------
-		timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
+    	timeAxisSetter = new TimeAxisSetter(App.getData().getProjectLenghtProperty().get());
+		App.getData().getProjectLenghtProperty().addListener((obs,old,n)->{
+			timeAxisSetter.setProjectLength(n.doubleValue());
+		});
 		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 5, 0, 0));
 		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 2);
 		timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);

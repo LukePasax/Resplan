@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import Resplan.Starter;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -25,6 +26,19 @@ public class ViewDataImpl implements ViewData {
 	private ObservableMap<Channel, ObservableList<Clip>> data = FXCollections.observableHashMap();
 
 	private ObservableSet<Section> sections = FXCollections.observableSet();
+	
+	private DoubleProperty prLenght = new SimpleDoubleProperty(Starter.getController().getProjectLength());
+	
+	//prLenght
+	@Override
+	public void setProjectLenght(Double prLenght) {
+		this.prLenght.set(prLenght);
+	}
+	
+	@Override
+	public DoubleProperty getProjectLenghtProperty() {
+		return this.prLenght;
+	}
 	
 	//channels and clips
 	@Override

@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import view.common.TimeAxisSetter;
 import view.common.Tool;
 import view.common.ToolBarSetter;
+import view.common.App;
 import view.common.MarkersPane;
 
 public class EditViewController implements Initializable{
@@ -65,7 +66,10 @@ public class EditViewController implements Initializable{
 							.addTool(Tool.SPLIT, splitClipsButton);
 		this.cursorToolSelected();
 		//--------------setting time axis------------
-		timeAxisSetter = new TimeAxisSetter(TimeAxisSetter.MS_TO_MIN*10); //10 min initial project length
+		timeAxisSetter = new TimeAxisSetter(App.getData().getProjectLenghtProperty().get());
+		App.getData().getProjectLenghtProperty().addListener((obs,old,n)->{
+			timeAxisSetter.setProjectLength(n.doubleValue());
+		});
 		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 16, 0, 0));
 		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 2);
 		timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);

@@ -2,6 +2,7 @@ package view.common;
 
 import java.util.Set;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
@@ -13,6 +14,11 @@ import view.common.ViewDataImpl.Section;
 
 public interface ViewData {
 
+	//prLenght
+	public void setProjectLenght(Double prLenght);
+	
+	public DoubleProperty getProjectLenghtProperty();
+	
 	//channels and clips
 	void addChannel(Channel channel);
 	
