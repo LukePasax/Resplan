@@ -40,16 +40,21 @@ public class BasicChannel implements RPChannel {
     }
 
     @JsonCreator
-    protected BasicChannel(@JsonProperty("type") final Type type, @JsonProperty("processingUnit")
+    private BasicChannel(@JsonProperty("type") final Type type, @JsonProperty("processingUnit")
                         final ProcessingUnit processingUnit) {
         this.pan = new Panner(AudioContextManager.getAudioContext());
         this.type = type;
+        this.gainIn = new Gain(AudioContextManager.getAudioContext(), 1, DEFAULT_GAIN_IN);
+        this.gainOut = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
+        // channel is initially enabled
         this.enabled = true;
-        this.pu = (processingUnit == null) ? Optional.empty() : Optional.of(processingUnit);
-        this.gainIn = new Gain(AudioContextManager.getAudioContext(), 1).setGain(DEFAULT_GAIN_IN);
-        this.gainMute = new Gain(AudioContextManager.getAudioContext(), 1).setGain(1.0f);
-        this.gainOut = new Gain(AudioContextManager.getAudioContext(), 1).setGain(1.0f);
+        this.gainMute = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
         this.setStructure();
+        // processing unit is present only after deserialization
+        this.pu = Optional.empty();
+        if (processingUnit != null) {
+            this.addProcessingUnit(processingUnit);
+        }
     }
 
     private void setStructure() {
@@ -149,10 +154,13 @@ public class BasicChannel implements RPChannel {
      * @param pu the {@link ProcessingUnit} to be added.
      */
     public void addProcessingUnit(ProcessingUnit pu) {
-        this.pu = Optional.of(pu);
-        this.pu.get().addInput(gainIn);
-        this.pan.clearInputConnections();
-        this.pu.get().connect(this.pan);
+        // in -> pu -> pan -> mute -> out
+        if (!this.isProcessingUnitPresent()) {
+            this.pu = Optional.of(pu);
+            this.pu.get().addInput(this.gainIn);
+            this.pan.clearInputConnections();
+            this.pu.get().connect(this.pan);
+        }
     }
 
     /**
@@ -162,7 +170,8 @@ public class BasicChannel implements RPChannel {
     public void removeProcessingUnit() {
         if (this.isProcessingUnitPresent()) {
             this.pu = Optional.empty();
-            this.setStructure();
+            this.pan.clearInputConnections();
+            this.pan.addInput(this.gainIn);
         }
     }
 

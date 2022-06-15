@@ -64,6 +64,12 @@ public interface ProcessingUnit {
     RPEffect getEffectAtPosition(int index);
 
     /**
+     * Gets the amount of {@link RPEffect}s currently stored in the processing unit.
+     * @return the number of effects.
+     */
+    int numberOfEffects();
+
+    /**
      * Adds a new effect at the last position of the sequence.
      * Note that this method also matches the preceding effect output to the given effect input.
      * If the number of outputs of the preceding effect is greater than the number of inputs of the given

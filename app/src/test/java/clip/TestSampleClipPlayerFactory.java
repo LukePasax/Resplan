@@ -28,7 +28,7 @@ class TestSampleClipPlayerFactory {
 		RPChannel channel = new BasicChannelFactory().basic();
 		try {
 			RPClip<?> clip = new SampleClip(new File(System.getProperty("user.dir") + SEP + "src" +
-				SEP + "test" + SEP + "resources"+ SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"));
+				SEP + "test" + SEP + "resources"+ SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"), "ciao");
 			RPClipPlayer player = factory.createClipPlayer(clip, channel);
 			assertEquals(clip.getContentPosition() ,player.getPlaybackPosition());
 			assertTrue(player.isPaused());
@@ -44,9 +44,9 @@ class TestSampleClipPlayerFactory {
 		RPChannel channel = new BasicChannelFactory().basic();
 		try {
 			RPClip<?> clip = new SampleClip(new File(System.getProperty("user.dir") + SEP + "src" +
-				SEP + "test" + SEP + "resources"+ SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"));
+				SEP + "test" + SEP + "resources"+ SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"), "ciao");
 			RPClipPlayer player = factory.createClipPlayerWithActiveCut(clip, channel, 0.543);
-			assertEquals(clip.getContentPosition() ,player.getPlaybackPosition());	
+			assertEquals(clip.getContentPosition(), player.getPlaybackPosition());
 			assertTrue(player.isCutActive());
 			assertEquals(0.543, player.getCutTime());
 		} catch (IOException | OperationUnsupportedException | FileFormatException e) {
@@ -59,7 +59,7 @@ class TestSampleClipPlayerFactory {
 	void testSamplePlayerFactoryException() {
 		ClipPlayerFactory factory = new SampleClipPlayerFactory();
 		RPChannel channel = new BasicChannelFactory().basic();
-		RPClip<?> clip = new EmptyClip();
+		RPClip<?> clip = new EmptyClip("ciao");
 		assertThrows(IllegalArgumentException.class, ()->factory.createClipPlayer(clip, channel));
 	}
 

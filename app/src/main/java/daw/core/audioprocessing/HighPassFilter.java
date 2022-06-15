@@ -2,11 +2,6 @@ package daw.core.audioprocessing;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import daw.utilities.AudioContextManager;
-import net.beadsproject.beads.data.DataBead;
-import net.beadsproject.beads.ugens.OnePoleFilter;
-
-import java.util.Map;
 
 /**
  * Filtering boosts or attenuates frequencies in a sound, thus modifying the frequency spectrum of that sound.
@@ -22,15 +17,7 @@ public class HighPassFilter extends AbstractFilter {
      */
     @JsonCreator
     public HighPassFilter(@JsonProperty("ins") int channels, @JsonProperty("frequency") float cutoffFrequency) {
-        super(channels, cutoffFrequency);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void calculateBuffer() {
-        // TODO
+        super(channels, cutoffFrequency, false);
     }
 
 }

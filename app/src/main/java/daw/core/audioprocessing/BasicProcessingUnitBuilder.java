@@ -97,9 +97,7 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
      */
     @Override
     public ProcessingUnit build() throws IllegalStateException {
-        if (this.sidechain.isPresent()) {
-            this.effects.add(0, this.sidechain.get());
-        }
+        this.sidechain.ifPresent(this.effects::add);
         if (this.effects.isEmpty()) {
             throw new IllegalStateException("Cannot create an empty processing unit.");
         }

@@ -24,17 +24,8 @@ public class BasicSidechaining extends AbstractCompression implements Sidechaini
     }
 
     @JsonCreator
-    public BasicSidechaining(@JsonProperty("ins") int channels) {
+    private BasicSidechaining(@JsonProperty("ins") int channels) {
         super(channels);
-    }
-
-    /**
-     * After this method is called, the channel that uses this sidechaining will be sidechained to
-     * the source given as input, regardless if it was already sidechained to another source or not.
-     * @param u
-     */
-    public void setSidechain(UGen u) {
-        this.compressor.setSideChain(u);
     }
 
     /**

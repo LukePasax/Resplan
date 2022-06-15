@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.data.DataBead;
-import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.Reverb;
 import java.util.Map;
 
@@ -17,8 +16,6 @@ import java.util.Map;
 public class DigitalReverb extends RPEffect {
 
     private final Reverb rev;
-    private final Gain out;
-    private final Gain in;
 
     /**
      * Constructs a reverb and sets its parameters to the current default.
@@ -27,12 +24,10 @@ public class DigitalReverb extends RPEffect {
     @JsonCreator
     public DigitalReverb(@JsonProperty("ins") int channels) {
         super(channels);
-        this.rev = new Reverb(channels);
-        this.in = new Gain(AudioContextManager.getAudioContext(), 1);
-        this.out = new Gain(AudioContextManager.getAudioContext(), 1);
-        this.rev.addInput(this.in);
-        this.out.addInput(this.in);
-        this.out.addInput(this.rev);
+        this.rev = new Reverb(AudioContextManager.getAudioContext(), channels);
+        this.rev.addInput(this.getGainIn());
+        this.getGainOut().addInput(this.getGainIn());
+        this.getGainOut().addInput(this.rev);
     }
 
     /**
@@ -54,33 +49,6 @@ public class DigitalReverb extends RPEffect {
         final DataBead db = new DataBead();
         db.putAll(parameters);
         this.rev.sendData(db);
-    }
-
-    /**
-     * Allows to get the number of input channels of the effect.
-     * @return an integer that represents the number of input.
-     */
-    @Override
-    public int getIns() {
-        return this.rev.getIns();
-    }
-
-    /**
-     * Allows to get the number of output channels of the effect.
-     * @return an integer that represents the number of outputs.
-     */
-    @Override
-    public int getOuts() {
-        return this.rev.getOuts();
-    }
-
-    /**
-     * {@inheritDoc}
-     * @return the {@link Gain} that represents the audio processed by the element.
-     */
-    @Override
-    public Gain getOutput() {
-        return this.out;
     }
 
     /**
