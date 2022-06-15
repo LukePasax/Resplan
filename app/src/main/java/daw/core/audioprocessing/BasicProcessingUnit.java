@@ -2,6 +2,7 @@ package daw.core.audioprocessing;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
 import java.util.*;
@@ -16,6 +17,8 @@ public class BasicProcessingUnit implements ProcessingUnit {
     private static final String ILLEGAL_INDEX_ERROR = "The given index is not legal.";
 
     private final LinkedList<RPEffect> effects = new LinkedList<>();
+    private Gain gainIn;
+    private Gain gainOut;
 
     /**
      * Constructs a {@link ProcessingUnit} that is sidechained.
@@ -23,6 +26,8 @@ public class BasicProcessingUnit implements ProcessingUnit {
      */
     @JsonCreator
     protected BasicProcessingUnit(@JsonProperty("effects") final List<RPEffect> effects) {
+        this.gainIn = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
+        this.gainOut = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
         for (final var effect: effects) {
             if (effect instanceof BasicSidechaining) {
                 this.addSidechaining((BasicSidechaining) effect);
@@ -38,7 +43,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
      */
     @Override
     public void addInput(Gain g) {
-        this.getEffectAtPosition(0).addInput(g);
+        this.gainIn.addInput(g);
     }
 
     /**
@@ -47,7 +52,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
      */
     @Override
     public void connect(UGen u) {
-        this.getEffectAtPosition(this.effects.size()-1).connectTo(u);
+        u.addInput(this.gainOut);
     }
 
     /**
@@ -57,7 +62,11 @@ public class BasicProcessingUnit implements ProcessingUnit {
     @Override
     public void addSidechaining(BasicSidechaining s) {
         if (!this.isSidechainingPresent()) {
-            this.addEffectAtPosition(s,0);
+            this.effects.add(0, s);
+            this.getEffectAtPosition(0).addInput(this.gainIn);
+            if (this.numberOfEffects() > 1) {
+                this.connectEffects(s, this.getEffectAtPosition(1));
+            }
         }
     }
 
@@ -77,6 +86,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
      */
     @Override
     public boolean isSidechainingPresent() {
+        // This check is useful to initialize the unit. After that it becomes useless.
         if (!this.effects.isEmpty()) {
             return this.effects.get(0) instanceof BasicSidechaining;
         }
@@ -109,13 +119,22 @@ public class BasicProcessingUnit implements ProcessingUnit {
 
     /**
      * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Override
+    public int numberOfEffects() {
+        return this.effects.size();
+    }
+
+    /**
+     * {@inheritDoc}
      * @param u the {@link RPEffect} that represents the effect to be added.
      * @throws IllegalArgumentException if the given position is out of bounds or if the given effect
      * is an instantiation of {@link Sidechaining}.
      */
     @Override
     public void addEffect(RPEffect u) {
-        this.addEffectAtPosition(u, this.effects.size());
+        this.addEffectAtPosition(u, this.numberOfEffects());
     }
 
     /**
@@ -127,21 +146,24 @@ public class BasicProcessingUnit implements ProcessingUnit {
      */
     @Override
     public void addEffectAtPosition(RPEffect u, int index) {
-        if (u instanceof BasicSidechaining && index != 0) {
-            throw new IllegalArgumentException("To add a sidechained compressor use addSidechaining");
+        if (u instanceof BasicSidechaining) {
+            throw new IllegalArgumentException("To add a sidechained compressor use addSidechaining.");
         }
-        if (index >= 0 && index <= this.effects.size()) {
+        if (index >= 0 && index <= this.numberOfEffects()) {
             if (index == 0 && this.isSidechainingPresent()) {
-                throw new IllegalArgumentException(ILLEGAL_INDEX_ERROR +
-                        "Position 0 is occupied by the sidechaining compressor.");
-            } else {
-                this.effects.add(index, u);
-                if (index != 0) {
-                    this.connectEffects(this.effects.get(index - 1), u);
-                }
+                throw new IllegalArgumentException(ILLEGAL_INDEX_ERROR + "Position 0 is occupied by the sidechaining.");
             }
-            if (index < this.effects.size()-1) {
+            this.effects.add(index, u);
+            if (index != 0) {
+                this.connectEffects(this.effects.get(index-1), u);
+            } else {
+                u.getGainIn().addInput(this.gainIn);
+            }
+            if (index != this.numberOfEffects()-1) {
                 this.connectEffects(u, this.effects.get(index+1));
+            } else {
+                this.gainOut.clearInputConnections();
+                this.gainOut.addInput(u.getGainOut());
             }
         } else {
             throw new IllegalArgumentException(ILLEGAL_INDEX_ERROR);
@@ -149,8 +171,8 @@ public class BasicProcessingUnit implements ProcessingUnit {
     }
 
     private void connectEffects(RPEffect from, RPEffect to) {
-        to.clearInputConnections();
-        to.addInput(from.getOutput());
+        to.getGainIn().clearInputConnections();
+        to.getGainIn().addInput(from.getGainOut());
     }
 
     /**
@@ -161,12 +183,12 @@ public class BasicProcessingUnit implements ProcessingUnit {
      */
     @Override
     public void removeEffectAtPosition(int index) {
-        if (index >= 0 && index <= this.effects.size()-1) {
-            if (this.effects.size() > 1) {
-                if (index != this.effects.size()-1) {
-                    this.getEffectAtPosition(index + 1).removeAllConnections(this.getEffectAtPosition(index));
+        if (index >= 0 && index <= this.numberOfEffects()-1) {
+            if (this.numberOfEffects() > 1) {
+                if (index != this.numberOfEffects()-1) {
+                    this.getEffectAtPosition(index+1).removeAllConnections(this.getEffectAtPosition(index));
                     if (index != 0) {
-                        this.getEffectAtPosition(index + 1).addInput(this.getEffectAtPosition(index - 1));
+                        this.getEffectAtPosition(index+1).addInput(this.getEffectAtPosition(index-1));
                     }
                 }
                 this.effects.remove(index);
@@ -188,8 +210,8 @@ public class BasicProcessingUnit implements ProcessingUnit {
     public void moveEffect(int currentIndex, int newIndex) {
         if (currentIndex >= 0 &&
                 newIndex >= 0 &&
-                currentIndex <= this.effects.size()-1 &&
-                newIndex <= this.effects.size()-1 &&
+                currentIndex <= this.numberOfEffects()-1 &&
+                newIndex <= this.numberOfEffects()-1 &&
                 !(this.getEffectAtPosition(currentIndex) instanceof BasicSidechaining) &&
                 !(this.getEffectAtPosition(newIndex) instanceof BasicSidechaining)) {
             final var temp = this.getEffectAtPosition(currentIndex);
@@ -210,12 +232,12 @@ public class BasicProcessingUnit implements ProcessingUnit {
     public void swapEffects(int index1, int index2) {
         if (index1 >= 0 &&
                 index2 >= 0 &&
-                index1 <= this.effects.size()-1 &&
-                index2 <= this.effects.size()-1 &&
+                index1 <= this.numberOfEffects()-1 &&
+                index2 <= this.numberOfEffects()-1 &&
                 !(this.getEffectAtPosition(index1) instanceof BasicSidechaining) &&
                 !(this.getEffectAtPosition(index2) instanceof BasicSidechaining)) {
             this.moveEffect(index1, index2);
-            this.moveEffect(index2 - 1, index1);
+            this.moveEffect(index2-1, index1);
         } else {
             throw new IllegalArgumentException(ILLEGAL_INDEX_ERROR);
         }
