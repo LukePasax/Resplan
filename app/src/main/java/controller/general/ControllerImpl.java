@@ -189,7 +189,7 @@ public class ControllerImpl implements Controller {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time, duration,
                     Optional.empty(), Optional.empty()));
         } else {
-            App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time, duration,
+            App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time, this.manager.getClipDuration(title),
                     Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration())));
         }
         App.getData().setProjectLenght(this.getProjectLength());
