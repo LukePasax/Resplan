@@ -273,7 +273,21 @@ public abstract class ChannelContentView extends Pane {
 			});
 			MenuItem record = new MenuItem("Record");
 			record.setOnAction(a->{
-				Starter.getController().startRecording(); //TODO
+				FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/RecorderView.fxml"));
+		        Scene scene;
+				try {
+					scene = new Scene(loader.load());
+					Stage stage = new Stage();
+			        stage.setScene(scene);
+			        stage.initModality(Modality.WINDOW_MODAL);
+			        stage.setTitle("Recorder");
+			        stage.initOwner(this.getScene().getWindow());
+			        stage.setResizable(false);
+			        ((RecorderController) loader.getController()).setClipTitle(clip.getTitle());
+			        stage.showAndWait();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			});
 			MenuItem clear = new MenuItem("Clear");
 			clear.setOnAction(a->{
