@@ -33,7 +33,6 @@ public abstract class ChannelInfosView extends Pane {
 		Label titleLabel = new Label(ch.getTitle());
 		titleLabel.setTextFill(Color.BLACK);
 		VBox content = new VBox(titleLabel, infos);
-		content.setMinHeight(60);
 		this.getChildren().add(content);
 		//set context menu
 		MenuItem remove = new MenuItem("Remove");
