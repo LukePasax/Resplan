@@ -1,6 +1,8 @@
 package planning;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * This interface represents the timeline at high level
@@ -47,4 +49,11 @@ public interface RPTimeline {
 	 * @return the overall duration of the timeline
 	 */
 	double getOverallDuration();
+
+	/**
+	 * Gets a set containing all the sections in the timeline
+	 *
+	 * @return A {@link Set} of {@link java.util.Map.Entry} of time and section
+	 */
+	Set<Map.Entry<Double,RPSection>> getAllSections();
 }

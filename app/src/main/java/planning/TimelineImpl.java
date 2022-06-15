@@ -3,6 +3,7 @@ package planning;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * It's the implementation of a {@link planning.RPTimeline}
@@ -84,5 +85,13 @@ public class TimelineImpl implements RPTimeline{
 			}
 		}
 		return totalDuration;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Set<Map.Entry<Double,RPSection>> getAllSections() {
+		return this.sections.entrySet();
 	}
 }
