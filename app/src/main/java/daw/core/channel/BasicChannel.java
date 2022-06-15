@@ -51,9 +51,8 @@ public class BasicChannel implements RPChannel {
         this.gainMute = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
         this.setStructure();
         // processing unit is present only after deserialization
-        if (processingUnit == null) {
-            this.pu = Optional.empty();
-        } else {
+        this.pu = Optional.empty();
+        if (processingUnit != null) {
             this.addProcessingUnit(processingUnit);
         }
     }
