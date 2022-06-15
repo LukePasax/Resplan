@@ -40,6 +40,7 @@ public class PlanningController {
     public Button delClipButton;
     public Button launchEditViewButton;
     public MenuItem exportAudio;
+    public Button newSectionButton;
     private TimeAxisSetter timeAxisSetter;
     private JsonFilePicker filePicker;
     private MarkersPane markersPane;
@@ -138,5 +139,9 @@ public class PlanningController {
         stage.initOwner(menuBar.getScene().getWindow());
         stage.setResizable(false);
         stage.showAndWait();
+    }
+
+    public void newSectionPressed(ActionEvent actionEvent) throws IOException {
+        this.launchWindow("view/NewSectionWindow.fxml","New Section");
     }
 }
