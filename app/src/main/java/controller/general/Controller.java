@@ -25,6 +25,8 @@ public interface Controller {
      */
     void startApp();
 
+    void newProject();
+
     void loadViewData();
 
     /**

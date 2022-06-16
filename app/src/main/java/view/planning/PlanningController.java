@@ -80,7 +80,7 @@ public class PlanningController {
     }
 
     public void newProjectPressed(ActionEvent event) {
-        Starter.getController().startApp();
+        Starter.getController().newProject();
     }
 
     public void openProjectPressed(ActionEvent event) {

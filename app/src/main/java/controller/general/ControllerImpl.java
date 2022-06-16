@@ -5,7 +5,6 @@ import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;
 import daw.core.audioprocessing.ProcessingUnit;
 import daw.core.audioprocessing.RPEffect;
-import daw.core.channel.RPChannel;
 import daw.core.clip.ClipNotFoundException;
 import daw.core.clip.RPClip;
 import daw.core.clip.RPRecorder;
@@ -74,15 +73,19 @@ public class ControllerImpl implements Controller {
                 // if no template project is set, then it opens an empty project
                 this.currentProject = null;
                 this.manager = new Manager();
-                this.loadViewData();
             } else {
                 this.currentProject = new File(fileName);
                 this.manager = this.loader.load(this.currentProject);
-                this.loadViewData();
             }
         } catch (IOException | FileFormatException e) {
             this.manager = new Manager();
         }
+    }
+
+    @Override
+    public void newProject() {
+        this.startApp();
+        this.loadViewData();
     }
 
     @Override

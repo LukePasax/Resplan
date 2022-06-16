@@ -39,6 +39,7 @@ public class App extends Application {
         //this.planningController = planningLoader.getController();
         this.editController = editLoader.getController();
         Starter.getController().setApp(this);
+        Starter.getController().loadViewData();
     }
 
     private void switchScene(KeyEvent keyEvent) {
