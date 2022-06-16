@@ -8,7 +8,6 @@ import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.BiquadFilter;
 import net.beadsproject.beads.ugens.RMS;
-import java.util.Map;
 
 /**
  * This class represents a gate, which is a tool that reduces or eliminates noise coming from an audio source.
@@ -45,7 +44,7 @@ public class GateEffect extends UGen {
     }
 
     GateEffect(AudioContext context, int channels) {
-        super(AudioContextManager.getAudioContext());
+        super(AudioContextManager.getAudioContext(), channels, channels);
         this.channels = channels;
         this.delay = 0;
         this.delaySamps = 0;
@@ -172,11 +171,11 @@ public class GateEffect extends UGen {
     }
 
     private void setCurrentValue(float target) {
-        if (this.currval > target) {
+        if (this.currval < target) {
             this.currval *= this.downstep;
             if (this.currval < target)
                 this.currval = target;
-        } else if (this.currval < target) {
+        } else if (this.currval > target) {
             this.currval *= this.upstep;
             if (this.currval > target)
                 this.currval = target;
