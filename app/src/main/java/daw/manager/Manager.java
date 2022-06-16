@@ -348,6 +348,7 @@ public class Manager implements RPManager {
      * @return the {@link RPMixer} of this manager
      */
     @Override
+    @JsonIgnore
     public RPMixer getMixer() {
         return this.mixer;
     }

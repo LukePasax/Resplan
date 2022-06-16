@@ -52,6 +52,8 @@ public interface Controller {
      */
     void openProject(File file) throws LoadingException;
 
+    void resetTemplateProject() throws DownloadingException;
+
     void newChannel(String type, String title, String description) throws IllegalArgumentException;
 
     void newClip(String type, String title, String description, String channel, Double startTime,

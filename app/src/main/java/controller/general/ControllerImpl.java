@@ -160,6 +160,35 @@ public class ControllerImpl implements Controller {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @throws DownloadingException if the writing to file is unsuccessful.
+     * @throws IllegalStateException if the current project has never been saved before.
+     */
+    @Override
+    public void setTemplateProject() throws DownloadingException, IllegalStateException {
+        final WriteToFile writer = new WriteToFileImpl(this.appSettings);
+        if (this.currentProject == null) {
+            throw new IllegalStateException("Save project before setting it as template.");
+        }
+        try {
+            writer.write(this.currentProject.getAbsolutePath());
+        } catch (IOException e) {
+            throw new DownloadingException("Unable to perform this operation. " +
+                    "Retry to set this project as the template.");
+        }
+    }
+
+    @Override
+    public void resetTemplateProject() throws DownloadingException {
+        final WriteToFile writer = new WriteToFileImpl(this.appSettings);
+        try {
+            writer.write("");
+        } catch (IOException e) {
+            throw new DownloadingException("Unable to perform this operation. Retry to reset the template project.");
+        }
+    }
+
     @Override
     public void newChannel(String type, String title, String description) throws IllegalArgumentException {
         RPRole.RoleType roleType;
@@ -225,25 +254,6 @@ public class ControllerImpl implements Controller {
     @Override
     public List<String> getChannelList() {
         return this.manager.getRoles().stream().map(Element::getTitle).collect(Collectors.toList());
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws DownloadingException if the writing to file is unsuccessful.
-     * @throws IllegalStateException if the current project has never been saved before.
-     */
-    @Override
-    public void setTemplateProject() throws DownloadingException, IllegalStateException {
-        final WriteToFile writer = new WriteToFileImpl(this.appSettings);
-        if (this.currentProject == null) {
-            throw new IllegalStateException("Save project before setting it as template.");
-        }
-        try {
-            writer.write(this.currentProject.getAbsolutePath());
-        } catch (IOException e) {
-            throw new DownloadingException("Unable to perform this operation. " +
-                    "Retry to set this project as the template.");
-        }
     }
 
     @Override
