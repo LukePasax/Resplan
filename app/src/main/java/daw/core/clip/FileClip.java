@@ -1,6 +1,7 @@
 package daw.core.clip;
 
 import java.io.File;
+import java.util.Objects;
 
 /**
  * An {@link RPClip} which accepts any File as content.
@@ -146,4 +147,18 @@ public class FileClip implements RPClip<File> {
 	public String getTitle() {
 		return clip.getTitle();
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		FileClip fileClip = (FileClip) o;
+		return Objects.equals(clip.getTitle(), fileClip.clip.getTitle());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(clip);
+	}
+
 }

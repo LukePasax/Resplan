@@ -25,7 +25,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
      * @param effects the effects to be added to the sequence. Order of the list in input is preserved.
      */
     @JsonCreator
-    protected BasicProcessingUnit(@JsonProperty("effects") final List<RPEffect> effects) {
+    public BasicProcessingUnit(@JsonProperty("effects") final List<RPEffect> effects) {
         this.gainIn = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
         this.gainOut = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
         for (final var effect: effects) {
