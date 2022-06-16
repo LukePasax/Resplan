@@ -2,7 +2,6 @@ package daw.core.clip;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -195,25 +194,12 @@ public class SampleClip implements RPClip<Sample> {
 	 */
 	@Override
 	public RPClip<Sample> duplicate() throws IOException, OperationUnsupportedException, FileFormatException {
-			return new SampleClip(this.clip);
+			return new SampleClip(this.clip.duplicate());
 	}
 
 	@Override
 	public String getTitle() {
 		return clip.getTitle();
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		SampleClip that = (SampleClip) o;
-		return Objects.equals(clip.getTitle(), that.clip.getTitle());
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(clip);
 	}
 
 }

@@ -2,7 +2,12 @@ package daw.core.clip;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import net.beadsproject.beads.data.audiofile.FileFormatException;
+import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
+
 import java.io.File;
+import java.io.IOException;
 
 /**
  * A container for each content (such as an audio/MIDI file) you want to 
@@ -101,8 +106,14 @@ public interface RPClip<X> {
 	 * Generate an exact copy of this RPClip.
 	 * 
 	 * @return  a duplicate of this RPClip.
+	 * 
+	 * @throws  IOException  If some I/O exception has occurred.
+	 * 
+	 * @throws  OperationUnsupportedException  If some write/read operation is not supported for this file.
+	 * 
+	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
-	RPClip<X> duplicate() throws Exception;
+	RPClip<X> duplicate() throws IOException, OperationUnsupportedException, FileFormatException;
 
 	
 }

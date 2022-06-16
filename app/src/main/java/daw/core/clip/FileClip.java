@@ -1,7 +1,10 @@
 package daw.core.clip;
 
 import java.io.File;
-import java.util.Objects;
+import java.io.IOException;
+
+import net.beadsproject.beads.data.audiofile.FileFormatException;
+import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 
 /**
  * An {@link RPClip} which accepts any File as content.
@@ -135,10 +138,18 @@ public class FileClip implements RPClip<File> {
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @throws  IOException  If some I/O exception has occurred.
+	 * 
+	 * @throws  OperationUnsupportedException  If some write/read operation is not supported for this file.
+	 * 
+	 * @throws  FileFormatException  If the file format isn't a supported audio format.
+	 * 
+	 * @throws IOException 
 	 */
 	@Override
-	public RPClip<File> duplicate() {
-		RPClip<File> newClip = new FileClip(this.content, this.clip);
+	public RPClip<File> duplicate() throws IOException, OperationUnsupportedException, FileFormatException {
+		RPClip<File> newClip = new FileClip(this.content, this.clip.duplicate());
 		newClip.setContentPosition(this.contentPosition);
 		return newClip;
 	}
@@ -147,18 +158,4 @@ public class FileClip implements RPClip<File> {
 	public String getTitle() {
 		return clip.getTitle();
 	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		FileClip fileClip = (FileClip) o;
-		return Objects.equals(clip.getTitle(), fileClip.clip.getTitle());
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(clip);
-	}
-
 }
