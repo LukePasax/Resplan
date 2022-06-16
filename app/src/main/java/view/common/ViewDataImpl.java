@@ -72,6 +72,11 @@ public class ViewDataImpl implements ViewData {
 	}
 	
 	@Override
+	public void clearChannelClips(Channel channel) {
+		data.get(channel).clear();
+	}
+	
+	@Override
 	public Channel getChannel(String title) {
 		var ch = data.keySet().stream().filter(x->x.getTitle().equals(title)).findFirst();
 		return ch.isEmpty() ? null : ch.get();

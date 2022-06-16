@@ -27,6 +27,8 @@ public interface ViewData {
 	void addClip(Channel channel,  Clip clip);
 	
 	void removeClip(Channel channel, Clip clip);
+	
+	void clearChannelClips(Channel channel);
 
 	Channel getChannel(String title);
 	

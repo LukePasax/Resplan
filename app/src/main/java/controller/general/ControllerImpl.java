@@ -317,11 +317,9 @@ public class ControllerImpl implements Controller {
     }
 
     private void updateChannelClipsView(String channel) {
+    	App.getData().clearChannelClips(App.getData().getChannel(channel));
     	this.manager.getChannelLinker().getTapeChannel(this.manager.getChannelLinker().getRole(channel))
-                .getClipWithTimeIterator().forEachRemaining(cwt->{
-    		App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,cwt.getValue().getTitle()));
-    		this.createClipView(cwt.getValue().getTitle(), channel);
-    	});
+                .getClipWithTimeIterator().forEachRemaining(cwt->this.createClipView(cwt.getValue().getTitle(), channel));
     }
     
     private void createClipView(String clip, String channel) {
