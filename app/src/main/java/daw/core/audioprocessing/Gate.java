@@ -7,6 +7,10 @@ import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.BiquadFilter;
+import net.beadsproject.beads.ugens.Compressor;
+import net.beadsproject.beads.ugens.RMS;
+
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -16,19 +20,22 @@ import java.util.Map;
  */
 public class Gate extends RPEffect {
 
+    private int channels;
     private final int memSize;
     private int index = 0;
     private final float[][] delayMem;
-    private BiquadFilter pf;
+    private UGen powerUGen;
+    private final BiquadFilter pf;
     private float downstep = .9998f, upstep = 1.0002f, ratio = .5f,
             threshold = .5f, knee = 1;
     private float tok, kt, ikp1, ktrm1, tt1mr;
 
     private float attack, decay;
-    private float currval = 1, target = 1;
-    private final float delay;
+    private float currval = 1;
+    private float delay;
     private final int delaySamps;
-    private final UGen myInputs;
+    private int rmsMemorySize = 500;
+    private UGen myInputs;
     private final float[][] myBufIn;
 
     /**
@@ -42,6 +49,7 @@ public class Gate extends RPEffect {
 
     private Gate(AudioContext context, int channels) {
         super(channels);
+        this.channels = channels;
         this.delay = 0;
         this.delaySamps = 0;
         this.memSize = (int) context.msToSamples(this.delay) + 1;
@@ -60,6 +68,11 @@ public class Gate extends RPEffect {
         this.myInputs = new MyInputs(context, channels);
         this.setParameters(Map.of("attack", 1.0f, "decay", 0.5f, "ratio", 2.0f,
                 "threshold", 0.5f, "knee", 0.5f));
+        this.pf = (new BiquadFilter(context, 1, BiquadFilter.BUTTERWORTH_LP))
+                .setFrequency(31);
+        this.powerUGen = new RMS(context, channels, this.rmsMemorySize);
+        this.powerUGen.addInput(this.myInputs);
+        this.pf.addInput(this.powerUGen);
         this.calcVals();
     }
 
@@ -72,6 +85,7 @@ public class Gate extends RPEffect {
         final DataBead db = new DataBead();
         db.putAll(parameters);
         this.sendData(db);
+        this.calcVals();
     }
 
     private void sendData(DataBead db) {
@@ -96,11 +110,11 @@ public class Gate extends RPEffect {
     }
 
     private void calcVals() {
-        tok = threshold / knee;
-        kt = knee * threshold;
-        ikp1 = 1 / (knee + 1);
-        ktrm1 = knee * ratio - 1;
-        tt1mr = threshold * (1 - ratio);
+        this.tok = this.threshold / this.knee;
+        this.kt = this.knee * this.threshold;
+        this.ikp1 = 1 / (this.knee + 1);
+        this.ktrm1 = this.knee * this.ratio - 1;
+        this.tt1mr = this.threshold * (1 - this.ratio);
     }
 
     public void setAttack(float attack) {
@@ -108,7 +122,7 @@ public class Gate extends RPEffect {
             attack = .0001f;
         }
         this.attack = attack;
-        this.downstep = (float) Math.pow(Math.pow(10,attack/20f), -1000f/context.getSampleRate());
+        this.downstep = (float) Math.pow(Math.pow(10,attack/20f), -1000f/this.context.getSampleRate());
     }
 
     private void setDecay(float decay) {
@@ -116,7 +130,7 @@ public class Gate extends RPEffect {
             decay = .0001f;
         }
         this.decay = decay;
-        this.upstep = (float) Math.pow(Math.pow(10,decay/20f), 1000f/context.getSampleRate());
+        this.upstep = (float) Math.pow(Math.pow(10,decay/20f), 1000f/this.context.getSampleRate());
     }
 
     private void setRatio(float ratio) {
@@ -139,35 +153,65 @@ public class Gate extends RPEffect {
 
     @Override
     public void calculateBuffer() {
-        pf.update();
-        float[] bi = bufIn[0];
-        float[] bo = bufOut[0];
-        float[] dm = delayMem[0];
-        for (int i = 0; i < bufferSize; i++) {
-            float p = pf.getValue(0, i);
-            if (p <= tok) {
-                target = 1;
-            } else if (p >= kt) {
-                target = ((p - threshold) * ratio + threshold) / p;
-            } else {
-                float x1 = (p - tok) * ikp1 + tok;
-                target = ((ktrm1 * x1 + tt1mr) * (p - x1) / (x1 * (knee - 1)) + x1) / p;
-            }
-            if (currval < target) {
-                currval *= downstep;
-                if (currval < target) {
-                    currval = target;
+        this.pf.update();
+        float target;
+        System.out.println(Arrays.toString(this.getOutBuffer(0)));
+        if (this.channels == 1) {
+            float[] bi = this.bufIn[0];
+            float[] bo = this.bufOut[0];
+            float[] dm = this.delayMem[0];
+            for (int i = 0; i < this.bufferSize; i++) {
+                float p = this.pf.getValue(0, i);
+                if (p <= this.tok) {
+                    target = 1;
+                } else if (p >= this.kt) {
+                    target = ((p - this.threshold) * this.ratio + this.threshold) / p;
+                } else {
+                    float x1 = (p - this.tok) * this.ikp1 + this.tok;
+                    target = ((this.ktrm1*x1+this.tt1mr) * (p-x1) / (x1*(this.knee-1)) + x1)  /  p;
                 }
-            } else if (currval > target) {
-                currval *= upstep;
-                if (currval > target) {
-                    currval = target;
+                if (this.currval > target) {
+                    this.currval *= this.downstep;
+                    if (this.currval < target)
+                        this.currval = target;
+                } else if (this.currval < target) {
+                    this.currval *= this.upstep;
+                    if (this.currval > target)
+                        this.currval = target;
                 }
+                dm[this.index] = bi[i];
+                bo[i] = dm[(this.index + this.delaySamps) % this.memSize] * this.currval;
+                this.index = (this.index + 1) % this.memSize;
             }
-            dm[index] = bi[i];
-            bo[i] = dm[(index + delaySamps) % memSize] * currval;
-            index = (index + 1) % memSize;
+        } else {
+            for (int i = 0; i < this.bufferSize; i++) {
+                float p = this.pf.getValue(0, i);
+                if (p <= this.tok) {
+                    target = 1;
+                } else if (p >= this.kt) {
+                    target = ((p - this.threshold) * this.ratio + this.threshold) / p;
+                } else {
+                    float x1 = (p - this.tok) * this.ikp1 + this.tok;
+                    target = (this.ktrm1*x1+this.tt1mr) * (p-x1) / (x1*(this.knee-1)) + x1;
+                }
+                if (this.currval > target) {
+                    this.currval *= this.downstep;
+                    if (this.currval < target)
+                        this.currval = target;
+                } else if (this.currval < target) {
+                    this.currval *= this.upstep;
+                    if (this.currval > target)
+                        this.currval = target;
+                }
+                int delIndex = (this.index + this.delaySamps) % this.memSize;
+                for (int j = 0; j < this.channels; j++) {
+                    this.delayMem[j][this.index] = this.bufIn[j][i];
+                    this.bufOut[j][i] = this.delayMem[j][delIndex] * this.currval;
+                }
+                this.index = (this.index + 1) % this.memSize;
+            }
         }
+        System.out.println(Arrays.toString(this.getOutBuffer(0)));
     }
 
 }
