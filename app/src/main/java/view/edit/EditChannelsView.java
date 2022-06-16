@@ -67,6 +67,7 @@ public class EditChannelsView extends ChannelsView {
 		pan.setOnMouseClicked(e->{
 			if(e.getClickCount() == 2) {
 				pan.setValue(0.0);
+				Starter.getController().setPan(ch.getTitle(), Double.valueOf(pan.getValue()).floatValue());
 			}
 		});
 		pan.setMaxWidth(50);
@@ -86,22 +87,24 @@ public class EditChannelsView extends ChannelsView {
 			}
 			
 		});
+		pan.setOnMouseReleased(e->Starter.getController().setPan(ch.getTitle(), Double.valueOf(pan.getValue()).floatValue()));
 		//volume
-		Slider volume = new Slider(0.0, 1.0, 1.0);
+		Slider volume = new Slider(0, 100, 100);
 		volume.setOnMouseClicked(e->{
 			if(e.getClickCount() == 2) {
 				volume.setValue(1.0);
+				Starter.getController().setVolume(ch.getTitle(), Double.valueOf(volume.getValue()).intValue());
 			}
 		});
 		volume.setMaxWidth(120);
-		volume.setMajorTickUnit(1);
+		volume.setMajorTickUnit(100);
 		volume.setShowTickMarks(true);
 		volume.setShowTickLabels(true);
 		volume.setLabelFormatter(new StringConverter<Double>() {
 
 			@Override
 			public String toString(Double object) {
-				return object == 0.0 ? "-∞" : object == 1.0 ? "0.0" : ""; 
+				return object == 0 ? "-∞" : object == 100 ? "0.0" : ""; 
 			}
 
 			@Override
@@ -110,6 +113,7 @@ public class EditChannelsView extends ChannelsView {
 			}
 			
 		});
+		volume.setOnMouseReleased(e->Starter.getController().setVolume(ch.getTitle(), Double.valueOf(volume.getValue()).intValue()));
 		var pane = new VBox(groupLabel, new FlowPane(muteButton, soloButton, pan), volume);
 		pane.setMinHeight(100);
 		return pane;
