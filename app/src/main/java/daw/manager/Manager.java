@@ -427,11 +427,12 @@ public class Manager implements RPManager {
     @Override
     public void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException {
         String newClip = clip + "(Duplicate)";
+        Double time = this.getClipTime(clip, channel);
         RPPart part = this.clipLinker.getPart(clip);
         RPPart newPart = this.createPart(part.getType(), newClip, part.getDescription());
         RPTapeChannel tapeChannel = this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel));
-        tapeChannel.split(this.getClipTime(clip,channel),splittingTime);
-        this.clipLinker.addClipReferences(tapeChannel.getClipAt(splittingTime).get().getValue(), newPart);
+        tapeChannel.split(this.getClipTime(clip, channel), splittingTime);
+        this.clipLinker.addClipReferences(tapeChannel.getClipAt(time).get().getValue(), newPart);
     }
 
     @Override
