@@ -146,6 +146,10 @@ public interface Controller {
 
     void setEffectParameters(String channel, int index, Map<String, Float> parameters);
 
+    void setVolume(String channel, int value);
+
+    void setPan(String channel, float value);
+
     Map<String, Float> getEffectParameters(String channel, int index);
 
 }
