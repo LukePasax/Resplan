@@ -5,6 +5,7 @@ import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;
 import daw.core.audioprocessing.ProcessingUnit;
 import daw.core.audioprocessing.RPEffect;
+import daw.core.channel.RPChannel;
 import daw.core.clip.ClipNotFoundException;
 import daw.core.clip.RPClip;
 import daw.core.clip.RPRecorder;
@@ -87,6 +88,8 @@ public class ControllerImpl implements Controller {
             App.getData().getUnmodifiableClips(ch).forEach(cl -> {
                 App.getData().removeClip(ch, cl);
             });
+        });
+        App.getData().getUnmodifiableChannels().forEach(ch ->{
             App.getData().removeChannel(ch);
         });
         App.getData().getUnmodifiableSections().forEach(s -> {
