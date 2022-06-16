@@ -92,7 +92,7 @@ public class EditChannelsView extends ChannelsView {
 		Slider volume = new Slider(0, 100, 100);
 		volume.setOnMouseClicked(e->{
 			if(e.getClickCount() == 2) {
-				volume.setValue(1.0);
+				volume.setValue(100);
 				Starter.getController().setVolume(ch.getTitle(), Double.valueOf(volume.getValue()).intValue());
 			}
 		});

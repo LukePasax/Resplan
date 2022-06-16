@@ -67,9 +67,6 @@ public class EditViewController implements Initializable{
 		this.cursorToolSelected();
 		//--------------setting time axis------------
 		timeAxisSetter = new TimeAxisSetter(App.getData().getProjectLenghtProperty().get());
-		App.getData().getProjectLenghtProperty().addListener((obs,old,n)->{
-			timeAxisSetter.setProjectLength(n.doubleValue());
-		});
 		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 16, 0, 0));
 		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 2);
 		timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);

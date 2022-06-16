@@ -47,6 +47,9 @@ public class TimeAxisSetter {
 	public TimeAxisSetter(double projectLength) {
 		//set ptoject length
 		this.prLength = projectLength;
+		App.getData().getProjectLenghtProperty().addListener((obs,old,n)->{
+			this.setProjectLength(n.doubleValue());
+		});
 	//---------NUMBER AXIS-------------
 		axis.setAnimated(false);
 		axis.setAutoRanging(false);
@@ -248,6 +251,8 @@ public class TimeAxisSetter {
 	
 	public void setProjectLength(double prLength) {
 		this.prLength = prLength;
+		calculateTicks();
+		updateScroller();
 	}
 }
 
