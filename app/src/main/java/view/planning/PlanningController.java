@@ -120,7 +120,11 @@ public class PlanningController {
     }
 
     public void resetTemplatePressed(ActionEvent event) {
-
+        try {
+            Starter.getController().resetTemplateProject();
+        } catch (DownloadingException e) {
+            AlertDispatcher.dispatchError(e.getLocalizedMessage());
+        }
     }
 
     public void saveProjectPressed(ActionEvent event) {
