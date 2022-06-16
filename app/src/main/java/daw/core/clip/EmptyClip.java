@@ -118,7 +118,7 @@ public class EmptyClip implements RPClip<NoContent> {
 	 */
 	@Override
 	public RPClip<NoContent> duplicate() {
-		return new EmptyClip(this.duration, this.title);
+		return new EmptyClip(this.duration, this.title + "(Duplicate)");
 	}
 
 }
