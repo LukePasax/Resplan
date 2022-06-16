@@ -38,7 +38,7 @@ public class ControllerImpl implements Controller {
     private final ProjectLoader loader;
     private Manager manager;
     private App app;
-    private final RPEngine engine;
+    private RPEngine engine;
     private File currentProject;
     private final File appSettings = new File(WORKING_DIRECTORY + SEP + APP_SETTINGS);
     private RPRecorder recorder;
@@ -53,7 +53,7 @@ public class ControllerImpl implements Controller {
     public ControllerImpl() {
         this.loader = new ProjectLoaderImpl();
         this.downloader = new ProjectDownloaderImpl();
-        this.newProject();
+        this.startApp();
         this.manager.getMixer().connectToSystem();
         this.engine = new Engine((ChannelLinker) this.manager.getChannelLinker());
     }
@@ -66,12 +66,15 @@ public class ControllerImpl implements Controller {
     /**
      * {@inheritDoc}
      */
-    public void newProject() {
+    public void startApp() {
         try {
+            // tries to load the template project
             final var fileName = new ReadFromFileImpl(this.appSettings).read();
             if (fileName.isBlank()) {
+                // if no template project is set, then it opens an empty project
                 this.currentProject = null;
                 this.manager = new Manager();
+                this.loadViewData();
             } else {
                 this.currentProject = new File(fileName);
                 this.manager = this.loader.load(this.currentProject);
@@ -100,9 +103,7 @@ public class ControllerImpl implements Controller {
                 }
             });
         });
-        this.manager.getSections().forEach(s -> {
-            App.getData().addSection(new ViewDataImpl.Section(s.getValue().getTitle(), s.getKey()));
-        });
+        this.manager.getSections().forEach(s -> App.getData().addSection(new ViewDataImpl.Section(s.getValue().getTitle(), s.getKey())));
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
@@ -149,6 +150,7 @@ public class ControllerImpl implements Controller {
         try {
             this.manager = this.loader.load(file);
             this.currentProject = file;
+            this.engine = new Engine((ChannelLinker) this.manager.getChannelLinker());
             this.loadViewData();
         } catch (IOException | FileFormatException e) {
             throw new LoadingException(e.getMessage());

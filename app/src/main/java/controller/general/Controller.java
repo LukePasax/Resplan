@@ -23,7 +23,7 @@ public interface Controller {
      * Creates a new project. The new project is the template project if there is one,
      * otherwise it is a blank project.
      */
-    void newProject();
+    void startApp();
 
     void loadViewData();
 
