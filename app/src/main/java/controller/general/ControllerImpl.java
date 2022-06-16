@@ -5,7 +5,6 @@ import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;
 import daw.core.audioprocessing.ProcessingUnit;
 import daw.core.audioprocessing.RPEffect;
-import daw.core.channel.RPChannel;
 import daw.core.clip.ClipNotFoundException;
 import daw.core.clip.RPClip;
 import daw.core.clip.RPRecorder;
@@ -87,7 +86,7 @@ public class ControllerImpl implements Controller {
         this.manager.getRoles().forEach(c -> {
             App.getData().addChannel(new ViewDataImpl.Channel(c.getTitle(), c.getType().name()));
             this.manager.getPartList(c.getTitle()).forEach(p -> {
-                final var clip = this.manager.getClip(p.getTitle());
+                final var clip = this.manager.getClipFromTitle(p.getTitle());
                 if (clip.isEmpty()) {
                     App.getData().addClip(App.getData().getChannel(c.getTitle()), new ViewDataImpl.Clip(
                             p.getTitle(), this.manager.getClipTime(p.getTitle(), c.getTitle()), clip.getDuration(),
@@ -184,7 +183,7 @@ public class ControllerImpl implements Controller {
         Optional<String> desc = description.equals("") ? Optional.empty() : Optional.of(description);
         Optional<File> file = content == null ? Optional.empty() : Optional.of(content);
         this.manager.addClip(partType, title, desc, channel, time, duration, file);
-        RPClip<?> clip = this.manager.getClip(title);
+        RPClip<?> clip = this.manager.getClipFromTitle(title);
         if (clip.isEmpty()) {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time, duration,
                     Optional.empty(), Optional.empty()));
@@ -318,7 +317,7 @@ public class ControllerImpl implements Controller {
     private void createClipView(String clip, String channel) {
         Double time = this.manager.getClipTime(clip,channel);
         Double duration = this.manager.getClipDuration(clip);
-        RPClip<?> rpClip = this.manager.getClip(clip);
+        RPClip<?> rpClip = this.manager.getClipFromTitle(clip);
         if (rpClip.isEmpty()) {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration,
                     Optional.empty(), Optional.empty()));
@@ -475,25 +474,29 @@ public class ControllerImpl implements Controller {
     }
 
     private void manageMuteInNonSoloEnvironment() {
-        this.manager.getRoles().forEach(i -> {
-            final var channel = this.manager.getChannelLinker().getChannel(i);
-            if (this.mutedChannels.contains(i.getTitle())) {
-                channel.disable();
-            } else {
-                channel.enable();
-            }
-        });
+        this.manager.getRoles().stream()
+                .map(Element::getTitle)
+                .forEach(i -> {
+                    final var channel = this.manager.getChannelFromTitle(i);
+                    if (this.mutedChannels.contains(i)) {
+                        channel.disable();
+                    } else {
+                        channel.enable();
+                    }
+                });
     }
 
     private void manageMuteInSoloEnvironment() {
-        this.manager.getRoles().forEach(i -> {
-            final var channel = this.manager.getChannelLinker().getChannel(i);
-            if (this.soloChannels.contains(i.getTitle())) {
-                channel.enable();
-            } else {
-                channel.disable();
-            }
-        });
+        this.manager.getRoles().stream()
+                .map(Element::getTitle)
+                .forEach(i -> {
+                    final var channel = this.manager.getChannelFromTitle(i);
+                    if (this.soloChannels.contains(i)) {
+                        channel.enable();
+                    } else {
+                        channel.disable();
+                    }
+                });
     }
 
     @Override
@@ -522,15 +525,22 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
+    public void setVolume(String channel, int value) {
+        this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel)).setVolume(value);
+    }
+
+    @Override
+    public void setPan(String channel, float value) {
+        this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel)).getPanner().setPos(value);
+    }
+
+    @Override
     public Map<String, Float> getEffectParameters(String channel, int index) {
         return this.getProcessingUnit(channel).getEffectAtPosition(index).getParameters();
     }
 
     private ProcessingUnit getProcessingUnit(String channel) {
-        return this.manager.getChannelLinker().getChannel(this.manager.getRoles().stream()
-                .filter(i -> i.getTitle().equals(channel))
-                .findFirst()
-                .get()).getProcessingUnit().get();
+        return this.manager.getChannelLinker().getChannel(this.manager.getGroup(channel)).getProcessingUnit().get();
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES
