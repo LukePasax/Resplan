@@ -36,4 +36,8 @@ public class NewSectionController {
             }
         }
     }
+
+    public void cancelPressed(ActionEvent actionEvent) {
+        this.title.getScene().getWindow().hide();
+    }
 }
