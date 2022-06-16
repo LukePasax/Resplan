@@ -194,9 +194,9 @@ public class ControllerImpl implements Controller {
     @Override
     public void newChannel(String type, String title, String description) throws IllegalArgumentException {
         RPRole.RoleType roleType;
-        if (type.equals("Speaker")) {
+        if (type.equals("SPEECH")) {
             roleType = RPRole.RoleType.SPEECH;
-        } else if (type.equals("Effect")) {
+        } else if (type.equals("EFFECTS")) {
             roleType = RPRole.RoleType.EFFECTS;
             type = "Effects";
         } else {

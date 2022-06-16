@@ -13,7 +13,7 @@ public class NewChannelController {
     public Button cancelButton;
 
     public void initialize() {
-        this.typeChoicebox.getItems().addAll("Speaker", "Effect", "Soundtrack");
+        this.typeChoicebox.getItems().addAll("SPEECH", "EFFECTS", "SOUNDTRACK");
         this.typeChoicebox.setValue(this.typeChoicebox.getItems().get(0));
     }
 
