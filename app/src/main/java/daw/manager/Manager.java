@@ -8,6 +8,7 @@ import daw.core.channel.RPChannel;
 import daw.core.clip.*;
 import daw.core.mixer.Mixer;
 import daw.core.mixer.RPMixer;
+import net.beadsproject.beads.data.Sample;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 import planning.*;
@@ -227,42 +228,56 @@ public class Manager implements RPManager {
     /**
      * This method adds a content to a Clip.
      *
-     * @param title   the title of the Clip
+     * @param clip   the title of the Clip
      * @param content the content to put into the Clip
      * @throws NoSuchElementException if no Clip with the given title exists
      */
     @Override
-    public void addFileToClip(String title, File content) throws ImportException, NoSuchElementException, ClipNotFoundException {
-        if (!this.clipLinker.clipExists(title)) {
+    public void addFileToClip(String clip, File content) throws ImportException, NoSuchElementException, ClipNotFoundException {
+        if (!this.clipLinker.clipExists(clip)) {
             throw new NoSuchElementException("The Clip does not exist");
         }
-        if (!this.clipLinker.getClipFromPart(this.getClipLinker().getPart(title)).isEmpty()) {
-            this.removeFileFromClip(title);
+        String channel = this.getClipChannel(clip);
+        double clipTimeIn = this.getClipTime(clip,channel);
+        RPPart part = this.clipLinker.getPart(clip);
+        if (!this.clipLinker.getClipFromPart(this.clipLinker.getPart(clip)).isEmpty()) {
+            this.removeFileFromClip(clip);
         }
+        RPClip rpClip = this.getClipFromTitle(clip);
         try {
-            this.clipConverter.fromEmptyToSampleClip((EmptyClip) this.clipLinker.getClipFromPart(this.clipLinker.getPart(title)), content);
+            this.removeClip(channel, clip, clipTimeIn);
+            rpClip = this.clipConverter.fromEmptyToSampleClip((EmptyClip) rpClip, content);
         } catch (OperationUnsupportedException | FileFormatException | IOException exception) {
             throw new ImportException("Error in loading file");
         }
+        this.clipLinker.addClipReferences(rpClip,part);
+        this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel)).insertRPClip(rpClip, clipTimeIn);
         this.updateProjectLength();
     }
 
     /**
      * This method removes the content from a Clip.
      *
-     * @param title the title of the Clip
+     * @param clip the title of the Clip
      * @throws IllegalArgumentException if the Clip has no content
      * @throws NoSuchElementException   if no Clip with the given title exists
      */
     @Override
-    public void removeFileFromClip(String title) throws NoSuchElementException, IllegalArgumentException, ClipNotFoundException {
-        if (!this.clipLinker.clipExists(title)) {
+    public void removeFileFromClip(String clip) throws NoSuchElementException, IllegalArgumentException, ClipNotFoundException {
+        if (!this.clipLinker.clipExists(clip)) {
             throw new NoSuchElementException("The Clip does not exist");
         }
-        if (!this.clipLinker.getClipFromPart(this.clipLinker.getPart(title)).getClass().equals(SampleClip.class)) {
+        if (!this.clipLinker.getClipFromPart(this.clipLinker.getPart(clip)).getClass().equals(SampleClip.class)) {
             throw new IllegalArgumentException("The Clip has no content");
         }
-        this.clipConverter.fromSampleToEmptyClip((SampleClip) this.clipLinker.getClipFromPart(this.clipLinker.getPart(title)));
+        String channel = this.getClipChannel(clip);
+        double clipTimeIn = this.getClipTime(clip,channel);
+        RPPart part = this.clipLinker.getPart(clip);
+        RPClip rpClip = this.clipLinker.getClipFromPart(part);
+        this.removeClip(channel, clip, clipTimeIn);
+        rpClip = this.clipConverter.fromSampleToEmptyClip((SampleClip) rpClip);
+        this.clipLinker.addClipReferences(rpClip, part);
+        this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel)).insertRPClip(rpClip, clipTimeIn);
         this.updateProjectLength();
     }
 
@@ -411,8 +426,13 @@ public class Manager implements RPManager {
     }
 
     @Override
-    public RPClip getClip(String title) {
+    public RPClip getClipFromTitle(String title) {
         return this.getClipLinker().getClipFromPart(this.getClipLinker().getPart(title));
+    }
+
+    @Override
+    public RPChannel getChannelFromTitle(String title) {
+        return this.channelLinker.getChannel(this.channelLinker.getRole(title));
     }
 
     @Override

@@ -162,6 +162,8 @@ public interface RPManager {
      */
     Double getClipDuration(String clip);
 
+    RPChannel getChannelFromTitle(String title);
+
     void addSection(String title, Optional<String> description, Double initialTime, Double duration);
 
     void removeSection(Double time);
@@ -180,7 +182,7 @@ public interface RPManager {
 
     void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException;
 
-    RPClip getClip(String title);
+    RPClip getClipFromTitle(String title);
 
     String getClipChannel(String clip);
 }
