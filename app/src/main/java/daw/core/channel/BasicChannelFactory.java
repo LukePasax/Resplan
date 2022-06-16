@@ -27,7 +27,7 @@ public class BasicChannelFactory implements ChannelFactory {
         final var bc = new BasicChannel(RPChannel.Type.AUDIO);
         bc.addProcessingUnit(new BasicProcessingUnitBuilder()
                 .highPassFilter(1, 200.0f)
-                //.gate(1)
+                .gate(1)
                 .build());
         return bc;
     }

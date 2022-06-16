@@ -7,10 +7,7 @@ import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.BiquadFilter;
-import net.beadsproject.beads.ugens.Compressor;
 import net.beadsproject.beads.ugens.RMS;
-
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -20,7 +17,7 @@ import java.util.Map;
  */
 public class Gate extends RPEffect {
 
-    private int channels;
+    private final int channels;
     private final int memSize;
     private int index = 0;
     private final float[][] delayMem;
@@ -71,6 +68,7 @@ public class Gate extends RPEffect {
         this.pf = (new BiquadFilter(context, 1, BiquadFilter.BUTTERWORTH_LP))
                 .setFrequency(31);
         this.powerUGen = new RMS(context, channels, this.rmsMemorySize);
+        // myInputs -> powerUGen -> pf
         this.powerUGen.addInput(this.myInputs);
         this.pf.addInput(this.powerUGen);
         this.calcVals();
@@ -155,7 +153,6 @@ public class Gate extends RPEffect {
     public void calculateBuffer() {
         this.pf.update();
         float target;
-        System.out.println(Arrays.toString(this.getOutBuffer(0)));
         if (this.channels == 1) {
             float[] bi = this.bufIn[0];
             float[] bo = this.bufOut[0];
@@ -170,15 +167,7 @@ public class Gate extends RPEffect {
                     float x1 = (p - this.tok) * this.ikp1 + this.tok;
                     target = ((this.ktrm1*x1+this.tt1mr) * (p-x1) / (x1*(this.knee-1)) + x1)  /  p;
                 }
-                if (this.currval > target) {
-                    this.currval *= this.downstep;
-                    if (this.currval < target)
-                        this.currval = target;
-                } else if (this.currval < target) {
-                    this.currval *= this.upstep;
-                    if (this.currval > target)
-                        this.currval = target;
-                }
+                this.setCurrentValue(target);
                 dm[this.index] = bi[i];
                 bo[i] = dm[(this.index + this.delaySamps) % this.memSize] * this.currval;
                 this.index = (this.index + 1) % this.memSize;
@@ -194,15 +183,7 @@ public class Gate extends RPEffect {
                     float x1 = (p - this.tok) * this.ikp1 + this.tok;
                     target = (this.ktrm1*x1+this.tt1mr) * (p-x1) / (x1*(this.knee-1)) + x1;
                 }
-                if (this.currval > target) {
-                    this.currval *= this.downstep;
-                    if (this.currval < target)
-                        this.currval = target;
-                } else if (this.currval < target) {
-                    this.currval *= this.upstep;
-                    if (this.currval > target)
-                        this.currval = target;
-                }
+                this.setCurrentValue(target);
                 int delIndex = (this.index + this.delaySamps) % this.memSize;
                 for (int j = 0; j < this.channels; j++) {
                     this.delayMem[j][this.index] = this.bufIn[j][i];
@@ -211,7 +192,18 @@ public class Gate extends RPEffect {
                 this.index = (this.index + 1) % this.memSize;
             }
         }
-        System.out.println(Arrays.toString(this.getOutBuffer(0)));
+    }
+
+    private void setCurrentValue(float target) {
+        if (this.currval > target) {
+            this.currval *= this.downstep;
+            if (this.currval < target)
+                this.currval = target;
+        } else if (this.currval < target) {
+            this.currval *= this.upstep;
+            if (this.currval > target)
+                this.currval = target;
+        }
     }
 
 }
