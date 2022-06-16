@@ -29,8 +29,10 @@ public class RecorderController {
         WavFilePicker picker = new WavFilePicker();
         File file = picker.getFileChooser().showSaveDialog(this.recButton.getScene().getWindow());
         try {
-            Starter.getController().stopRecording(this.clipTitle.getText(), file);
-            this.recButton.getScene().getWindow().hide();
+            if (file != null) {
+                Starter.getController().stopRecording(this.clipTitle.getText(), file);
+                this.recButton.getScene().getWindow().hide();
+            }
         } catch (ImportException | ClipNotFoundException | IOException e) {
             AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
