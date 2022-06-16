@@ -106,7 +106,8 @@ public class ControllerImpl implements Controller {
                 }
             });
         });
-        this.manager.getSections().forEach(s -> App.getData().addSection(new ViewDataImpl.Section(s.getValue().getTitle(), s.getKey())));
+        this.manager.getSections()
+                .forEach(s -> App.getData().addSection(new ViewDataImpl.Section(s.getValue().getTitle(), s.getKey())));
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
@@ -153,6 +154,7 @@ public class ControllerImpl implements Controller {
         try {
             this.manager = this.loader.load(file);
             this.currentProject = file;
+            this.manager.getMixer().connectToSystem();
             this.engine = new Engine((ChannelLinker) this.manager.getChannelLinker());
             this.loadViewData();
         } catch (IOException | FileFormatException e) {
