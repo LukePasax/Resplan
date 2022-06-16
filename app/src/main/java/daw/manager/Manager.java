@@ -212,6 +212,13 @@ public class Manager implements RPManager {
         } else {
             clip = new EmptyClip(duration,title);
         }
+        final RPPart part = createPart(type, title, description);
+        this.channelLinker.getTapeChannel(channelLinker.getRole(channel)).insertRPClip(clip, time);
+        this.clipLinker.addClipReferences(clip, part);
+        this.updateProjectLength();
+    }
+
+    private RPPart createPart(RPPart.PartType type, String title, Optional<String> description) {
         final RPPart part;
         if (type.equals(RPPart.PartType.SPEECH)) {
             part = description.map(s -> new SpeechPart(title, s)).orElseGet(() -> new SpeechPart(title));
@@ -220,9 +227,7 @@ public class Manager implements RPManager {
         } else {
             part = description.map(s -> new SoundtrackPart(title, s)).orElseGet(() -> new SoundtrackPart(title));
         }
-        this.channelLinker.getTapeChannel(channelLinker.getRole(channel)).insertRPClip(clip, time);
-        this.clipLinker.addClipReferences(clip, part);
-        this.updateProjectLength();
+        return part;
     }
 
     /**
@@ -421,8 +426,12 @@ public class Manager implements RPManager {
 
     @Override
     public void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException {
-        this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
-                .split(this.getClipTime(clip,channel),splittingTime);
+        String newClip = clip + " (duplicate)";
+        RPPart part = this.clipLinker.getPart(clip);
+        RPPart newPart = this.createPart(part.getType(), newClip, part.getDescription());
+        RPTapeChannel tapeChannel = this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel));
+        tapeChannel.split(this.getClipTime(clip,channel),splittingTime);
+        this.clipLinker.addClipReferences(tapeChannel.getClipAt(splittingTime).get().getValue(), newPart);
     }
 
     @Override

@@ -83,6 +83,15 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void loadViewData() {
+        App.getData().getUnmodifiableChannels().forEach(ch -> {
+            App.getData().getUnmodifiableClips(ch).forEach(cl -> {
+                App.getData().removeClip(ch, cl);
+            });
+            App.getData().removeChannel(ch);
+        });
+        App.getData().getUnmodifiableSections().forEach(s -> {
+            App.getData().removeSection(s);
+        });
         this.manager.getRoles().forEach(c -> {
             App.getData().addChannel(new ViewDataImpl.Channel(c.getTitle(), c.getType().name()));
             this.manager.getPartList(c.getTitle()).forEach(p -> {
@@ -308,9 +317,10 @@ public class ControllerImpl implements Controller {
     }
 
     private void updateChannelClipsView(String channel) {
-    	this.manager.getChannelLinker().getTapeChannel(this.manager.getChannelLinker().getRole(channel)).getClipWithTimeIterator().forEachRemaining(cwt->{
+    	this.manager.getChannelLinker().getTapeChannel(this.manager.getChannelLinker().getRole(channel))
+                .getClipWithTimeIterator().forEachRemaining(cwt->{
     		App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,cwt.getValue().getTitle()));
-    		createClipView(cwt.getValue().getTitle(), channel);
+    		this.createClipView(cwt.getValue().getTitle(), channel);
     	});
     }
     
@@ -331,7 +341,7 @@ public class ControllerImpl implements Controller {
     public void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException {
     	//App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
     	this.manager.setClipTimeIn(clip,channel,finalTimeIn);
-    	updateChannelClipsView(channel);
+    	this.updateChannelClipsView(channel);
         //createClipView(clip, channel);
         App.getData().setProjectLenght(this.getProjectLength());
     }
@@ -341,16 +351,14 @@ public class ControllerImpl implements Controller {
         //App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.setClipTimeOut(clip,channel,finalTimeOut);
         //createClipView(clip, channel);
-        updateChannelClipsView(channel);
+        this.updateChannelClipsView(channel);
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
     @Override
     public void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException {
-        //App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.splitClip(clip,channel,splittingTime);
-        //createClipView(clip, channel);
-        updateChannelClipsView(channel);
+        this.updateChannelClipsView(channel);
     }
 
     @Override
