@@ -83,6 +83,15 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void loadViewData() {
+        App.getData().getUnmodifiableChannels().forEach(ch -> {
+            App.getData().getUnmodifiableClips(ch).forEach(cl -> {
+                App.getData().removeClip(ch, cl);
+            });
+            App.getData().removeChannel(ch);
+        });
+        App.getData().getUnmodifiableSections().forEach(s -> {
+            App.getData().removeSection(s);
+        });
         this.manager.getRoles().forEach(c -> {
             App.getData().addChannel(new ViewDataImpl.Channel(c.getTitle(), c.getType().name()));
             this.manager.getPartList(c.getTitle()).forEach(p -> {
