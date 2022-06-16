@@ -2,6 +2,7 @@ package daw.core.clip;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
@@ -158,4 +159,19 @@ public class FileClip implements RPClip<File> {
 	public String getTitle() {
 		return clip.getTitle();
 	}
+
+	@Override
+	// DO NOT DELETE!
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		FileClip fileClip = (FileClip) o;
+		return Objects.equals(clip.getTitle(), fileClip.clip.getTitle());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(clip);
+	}
+
 }
