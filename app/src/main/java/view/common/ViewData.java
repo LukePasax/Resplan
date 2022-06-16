@@ -51,4 +51,5 @@ public interface ViewData {
 	
 	ObservableSet<Section> getUnmodifiableSections();
 
+	void clearData();
 }

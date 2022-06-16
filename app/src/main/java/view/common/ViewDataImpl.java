@@ -130,6 +130,12 @@ public class ViewDataImpl implements ViewData {
 	public void addSectionDataListener(SetChangeListener<Section> listener) {
 		sections.addListener(listener);
 	}
+
+	@Override
+	public void clearData() {
+		this.data.clear();
+		this.sections.clear();
+	}
 	
 	public static class Channel {
 		private String title;
