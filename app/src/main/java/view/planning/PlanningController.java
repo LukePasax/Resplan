@@ -51,7 +51,7 @@ public class PlanningController {
 		App.getData().getProjectLenghtProperty().addListener((obs,old,n)->{
 			timeAxisSetter.setProjectLength(n.doubleValue());
 		});
-		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 5, 0, 0));
+		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 16, 0, 0));
 		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 2);
 		timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);
 		timelineToChannelsAligner.setMaxWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth()*0.8);

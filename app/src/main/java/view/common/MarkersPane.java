@@ -1,5 +1,6 @@
 package view.common;
 
+import Resplan.Starter;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 import javafx.scene.chart.Axis;
@@ -32,11 +33,18 @@ public class MarkersPane extends Pane {
 		
 		this.axis = axis;
 		//update when axis layout
-		axis.needsLayoutProperty().addListener(x->{updateSectionMarkers(); updateTimeMarkers();});
+		axis.needsLayoutProperty().addListener(x->updateAll());
 		//update on data changes
-		App.getData().addSectionDataListener(x->updateTimeMarkers());
+		App.getData().addSectionDataListener(x->updateSectionMarkers());
+		App.getData().getProjectLenghtProperty().addListener(x->updateAll());
 		//vertical layout resize
-		this.heightProperty().addListener(x->{updateSectionMarkers(); updateTimeMarkers();});
+		this.heightProperty().addListener(x->updateAll());
+	}
+	
+	private void updateAll() {
+		updateSectionMarkers();
+		updateTimeMarkers();
+		updatePlaybackMarker(Starter.getController().getPlaybackTime());
 	}
 
 	//-------SECTIONS-------
