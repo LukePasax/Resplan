@@ -28,12 +28,4 @@ public class BasicSidechaining extends AbstractCompression implements Sidechaini
         super(channels);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void calculateBuffer() {
-        this.compressor.calculateBuffer();
-    }
-
 }

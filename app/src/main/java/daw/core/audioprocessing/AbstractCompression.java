@@ -43,6 +43,8 @@ public abstract class AbstractCompression extends RPEffect {
      * {@inheritDoc}
      */
     @Override
-    public abstract void calculateBuffer();
+    public void calculateBuffer() {
+        this.compressor.calculateBuffer();
+    }
 
 }

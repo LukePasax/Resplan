@@ -20,12 +20,4 @@ public class Compression extends AbstractCompression {
         super(channels);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void calculateBuffer() {
-        this.compressor.calculateBuffer();
-    }
-
 }
