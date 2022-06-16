@@ -362,6 +362,7 @@ public abstract class ChannelContentView extends Pane {
 					}
 				}
 				dragging = false;
+				App.getData().getUnmodifiableClips(ch).forEach(c->c.getViewSet().forEach(n->n.setOpacity(1)));
 			}
 		}
 		
@@ -416,6 +417,7 @@ public abstract class ChannelContentView extends Pane {
 						}
 					}
 				} else {
+					App.getData().getUnmodifiableClips(ch).forEach(c->c.getViewSet().forEach(n->n.setOpacity(0.5)));
 					dragging = true;
 					initialX = e.getScreenX();
 					initialLayoutX = this.getLayoutX();
