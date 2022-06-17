@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.util.StringConverter;
 import view.common.App;
 import view.common.ChannelsView;
+import view.common.NumberFormatConverter;
 import view.common.TimeAxisSetter;
 import view.common.ToolBarSetter;
 import view.common.ViewDataImpl.Channel;
@@ -33,7 +34,9 @@ public class EditChannelsView extends ChannelsView {
 	public Node drawClip(Clip clip) {
 		Label title = new Label(clip.getTitle());
 		Label fileName = clip.isEmpty() ? new Label("Empty clip") : new Label("content: " + clip.getContentName());
-		return new VBox(title, fileName);
+		Label contentPos = clip.isEmpty() ? new Label("") : new Label("cut: " + new NumberFormatConverter().toString(clip.getContentPosition()));
+		contentPos.setFont(Font.font(10));
+		return new VBox(title, fileName, contentPos);
 	}
 
 	@Override
