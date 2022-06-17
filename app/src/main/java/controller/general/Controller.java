@@ -4,12 +4,14 @@ import daw.core.audioprocessing.RPEffect;
 import daw.core.channel.RPChannel;
 import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
+import net.beadsproject.beads.data.Sample;
 import view.common.App;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface Controller {
 
@@ -74,6 +76,8 @@ public interface Controller {
     void setTemplateProject() throws DownloadingException, IllegalStateException;
 
     List<String> getClipList(String channel);
+
+    Optional<Sample> getClipSample(String clip);
 
     Double getClipTime(String clip, String channel);
 

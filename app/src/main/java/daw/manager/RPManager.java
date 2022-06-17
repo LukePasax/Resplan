@@ -185,4 +185,5 @@ public interface RPManager {
     RPClip getClipFromTitle(String title);
 
     String getClipChannel(String clip);
+
 }

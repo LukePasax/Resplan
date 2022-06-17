@@ -26,6 +26,7 @@ import planning.RPRole;
 import view.common.AlertDispatcher;
 import view.common.App;
 import view.common.ViewDataImpl;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -260,6 +261,16 @@ public class ControllerImpl implements Controller {
     @Override
     public List<String> getClipList(String channel) {
         return this.manager.getPartList(channel).stream().map(Element::getTitle).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Sample> getClipSample(String clip) {
+        try {
+            Sample sample = (Sample) this.manager.getClipFromTitle(clip).getContent();
+            return Optional.of(sample);
+        } catch (UnsupportedOperationException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
