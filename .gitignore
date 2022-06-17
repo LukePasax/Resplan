@@ -12,3 +12,4 @@ app/.settings
 app/bin
 .idea/
 .settings/
+*.json
