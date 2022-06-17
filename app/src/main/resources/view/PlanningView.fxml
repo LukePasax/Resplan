@@ -76,7 +76,7 @@
                         <SplitPane id="clips-channel info divider" fx:id="channelsInfoResizer" dividerPositions="0.752092050209205" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                            <items>
                               <VBox fx:id="channelsContentPane" prefHeight="200.0" prefWidth="100.0" />
-                              <VBox fx:id="channelsInfoPane" prefHeight="200.0" prefWidth="100.0" />
+                              <VBox fx:id="channelsInfoPane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="100.0" />
                            </items>
                         </SplitPane>
                      </content>

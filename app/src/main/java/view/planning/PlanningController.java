@@ -35,9 +35,6 @@ public class PlanningController {
     public VBox channelsInfoPane;
     public MenuItem setTemplate;
     public MenuItem resetTemplate;
-    public Button delChannelButton;
-    public Button delClipButton;
-    public Button launchEditViewButton;
     public MenuItem exportAudio;
     public Button newSectionButton;
     private TimeAxisSetter timeAxisSetter;
