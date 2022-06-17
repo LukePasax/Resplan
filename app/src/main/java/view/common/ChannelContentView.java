@@ -36,6 +36,7 @@ import javafx.stage.Stage;
 import view.common.ViewDataImpl.Channel;
 import view.common.ViewDataImpl.Clip;
 import view.planning.NewClipController;
+import view.planning.TextEditorController;
 
 public abstract class ChannelContentView extends Pane {
 
@@ -289,7 +290,7 @@ public abstract class ChannelContentView extends Pane {
 					e1.printStackTrace();
 				}
 			});
-			MenuItem clear = new MenuItem("Clear");
+			MenuItem clear = new MenuItem("Clear content");
 			clear.setOnAction(a->{
 				try {
 					Starter.getController().removeContentFromClip(clip.getTitle());
@@ -297,7 +298,21 @@ public abstract class ChannelContentView extends Pane {
 					e.printStackTrace();
 				}
 			});
-			ContextMenu menu = new ContextMenu(remove, record, loadAudioFile, clear);
+			MenuItem clipText = new MenuItem("Text editor");
+			clipText.setOnAction(event -> {
+				try {
+					FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/TextEditorView.fxml"));
+					Stage stage = new Stage();
+					stage.setScene(new Scene(loader.load()));
+					stage.setTitle("Text Editor - " + clip.getTitle());
+					stage.initOwner(this.getScene().getWindow());
+					((TextEditorController) loader.getController()).setClipTitle(clip.getTitle());
+					stage.showAndWait();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			});
+			ContextMenu menu = new ContextMenu(remove, record, loadAudioFile, clear, clipText);
 			if(clip.isEmpty()) {
 				clear.setDisable(true);
 			} else {

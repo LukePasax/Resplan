@@ -15,16 +15,19 @@ public class TextEditorController {
     public TextArea text;
     public Button editButton;
     public Button saveButton;
-    public final String clipTitle;
+    private String clipTitle;
     public Button upload;
 
-    public TextEditorController(String clip) {
-        this.clipTitle = clip;
+    public TextEditorController() {
+    }
+
+    public void setClipTitle(String clipTitle) {
+        this.clipTitle = clipTitle;
+        this.text.setText(Starter.getController().getClipText(this.clipTitle));
     }
 
     public void initialize() {
         this.saveButton.setDisable(true);
-        this.text.setText(Starter.getController().getClipText(this.clipTitle));
         this.text.setEditable(false);
     }
 
@@ -35,6 +38,9 @@ public class TextEditorController {
 
     public void saveText(ActionEvent actionEvent) {
         Starter.getController().setClipText(this.clipTitle, this.text.getText());
+        this.editButton.setDisable(false);
+        this.text.setEditable(false);
+        this.saveButton.setDisable(true);
     }
 
     public void uploadFromFile(ActionEvent actionEvent) {

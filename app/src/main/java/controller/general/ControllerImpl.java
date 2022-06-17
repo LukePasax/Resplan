@@ -20,10 +20,7 @@ import net.beadsproject.beads.data.Sample;
 import net.beadsproject.beads.data.audiofile.AudioFileType;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.ugens.RecordToSample;
-import planning.Element;
-import planning.RPPart;
-import planning.RPRole;
-import planning.TextFactoryImpl;
+import planning.*;
 import view.common.AlertDispatcher;
 import view.common.App;
 import view.common.ViewDataImpl;
@@ -581,8 +578,12 @@ public class ControllerImpl implements Controller {
 
     @Override
     public String getClipText(String clipTitle) {
-
-        return this.manager.getClipLinker().getPart(clipTitle).getText().get().getContent();
+        Optional<Text> text = this.manager.getClipLinker().getPart(clipTitle).getText();
+        if (text.isPresent()) {
+            return text.get().getContent();
+        } else {
+            return "";
+        }
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES
