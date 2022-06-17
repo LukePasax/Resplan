@@ -4,7 +4,11 @@ import Resplan.Starter;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import view.common.ViewDataImpl;
+import view.common.AlertDispatcher;
+import view.common.TextFilePicker;
+
+import java.io.File;
+import java.io.IOException;
 
 public class TextEditorController {
 
@@ -12,6 +16,7 @@ public class TextEditorController {
     public Button editButton;
     public Button saveButton;
     public final String clipTitle;
+    public Button upload;
 
     public TextEditorController(String clip) {
         this.clipTitle = clip;
@@ -30,6 +35,18 @@ public class TextEditorController {
 
     public void saveText(ActionEvent actionEvent) {
         Starter.getController().setClipText(this.clipTitle, this.text.getText());
+    }
+
+    public void uploadFromFile(ActionEvent actionEvent) {
+        final TextFilePicker picker = new TextFilePicker();
+        final File file = picker.getFileChooser().showOpenDialog(this.text.getScene().getWindow());
+        if (file != null) {
+            try {
+                Starter.getController().uploadTextFromFile(this.clipTitle, file.getAbsolutePath());
+            } catch (IOException e) {
+                AlertDispatcher.dispatchError(e.getMessage());
+            }
+        }
     }
 
 }
