@@ -198,7 +198,6 @@ public class ControllerImpl implements Controller {
             roleType = RPRole.RoleType.SPEECH;
         } else if (type.equals("EFFECTS")) {
             roleType = RPRole.RoleType.EFFECTS;
-            type = "Effects";
         } else {
             roleType = RPRole.RoleType.SOUNDTRACK;
         }
