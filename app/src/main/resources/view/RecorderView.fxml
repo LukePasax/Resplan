@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: #000000;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.common.RecorderController">
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: #000000;" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.common.RecorderController">
    <children>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Recorder" textAlignment="CENTER" VBox.vgrow="ALWAYS">
          <font>
@@ -20,6 +20,7 @@
             <Insets bottom="15.0" top="10.0" />
          </VBox.margin>
       </Text>
+      <Label fx:id="timeLabel" />
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
          <children>
             <Button fx:id="recButton" mnemonicParsing="false" onAction="#recPressed" prefHeight="40.0" text="REC">

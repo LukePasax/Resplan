@@ -16,6 +16,7 @@ public class RecorderController {
     public Button stopButton;
     public Button cancelButton;
     public Label clipTitle;
+    public Label timeLabel;
 
     public void setClipTitle(String clipTitle) {
         this.clipTitle.setText(clipTitle);
@@ -23,13 +24,15 @@ public class RecorderController {
 
     public void recPressed(ActionEvent actionEvent) {
         Starter.getController().startRecording();
+        timeLabel.setText("Recording...");
     }
 
     public void stopPressed(ActionEvent actionEvent) {
         WavFilePicker picker = new WavFilePicker();
         File file = picker.getFileChooser().showSaveDialog(this.recButton.getScene().getWindow());
         try {
-            if (file != null) {
+            if (file != null) { 
+            	timeLabel.setText("");
                 Starter.getController().stopRecording(this.clipTitle.getText(), file);
                 this.recButton.getScene().getWindow().hide();
             }
