@@ -14,14 +14,12 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import view.common.TimeAxisSetter;
-import view.common.Tool;
-import view.common.ToolBarSetter;
-import view.common.App;
-import view.common.MarkersPane;
+import view.common.*;
 
 public class EditViewController implements Initializable{
-	
+
+	@FXML
+	private AnchorPane windowBar;
 	@FXML private VBox rootNode;
 	/**
 	 * La griglia usata per dimensionare la timeline alla vista dei canali.
@@ -77,6 +75,7 @@ public class EditViewController implements Initializable{
 		GridPane.setVgrow(markersPane, Priority.ALWAYS);
 		//--------set channels view----------
 		new FXView(fxPanel, new EditChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane, toolBarSetter));
+		channelsInfoPane.setMaxWidth(250);
 		//--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
 		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
 			timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
@@ -88,6 +87,7 @@ public class EditViewController implements Initializable{
 			}
 		});
 		this.setPlaybackMarkerPosition(0);
+		new WindowBar(this.windowBar);
 	}
 	
 	/**
