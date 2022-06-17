@@ -11,11 +11,11 @@ import java.util.*;
  */
 public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
 
-    private Optional<BasicSidechaining> sidechain;
+    private boolean sidechainingPresent;
     private final List<RPEffect> effects;
 
     public BasicProcessingUnitBuilder() {
-        this.sidechain = Optional.empty();
+        this.sidechainingPresent = false;
         this.effects = new ArrayList<>();
     }
 
@@ -27,8 +27,9 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
      */
     @Override
     public ProcessingUnitBuilder sidechain(UGen u, int channels) {
-        if (this.sidechain.isEmpty()) {
-            this.sidechain = Optional.of(new BasicSidechaining(u, channels));
+        if (!this.sidechainingPresent) {
+            this.effects.add(new BasicSidechaining(u, channels));
+            this.sidechainingPresent = true;
         }
         return this;
     }
@@ -97,7 +98,6 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
      */
     @Override
     public ProcessingUnit build() throws IllegalStateException {
-        this.sidechain.ifPresent(this.effects::add);
         if (this.effects.isEmpty()) {
             throw new IllegalStateException("Cannot create an empty processing unit.");
         }
