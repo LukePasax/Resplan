@@ -1,5 +1,7 @@
 package planning;
 
+import java.io.IOException;
+
 /**
  * This interface represents the Factory Method to create a {@link planning.Text}
  */
@@ -23,5 +25,5 @@ public interface TextFactory {
 	 * 
 	 * @return the text created
 	 */
-	Text createFromFile(String fileName);
+	Text createFromFile(String fileName) throws IOException;
 }

@@ -1,5 +1,6 @@
 package planning;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -13,35 +14,15 @@ public class TextFactoryImpl implements TextFactory {
 	 */
 	@Override
 	public Text createFromString(final String content) {
-		return new Text() {
-			
-			/**
-			 * {@inheritDoc}
-			 */
-			@Override
-			public String getContent() {
-				return content;
-			}
-		};
+		return () -> content;
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Text createFromFile(final String fileName) {
-		return new Text() {
-			
-			/**
-			 * {@inheritDoc}
-			 */
-			@Override
-			public String getContent() throws Exception {
-				Path filePath = Path.of(fileName);
-				String content = Files.readString(filePath);
-				return content;
-			}
-		};
+	public Text createFromFile(final String fileName) throws IOException {
+		return this.createFromString(Files.readString(Path.of(fileName)));
 	}
 
 }
