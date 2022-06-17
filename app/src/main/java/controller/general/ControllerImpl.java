@@ -102,7 +102,7 @@ public class ControllerImpl implements Controller {
                 } else {
                     App.getData().addClip(App.getData().getChannel(c.getTitle()), new ViewDataImpl.Clip(
                             p.getTitle(), this.manager.getClipTime(p.getTitle(), c.getTitle()), clip.getDuration(),
-                            Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration()), Optional.of(((File)clip.getContent()).getName())));
+                            Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration()), Optional.of(new File(((Sample)clip.getContent()).getFileName()).getName())));
                 }
             });
         });
@@ -226,7 +226,7 @@ public class ControllerImpl implements Controller {
                     Optional.empty(), Optional.empty(), Optional.empty()));
         } else {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time, this.manager.getClipDuration(title),
-                    Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration()), Optional.of(((File)clip.getContent()).getName())));
+                    Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration()), Optional.of(new File(((Sample)clip.getContent()).getFileName()).getName())));
         }
         App.getData().setProjectLenght(this.getProjectLength());
     }
@@ -339,7 +339,7 @@ public class ControllerImpl implements Controller {
                     Optional.empty(), Optional.empty(), Optional.empty()));
         } else {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration,
-                    Optional.of(rpClip.getContentPosition()), Optional.of(rpClip.getContentDuration()), Optional.of(((File)rpClip.getContent()).getName())));
+                    Optional.of(rpClip.getContentPosition()), Optional.of(rpClip.getContentDuration()), Optional.of(new File(((Sample)rpClip.getContent()).getFileName()).getName())));
         }
     }
 

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -94,7 +93,7 @@ public interface RPClip<X> {
 	boolean isEmpty();
 	
 	/**
-	 * Get a {@link File} object with the content of this RPClip.
+	 * Get a {@link X} object with the content of this RPClip.
 	 * 
 	 * @return  The clip content.
 	 *

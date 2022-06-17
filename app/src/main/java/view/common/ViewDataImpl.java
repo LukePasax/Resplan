@@ -293,6 +293,10 @@ public class ViewDataImpl implements ViewData {
 			return contentDuration.get();
 		}
 		
+		public String getContentName() {
+			return contentFileName.get();
+		}
+		
 		public void addToViewAll(Node... nodes) {
 			for(Node n : nodes) {
 				view.add(n);
