@@ -5,17 +5,17 @@ import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import view.common.ViewDataImpl.Channel;
 
-public abstract class ChannelInfosView extends Pane {
+public abstract class ChannelInfosView extends AnchorPane {
 	
 	private final static Paint borderColor = Paint.valueOf("#999999");
 	
@@ -34,7 +34,10 @@ public abstract class ChannelInfosView extends Pane {
 		titleLabel.setTextFill(Color.BLACK);
 		VBox content = new VBox(titleLabel, infos);
 		this.getChildren().add(content);
-		
+		AnchorPane.setBottomAnchor(content, 0.0);
+		AnchorPane.setTopAnchor(content, 0.0);
+		AnchorPane.setRightAnchor(content, 0.0);
+		AnchorPane.setLeftAnchor(content, 0.0);
 		//set context menu
 		MenuItem remove = new MenuItem("Remove");
 		remove.setOnAction(a->Starter.getController().deleteChannel(this.ch.getTitle()));
