@@ -30,7 +30,7 @@ public class App extends Application {
         FXMLLoader planningLoader = new FXMLLoader(getClass().getResource("/view/PlanningView.fxml"));
         this.activeScene = new Scene(planningLoader.load());
         stage.setScene(activeScene);
-        stage.getIcons().add(new Image("/images/icon.png"));
+        stage.getIcons().add(new Image("/icons/icon.png"));
         stage.setTitle("Resplan");
         stage.show();
         FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
