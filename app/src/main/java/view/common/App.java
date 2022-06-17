@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import view.edit.EditViewController;
 
 public class App extends Application {
@@ -32,6 +33,7 @@ public class App extends Application {
         stage.setScene(activeScene);
         stage.getIcons().add(new Image("/icons/icon.png"));
         stage.setTitle("Resplan");
+        stage.initStyle(StageStyle.TRANSPARENT);
         stage.show();
         FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
         this.sleepingRoot = (Parent) editLoader.load();

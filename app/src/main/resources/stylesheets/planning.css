@@ -8,7 +8,7 @@
     -fx-border-insets : 0px;
 }
 
-.button {
+.buttons {
     -fx-background-color: linear-gradient(to bottom, orange, darkorange 50%, coral 100%);
     -fx-effect : dropshadow(gaussian, black, 10, 0, 1, 1);
 }
@@ -25,7 +25,7 @@
     -fx-background-color: linear-gradient(to bottom, orange, darkorange 50%, coral 100%);
 }
 
-#menu-container {
+#window-bar-container {
     -fx-background-color: linear-gradient(to bottom, orange, darkorange 50%, coral 100%);
 }
 

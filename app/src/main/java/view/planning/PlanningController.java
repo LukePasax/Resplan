@@ -1,13 +1,13 @@
 package view.planning;
 
 import Resplan.Starter;
-import controller.general.DownloadingException;
-import controller.general.LoadingException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.SplitPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -15,16 +15,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import view.common.*;
 
-import java.awt.Toolkit;
+import java.awt.*;
 import java.io.IOException;
 
 public class PlanningController {
-
-    public MenuBar menuBar;
-    public Menu fileMenu;
-    public MenuItem newFile;
-    public MenuItem openFile;
-    public MenuItem closeFile;
     public SplitPane mainPanel;
     public VBox commandBox;
     public Button newChannelButton;
@@ -33,10 +27,8 @@ public class PlanningController {
     public SplitPane channelsInfoResizer;
     public VBox channelsContentPane;
     public VBox channelsInfoPane;
-    public MenuItem setTemplate;
-    public MenuItem resetTemplate;
-    public MenuItem exportAudio;
     public Button newSectionButton;
+    public AnchorPane windowBar;
     private TimeAxisSetter timeAxisSetter;
     private JsonFilePicker filePicker;
     private MarkersPane markersPane;
@@ -62,6 +54,7 @@ public class PlanningController {
   		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
   			timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
   		});
+          new WindowBar(this.windowBar);
     }
 
     public void newChannelPressed(ActionEvent event) throws IOException {
@@ -76,60 +69,8 @@ public class PlanningController {
         }
     }
 
-    public void newProjectPressed(ActionEvent event) {
-        Starter.getController().newProject();
-    }
-
-    public void openProjectPressed(ActionEvent event) {
-        this.filePicker = new JsonFilePicker();
-        try {
-            Starter.getController().openProject(this.filePicker.getFileChooser().showOpenDialog(this.menuBar.getScene().getWindow()));
-        } catch (LoadingException e) {
-            AlertDispatcher.dispatchError(e.getLocalizedMessage());
-        }
-    }
-
-    private void saveProject() {
-        try {
-            Starter.getController().save();
-        } catch (DownloadingException e) {
-            AlertDispatcher.dispatchError(e.getLocalizedMessage());
-        } catch (IllegalStateException e) {
-            this.filePicker =  new JsonFilePicker();
-            try {
-                Starter.getController().saveWithName(this.filePicker.getFileChooser().showSaveDialog(this.menuBar.getScene().getWindow()));
-            } catch (DownloadingException ex) {
-                AlertDispatcher.dispatchError(e.getLocalizedMessage());
-            }
-        }
-    }
-
-    public void closeProjectPressed(ActionEvent event) {
-        this.menuBar.getScene().getWindow().hide();
-    }
-
-    public void setTemplatePressed(ActionEvent event) {
-        try {
-            Starter.getController().setTemplateProject();
-        } catch (DownloadingException | IllegalStateException e) {
-            AlertDispatcher.dispatchError(e.getLocalizedMessage());
-        }
-    }
-
-    public void resetTemplatePressed(ActionEvent event) {
-        try {
-            Starter.getController().resetTemplateProject();
-        } catch (DownloadingException e) {
-            AlertDispatcher.dispatchError(e.getLocalizedMessage());
-        }
-    }
-
-    public void saveProjectPressed(ActionEvent event) {
-        this.saveProject();
-    }
-
-    public void exportPressed(ActionEvent actionEvent) throws IOException {
-        this.launchWindow("view/ExportView.fxml","Export");
+    public void newSectionPressed(ActionEvent actionEvent) throws IOException {
+        this.launchWindow("view/NewSectionWindow.fxml","New Section");
     }
 
     private void launchWindow(String fxml, String title) throws IOException {
@@ -139,12 +80,9 @@ public class PlanningController {
         stage.setScene(scene);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.setTitle(title);
-        stage.initOwner(menuBar.getScene().getWindow());
+        stage.initOwner(this.windowBar.getScene().getWindow());
         stage.setResizable(false);
         stage.showAndWait();
     }
 
-    public void newSectionPressed(ActionEvent actionEvent) throws IOException {
-        this.launchWindow("view/NewSectionWindow.fxml","New Section");
-    }
 }
