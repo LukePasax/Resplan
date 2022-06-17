@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -15,19 +16,20 @@
     </columnConstraints>
     <rowConstraints>
         <RowConstraints maxHeight="180.1999839782715" minHeight="10.0" prefHeight="180.1999839782715" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="285.80000000000007" minHeight="10.0" prefHeight="164.00003662109378" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="285.80000000000007" minHeight="10.0" prefHeight="164.00003662109378" valignment="BOTTOM" vgrow="NEVER" />
         <RowConstraints maxHeight="164.2000183105469" minHeight="0.0" prefHeight="55.99996337890627" vgrow="SOMETIMES" />
     </rowConstraints>
-    <TextArea fx:id="text" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowSpan="3" />
+    <TextArea fx:id="text" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowSpan="2" />
     <Button fx:id="editButton" mnemonicParsing="false" onAction="#editText" text="Edit text" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
         <GridPane.margin>
           <Insets />
         </GridPane.margin>
     </Button>
     <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveText" text="Save" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-    <Button fx:id="upload" mnemonicParsing="false" onAction="#uploadFromFile" text="Upload text from file" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+    <Button fx:id="uploadButton" mnemonicParsing="false" onAction="#uploadFromFile" text="Upload text from file" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
         <GridPane.margin>
           <Insets />
         </GridPane.margin>
     </Button>
+   <Separator prefHeight="1.0" prefWidth="600.0" GridPane.columnSpan="3" GridPane.rowIndex="1" />
 </GridPane>
