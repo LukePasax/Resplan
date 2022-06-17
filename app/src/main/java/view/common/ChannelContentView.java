@@ -257,7 +257,7 @@ public abstract class ChannelContentView extends Pane {
 			overlay.setOpacity(0.5);
 			overlay.setMouseTransparent(true);
 			this.getChildren().add(0, overlay);
-			//clip menù
+			// clip menu
 			MenuItem remove = new MenuItem("Remove");
 			remove.setOnAction(a->Starter.getController().deleteClip(clip.getTitle(), ch.getTitle(), clip.getPosition().get()));
 			MenuItem loadAudioFile = new MenuItem("Load Audio File");
@@ -313,11 +313,14 @@ public abstract class ChannelContentView extends Pane {
 				}
 			});
 			ContextMenu menu = new ContextMenu(remove, record, loadAudioFile, clear, clipText);
-			if(clip.isEmpty()) {
+			if (clip.isEmpty()) {
 				clear.setDisable(true);
 			} else {
 				record.setDisable(true);
 				loadAudioFile.setDisable(true);
+			}
+			if (!Starter.getController().getClipType(clip.getTitle()).equals("Speech")) {
+				clipText.setDisable(true);
 			}
 			this.setOnContextMenuRequested(e -> menu.show(this, e.getScreenX(), e.getScreenY()));
 			//drag and drop controls

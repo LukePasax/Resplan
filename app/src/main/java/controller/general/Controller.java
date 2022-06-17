@@ -166,4 +166,6 @@ public interface Controller {
 
     String getClipText(String clipTitle);
 
+    String getClipType(String clip);
+
 }

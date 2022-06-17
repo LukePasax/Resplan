@@ -586,6 +586,18 @@ public class ControllerImpl implements Controller {
         }
     }
 
+    @Override
+    public String getClipType (String clip) {
+       final var type = this.manager.getClipLinker().getPart(clip).getType();
+       if (type.equals(RPPart.PartType.EFFECTS)) {
+           return "Effects";
+       } else if (type.equals(RPPart.PartType.SPEECH)) {
+           return "Speech";
+       } else {
+           return "Soundtrack";
+       }
+    }
+
     // ONLY FOR TEMPORARY TESTING PURPOSES
     public Manager getManager() {
         return this.manager;
