@@ -31,11 +31,11 @@
       </Label>
       <Label text="File" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
       <TextField fx:id="fileName" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Button fx:id="pickFile" mnemonicParsing="false" onAction="#pickFilePressed" text="Pick file" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <Button fx:id="pickFile" mnemonicParsing="false" onAction="#pickFilePressed" styleClass="buttons" text="Pick file" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
       <Label text="End Time" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
       <TextField fx:id="endTime" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <Button cancelButton="true" mnemonicParsing="false" prefWidth="52.0" text="Cancel" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-      <Button fx:id="okButton" defaultButton="true" mnemonicParsing="false" onAction="#okPressed" prefWidth="52.0" text="Ok" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+      <Button cancelButton="true" mnemonicParsing="false" prefWidth="52.0" styleClass="buttons" text="Cancel" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+      <Button fx:id="okButton" defaultButton="true" mnemonicParsing="false" onAction="#okPressed" prefWidth="52.0" styleClass="buttons" text="Ok" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
       <Label text="Whole project" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
       <Label text="Start time" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
       <CheckBox fx:id="projectCheck" mnemonicParsing="false" onAction="#onCheck" selected="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />

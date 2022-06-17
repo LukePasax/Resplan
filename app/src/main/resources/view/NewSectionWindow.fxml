@@ -33,7 +33,7 @@
       <TextField fx:id="title" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <TextField fx:id="description" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <TextField fx:id="startTime" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <Button fx:id="ok" defaultButton="true" mnemonicParsing="false" onAction="#okPressed" prefWidth="52.0" text="Ok" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-      <Button fx:id="cancel" cancelButton="true" mnemonicParsing="false" onAction="#cancelPressed" text="Cancel" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+      <Button fx:id="ok" defaultButton="true" mnemonicParsing="false" onAction="#okPressed" prefWidth="52.0" styleClass="buttons" text="Ok" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+      <Button fx:id="cancel" cancelButton="true" mnemonicParsing="false" onAction="#cancelPressed" styleClass="buttons" text="Cancel" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
    </children>
 </GridPane>
