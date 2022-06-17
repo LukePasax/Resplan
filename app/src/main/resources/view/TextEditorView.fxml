@@ -1,37 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.effect.Blend?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<VBox id="extVertBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../stylesheets/planning.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="view.planning.TextEditorController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="360.20001220703125" minWidth="10.0" prefWidth="307.4000244140625" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="301.39996337890625" minWidth="10.0" prefWidth="292.5999755859375" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="180.1999839782715" minHeight="10.0" prefHeight="180.1999839782715" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="285.80000000000007" minHeight="10.0" prefHeight="178.000048828125" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="164.2000183105469" minHeight="0.0" prefHeight="41.199951171875" vgrow="SOMETIMES" />
+  </rowConstraints>
    <children>
-      <MenuBar id="menuBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
-        <menus>
-          <Menu id="fileMenu" mnemonicParsing="false" text="Clip">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Open" />
-              <MenuItem mnemonicParsing="false" text="Save" />
-            </items>
-          </Menu>
-        </menus>
-         <effect>
-            <Blend />
-         </effect>
-      </MenuBar>
-      <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="1000.0">
-        <content>
-          <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="1000.0">
-               <children>
-                  <TextArea prefHeight="570.5" prefWidth="998.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-               </children>
-            </AnchorPane>
-        </content>
-      </ScrollPane>
+      <TextArea fx:id="text" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowSpan="2" />
+      <Button fx:id="editButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editText" text="Edit" GridPane.rowIndex="2" />
+      <Button fx:id="saveButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#saveText" text="Save" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
-</VBox>
+</GridPane>
