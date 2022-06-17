@@ -9,13 +9,17 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import view.common.ViewDataImpl.Channel;
 import view.common.ViewDataImpl.Clip;
 
 public abstract class ChannelsView {
 	
+	protected static final Background SELECTION_BACKGROUND = new Background(new BackgroundFill(Paint.valueOf("#ECF0FD"), null, null));
 	/**
 	 * Index of last channel of each group.
 	 */
@@ -64,6 +68,15 @@ public abstract class ChannelsView {
 							selected.set(ch.getTitle());
 						}
 						cw.clickEvent(e);
+					});
+					selected.addListener((obs, old, n)->{
+						if(n.equals(ch.getTitle())) {
+							iw.setBackground(SELECTION_BACKGROUND);
+							cw.setBackground(SELECTION_BACKGROUND);
+						} else {
+							iw.setBackground(null);
+							cw.setBackground(null);
+						}
 					});
 					//--------ADDING TO VIEW-----
 					if(!groupIndexes.containsKey(ch.getGroup())) {
