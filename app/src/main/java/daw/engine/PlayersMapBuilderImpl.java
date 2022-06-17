@@ -63,7 +63,7 @@ public class PlayersMapBuilderImpl implements PlayersMapBuilder {
 				try {
 					//gestisco eventuali clip che partono a metà del time in
 					if(clip.getKey()<in) {
-						this.playersMap.putClipPlayer(0l,
+						this.playersMap.putClipPlayer(Clock.Utility.timeToClockSteps(in),
 								this.SamplePlayerFactory.createClipPlayerWithActiveCut(clip.getValue(),
 										(RPChannel) channel.getKey(), in-clip.getKey()));
 					} else {

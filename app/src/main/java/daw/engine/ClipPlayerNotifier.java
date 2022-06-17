@@ -77,7 +77,8 @@ public class ClipPlayerNotifier implements RPClipPlayerNotifier {
 	}
 
 	private void addToStop(Long step, RPClipPlayer player) {
-		toStop.putClipPlayer(step+Clock.Utility.timeToClockSteps(player.getPlaybackDuration()), player);
+		Double cutTime = player.isCutActive() ? player.getCutTime() : 0.0;
+		toStop.putClipPlayer(step+Clock.Utility.timeToClockSteps(player.getPlaybackDuration()-cutTime), player);
 	}
 	
 	/**
