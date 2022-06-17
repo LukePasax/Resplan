@@ -50,6 +50,7 @@ public class PlanningController {
 		GridPane.setVgrow(markersPane, Priority.ALWAYS);
 		//--------set channels view----------
         new PlanningChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane, toolBarSetter);
+        this.channelsInfoPane.setMaxWidth(200);
       //--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
   		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
   			timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
