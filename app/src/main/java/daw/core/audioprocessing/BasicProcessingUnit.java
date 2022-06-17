@@ -63,9 +63,12 @@ public class BasicProcessingUnit implements ProcessingUnit {
     public void addSidechaining(BasicSidechaining s) {
         if (!this.isSidechainingPresent()) {
             this.effects.add(0, s);
-            this.getEffectAtPosition(0).addInput(this.gainIn);
+            s.getGainIn().addInput(this.gainIn);
             if (this.numberOfEffects() > 1) {
                 this.connectEffects(s, this.getEffectAtPosition(1));
+            } else {
+                this.gainOut.clearInputConnections();
+                this.gainOut.addInput(s.getGainOut());
             }
         }
     }
