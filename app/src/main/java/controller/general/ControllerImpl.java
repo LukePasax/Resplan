@@ -32,6 +32,10 @@ import java.util.stream.Collectors;
 
 public class ControllerImpl implements Controller {
 
+    private static final String SPEECH_TYPE = "SPEECH";
+    private static final String EFFECTS_TYPE = "EFFECTS";
+    private static final String SOUNDTRACK_TYPE = "SOUNDTRACK";
+
     private final ProjectDownloader downloader;
     private final ProjectLoader loader;
     private Manager manager;
@@ -193,9 +197,9 @@ public class ControllerImpl implements Controller {
     @Override
     public void newChannel(String type, String title, String description) throws IllegalArgumentException {
         RPRole.RoleType roleType;
-        if (type.equals("SPEECH")) {
+        if (type.equals(SPEECH_TYPE)) {
             roleType = RPRole.RoleType.SPEECH;
-        } else if (type.equals("EFFECTS")) {
+        } else if (type.equals(EFFECTS_TYPE)) {
             roleType = RPRole.RoleType.EFFECTS;
         } else {
             roleType = RPRole.RoleType.SOUNDTRACK;
@@ -209,9 +213,9 @@ public class ControllerImpl implements Controller {
     public void newClip(String type, String title, String description, String channel, Double time,
                         Double duration, File content) throws IllegalArgumentException, ImportException, ClipNotFoundException {
         RPPart.PartType partType;
-        if (type.equals("Speaker")) {
+        if (type.equals(SPEECH_TYPE)) {
             partType = RPPart.PartType.SPEECH;
-        } else if (type.equals("Effects")) {
+        } else if (type.equals(EFFECTS_TYPE)) {
             partType = RPPart.PartType.EFFECTS;
         } else {
             partType = RPPart.PartType.SOUNDTRACK;
@@ -577,8 +581,23 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public String getClipText(String clipTitle) {
-        Optional<Text> text = this.manager.getClipLinker().getPart(clipTitle).getText();
+    public String getChannelType(String channel) {
+        final var type = this.manager.getRoles().stream()
+                .filter(c -> c.getTitle().equals(channel))
+                .findFirst()
+                .get().getType();
+        if (type.equals(RPRole.RoleType.SPEECH)) {
+            return SPEECH_TYPE;
+        } else if (type.equals(RPRole.RoleType.EFFECTS)) {
+            return EFFECTS_TYPE;
+        } else {
+            return SOUNDTRACK_TYPE;
+        }
+    }
+
+    @Override
+    public String getClipText(String clip) {
+        Optional<Text> text = this.manager.getClipLinker().getPart(clip).getText();
         if (text.isPresent()) {
             return text.get().getContent();
         } else {
@@ -587,15 +606,20 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public String getClipType (String clip) {
+    public String getClipType(String clip) {
        final var type = this.manager.getClipLinker().getPart(clip).getType();
-       if (type.equals(RPPart.PartType.EFFECTS)) {
-           return "Effects";
-       } else if (type.equals(RPPart.PartType.SPEECH)) {
-           return "Speech";
+       if (type.equals(RPPart.PartType.SPEECH)) {
+           return SPEECH_TYPE;
+       } else if (type.equals(RPPart.PartType.EFFECTS)) {
+           return EFFECTS_TYPE;
        } else {
-           return "Soundtrack";
+           return SOUNDTRACK_TYPE;
        }
+    }
+
+    @Override
+    public String getClipDescription(String clip) {
+        return this.manager.getClipLinker().getPart(clip).getDescription().orElse("");
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES

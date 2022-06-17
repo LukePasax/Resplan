@@ -164,8 +164,12 @@ public interface Controller {
 
     void uploadTextFromFile(String clipTitle, String fileName) throws IOException;
 
+    String getChannelType(String channel);
+
     String getClipText(String clipTitle);
 
     String getClipType(String clip);
+
+    String getClipDescription(String clip);
 
 }

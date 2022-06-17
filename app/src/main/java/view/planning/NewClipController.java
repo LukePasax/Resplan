@@ -51,7 +51,7 @@ public class NewClipController {
             AlertDispatcher.dispatchError("Select a duration");
         } else {
             try {
-                Starter.getController().newClip(this.typePicker.getValue(),
+                Starter.getController().newClip(Starter.getController().getChannelType(this.channelPicker.getValue()),
                         this.clipTitleSelection.getText(), this.clipDescriptionSelection.getText(),
                         this.channelPicker.getValue(), this.converter.fromString(this.startTimePicker.getText()).doubleValue(),
                         this.converter.fromString(this.durationPicker.getText()).doubleValue(), this.file);
