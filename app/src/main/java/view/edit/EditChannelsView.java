@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.util.StringConverter;
 import view.common.App;
 import view.common.ChannelsView;
+import view.common.NumberFormatConverter;
 import view.common.TimeAxisSetter;
 import view.common.ToolBarSetter;
 import view.common.ViewDataImpl.Channel;
@@ -32,7 +33,8 @@ public class EditChannelsView extends ChannelsView {
 	@Override
 	public Node drawClip(Clip clip) {
 		Label title = new Label(clip.getTitle());
-		return title;
+		Label contentPos = clip.isEmpty() ? new Label("empty") : new Label("audio pos:" + new NumberFormatConverter().toString(clip.getContentPosition()));
+		return new VBox(title, contentPos);
 	}
 
 	@Override
