@@ -98,11 +98,11 @@ public class ControllerImpl implements Controller {
                 if (clip.isEmpty()) {
                     App.getData().addClip(App.getData().getChannel(c.getTitle()), new ViewDataImpl.Clip(
                             p.getTitle(), this.manager.getClipTime(p.getTitle(), c.getTitle()), clip.getDuration(),
-                            Optional.empty(), Optional.empty()));
+                            Optional.empty(), Optional.empty(), Optional.empty()));
                 } else {
                     App.getData().addClip(App.getData().getChannel(c.getTitle()), new ViewDataImpl.Clip(
                             p.getTitle(), this.manager.getClipTime(p.getTitle(), c.getTitle()), clip.getDuration(),
-                            Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration())));
+                            Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration()), Optional.of(((File)clip.getContent()).getName())));
                 }
             });
         });
@@ -223,10 +223,10 @@ public class ControllerImpl implements Controller {
         RPClip<?> clip = this.manager.getClipFromTitle(title);
         if (clip.isEmpty()) {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time, duration,
-                    Optional.empty(), Optional.empty()));
+                    Optional.empty(), Optional.empty(), Optional.empty()));
         } else {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time, this.manager.getClipDuration(title),
-                    Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration())));
+                    Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration()), Optional.of(((File)clip.getContent()).getName())));
         }
         App.getData().setProjectLenght(this.getProjectLength());
     }
@@ -336,10 +336,10 @@ public class ControllerImpl implements Controller {
         RPClip<?> rpClip = this.manager.getClipFromTitle(clip);
         if (rpClip.isEmpty()) {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration,
-                    Optional.empty(), Optional.empty()));
+                    Optional.empty(), Optional.empty(), Optional.empty()));
         } else {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration,
-                    Optional.of(rpClip.getContentPosition()), Optional.of(rpClip.getContentDuration())));
+                    Optional.of(rpClip.getContentPosition()), Optional.of(rpClip.getContentDuration()), Optional.of(((File)rpClip.getContent()).getName())));
         }
     }
 

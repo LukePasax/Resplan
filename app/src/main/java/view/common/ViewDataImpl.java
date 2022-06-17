@@ -236,19 +236,29 @@ public class ViewDataImpl implements ViewData {
 		private DoubleProperty duration = new SimpleDoubleProperty();;
 		private Optional<Double> contentPosition;
 		private Optional<Double> contentDuration;
+		private Optional<String> contentFileName;
 		private Set<Node> view = new HashSet<>();
 		
 		
-		public Clip(String title, Double position, Double duration, Optional<Double> contentPosition, Optional<Double> contentDuration) {
+		public Clip(String title, Double position, Double duration, Optional<Double> contentPosition, Optional<Double> contentDuration, Optional<String> contentFileName) {
 			super();
 			this.title = title;
 			this.position.set(position);
 			this.duration.set(duration);
-			if(contentDuration.isEmpty() != contentPosition.isEmpty()) {
-				throw new IllegalArgumentException("If the clip is empty no content position and duration must be specified. Else both content position and duration must be specified.");
-			}
+			this.contentFileName = contentFileName;
 			this.contentPosition = contentPosition;
 			this.contentDuration = contentDuration;
+			if(!coerentOptionals()) {
+				this.contentFileName = Optional.empty();
+				this.contentPosition = Optional.empty();
+				this.contentDuration = Optional.empty();
+				throw new IllegalArgumentException("If the clip is empty no content position and duration must be specified. Else both content position and duration must be specified.");
+			}
+		}
+		
+		private boolean coerentOptionals() {
+			boolean check = this.contentDuration.isEmpty();
+			return check == this.contentPosition.isEmpty() && check == this.contentFileName.isEmpty(); 
 		}
 		
 		public String getTitle() {
