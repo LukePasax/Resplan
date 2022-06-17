@@ -160,4 +160,10 @@ public interface Controller {
 
     Map<String, Float> getEffectParameters(String channel, int index);
 
+    void setClipText(String clipTitle, String text);
+
+    void uploadTextFromFile(String clipTitle, String fileName) throws IOException;
+
+    String getClipText(String clipTitle);
+
 }

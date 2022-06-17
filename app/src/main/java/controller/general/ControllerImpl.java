@@ -23,6 +23,7 @@ import net.beadsproject.beads.ugens.RecordToSample;
 import planning.Element;
 import planning.RPPart;
 import planning.RPRole;
+import planning.TextFactoryImpl;
 import view.common.AlertDispatcher;
 import view.common.App;
 import view.common.ViewDataImpl;
@@ -566,6 +567,22 @@ public class ControllerImpl implements Controller {
 
     private ProcessingUnit getProcessingUnit(String channel) {
         return this.manager.getChannelLinker().getChannel(this.manager.getGroup(channel)).getProcessingUnit().get();
+    }
+
+    @Override
+    public void setClipText(String clipTitle, String text) {
+        this.manager.getClipLinker().getPart(clipTitle).addText(new TextFactoryImpl().createFromString(text));
+    }
+
+    @Override
+    public void uploadTextFromFile(String clipTitle, String fileName) throws IOException {
+        this.manager.getClipLinker().getPart(clipTitle).addText(new TextFactoryImpl().createFromFile(fileName));
+    }
+
+    @Override
+    public String getClipText(String clipTitle) {
+
+        return this.manager.getClipLinker().getPart(clipTitle).getText().get().getContent();
     }
 
     // ONLY FOR TEMPORARY TESTING PURPOSES
