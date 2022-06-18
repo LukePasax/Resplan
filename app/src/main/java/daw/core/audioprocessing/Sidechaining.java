@@ -6,8 +6,7 @@ package daw.core.audioprocessing;
  * to the volume of another source, so that the sounds do not overlap.
  * Practically, sidechaining is a property that a {@link ProcessingUnit} may possess.
  * A {@link ProcessingUnit} that is sidechained gets an input from another audio source to calculate the
- * level of compression. This external audio source can always be changed after initialization, by calling
- * the method setSidechain.
+ * level of compression.
  */
 public interface Sidechaining {
 }

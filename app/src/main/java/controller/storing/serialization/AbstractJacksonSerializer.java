@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import daw.core.audioprocessing.RPEffect;
-import daw.core.audioprocessing.BasicSidechaining;
 import daw.core.clip.RPClip;
 import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.Panner;

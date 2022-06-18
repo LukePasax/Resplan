@@ -20,10 +20,10 @@ public class TestProcessingUnitBuilder {
             final ProcessingUnit pu = builder.compressor(1).highPassFilter(2,100.0f)
                     .reverb(1).lowPassFilter(1,100.0f).sidechain(
                     new SamplePlayer(AudioContextManager.getAudioContext(),1),1).build();
-            assertEquals(List.of(BasicSidechaining.class, Compression.class, HighPassFilter.class,
+            assertEquals(List.of(SidechainingImpl.class, Compression.class, HighPassFilter.class,
                             DigitalReverb.class, LowPassFilter.class), this.ref.getList(pu.getEffects()));
             assertTrue(pu.isSidechainingPresent());
-            assertEquals(Set.of(BasicSidechaining.class),
+            assertEquals(Set.of(SidechainingImpl.class),
                     this.ref.getSet(pu.getEffectAtPosition(1).getConnectedInputs()));
             assertEquals(Set.of(HighPassFilter.class),
                     this.ref.getSet(pu.getEffectAtPosition(3).getConnectedInputs()));

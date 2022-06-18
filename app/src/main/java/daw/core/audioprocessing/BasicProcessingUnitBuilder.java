@@ -28,7 +28,7 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     @Override
     public ProcessingUnitBuilder sidechain(UGen u, int channels) {
         if (!this.sidechainingPresent) {
-            this.effects.add(new BasicSidechaining(u, channels));
+            this.effects.add(new SidechainingImpl(u, channels));
             this.sidechainingPresent = true;
         }
         return this;

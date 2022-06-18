@@ -70,7 +70,7 @@ public class TestSerializeAndDeserialize {
             File file = new File(Controller.WORKING_DIRECTORY + Controller.SEP + "src" + Controller.SEP +
                     "test" + Controller.SEP + "resources" + Controller.SEP + "audio" + Controller.SEP +
                     "Alergy - Brain in the Jelly.wav");
-            man.addClip(RPPart.PartType.EFFECTS,"part1", Optional.empty(),
+            man.addClip(RPPart.PartType.EFFECTS,"part1", Optional.of("ciao"),
                     "claps",0.00, 0.20,Optional.empty());
             man.addClip(RPPart.PartType.EFFECTS, "part2", Optional.empty(),
                     "claps", 10.00, 0.50, Optional.of(file));

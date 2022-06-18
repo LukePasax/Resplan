@@ -11,20 +11,20 @@ import net.beadsproject.beads.core.UGen;
  * instead of an interface), this implementation of {@link Sidechaining} is the only one currently supported.
  * This means all clients must use this class when sidechaining is needed. </p>
  */
-public class BasicSidechaining extends AbstractCompression implements Sidechaining, AudioElement {
+public class SidechainingImpl extends AbstractCompression implements Sidechaining, AudioElement {
 
     /**
-     * Constructs a {@link BasicSidechaining} object with the given parameters.
+     * Constructs a {@link SidechainingImpl} object with the given parameters.
      * @param u the channel to be sidechained.
      * @param channels the number of inputs and outputs of the given channel.
      */
-    public BasicSidechaining(UGen u, int channels) {
+    public SidechainingImpl(UGen u, int channels) {
         super(channels);
         this.compressor.setSideChain(u);
     }
 
     @JsonCreator
-    private BasicSidechaining(@JsonProperty("ins") int channels) {
+    private SidechainingImpl(@JsonProperty("ins") int channels) {
         super(channels);
     }
 

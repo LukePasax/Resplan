@@ -35,7 +35,7 @@ public interface ProcessingUnit {
      * the source of the sidechaining, first call removeSidechaining and then this method.
      * @param s the compressor that performs the sidechaining.
      */
-    void addSidechaining(BasicSidechaining s);
+    void addSidechaining(SidechainingImpl s);
 
     /**
      * Makes the processing unit not be sidechained to any external source.

@@ -49,10 +49,10 @@ public class TestProcessingUnitAddition {
 
     @Test
     public void testSidechainAddition() {
-        this.pu.addSidechaining(new BasicSidechaining(new SamplePlayer(AudioContextManager.getAudioContext(), 2),2));
+        this.pu.addSidechaining(new SidechainingImpl(new SamplePlayer(AudioContextManager.getAudioContext(), 2),2));
         assertTrue(this.pu.isSidechainingPresent());
-        assertEquals(List.of(BasicSidechaining.class, Gate.class, Compression.class), this.ref.getList(this.pu.getEffects()));
-        assertEquals(Set.of(BasicSidechaining.class), this.ref.getSet(this.pu.getEffectAtPosition(1).getConnectedInputs()));
+        assertEquals(List.of(SidechainingImpl.class, Gate.class, Compression.class), this.ref.getList(this.pu.getEffects()));
+        assertEquals(Set.of(SidechainingImpl.class), this.ref.getSet(this.pu.getEffectAtPosition(1).getConnectedInputs()));
     }
 
 }

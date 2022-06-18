@@ -29,8 +29,8 @@ public class BasicProcessingUnit implements ProcessingUnit {
         this.gainIn = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
         this.gainOut = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
         for (final var effect: effects) {
-            if (effect instanceof BasicSidechaining) {
-                this.addSidechaining((BasicSidechaining) effect);
+            if (effect instanceof SidechainingImpl) {
+                this.addSidechaining((SidechainingImpl) effect);
             } else {
                 this.addEffect(effect);
             }
@@ -60,7 +60,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
      * @param s the compressor that performs the sidechaining.
      */
     @Override
-    public void addSidechaining(BasicSidechaining s) {
+    public void addSidechaining(SidechainingImpl s) {
         if (!this.isSidechainingPresent()) {
             this.effects.add(0, s);
             s.getGainIn().addInput(this.gainIn);
@@ -91,7 +91,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
     public boolean isSidechainingPresent() {
         // This check is useful to initialize the unit. After that it becomes useless.
         if (!this.effects.isEmpty()) {
-            return this.effects.get(0) instanceof BasicSidechaining;
+            return this.effects.get(0) instanceof SidechainingImpl;
         }
         return false;
     }
@@ -149,7 +149,7 @@ public class BasicProcessingUnit implements ProcessingUnit {
      */
     @Override
     public void addEffectAtPosition(RPEffect u, int index) {
-        if (u instanceof BasicSidechaining) {
+        if (u instanceof SidechainingImpl) {
             throw new IllegalArgumentException("To add a sidechained compressor use addSidechaining.");
         }
         if (index >= 0 && index <= this.numberOfEffects()) {
@@ -215,8 +215,8 @@ public class BasicProcessingUnit implements ProcessingUnit {
                 newIndex >= 0 &&
                 currentIndex <= this.numberOfEffects()-1 &&
                 newIndex <= this.numberOfEffects()-1 &&
-                !(this.getEffectAtPosition(currentIndex) instanceof BasicSidechaining) &&
-                !(this.getEffectAtPosition(newIndex) instanceof BasicSidechaining)) {
+                !(this.getEffectAtPosition(currentIndex) instanceof SidechainingImpl) &&
+                !(this.getEffectAtPosition(newIndex) instanceof SidechainingImpl)) {
             final var temp = this.getEffectAtPosition(currentIndex);
             this.removeEffectAtPosition(currentIndex);
             this.addEffectAtPosition(temp, newIndex);
@@ -237,8 +237,8 @@ public class BasicProcessingUnit implements ProcessingUnit {
                 index2 >= 0 &&
                 index1 <= this.numberOfEffects()-1 &&
                 index2 <= this.numberOfEffects()-1 &&
-                !(this.getEffectAtPosition(index1) instanceof BasicSidechaining) &&
-                !(this.getEffectAtPosition(index2) instanceof BasicSidechaining)) {
+                !(this.getEffectAtPosition(index1) instanceof SidechainingImpl) &&
+                !(this.getEffectAtPosition(index2) instanceof SidechainingImpl)) {
             this.moveEffect(index1, index2);
             this.moveEffect(index2-1, index1);
         } else {

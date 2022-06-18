@@ -7,7 +7,6 @@ import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
 
 import java.util.Map;
-import java.util.Set;
 
 /**
  * This class is an extension of {@link UGen}. In the context of this software, this class is the one
@@ -20,7 +19,7 @@ import java.util.Set;
         @JsonSubTypes.Type(value = LowPassFilter.class, name = "low pass"),
         @JsonSubTypes.Type(value = Gate.class, name = "gate"),
         @JsonSubTypes.Type(value = DigitalReverb.class, name = "reverb"),
-        @JsonSubTypes.Type(value = BasicSidechaining.class, name = "sidechaining")
+        @JsonSubTypes.Type(value = SidechainingImpl.class, name = "sidechaining")
 })
 public abstract class RPEffect extends UGen implements AudioElement {
 

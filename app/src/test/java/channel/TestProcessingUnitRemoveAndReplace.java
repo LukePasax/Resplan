@@ -79,7 +79,7 @@ public class TestProcessingUnitRemoveAndReplace {
         this.pu.removeSidechaining();
         assertFalse(this.pu.isSidechainingPresent());
         assertEquals(Set.of(), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
-        this.pu.addSidechaining(new BasicSidechaining(new SamplePlayer(1), 1));
+        this.pu.addSidechaining(new SidechainingImpl(new SamplePlayer(1), 1));
         assertEquals(Set.of(), this.ref.getSet(this.pu.getEffectAtPosition(0).getConnectedInputs()));
     }
 
