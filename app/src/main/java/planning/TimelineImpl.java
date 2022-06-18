@@ -1,5 +1,8 @@
 package planning;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -9,7 +12,8 @@ import java.util.Set;
  * It's the implementation of a {@link planning.RPTimeline}
  */
 public class TimelineImpl implements RPTimeline{
-	
+
+	@JsonProperty
 	private Map<Double, RPSection> sections = new HashMap<>();
 
 	private boolean isAddValid(double initialTime, RPSection section) {
@@ -78,7 +82,7 @@ public class TimelineImpl implements RPTimeline{
 			return totalDuration;
 		}
 		double max = this.sections.keySet().stream()
-						.max((i1, i2) -> i1.compareTo(i2)).get();
+						.max(Double::compareTo).get();
 		for(Double i : this.sections.keySet()) {
 			if(i.equals(max)) {
 				totalDuration = i + this.sections.get(i).getDuration();
@@ -91,6 +95,7 @@ public class TimelineImpl implements RPTimeline{
 	 * {@inheritDoc}
 	 */
 	@Override
+	@JsonIgnore
 	public Set<Map.Entry<Double,RPSection>> getAllSections() {
 		return this.sections.entrySet();
 	}

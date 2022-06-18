@@ -60,6 +60,8 @@ public class TestSerializeAndDeserialize {
         man.addChannel(RPRole.RoleType.EFFECTS, "claps", Optional.of("ciao"));
         man.createGroup("myStuff", RPRole.RoleType.EFFECTS);
         man.addToGroup(role,"myStuff");
+        man.addSection("first", Optional.of("ciao"), 0.10, 0.0);
+        man.addSection("second", Optional.of("bella"), 0.50, 0.0);
         final var speaker1 = new SimpleSpeaker(1, "Giacomo", "Sirri");
         final var speaker2 = new SimpleSpeaker(2, "Luca", "Pasini");
         man.addSpeakerToRubric(speaker1);
@@ -73,7 +75,7 @@ public class TestSerializeAndDeserialize {
                     "claps",0.00, 0.20,Optional.empty());
             man.addClip(RPPart.PartType.EFFECTS, "part2", Optional.empty(),
                     "claps", 10.00, 0.50, Optional.of(file));
-        } catch (ImportException | ClipNotFoundException e) {
+        } catch (ImportException e) {
             e.printStackTrace();
         }
         AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer(true, false);

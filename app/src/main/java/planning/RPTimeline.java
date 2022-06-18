@@ -1,5 +1,7 @@
 package planning;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -7,6 +9,7 @@ import java.util.Set;
 /**
  * This interface represents the timeline at high level
  */
+@JsonDeserialize(as = TimelineImpl.class)
 public interface RPTimeline {
 	
 	/**

@@ -47,12 +47,16 @@ public class ManagerDeserializer extends AbstractJacksonDeserializer<Manager> {
                             man.getClipTime(p.getTitle(), r.getTitle()), man.getClipDuration(p.getTitle()),
                             Optional.of(new File(((SampleClip) man.getClipFromTitle(p.getTitle())).getContent().getFileName())));
                 }
-            } catch (ImportException | ClipNotFoundException e) {
+            } catch (ImportException e) {
                 throw new RuntimeException(e);
             }
         }));
         // add all speakers
         man.getSpeakersInRubric().forEach(finalMan::addSpeakerToRubric);
+        man.getSections().forEach(i -> finalMan.addSection(i.getValue().getTitle(), i.getValue().getDescription(),
+                i.getKey(), 0.0));
+        // set project length
+        finalMan.updateProjectLength();
     }
 
 }

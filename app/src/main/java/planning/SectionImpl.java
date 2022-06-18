@@ -1,5 +1,8 @@
 package planning;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 import java.util.Optional;
 
@@ -24,9 +27,16 @@ public class SectionImpl implements RPSection {
 	 * @param duration
 	 * the duration of the section
 	 */
-	public SectionImpl(final String title, final String description, final double duration) {
+	@JsonCreator
+	public SectionImpl(@JsonProperty("title") final String title,
+					   @JsonProperty("description") final String description,
+					   @JsonProperty("duration") final double duration) {
 		this.title = title;
-		this.description = Optional.of(description);
+		if (description != null) {
+			this.description = Optional.of(description);
+		} else {
+			this.description = Optional.empty();
+		}
 		this.duration = duration;
 	}
 	

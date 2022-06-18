@@ -31,8 +31,6 @@ public class TestApplication {
             controller.start();
         } catch (ImportException e) {
             e.printStackTrace();
-        } catch (ClipNotFoundException e) {
-            throw new RuntimeException(e);
         }
     }
 
