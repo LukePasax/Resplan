@@ -8,8 +8,8 @@ import java.io.IOException;
  * The use of this interface encapsulates the mean through which the source is read,
  * as it may vary with time or necessity. Furthermore, different implementations can provide different
  * ways to read for very specific instances, for example if the emphasis has to be put on efficiency.
- * Implementations of this interface must specify the source to read from. This means that to read from
- * two different sources, the client will need two different instances of the class.
+ * Implementations' constructors must specify the source to read from. This means that to read from
+ * two different sources, the client will need two different instances of the implementation.
  */
 public interface Reader {
 

@@ -6,7 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-public class FileReader implements Reader {
+/**
+ * Implementation of {@link Reader} specific for text files, such as .txt and .json files.
+ */
+public class RPFileReader implements Reader {
 
     private final File file;
 
@@ -15,7 +18,7 @@ public class FileReader implements Reader {
      * the file given as input of this constructor.
      * @param file a {@link File} to read.
      */
-    public FileReader(File file) {
+    public RPFileReader(File file) {
         this.file = Objects.requireNonNull(file);
     }
 
