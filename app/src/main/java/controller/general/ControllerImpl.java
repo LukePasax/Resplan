@@ -211,7 +211,7 @@ public class ControllerImpl implements Controller {
 
     @Override
     public void newClip(String type, String title, String description, String channel, Double time,
-                        Double duration, File content) throws IllegalArgumentException, ImportException, ClipNotFoundException {
+                        Double duration, File content) throws IllegalArgumentException, ImportException {
         RPPart.PartType partType;
         if (type.equals(SPEECH_TYPE)) {
             partType = RPPart.PartType.SPEECH;

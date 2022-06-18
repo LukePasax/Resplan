@@ -59,7 +59,7 @@ public interface Controller {
     void newChannel(String type, String title, String description) throws IllegalArgumentException;
 
     void newClip(String type, String title, String description, String channel, Double startTime,
-                 Double duration, File content) throws IllegalArgumentException, ImportException, ClipNotFoundException;
+                 Double duration, File content) throws IllegalArgumentException, ImportException;
 
     void deleteChannel(String title);
 

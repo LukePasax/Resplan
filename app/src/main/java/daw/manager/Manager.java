@@ -27,8 +27,8 @@ public class Manager implements RPManager {
     private final RPClipLinker clipLinker;
     @JsonProperty
     private final Map<RPRole, List<RPRole>> groupMap;
+    @JsonProperty
     private final RPTimeline timeline;
-    @JsonIgnore
     private final RPClipConverter clipConverter;
     private final SpeakerRubric rubric;
     private double projectLength;
@@ -194,9 +194,8 @@ public class Manager implements RPManager {
      * @throws ImportException if there were problems importing the file
      */
     @Override
-    public void addClip(RPPart.PartType type, String title, Optional<String> description,String channel,Double time,
-                        Double duration, Optional<File> content)
-            throws ImportException, IllegalArgumentException, ClipNotFoundException {
+    public void addClip(RPPart.PartType type, String title, Optional<String> description, String channel, Double time,
+                        Double duration, Optional<File> content) throws ImportException, IllegalArgumentException {
         if (this.clipLinker.clipExists(title)) {
             throw new IllegalArgumentException("Clip already exists");
         } else if (title.equals("")) {
@@ -212,7 +211,7 @@ public class Manager implements RPManager {
         } else {
             clip = new EmptyClip(duration,title);
         }
-        final RPPart part = createPart(type, title, description);
+        final RPPart part = this.createPart(type, title, description);
         this.channelLinker.getTapeChannel(channelLinker.getRole(channel)).insertRPClip(clip, time);
         this.clipLinker.addClipReferences(clip, part);
         this.updateProjectLength();
@@ -236,7 +235,8 @@ public class Manager implements RPManager {
      * @throws NoSuchElementException if no Clip with the given title exists
      */
     @Override
-    public void addFileToClip(String clip, File content) throws ImportException, NoSuchElementException, ClipNotFoundException {
+    public void addFileToClip(String clip, File content)
+            throws ImportException, NoSuchElementException, ClipNotFoundException {
         if (!this.clipLinker.clipExists(clip)) {
             throw new NoSuchElementException("The Clip does not exist");
         }
@@ -266,7 +266,8 @@ public class Manager implements RPManager {
      * @throws NoSuchElementException   if no Clip with the given title exists
      */
     @Override
-    public void removeFileFromClip(String clip) throws NoSuchElementException, IllegalArgumentException, ClipNotFoundException {
+    public void removeFileFromClip(String clip)
+            throws NoSuchElementException, IllegalArgumentException, ClipNotFoundException {
         if (!this.clipLinker.clipExists(clip)) {
             throw new NoSuchElementException("The Clip does not exist");
         }
@@ -441,7 +442,8 @@ public class Manager implements RPManager {
     }
 
     @Override
-    public void addSection(String title, Optional<String> description, Double initialTime, Double duration) throws IllegalArgumentException {
+    public void addSection(String title, Optional<String> description, Double initialTime, Double duration)
+            throws IllegalArgumentException {
         RPSection section = this.createSection(title, description, duration);
         boolean flag = this.timeline.addSection(initialTime, section);
         if (!flag) {
@@ -463,14 +465,19 @@ public class Manager implements RPManager {
     }
 
     @Override
+    @JsonIgnore
     public Set<Map.Entry<Double, RPSection>> getSections() {
         return this.timeline.getAllSections();
     }
 
     @Override
-    public void updateProjectLength() throws ClipNotFoundException {
-        if (this.furthestClipTime() + MIN_SPACING > MIN_LENGTH) {
-            this.projectLength = this.furthestClipTime() + MIN_SPACING;
+    public void updateProjectLength() {
+        try {
+            if (this.furthestClipTime() + MIN_SPACING > MIN_LENGTH) {
+                this.projectLength = this.furthestClipTime() + MIN_SPACING;
+            }
+        } catch (ClipNotFoundException e) {
+            this.projectLength = MIN_LENGTH;
         }
     }
 

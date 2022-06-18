@@ -56,8 +56,7 @@ public class NewClipController {
                         this.channelPicker.getValue(), this.converter.fromString(this.startTimePicker.getText()).doubleValue(),
                         this.converter.fromString(this.durationPicker.getText()).doubleValue(), this.file);
                 this.clipTitleSelection.getScene().getWindow().hide();
-            } catch (IllegalArgumentException | ImportException | NoSuchElementException | IllegalStateException |
-                     ClipNotFoundException e) {
+            } catch (IllegalArgumentException | ImportException | NoSuchElementException | IllegalStateException e) {
                 AlertDispatcher.dispatchError(e.getLocalizedMessage());
             }
         }

@@ -68,7 +68,7 @@ public interface RPManager {
      * @throws IllegalArgumentException if a Clip with the given title already exists
      */
     void addClip(RPPart.PartType type, String title, Optional<String> description,String channel,Double time,
-                 Double duration,  Optional<File> content) throws ImportException, IllegalArgumentException, ClipNotFoundException;
+                 Double duration,  Optional<File> content) throws ImportException, IllegalArgumentException;
 
     /**
      * This method adds a content to a Clip.
