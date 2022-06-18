@@ -15,6 +15,10 @@ public abstract class Dynamics extends RPEffect {
 
     protected final Compressor compressor;
 
+    /**
+     * Sets up a dynamics effect.
+     * @param channels the number of inputs and outputs of this effect.
+     */
     public Dynamics(int channels) {
         super(channels);
         this.compressor = new Compressor(AudioContextManager.getAudioContext(), channels);

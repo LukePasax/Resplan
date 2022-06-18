@@ -18,7 +18,7 @@ public class DigitalReverb extends RPEffect {
     private final Reverb rev;
 
     /**
-     * Constructs a reverb and sets its parameters to the current default.
+     * Constructs a reverb and sets its parameters to the default value.
      * @param channels the number of inputs and outputs of this effect.
      */
     @JsonCreator

@@ -1,7 +1,5 @@
 package daw.core.audioprocessing;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.core.AudioContext;
 import net.beadsproject.beads.core.UGen;
@@ -9,46 +7,35 @@ import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.BiquadFilter;
 import net.beadsproject.beads.ugens.RMS;
 
-/**
- * This class represents a gate, which is a tool that reduces or eliminates noise coming from an audio source.
- * Specifically, a gate parses the audio signal and reduces the volume of all the samples that do not reach
- * a certain volume threshold.
- */
-public class GateEffect extends UGen {
+// package protection since it is wrapped by Gate
+class GateEffect extends UGen {
 
     private final int channels;
     private final int memSize;
     private int index = 0;
     private final float[][] delayMem;
-    private UGen powerUGen;
     private final BiquadFilter pf;
-    private float downstep = .9998f, upstep = 1.0002f, ratio = .5f,
-            threshold = .5f, knee = 1;
-    private float tok, kt, ikp1, ktrm1, tt1mr;
-
-    private float attack, decay;
-    private float currval = 1;
-    private float delay;
-    private final int delaySamps;
-    private int rmsMemorySize = 500;
-    private UGen myInputs;
+    private float downStep = .9998f;
+    private float upStep = 1.0002f;
+    private float ratio = .5f;
+    private float threshold = .5f;
+    private float knee = 1;
+    private float tok;
+    private float kt;
+    private float ikp1;
+    private float kTrm1;
+    private float tt1mr;
+    private float attack;
+    private float decay;
+    private float currentValue = 1;
+    private final int delaySamples;
     private final float[][] myBufIn;
-
-    /**
-     * Constructs a gate and sets its parameters to the current default.
-     * @param channels the number of inputs and outputs of this effect.
-     */
-    @JsonCreator
-    public GateEffect(@JsonProperty("ins") int channels) {
-        this(AudioContextManager.getAudioContext(), channels);
-    }
 
     GateEffect(AudioContext context, int channels) {
         super(AudioContextManager.getAudioContext(), channels, channels);
         this.channels = channels;
-        this.delay = 0;
-        this.delaySamps = 0;
-        this.memSize = (int) context.msToSamples(this.delay) + 1;
+        this.delaySamples = 0;
+        this.memSize = (int) context.msToSamples(0) + 1;
         this.delayMem = new float[channels][this.memSize];
         this.myBufIn = this.bufIn;
         class MyInputs extends UGen {
@@ -61,16 +48,23 @@ public class GateEffect extends UGen {
             public void calculateBuffer() {
             }
         }
-        this.myInputs = new MyInputs(context, channels);
+        final UGen myInputs = new MyInputs(context, channels);
+        this.pf = new BiquadFilter(context, 1, BiquadFilter.BUTTERWORTH_LP).setFrequency(31);
+        final UGen powerUGen = new RMS(context, channels, 500);
+        // myInputs -> powerUGen -> pf
+        powerUGen.addInput(myInputs);
+        this.pf.addInput(powerUGen);
         this.sendData(new DataBead("attack", 1.0f, "decay", 0.5f, "ratio", 2.0f,
                 "threshold", 0.5f, "knee", 0.5f));
-        this.pf = (new BiquadFilter(context, 1, BiquadFilter.BUTTERWORTH_LP))
-                .setFrequency(31);
-        this.powerUGen = new RMS(context, channels, this.rmsMemorySize);
-        // myInputs -> powerUGen -> pf
-        this.powerUGen.addInput(this.myInputs);
-        this.pf.addInput(this.powerUGen);
-        this.calcVals();
+        this.calculateCurrentValues();
+    }
+
+    private void calculateCurrentValues() {
+        this.tok = this.threshold / this.knee;
+        this.kt = this.knee * this.threshold;
+        this.ikp1 = 1 / (this.knee + 1);
+        this.kTrm1 = this.knee * this.ratio - 1;
+        this.tt1mr = this.threshold * (1 - this.ratio);
     }
 
     public void sendData(DataBead db) {
@@ -83,20 +77,12 @@ public class GateEffect extends UGen {
         }
     }
 
-    private void calcVals() {
-        this.tok = this.threshold / this.knee;
-        this.kt = this.knee * this.threshold;
-        this.ikp1 = 1 / (this.knee + 1);
-        this.ktrm1 = this.knee * this.ratio - 1;
-        this.tt1mr = this.threshold * (1 - this.ratio);
-    }
-
     public void setAttack(float attack) {
         if (attack < .0001f) {
             attack = .0001f;
         }
         this.attack = attack;
-        this.downstep = (float) Math.pow(Math.pow(10,attack/20f), -1000f/this.context.getSampleRate());
+        this.downStep = (float) Math.pow(Math.pow(10,attack/20f), -1000f/this.context.getSampleRate());
     }
 
     private void setDecay(float decay) {
@@ -104,7 +90,7 @@ public class GateEffect extends UGen {
             decay = .0001f;
         }
         this.decay = decay;
-        this.upstep = (float) Math.pow(Math.pow(10,decay/20f), 1000f/this.context.getSampleRate());
+        this.upStep = (float) Math.pow(Math.pow(10,decay/20f), 1000f/this.context.getSampleRate());
     }
 
     private void setRatio(float ratio) {
@@ -112,17 +98,17 @@ public class GateEffect extends UGen {
             ratio = .01f;
         }
         this.ratio = 1 / ratio;
-        this.calcVals();
+        this.calculateCurrentValues();
     }
 
     private void setThreshold(float threshold) {
         this.threshold = threshold;
-        this.calcVals();
+        this.calculateCurrentValues();
     }
 
     private void setKnee(float knee) {
         this.knee = knee + 1;
-        this.calcVals();
+        this.calculateCurrentValues();
     }
 
     @Override
@@ -141,11 +127,11 @@ public class GateEffect extends UGen {
                     target = ((p - this.threshold) * this.ratio + this.threshold) / p;
                 } else {
                     float x1 = (p - this.tok) * this.ikp1 + this.tok;
-                    target = ((this.ktrm1*x1+this.tt1mr) * (p-x1) / (x1*(this.knee-1)) + x1)  /  p;
+                    target = ((this.kTrm1 *x1+this.tt1mr) * (p-x1) / (x1*(this.knee-1)) + x1)  /  p;
                 }
                 this.setCurrentValue(target);
                 dm[this.index] = bi[i];
-                bo[i] = dm[(this.index + this.delaySamps) % this.memSize] * this.currval;
+                bo[i] = dm[(this.index + this.delaySamples) % this.memSize] * this.currentValue;
                 this.index = (this.index + 1) % this.memSize;
             }
         } else {
@@ -157,13 +143,13 @@ public class GateEffect extends UGen {
                     target = ((p - this.threshold) * this.ratio + this.threshold) / p;
                 } else {
                     float x1 = (p - this.tok) * this.ikp1 + this.tok;
-                    target = (this.ktrm1*x1+this.tt1mr) * (p-x1) / (x1*(this.knee-1)) + x1;
+                    target = (this.kTrm1 *x1+this.tt1mr) * (p-x1) / (x1*(this.knee-1)) + x1;
                 }
                 this.setCurrentValue(target);
-                int delIndex = (this.index + this.delaySamps) % this.memSize;
+                int delIndex = (this.index + this.delaySamples) % this.memSize;
                 for (int j = 0; j < this.channels; j++) {
                     this.delayMem[j][this.index] = this.bufIn[j][i];
-                    this.bufOut[j][i] = this.delayMem[j][delIndex] * this.currval;
+                    this.bufOut[j][i] = this.delayMem[j][delIndex] * this.currentValue;
                 }
                 this.index = (this.index + 1) % this.memSize;
             }
@@ -171,16 +157,18 @@ public class GateEffect extends UGen {
     }
 
     private void setCurrentValue(float target) {
-        if (this.currval < target) {
-            this.currval *= this.downstep;
-            if (this.currval < target)
-                this.currval = target;
-        } else if (this.currval > target) {
-            this.currval *= this.upstep;
-            if (this.currval > target)
-                this.currval = target;
+        if (this.currentValue < target) {
+            this.currentValue *= this.downStep;
+            if (this.currentValue < target)
+                this.currentValue = target;
+        } else if (this.currentValue > target) {
+            this.currentValue *= this.upStep;
+            if (this.currentValue > target)
+                this.currentValue = target;
         }
     }
+
+    // package protection since these methods are only used by Gate
 
     float getThreshold() {
         return this.threshold;
@@ -199,7 +187,7 @@ public class GateEffect extends UGen {
     }
 
     float getCurrentCompression() {
-        return this.currval;
+        return this.currentValue;
     }
 
 }

@@ -16,7 +16,7 @@ public abstract class Equalization extends RPEffect {
 
     /**
      * Sets up an equalization effect, which can be either a low pass filter or a high pass filter.
-     * @param channels the number of inputs of this effect.
+     * @param channels the number of inputs and outputs of this effect.
      * @param cutoffFrequency the frequency over (or under) which volume is attenuated.
      * @param low true if the requested filter is the low pass, false if it is the high pass.
      */
