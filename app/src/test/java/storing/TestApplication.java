@@ -1,6 +1,7 @@
 package storing;
 
 import controller.general.ControllerImpl;
+import daw.core.clip.ClipNotFoundException;
 import daw.core.mixer.Mixer;
 import daw.manager.ImportException;
 import daw.utilities.AudioContextManager;
@@ -30,6 +31,8 @@ public class TestApplication {
             controller.start();
         } catch (ImportException e) {
             e.printStackTrace();
+        } catch (ClipNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -9,6 +9,7 @@ import controller.storing.deserialization.AbstractJacksonDeserializer;
 import controller.storing.deserialization.ManagerDeserializer;
 import controller.storing.serialization.AbstractJacksonSerializer;
 import controller.storing.serialization.ManagerSerializer;
+import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
 import daw.manager.Manager;
 import org.junit.jupiter.api.Test;
@@ -69,6 +70,8 @@ public class TestSerializeAndDeserialize {
                     "claps", 10.00, 0.50, Optional.of(file));
         } catch (ImportException e) {
             e.printStackTrace();
+        } catch (ClipNotFoundException e) {
+            throw new RuntimeException(e);
         }
         AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer(true, false);
         WriteToFile writer = new WriteToFileImpl(new File(FILENAME));
