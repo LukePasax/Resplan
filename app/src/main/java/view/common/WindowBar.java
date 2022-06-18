@@ -154,6 +154,7 @@ public class WindowBar {
     }
 
     private void close(ActionEvent actionEvent) {
+        Starter.getController().stop();
         this.pane.getScene().getWindow().hide();
     }
 
