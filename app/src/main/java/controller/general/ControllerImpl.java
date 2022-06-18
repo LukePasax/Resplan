@@ -576,7 +576,7 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public void uploadTextFromFile(String clipTitle, String fileName) throws IOException {
+    public void setClipTextFromFile(String clipTitle, String fileName) throws IOException {
         this.manager.getClipLinker().getPart(clipTitle).addText(new TextFactoryImpl().createFromFile(fileName));
     }
 
@@ -596,13 +596,9 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public String getClipText(String clip) {
+    public Optional<String> getClipText(String clip) {
         Optional<Text> text = this.manager.getClipLinker().getPart(clip).getText();
-        if (text.isPresent()) {
-            return text.get().getContent();
-        } else {
-            return "";
-        }
+        return text.map(Text::getContent);
     }
 
     @Override

@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 import java.io.File;
@@ -21,10 +22,11 @@ public class RecorderController {
     public Label timeLabel;
     public TextArea textArea;
     public VBox recorderBox;
+    public GridPane grid;
 
     public void setClipTitle(String clipTitle) {
         this.clipTitle.setText(clipTitle);
-        this.textArea.setText(Starter.getController().getClipText(clipTitle));
+        Starter.getController().getClipText(clipTitle).ifPresent(s -> this.textArea.setText(s));
         this.textArea.setEditable(false);
     }
 

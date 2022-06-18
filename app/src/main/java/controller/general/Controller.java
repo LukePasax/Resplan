@@ -162,11 +162,11 @@ public interface Controller {
 
     void setClipText(String clipTitle, String text);
 
-    void uploadTextFromFile(String clipTitle, String fileName) throws IOException;
+    void setClipTextFromFile(String clipTitle, String fileName) throws IOException;
 
     String getChannelType(String channel);
 
-    String getClipText(String clipTitle);
+    Optional<String> getClipText(String clipTitle);
 
     String getClipType(String clip);
 
