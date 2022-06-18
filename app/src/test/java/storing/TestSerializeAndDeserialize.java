@@ -2,9 +2,9 @@ package storing;
 
 import controller.general.Controller;
 import controller.storing.Reader;
-import controller.storing.FileReader;
-import controller.storing.WriteToFile;
-import controller.storing.WriteToFileImpl;
+import controller.storing.RPFileReader;
+import controller.storing.Writer;
+import controller.storing.RPFileWriter;
 import controller.storing.deserialization.AbstractJacksonDeserializer;
 import controller.storing.deserialization.ManagerDeserializer;
 import controller.storing.serialization.AbstractJacksonSerializer;
@@ -26,9 +26,9 @@ public class TestSerializeAndDeserialize {
     public void simpleSerializationAndDeserialization() {
         final Manager man = new Manager();
         AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer(true, false);
-        WriteToFile writer = new WriteToFileImpl(new File(FILENAME));
+        Writer writer = new RPFileWriter(new File(FILENAME));
         AbstractJacksonDeserializer<Manager> deserializer = new ManagerDeserializer();
-        Reader reader = new FileReader(new File(FILENAME));
+        Reader reader = new RPFileReader(new File(FILENAME));
         try {
             writer.write(serializer.serialize(man));
             final var manAfterRead = deserializer.deserialize(reader.read());
@@ -44,7 +44,7 @@ public class TestSerializeAndDeserialize {
         Manager man = new Manager();
         try {
             man = new ManagerDeserializer()
-                    .deserialize(new FileReader(new File(FILENAME))
+                    .deserialize(new RPFileReader(new File(FILENAME))
                     .read());
         } catch (IOException e) {
             e.printStackTrace();
@@ -78,9 +78,9 @@ public class TestSerializeAndDeserialize {
             e.printStackTrace();
         }
         AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer(true, false);
-        WriteToFile writer = new WriteToFileImpl(new File(FILENAME));
+        Writer writer = new RPFileWriter(new File(FILENAME));
         AbstractJacksonDeserializer<Manager> deserializer = new ManagerDeserializer();
-        Reader reader = new FileReader(new File(FILENAME));
+        Reader reader = new RPFileReader(new File(FILENAME));
         try {
             writer.write(serializer.serialize(man));
             final var manAfterRead = deserializer.deserialize(reader.read());

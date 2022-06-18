@@ -1,6 +1,6 @@
 package controller.general;
 
-import controller.storing.WriteToFileImpl;
+import controller.storing.RPFileWriter;
 import controller.storing.serialization.ManagerSerializer;
 import controller.storing.serialization.Serializer;
 import daw.manager.Manager;
@@ -32,7 +32,7 @@ public class ProjectDownloaderImpl implements ProjectDownloader {
         if (!FilenameUtils.getExtension(file.getName()).equals("json")) {
             throw new FileFormatException("Selected file's format is not supported. Choose only .json files.");
         }
-        new WriteToFileImpl(file).write(this.serializer.serialize(manager));
+        new RPFileWriter(file).write(this.serializer.serialize(manager));
     }
 
 }

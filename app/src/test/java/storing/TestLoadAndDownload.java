@@ -4,7 +4,7 @@ import controller.general.Controller;
 import controller.general.ControllerImpl;
 import controller.general.DownloadingException;
 import controller.general.LoadingException;
-import controller.storing.WriteToFileImpl;
+import controller.storing.RPFileWriter;
 import controller.storing.serialization.ManagerSerializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,9 +42,9 @@ public class TestLoadAndDownload {
                 // opens the project that had been saved before
                 this.controller.openProject(file);
                 final var manAfterSave = this.controller.getManager();
-                new WriteToFileImpl(new File(Controller.WORKING_DIRECTORY + Controller.SEP + "prova10.json"))
+                new RPFileWriter(new File(Controller.WORKING_DIRECTORY + Controller.SEP + "prova10.json"))
                         .write(new ManagerSerializer(true, false).serialize(manBeforeSave));
-                new WriteToFileImpl(new File(Controller.WORKING_DIRECTORY + Controller.SEP + "prova11.json"))
+                new RPFileWriter(new File(Controller.WORKING_DIRECTORY + Controller.SEP + "prova11.json"))
                         .write(new ManagerSerializer(true, false).serialize(manAfterSave));
                 assertEquals(manBeforeSave, manAfterSave);
             } catch (DownloadingException | LoadingException ex) {

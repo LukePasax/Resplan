@@ -1,8 +1,8 @@
 package controller.general;
 
-import controller.storing.FileReader;
-import controller.storing.WriteToFile;
-import controller.storing.WriteToFileImpl;
+import controller.storing.RPFileReader;
+import controller.storing.Writer;
+import controller.storing.RPFileWriter;
 import daw.core.audioprocessing.ProcessingUnit;
 import daw.core.audioprocessing.RPEffect;
 import daw.core.clip.ClipNotFoundException;
@@ -75,7 +75,7 @@ public class ControllerImpl implements Controller {
     public void startApp() {
         try {
             // tries to load the template project
-            final var fileName = new FileReader(this.appSettings).read();
+            final var fileName = new RPFileReader(this.appSettings).read();
             if (fileName.isBlank()) {
                 // if no template project is set, then it opens an empty project
                 this.currentProject = null;
@@ -182,7 +182,7 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void setTemplateProject() throws DownloadingException, IllegalStateException {
-        final WriteToFile writer = new WriteToFileImpl(this.appSettings);
+        final Writer writer = new RPFileWriter(this.appSettings);
         if (this.currentProject == null) {
             throw new IllegalStateException("Save project before setting it as template.");
         }
@@ -200,7 +200,7 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void resetTemplateProject() throws DownloadingException {
-        final WriteToFile writer = new WriteToFileImpl(this.appSettings);
+        final Writer writer = new RPFileWriter(this.appSettings);
         try {
             writer.write("");
         } catch (IOException e) {
