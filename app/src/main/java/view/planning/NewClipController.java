@@ -27,7 +27,6 @@ public class NewClipController {
     public Button clipFilePicker;
     public TextField clipFileUrl;
     public ChoiceBox<String> channelPicker;
-    public ChoiceBox<String> typePicker;
     public TextField startTimePicker;
     public TextField durationPicker;
     private File file;
@@ -36,8 +35,6 @@ public class NewClipController {
     public void initialize() {
         this.channelPicker.getItems().addAll(Starter.getController().getChannelList());
         this.channelPicker.setValue(this.channelPicker.getItems().get(0));
-        this.typePicker.getItems().addAll("Speaker", "Effects", "Soundtrack");
-        this.typePicker.setValue(this.typePicker.getItems().get(0));
         this.converter = new NumberFormatConverter();
         this.startTimePicker.setTextFormatter(new TextFormatter<>(this.converter.getFormatterUnaryOperator()));
         this.durationPicker.setTextFormatter(new TextFormatter<>(this.converter.getFormatterUnaryOperator()));

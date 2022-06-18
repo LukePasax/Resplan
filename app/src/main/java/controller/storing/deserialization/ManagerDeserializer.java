@@ -53,6 +53,7 @@ public class ManagerDeserializer extends AbstractJacksonDeserializer<Manager> {
         }));
         // add all speakers
         man.getSpeakersInRubric().forEach(finalMan::addSpeakerToRubric);
+        // add all sections
         man.getSections().forEach(i -> finalMan.addSection(i.getValue().getTitle(), i.getValue().getDescription(),
                 i.getKey(), 0.0));
         // set project length

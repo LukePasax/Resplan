@@ -24,7 +24,6 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Label text="New Clip" textAlignment="CENTER" GridPane.columnIndex="1">
@@ -33,20 +32,18 @@
          </font></Label>
       <Label text="Title (mandatory)" GridPane.rowIndex="1" />
       <Label text="Description (optional)" GridPane.rowIndex="2" />
-      <Label text="Content" GridPane.rowIndex="7" />
+      <Label text="Content" GridPane.rowIndex="6" />
       <TextField fx:id="clipTitleSelection" maxWidth="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
       <TextField fx:id="clipDescriptionSelection" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-      <Button fx:id="newClipConfirm" defaultButton="true" mnemonicParsing="false" onAction="#okButtonPressed" prefWidth="52.0" styleClass="buttons" text="Ok" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-      <Button cancelButton="true" mnemonicParsing="false" onAction="#cancelButtonPressed" prefWidth="52.0" styleClass="buttons" text="Cancel" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-      <Button fx:id="clipFilePicker" mnemonicParsing="false" onAction="#pickFilePressed" styleClass="buttons" text="Pick file" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-      <TextField fx:id="clipFileUrl" editable="false" promptText="Empty" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-      <Label text="Channel" GridPane.rowIndex="4" />
-      <Label text="Start time" GridPane.rowIndex="5" />
-      <ChoiceBox fx:id="channelPicker" prefWidth="150.0" styleClass="selector" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
-      <Label text="Type" GridPane.rowIndex="3" />
-      <ChoiceBox fx:id="typePicker" prefWidth="150.0" styleClass="selector" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-      <Label text="Duration" GridPane.rowIndex="6" />
-      <TextField fx:id="startTimePicker" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
-      <TextField fx:id="durationPicker" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+      <Button fx:id="newClipConfirm" defaultButton="true" mnemonicParsing="false" onAction="#okButtonPressed" prefWidth="52.0" styleClass="buttons" text="Ok" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Button cancelButton="true" mnemonicParsing="false" onAction="#cancelButtonPressed" prefWidth="52.0" styleClass="buttons" text="Cancel" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+      <Button fx:id="clipFilePicker" mnemonicParsing="false" onAction="#pickFilePressed" styleClass="buttons" text="Pick file" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+      <TextField fx:id="clipFileUrl" editable="false" promptText="Empty" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Label text="Channel" GridPane.rowIndex="3" />
+      <Label text="Start time" GridPane.rowIndex="4" />
+      <ChoiceBox fx:id="channelPicker" prefWidth="150.0" styleClass="selector" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+      <Label text="Duration" GridPane.rowIndex="5" />
+      <TextField fx:id="startTimePicker" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+      <TextField fx:id="durationPicker" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
    </children>
 </GridPane>
