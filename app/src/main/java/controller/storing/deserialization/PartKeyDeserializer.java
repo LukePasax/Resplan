@@ -5,17 +5,9 @@ import com.fasterxml.jackson.databind.KeyDeserializer;
 import planning.*;
 import java.util.List;
 
-/**
- * Key deserializer for {@link planning.RPPart.PartType}.
- * Key deserializers are used for the deserialization of JSON content field names into Java Map keys.
- */
-public class PartKeyDeserializer extends KeyDeserializer {
+// package protection as it is used only by the ManagerDeserializer
+class PartKeyDeserializer extends KeyDeserializer {
 
-    /**
-     * {@inheritDoc}
-     * @param key the string representation of a part.
-     * @return an {@link RPPart}.
-     */
     @Override
     public RPPart deserializeKey(String key, DeserializationContext context) {
         final var values = this.extractValues(key);

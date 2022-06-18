@@ -8,17 +8,9 @@ import planning.SoundtrackRole;
 import planning.SpeechRole;
 import java.util.List;
 
-/**
- * Key deserializer for {@link planning.RPRole.RoleType}.
- * Key deserializers are used for the deserialization of JSON content field names into Java Map keys.
- */
-public class RoleKeyDeserializer extends KeyDeserializer {
+// package protection as it is used only by the ManagerDeserializer
+class RoleKeyDeserializer extends KeyDeserializer {
 
-    /**
-     * {@inheritDoc}
-     * @param key the string representation of a part.
-     * @return an {@link RPRole}.
-     */
     @Override
     public RPRole deserializeKey(String key, DeserializationContext context) {
         final var values = this.extractValues(key);

@@ -25,9 +25,9 @@ public abstract class AbstractJacksonDeserializer<T> implements Deserializer<T> 
     }
 
     /**
-     * Deserialize the given JSON data to retrieve an object.
+     * {@inheritDoc}
      * @param text the textual data to be deserialized.
-     * @return a deserialized object.
+     * @return {@inheritDoc}
      */
     @Override
     public abstract T deserialize(String text);
