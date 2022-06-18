@@ -319,7 +319,7 @@ public abstract class ChannelContentView extends Pane {
 				record.setDisable(true);
 				loadAudioFile.setDisable(true);
 			}
-			if (!Starter.getController().getClipType(clip.getTitle()).equals("Speech")) {
+			if (!Starter.getController().getClipType(clip.getTitle()).equals("SPEECH")) {
 				clipText.setDisable(true);
 			}
 			this.setOnContextMenuRequested(e -> menu.show(this, e.getScreenX(), e.getScreenY()));

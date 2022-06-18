@@ -6,6 +6,8 @@ import daw.manager.ImportException;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,9 +19,13 @@ public class RecorderController {
     public Button cancelButton;
     public Label clipTitle;
     public Label timeLabel;
+    public TextArea textArea;
+    public VBox recorderBox;
 
     public void setClipTitle(String clipTitle) {
         this.clipTitle.setText(clipTitle);
+        this.textArea.setText(Starter.getController().getClipText(clipTitle));
+        this.textArea.setEditable(false);
     }
 
     public void recPressed(ActionEvent actionEvent) {
