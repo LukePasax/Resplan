@@ -18,7 +18,7 @@ public class ProjectDownloaderImpl implements ProjectDownloader {
     private final Serializer<Manager> serializer;
 
     public ProjectDownloaderImpl() {
-        this.serializer = new ManagerSerializer(true, false);
+        this.serializer = new ManagerSerializer();
     }
 
     /**

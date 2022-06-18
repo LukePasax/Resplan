@@ -22,33 +22,31 @@ public class TestLoadAndDownload {
 
     @BeforeEach
     public void initializeController() {
-        this.controller = new ControllerImpl();
+        controller = new ControllerImpl();
     }
 
     @Test
     public void testSave() {
         try {
             // current project has never been saved before, therefore an IllegalStateException has to be raised
-            this.controller.save();
+            controller.save();
             fail();
         } catch (IllegalStateException e) {
             try {
                 // after the project has been saved, it can be opened again
-                final var manBeforeSave = this.controller.getManager();
+                final var manBeforeSave = controller.getManager();
                 final var file = new File(DIR + SEP + FILENAME);
-                this.controller.saveWithName(file);
+                controller.saveWithName(file);
                 // new run of the application
-                this.controller = new ControllerImpl();
+                controller = new ControllerImpl();
                 // opens the project that had been saved before
-                this.controller.openProject(file);
-                final var manAfterSave = this.controller.getManager();
-                new RPFileWriter(new File(Controller.WORKING_DIRECTORY + Controller.SEP + "prova10.json"))
-                        .write(new ManagerSerializer(true, false).serialize(manBeforeSave));
-                new RPFileWriter(new File(Controller.WORKING_DIRECTORY + Controller.SEP + "prova11.json"))
-                        .write(new ManagerSerializer(true, false).serialize(manAfterSave));
+                controller.openProject(file);
+                final var manAfterSave = controller.getManager();
+                new RPFileWriter(new File(Controller.WORKING_DIRECTORY + Controller.SEP + "trial1.json"))
+                        .write(new ManagerSerializer().serialize(manBeforeSave));
+                new RPFileWriter(new File(Controller.WORKING_DIRECTORY + Controller.SEP + "trial2.json"))
+                        .write(new ManagerSerializer().serialize(manAfterSave));
                 assertEquals(manBeforeSave, manAfterSave);
-            } catch (DownloadingException | LoadingException ex) {
-                ex.printStackTrace();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -60,20 +58,18 @@ public class TestLoadAndDownload {
     @Test
     public void testTemplate() {
         try {
-            this.controller.openProject(new File(DIR + SEP + FILENAME));
+            controller.openProject(new File(DIR + SEP + FILENAME));
             try {
-                this.controller.setTemplateProject();
+                controller.setTemplateProject();
                 fail();
             } catch (IllegalStateException ex) {
-                this.controller.saveWithName(new File(DIR + SEP + FILENAME));
+                controller.saveWithName(new File(DIR + SEP + FILENAME));
             }
-            final var manBeforeSave = this.controller.getManager();
-            this.controller = new ControllerImpl();
-            final var manAfterSave = this.controller.getManager();
+            final var manBeforeSave = controller.getManager();
+            controller = new ControllerImpl();
+            final var manAfterSave = controller.getManager();
             assertEquals(manBeforeSave, manAfterSave);
-        } catch (LoadingException e) {
-            e.printStackTrace();
-        } catch (DownloadingException e) {
+        } catch (LoadingException | DownloadingException e) {
             e.printStackTrace();
         }
     }

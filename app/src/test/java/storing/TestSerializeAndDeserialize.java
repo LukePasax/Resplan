@@ -25,7 +25,7 @@ public class TestSerializeAndDeserialize {
     @Test
     public void simpleSerializationAndDeserialization() {
         final Manager man = new Manager();
-        AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer(true, false);
+        AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer();
         Writer writer = new RPFileWriter(new File(FILENAME));
         AbstractJacksonDeserializer<Manager> deserializer = new ManagerDeserializer();
         Reader reader = new RPFileReader(new File(FILENAME));
@@ -49,7 +49,7 @@ public class TestSerializeAndDeserialize {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(new ManagerSerializer(true, false).serialize(man));
+        System.out.println(new ManagerSerializer().serialize(man));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class TestSerializeAndDeserialize {
         } catch (ImportException e) {
             e.printStackTrace();
         }
-        AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer(true, false);
+        AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer();
         Writer writer = new RPFileWriter(new File(FILENAME));
         AbstractJacksonDeserializer<Manager> deserializer = new ManagerDeserializer();
         Reader reader = new RPFileReader(new File(FILENAME));

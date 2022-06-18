@@ -537,7 +537,7 @@ public class Manager implements RPManager {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Serializer<Manager> serializer = new ManagerSerializer(true, false);
+        Serializer<Manager> serializer = new ManagerSerializer();
         return serializer.serialize(this).equals(serializer.serialize((Manager) o));
     }
 
