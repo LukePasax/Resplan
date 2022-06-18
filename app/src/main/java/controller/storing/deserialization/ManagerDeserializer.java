@@ -1,19 +1,34 @@
 package controller.storing.deserialization;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import daw.core.audioprocessing.BasicProcessingUnit;
-import daw.core.clip.ClipNotFoundException;
 import daw.core.clip.SampleClip;
 import daw.manager.ImportException;
 import daw.manager.Manager;
+import planning.RPPart;
+import planning.RPRole;
+
 import java.io.File;
 import java.util.Optional;
 
+/**
+ * Jackson deserializer for objects of type {@link daw.manager.Manager}.
+ */
 public class ManagerDeserializer extends AbstractJacksonDeserializer<Manager> {
 
+    /**
+     * {@inheritDoc}
+     * @param text the textual data to be deserialized.
+     * @return an instance of {@link Manager} that possesses the same data as the deserialized one and that
+     * can be immediately used in the context of this application.
+     */
     @Override
     public Manager deserialize(String text) {
         try {
+            this.mapper.registerModule(new SimpleModule()
+                    .addKeyDeserializer(RPRole.class, new RoleKeyDeserializer())
+                    .addKeyDeserializer(RPPart.class, new PartKeyDeserializer()));
             final var man = this.mapper.readValue(text, Manager.class);
             final var finalMan = new Manager();
             this.transferData(finalMan, man);
@@ -45,7 +60,8 @@ public class ManagerDeserializer extends AbstractJacksonDeserializer<Manager> {
                 } else {
                     finalMan.addClip(p.getType(), p.getTitle(), p.getDescription(), r.getTitle(),
                             man.getClipTime(p.getTitle(), r.getTitle()), man.getClipDuration(p.getTitle()),
-                            Optional.of(new File(((SampleClip) man.getClipFromTitle(p.getTitle())).getContent().getFileName())));
+                            Optional.of(new File(((SampleClip) man.getClipFromTitle(p.getTitle())).getContent()
+                                    .getFileName())));
                 }
             } catch (ImportException e) {
                 throw new RuntimeException(e);

@@ -3,36 +3,55 @@ package controller.storing.deserialization;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.KeyDeserializer;
 import planning.*;
-import java.io.IOException;
 import java.util.List;
 
+/**
+ * Key deserializer for {@link planning.RPPart.PartType}.
+ * Key deserializers are used for the deserialization of JSON content field names into Java Map keys.
+ */
 public class PartKeyDeserializer extends KeyDeserializer {
 
+    /**
+     * {@inheritDoc}
+     * @param key the string representation of a part.
+     * @return an {@link RPPart}.
+     */
     @Override
-    public RPPart deserializeKey(String key, DeserializationContext ctxt) throws IOException {
-        key = key.split("\\[")[1];
+    public RPPart deserializeKey(String key, DeserializationContext context) {
         final var values = this.extractValues(key);
-        if (this.getType(values.get(2)) == RPRole.RoleType.EFFECTS) {
-            return new EffectsPart(values.get(0));
-        } else if (this.getType(values.get(2)) == RPRole.RoleType.SOUNDTRACK) {
-            return new SoundtrackPart(values.get(0));
+        if (values.get(1).equals("empty")) {
+            if (this.getType(values.get(2)).equals(RPPart.PartType.EFFECTS)) {
+                return new EffectsPart(values.get(0));
+            } else if (this.getType(values.get(2)).equals(RPPart.PartType.SOUNDTRACK)) {
+                return new SoundtrackPart(values.get(0));
+            } else {
+                return new SpeechPart(values.get(0));
+            }
         } else {
-            return new SpeechPart(values.get(0));
+            if (this.getType(values.get(2)).equals(RPPart.PartType.EFFECTS)) {
+                return new EffectsPart(values.get(0), values.get(1));
+            } else if (this.getType(values.get(2)).equals(RPPart.PartType.SOUNDTRACK)) {
+                return new SoundtrackPart(values.get(0), values.get(1));
+            } else {
+                return new SpeechPart(values.get(0), values.get(1));
+            }
         }
     }
 
     private List<String> extractValues(String key) {
-        final var strings = key.split("=");
-        return List.of(strings[1].split(",")[0], strings[2].split(",")[0], strings[3].split("\\]")[0]);
+        final var strings = key.split(",");
+        return List.of(strings[0].split("=")[1],
+                strings[1].split("=")[1].split("\\.|\\[")[1].split("\\]")[0],
+                strings[2].split("=")[1].split("\\]")[0]);
     }
 
-    private final RPRole.RoleType getType(String type) {
+    private RPPart.PartType getType(String type) {
         if (type.equals("SPEECH")) {
-            return RPRole.RoleType.SPEECH;
+            return RPPart.PartType.SPEECH;
         } else if (type.equals("EFFECTS")) {
-            return RPRole.RoleType.EFFECTS;
+            return RPPart.PartType.EFFECTS;
         } else {
-            return RPRole.RoleType.SOUNDTRACK;
+            return RPPart.PartType.SOUNDTRACK;
         }
     }
 
