@@ -522,7 +522,7 @@ public class Manager implements RPManager {
     }
 
     @Override
-    public List<Speaker> getSpeakersInRubric(Speaker speaker) {
+    public List<Speaker> getSpeakersInRubric() {
         return this.rubric.getSpeakers();
     }
 

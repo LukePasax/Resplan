@@ -60,6 +60,11 @@ public class TestSerializeAndDeserialize {
         man.addChannel(RPRole.RoleType.EFFECTS, "claps", Optional.of("ciao"));
         man.createGroup("myStuff", RPRole.RoleType.EFFECTS);
         man.addToGroup(role,"myStuff");
+        final var speaker1 = new SimpleSpeaker(1, "Giacomo", "Sirri");
+        final var speaker2 = new SimpleSpeaker(2, "Luca", "Pasini");
+        man.addSpeakerToRubric(speaker1);
+        man.addSpeakerToRubric(speaker2);
+        man.removeSpeakerFromRubric(speaker1);
         try {
             File file = new File(Controller.WORKING_DIRECTORY + Controller.SEP + "src" + Controller.SEP +
                     "test" + Controller.SEP + "resources" + Controller.SEP + "audio" + Controller.SEP +
@@ -68,10 +73,8 @@ public class TestSerializeAndDeserialize {
                     "claps",0.00, 0.20,Optional.empty());
             man.addClip(RPPart.PartType.EFFECTS, "part2", Optional.empty(),
                     "claps", 10.00, 0.50, Optional.of(file));
-        } catch (ImportException e) {
+        } catch (ImportException | ClipNotFoundException e) {
             e.printStackTrace();
-        } catch (ClipNotFoundException e) {
-            throw new RuntimeException(e);
         }
         AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer(true, false);
         WriteToFile writer = new WriteToFileImpl(new File(FILENAME));

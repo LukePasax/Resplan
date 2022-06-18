@@ -193,6 +193,6 @@ public interface RPManager {
 
     void removeSpeakerFromRubric(Speaker speaker);
 
-    List<Speaker> getSpeakersInRubric(Speaker speaker);
+    List<Speaker> getSpeakersInRubric();
 
 }

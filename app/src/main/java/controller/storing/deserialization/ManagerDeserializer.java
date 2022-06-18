@@ -51,6 +51,8 @@ public class ManagerDeserializer extends AbstractJacksonDeserializer<Manager> {
                 throw new RuntimeException(e);
             }
         }));
+        // add all speakers
+        man.getSpeakersInRubric().forEach(finalMan::addSpeakerToRubric);
     }
 
 }

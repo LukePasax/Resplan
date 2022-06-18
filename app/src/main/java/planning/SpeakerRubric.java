@@ -1,5 +1,7 @@
 package planning;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -7,6 +9,7 @@ import java.util.function.Predicate;
 /**
  * This interface models a rubric that contains all the speakers saved before
  */
+@JsonDeserialize(as = SimpleSpeakerRubric.class)
 public interface SpeakerRubric {
 	
 	/**

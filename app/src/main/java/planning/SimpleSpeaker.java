@@ -1,5 +1,8 @@
 package planning;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 /**
@@ -23,7 +26,10 @@ public class SimpleSpeaker implements Speaker {
 	 * @param lastName
 	 * the last name of the speaker
 	 */
-	public SimpleSpeaker(final int speakerCode, final String firstName, final String lastName) {
+	@JsonCreator
+	public SimpleSpeaker(@JsonProperty("speakerCode") final int speakerCode,
+						 @JsonProperty("firstName") final String firstName,
+						 @JsonProperty("lastName") final String lastName) {
 		this.speakerCode = speakerCode;
 		this.firstName = firstName;
 		this.lastName = lastName;
