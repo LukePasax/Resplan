@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * This effect does not allow for a sidechain to be connected.
  * A limiter is a compressor with a high ratio and, generally, a short attack time.
  */
-public class Compression extends AbstractCompression {
+public class Compression extends Dynamics {
 
     /**
      * Constructs a compressor and sets its parameters to the current default.

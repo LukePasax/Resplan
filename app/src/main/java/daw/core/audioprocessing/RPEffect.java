@@ -11,6 +11,8 @@ import java.util.Map;
 /**
  * This class is an extension of {@link UGen}. In the context of this software, this class is the one
  * all effects must extend. Non-abstract subclasses must provide an implementation for method calculateBuffer.
+ * The extension of both {@link UGen} and {@link AudioElement} allows this class to be both powerful
+ * at audio processing and easy to use for clients.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
 @JsonSubTypes({
@@ -37,25 +39,20 @@ public abstract class RPEffect extends UGen implements AudioElement {
     }
 
     /**
-     * Allows getting the value associated to each parameter of this particular effect.
-     * Parameters influence how the sound is processed by this effect.
-     * @return a {@link Map} where the keys are the parameters and the values are the
-     * current value of each parameter of the effect.
+     * {@inheritDoc}
+     * @return {@inheritDoc}
      */
     public abstract Map<String, Float> getParameters();
 
     /**
-     * Modifies the value of all the parameters specified as keys in the given map. Those parameters
-     * will then contain the value associated to them in the map.
-     * The keys that do not match any of the effect's parameters are ignored
-     * and so are the values associated to them.
+     * {@inheritDoc}
      * @param parameters the {@link Map} that contains the parameters that must be modified.
      */
     public abstract void setParameters(Map<String, Float> parameters);
 
     /**
-     * Allows to get the number of input channels of the effect.
-     * @return an integer that represents the number of input.
+     * {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Override
     public int getIns() {
@@ -63,8 +60,8 @@ public abstract class RPEffect extends UGen implements AudioElement {
     }
 
     /**
-     * Allows to get the number of output channels of the effect.
-     * @return an integer that represents the number of outputs.
+     * {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Override
     public int getOuts() {

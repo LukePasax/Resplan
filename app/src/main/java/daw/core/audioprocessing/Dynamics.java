@@ -5,11 +5,17 @@ import net.beadsproject.beads.data.DataBead;
 import net.beadsproject.beads.ugens.Compressor;
 import java.util.Map;
 
-public abstract class AbstractCompression extends RPEffect {
+/**
+ * Abstract class for all the "dynamics" effects. Dynamics effects adjust volume based upon a volume limit
+ * (called a “threshold”), that the user can set. When the sound crosses the threshold,
+ * the effect adjusts the volume based upon the type of effect and its settings.
+ * Implementations of this class are {@link Compression} and {@link SidechainingImpl}.
+ */
+public abstract class Dynamics extends RPEffect {
 
     protected final Compressor compressor;
 
-    public AbstractCompression(int channels) {
+    public Dynamics(int channels) {
         super(channels);
         this.compressor = new Compressor(AudioContextManager.getAudioContext(), channels);
         this.compressor.addInput(this.getGainIn());

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Low pass filters allow the low frequencies to pass while reducing or even eliminating some higher
  * frequencies.
  */
-public class LowPassFilter extends AbstractFilter {
+public class LowPassFilter extends Equalization {
 
     /**
      * Constructs a low-pass filter and sets its cutoff frequency to the given value.

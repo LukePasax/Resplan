@@ -8,7 +8,7 @@ import net.beadsproject.beads.ugens.Reverb;
 import java.util.Map;
 
 /**
- * Reverberation, in acoustics, is a persistence of sound, or echo after a sound is produced.
+ * Reverberation, in acoustics, is a persistence of sound (echo) after a sound is produced.
  * Reverberation is created when a sound or signal is reflected causing numerous reflections to build up
  * and then decay as the sound is absorbed by the surfaces of objects in the space.
  * A reverb effect, or digital reverb, is an audio effect applied to a sound signal to simulate reverberation.
@@ -32,8 +32,7 @@ public class DigitalReverb extends RPEffect {
 
     /**
      * {@inheritDoc}
-     * @return a {@link Map} where the keys are the parameters and the values are the
-     * current value of each parameter of the effect.
+     * @return {@inheritDoc}
      */
     @Override
     public Map<String, Float> getParameters() {

@@ -5,9 +5,7 @@ import java.util.*;
 
 /**
  * This class represents an implementation of {@link ProcessingUnitBuilder} in which an exception upon
- * the call of the method build is raised only if no effects have been specified.
- * Remember that the method sidechaining does not add any effect, as the {@link Sidechaining} is not an effect
- * in the context of this software.
+ * the call of the method build is raised only if no effect has been specified.
  */
 public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
 
