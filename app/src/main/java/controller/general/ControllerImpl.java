@@ -622,7 +622,7 @@ public class ControllerImpl implements Controller {
 
     /**
      * {@inheritDoc}
-     * @param channel The name of the {@link RPChannel} to be set as solo.
+     * @param channel The name of the channel to be set as solo.
      */
     @Override
     public void setSolo(String channel) {

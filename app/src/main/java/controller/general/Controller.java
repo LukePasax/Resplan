@@ -301,7 +301,7 @@ public interface Controller {
      * whereas calling it on a currently non solo channel will add it to the list of the solo channel.
      * Only the solo channels play when the project is in the solo environment. The end of this state is automatic
      * as it is triggered by the removal of the last solo channel.
-     * @param channel The name of the {@link RPChannel} to be set as solo.
+     * @param channel The name of the channel to be set as solo.
      * @throws IllegalStateException if the given channel is muted. In that case, first call
      * {@link #setMute(String)} and then this method.
      */
