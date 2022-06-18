@@ -67,15 +67,14 @@ public class BasicChannelFactory implements ChannelFactory {
     @Override
     public RPChannel masterChannel() {
         final var bc = new BasicChannel(RPChannel.Type.MASTER);
-        bc.addProcessingUnit(new BasicProcessingUnitBuilder()
-                .lowPassFilter(1, 15000.0f)
-                .highPassFilter(1, 200.0f)
-                .compressor(1)
-                .compressor(1)
-                .build());
-        bc.getProcessingUnit().get()
-                .getEffectAtPosition(3)
-                .setParameters(Map.of("ratio", Float.POSITIVE_INFINITY));
+        final var pu = new BasicProcessingUnitBuilder()
+                .lowPassFilter(1, 15000.0f)  // 0
+                .highPassFilter(1, 200.0f)   // 1
+                .compressor(1)  // 2
+                .compressor(1)  // 3
+                .build();
+        pu.getEffectAtPosition(3).setParameters(Map.of("ratio", Float.POSITIVE_INFINITY));
+        bc.addProcessingUnit(pu);
         return bc;
     }
 
