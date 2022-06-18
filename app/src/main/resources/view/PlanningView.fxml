@@ -20,6 +20,7 @@
                   <Button fx:id="newChannelButton" mnemonicParsing="false" onAction="#newChannelPressed" prefHeight="25.0" prefWidth="100.0" styleClass="buttons" text="New Channel" />
                   <Button fx:id="newClipButton" mnemonicParsing="false" onAction="#newClipPressed" prefWidth="100.0" styleClass="buttons" text="New Clip" />
                   <Button fx:id="newSectionButton" layoutX="35.0" layoutY="56.0" mnemonicParsing="false" onAction="#newSectionPressed" prefWidth="100.0" styleClass="buttons" text="New Section" />
+                  <Button fx:id="rubricButton" mnemonicParsing="false" onAction="#goToRubricPressed" prefWidth="100.0" styleClass="buttons" text="Go to rubric" />
                </children>
                <padding>
                   <Insets left="2.5" right="2.5" top="10.0" />

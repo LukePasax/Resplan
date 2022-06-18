@@ -29,6 +29,7 @@ public class PlanningController {
     public VBox channelsInfoPane;
     public Button newSectionButton;
     public AnchorPane windowBar;
+    public Button rubricButton;
     private TimeAxisSetter timeAxisSetter;
     private JsonFilePicker filePicker;
     private MarkersPane markersPane;
@@ -72,6 +73,10 @@ public class PlanningController {
 
     public void newSectionPressed(ActionEvent actionEvent) throws IOException {
         this.launchWindow("view/NewSectionWindow.fxml","New Section");
+    }
+
+    public void goToRubricPressed(ActionEvent actionEvent) throws IOException {
+        this.launchWindow("view/RubricView.fxml", "Rubric");
     }
 
     private void launchWindow(String fxml, String title) throws IOException {
