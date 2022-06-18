@@ -1,15 +1,14 @@
 package storing;
 
 import controller.general.Controller;
-import controller.storing.ReadFromFile;
-import controller.storing.ReadFromFileImpl;
+import controller.storing.Reader;
+import controller.storing.FileReader;
 import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;
 import controller.storing.deserialization.AbstractJacksonDeserializer;
 import controller.storing.deserialization.ManagerDeserializer;
 import controller.storing.serialization.AbstractJacksonSerializer;
 import controller.storing.serialization.ManagerSerializer;
-import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
 import daw.manager.Manager;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ public class TestSerializeAndDeserialize {
         AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer(true, false);
         WriteToFile writer = new WriteToFileImpl(new File(FILENAME));
         AbstractJacksonDeserializer<Manager> deserializer = new ManagerDeserializer();
-        ReadFromFile reader = new ReadFromFileImpl(new File(FILENAME));
+        Reader reader = new FileReader(new File(FILENAME));
         try {
             writer.write(serializer.serialize(man));
             final var manAfterRead = deserializer.deserialize(reader.read());
@@ -45,7 +44,7 @@ public class TestSerializeAndDeserialize {
         Manager man = new Manager();
         try {
             man = new ManagerDeserializer()
-                    .deserialize(new ReadFromFileImpl(new File(FILENAME))
+                    .deserialize(new FileReader(new File(FILENAME))
                     .read());
         } catch (IOException e) {
             e.printStackTrace();
@@ -81,7 +80,7 @@ public class TestSerializeAndDeserialize {
         AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer(true, false);
         WriteToFile writer = new WriteToFileImpl(new File(FILENAME));
         AbstractJacksonDeserializer<Manager> deserializer = new ManagerDeserializer();
-        ReadFromFile reader = new ReadFromFileImpl(new File(FILENAME));
+        Reader reader = new FileReader(new File(FILENAME));
         try {
             writer.write(serializer.serialize(man));
             final var manAfterRead = deserializer.deserialize(reader.read());

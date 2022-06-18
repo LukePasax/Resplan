@@ -1,6 +1,6 @@
 package controller.general;
 
-import controller.storing.ReadFromFileImpl;
+import controller.storing.FileReader;
 import controller.storing.WriteToFile;
 import controller.storing.WriteToFileImpl;
 import daw.core.audioprocessing.ProcessingUnit;
@@ -75,7 +75,7 @@ public class ControllerImpl implements Controller {
     public void startApp() {
         try {
             // tries to load the template project
-            final var fileName = new ReadFromFileImpl(this.appSettings).read();
+            final var fileName = new FileReader(this.appSettings).read();
             if (fileName.isBlank()) {
                 // if no template project is set, then it opens an empty project
                 this.currentProject = null;

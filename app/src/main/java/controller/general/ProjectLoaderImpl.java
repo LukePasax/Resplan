@@ -1,6 +1,6 @@
 package controller.general;
 
-import controller.storing.ReadFromFileImpl;
+import controller.storing.FileReader;
 import controller.storing.deserialization.ManagerDeserializer;
 import daw.manager.Manager;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
@@ -30,7 +30,7 @@ public class ProjectLoaderImpl implements ProjectLoader {
         if (!FilenameUtils.getExtension(file.getName()).equals("json")) {
             throw new FileFormatException("Selected file's format is not supported. Choose only .json files.");
         }
-        return this.deserializer.deserialize(new ReadFromFileImpl(file).read());
+        return this.deserializer.deserialize(new FileReader(file).read());
     }
 
 }
