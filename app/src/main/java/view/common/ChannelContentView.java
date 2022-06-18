@@ -346,7 +346,7 @@ public abstract class ChannelContentView extends Pane {
 							newTimeIn = clip.getPosition().get()-clip.getContentPosition();
 						}
 						Starter.getController().setClipTimeIn(clip.getTitle(), ch.getTitle(), newTimeIn);
-					} catch (ClipNotFoundException | ImportException e1) {
+					} catch (ClipNotFoundException e1) {
 						updateClips();
 					}
 				} else if(mod.equals(ClipDragModality.TIMEOUT)) {
@@ -363,7 +363,7 @@ public abstract class ChannelContentView extends Pane {
 							newTimeOut = clip.getPosition().get()+clip.getContentDuration()-clip.getContentPosition();
 						}
 						Starter.getController().setClipTimeOut(clip.getTitle(), ch.getTitle(), newTimeOut);
-					} catch (ClipNotFoundException | ImportException e1) {
+					} catch (ClipNotFoundException e1) {
 						 updateClips();
 					}
 				} else if (mod.equals(ClipDragModality.MOVE)) {
@@ -375,7 +375,7 @@ public abstract class ChannelContentView extends Pane {
 							newTimeIn = Starter.getController().getProjectLength()-clip.getDuration().get();
 						}
 						Starter.getController().moveClip(clip.getTitle(), ch.getTitle(), newTimeIn);
-					} catch (ClipNotFoundException | ImportException e1) {
+					} catch (ClipNotFoundException e1) {
 						updateClips();
 					}
 				}
@@ -430,7 +430,7 @@ public abstract class ChannelContentView extends Pane {
 					if (toolBarSetter.getCurrentTool().equals(Tool.SPLIT)) {
 						try {
 							Starter.getController().splitClip(clip.getTitle(), ch.getTitle(), axis.getValueForDisplay(axis.getDisplayPosition(clip.getPosition().get())+e.getX()).doubleValue());
-						} catch (ClipNotFoundException | ImportException e1) {
+						} catch (ClipNotFoundException e1) {
 							e1.printStackTrace();
 						}
 					}

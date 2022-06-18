@@ -50,7 +50,7 @@ public class ControllerImpl implements Controller {
     private boolean solo = false;
 
     /**
-     * Sets up the application and initializes a new project (see newProject).
+     * Sets up the application.
      */
     public ControllerImpl() {
         this.loader = new ProjectLoaderImpl();
@@ -60,6 +60,10 @@ public class ControllerImpl implements Controller {
         this.engine = new Engine((ChannelLinker) this.manager.getChannelLinker());
     }
 
+    /**
+     * {@inheritDoc}
+     * @param app the {@link App}.
+     */
     @Override
     public void setApp(App app) {
         this.app = app;
@@ -85,12 +89,18 @@ public class ControllerImpl implements Controller {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void newProject() {
         this.startApp();
         this.loadViewData();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void loadViewData() {
         App.getData().clearData();
@@ -184,6 +194,10 @@ public class ControllerImpl implements Controller {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @throws DownloadingException {@inheritDoc}
+     */
     @Override
     public void resetTemplateProject() throws DownloadingException {
         final WriteToFile writer = new WriteToFileImpl(this.appSettings);
@@ -194,6 +208,14 @@ public class ControllerImpl implements Controller {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @param type the type of the new role.
+     * @param title the title of the new role.
+     * @param description the description of new the role. If the description is empty, then the
+     *                    role will have no description in model.
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
     @Override
     public void newChannel(String type, String title, String description) throws IllegalArgumentException {
         RPRole.RoleType roleType;
@@ -209,6 +231,21 @@ public class ControllerImpl implements Controller {
         App.getData().addChannel(new ViewDataImpl.Channel(title, type));
     }
 
+    /**
+     * {@inheritDoc}
+     * @param type the type of the new part.
+     * @param title the title of the new part.
+     * @param description the description of new the part. If the description is empty, then the
+     *                    part will have no description in model.
+     * @param channel the channel this clip has to be put into.
+     * @param time the position of the clip in the {@link planning.RPTimeline}.
+     * @param duration the length of the clip.
+     * @param content the content that has to be put into this clip. If the given content is null, then this clip
+     *                will initially have no content. To later add content into a clip,
+     *                use {@link #addContentToClip(String, File)}
+     * @throws IllegalArgumentException {@inheritDoc}
+     * @throws ImportException {@inheritDoc}
+     */
     @Override
     public void newClip(String type, String title, String description, String channel, Double time,
                         Double duration, File content) throws IllegalArgumentException, ImportException {
@@ -228,12 +265,18 @@ public class ControllerImpl implements Controller {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time, duration,
                     Optional.empty(), Optional.empty(), Optional.empty()));
         } else {
-            App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time, this.manager.getClipDuration(title),
-                    Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration()), Optional.of(new File(((Sample)clip.getContent()).getFileName()).getName())));
+            App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time,
+                    this.manager.getClipDuration(title), Optional.of(clip.getContentPosition()),
+                    Optional.of(clip.getContentDuration()),
+                    Optional.of(new File(((Sample)clip.getContent()).getFileName()).getName())));
         }
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
+    /**
+     * {@inheritDoc}
+     * @param title the name of the channel to be deleted.
+     */
     @Override
     public void deleteChannel(String title) {
         try {
@@ -244,6 +287,12 @@ public class ControllerImpl implements Controller {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @param title the name of a clip.
+     * @param channel the name of a channel.
+     * @param time a position in the timeline.
+     */
     @Override
     public void deleteClip(String title, String channel, Double time) {
         try {
@@ -255,6 +304,10 @@ public class ControllerImpl implements Controller {
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Override
     public List<String> getChannelList() {
         return this.manager.getRoles().stream().map(Element::getTitle).collect(Collectors.toList());
@@ -285,50 +338,86 @@ public class ControllerImpl implements Controller {
         return this.manager.getClipDuration(clip);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start() {
     	AudioContextManager.getAudioContext().start();
         this.engine.start();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void pause() {
         this.engine.pause();
         AudioContextManager.getAudioContext().stop();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop() {
         this.engine.stop();
         AudioContextManager.getAudioContext().stop();
     }
-    
+
+    /**
+     * {@inheritDoc}
+     * @param time a position in the timeline.
+     */
     @Override
     public void setPlaybackTime(Double time) {
         this.engine.setPlaybackTime(time);
         this.updatePlaybackTime(time);
     }
 
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Override
     public Double getPlaybackTime() {
         return this.engine.getPlaybackTime();
     }
 
+    /**
+     * {@inheritDoc}
+     * @param time a position in the timeline.
+     */
     @Override
     public void updatePlaybackTime(Double time) {
         this.app.updatePlaybackTime(time);
     }
 
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Override
     public boolean isPaused() {
         return this.engine.isPaused();
     }
 
+    /**
+     * {@inheritDoc}
+     * @return
+     */
     @Override
     public double getProjectLength() {
         return this.manager.getProjectLength();
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @param channel the channel of the clip.
+     * @param finalTimeIn the new starting position of the clip.
+     * @throws ClipNotFoundException {@inheritDoc}
+     */
     @Override
     public void moveClip(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException {
         //App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
@@ -352,10 +441,18 @@ public class ControllerImpl implements Controller {
                     Optional.empty(), Optional.empty(), Optional.empty()));
         } else {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration,
-                    Optional.of(rpClip.getContentPosition()), Optional.of(rpClip.getContentDuration()), Optional.of(new File(((Sample)rpClip.getContent()).getFileName()).getName())));
+                    Optional.of(rpClip.getContentPosition()), Optional.of(rpClip.getContentDuration()),
+                    Optional.of(new File(((Sample)rpClip.getContent()).getFileName()).getName())));
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @param channel the channel of the clip.
+     * @param finalTimeIn the starting position of the clip.
+     * @throws ClipNotFoundException {@inheritDoc}
+     */
     @Override
     public void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException {
     	//App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
@@ -365,6 +462,13 @@ public class ControllerImpl implements Controller {
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @param channel the channel of the clip.
+     * @param finalTimeOut the timeout position of the clip.
+     * @throws ClipNotFoundException {@inheritDoc}
+     */
     @Override
     public void setClipTimeOut(String clip, String channel, Double finalTimeOut) throws ClipNotFoundException {
         //App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
@@ -374,12 +478,26 @@ public class ControllerImpl implements Controller {
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @param channel the channel of the clip.
+     * @param splittingTime the position in the timeline at which the clip has to be split.
+     * @throws ClipNotFoundException {@inheritDoc}
+     */
     @Override
     public void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException {
         this.manager.splitClip(clip,channel,splittingTime);
         this.updateChannelClipsView(channel);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @param content the {@link File} representing the content to be added.
+     * @throws ImportException {@inheritDoc}
+     * @throws ClipNotFoundException {@inheritDoc}
+     */
     @Override
     public void addContentToClip(String clip, File content) throws ImportException, ClipNotFoundException {
         String channel = this.manager.getClipChannel(clip);
@@ -389,6 +507,11 @@ public class ControllerImpl implements Controller {
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @throws ClipNotFoundException {@inheritDoc}
+     */
     @Override
     public void removeContentFromClip(String clip) throws ClipNotFoundException {
         String channel = this.manager.getClipChannel(clip);
@@ -398,6 +521,14 @@ public class ControllerImpl implements Controller {
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
+    /**
+     * {@inheritDoc}
+     * @param title the name of the section.
+     * @param description the description of the section. If the description is empty, then the
+     *                    part will have no description in model.
+     * @param initialTime the position of the section in the timeline.
+     * @param duration the duration of the section.
+     */
     @Override
     public void newSection(String title, String description, Double initialTime, Double duration) {
         Optional<String> desc = description.equals("") ? Optional.empty() : Optional.of(description);
@@ -413,12 +544,23 @@ public class ControllerImpl implements Controller {
                 .findFirst().orElseThrow(() -> new NoSuchElementException("No section present at that time")));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void startRecording() {
         this.recorder = new Recorder();
         this.recorder.record();
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of the clip the recording has to be put into.
+     * @param file the file the recording has to be saved on.
+     * @throws ImportException {@inheritDoc}
+     * @throws ClipNotFoundException {@inheritDoc}
+     * @throws IOException {@inheritDoc}
+     */
     @Override
     public void stopRecording(String clip, File file) throws ImportException, ClipNotFoundException, IOException {
         this.recorder.pause();
@@ -426,6 +568,10 @@ public class ControllerImpl implements Controller {
         this.addContentToClip(clip, file);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param startTime the position in the timeline from which export has to start.
+     */
     @Override
     public void startExport(Double startTime) {
         AudioContext ac = AudioContextManager.getAudioContext();
@@ -439,6 +585,11 @@ public class ControllerImpl implements Controller {
         this.exporter.start();
     }
 
+    /**
+     * {@inheritDoc}
+     * @param file the file the audio content of the project has to be put into.
+     * @throws IOException {@inheritDoc}
+     */
     @Override
     public void stopExport(File file) throws IOException {
         AudioContext ac = AudioContextManager.getAudioContext();
@@ -450,6 +601,10 @@ public class ControllerImpl implements Controller {
         this.exporter.getSample().write(file.getAbsolutePath(), AudioFileType.WAV);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param channel the name of the channel that has to be enabled or disabled.
+     */
     @Override
     public void setMute(String channel) {
         if (this.soloChannels.contains(channel)) {
@@ -465,6 +620,10 @@ public class ControllerImpl implements Controller {
         this.manageMute();
     }
 
+    /**
+     * {@inheritDoc}
+     * @param channel The name of the {@link RPChannel} to be set as solo.
+     */
     @Override
     public void setSolo(String channel) {
         if (this.mutedChannels.contains(channel)) {
@@ -552,34 +711,65 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
+    public Map<String, Float> getEffectParameters(String channel, int index) {
+        return this.getProcessingUnit(channel).getEffectAtPosition(index).getParameters();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param channel the name of a channel.
+     * @param value the 0 - 100 integer representation of the volume.
+     */
+    @Override
     public void setVolume(String channel, int value) {
         this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel)).setVolume(value);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param channel the name of a channel.
+     * @param value the -1.0 - 1.0 float representation of the pan.
+     */
     @Override
     public void setPan(String channel, float value) {
         this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel)).getPanner().setPos(value);
     }
 
-    @Override
-    public Map<String, Float> getEffectParameters(String channel, int index) {
-        return this.getProcessingUnit(channel).getEffectAtPosition(index).getParameters();
-    }
-
+    /**
+     * {@inheritDoc}
+     * @param channel
+     * @return {@inheritDoc}
+     */
     private ProcessingUnit getProcessingUnit(String channel) {
         return this.manager.getChannelLinker().getChannel(this.manager.getGroup(channel)).getProcessingUnit().get();
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clipTitle the name of a clip.
+     * @param text the text that has to be associated to the given clip.
+     */
     @Override
     public void setClipText(String clipTitle, String text) {
         this.manager.getClipLinker().getPart(clipTitle).addText(new TextFactoryImpl().createFromString(text));
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clipTitle the name of a clip.
+     * @param fileName the name of the file the text has to be read from.
+     * @throws IOException
+     */
     @Override
     public void setClipTextFromFile(String clipTitle, String fileName) throws IOException {
         this.manager.getClipLinker().getPart(clipTitle).addText(new TextFactoryImpl().createFromFile(fileName));
     }
 
+    /**
+     * {@inheritDoc}
+     * @param channel the name of a channel.
+     * @return {@inheritDoc}
+     */
     @Override
     public String getChannelType(String channel) {
         final var type = this.manager.getRoles().stream()
@@ -595,12 +785,22 @@ public class ControllerImpl implements Controller {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @return {@inheritDoc}
+     */
     @Override
     public Optional<String> getClipText(String clip) {
         Optional<Text> text = this.manager.getClipLinker().getPart(clip).getText();
         return text.map(Text::getContent);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @return {@inheritDoc}
+     */
     @Override
     public String getClipType(String clip) {
        final var type = this.manager.getClipLinker().getPart(clip).getType();
