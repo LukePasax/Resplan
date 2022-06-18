@@ -8,7 +8,6 @@ import daw.core.channel.RPChannel;
 import daw.core.clip.*;
 import daw.core.mixer.Mixer;
 import daw.core.mixer.RPMixer;
-import net.beadsproject.beads.data.Sample;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 import planning.*;
@@ -20,6 +19,9 @@ import java.util.stream.Collectors;
 
 public class Manager implements RPManager {
 
+    private static final double MIN_LENGTH = 600000;
+    private static final double MIN_SPACING = 120000;
+
     private final RPMixer mixer;
     private final RPChannelLinker channelLinker;
     private final RPClipLinker clipLinker;
@@ -28,9 +30,8 @@ public class Manager implements RPManager {
     private final RPTimeline timeline;
     @JsonIgnore
     private final RPClipConverter clipConverter;
+    private final SpeakerRubric rubric;
     private double projectLength;
-    private static final double MIN_LENGTH = 600000;
-    private static final double MIN_SPACING = 120000;
 
     public Manager() {
         this.mixer = new Mixer();
@@ -40,6 +41,7 @@ public class Manager implements RPManager {
         this.clipConverter = new ClipConverter();
         this.projectLength = MIN_LENGTH;
         this.timeline = new TimelineImpl();
+        this.rubric = new SimpleSpeakerRubric();
         this.initializeGroups();
     }
 
@@ -90,9 +92,8 @@ public class Manager implements RPManager {
             throw new NoSuchElementException("The Channel does not exist");
         }
         this.channelLinker.getTapeChannel(this.channelLinker.getRole(title))
-                .getClipWithTimeIterator().forEachRemaining(e -> {
-                    this.clipLinker.removeClip(this.getClipLinker().getPartFromClip(e.getValue()));
-                });
+                .getClipWithTimeIterator().forEachRemaining(e ->
+                        this.clipLinker.removeClip(this.getClipLinker().getPartFromClip(e.getValue())));
         this.channelLinker.getTapeChannel(this.channelLinker.getRole(title)).clearTape();
         this.getGroupList(this.getGroupName(this.channelLinker.getRole(title)))
                 .remove(this.channelLinker.getRole(title));
@@ -126,10 +127,8 @@ public class Manager implements RPManager {
             return description.map(s -> new SpeechRole(title, s)).orElseGet(() -> new SpeechRole(title));
         } else if (type.equals(RPRole.RoleType.EFFECTS)) {
             return description.map(s -> new EffectsRole(title, s)).orElseGet(() -> new EffectsRole(title));
-        } else if (type.equals(RPRole.RoleType.SOUNDTRACK)) {
-            return description.map(s -> new SoundtrackRole(title, s)).orElseGet(() -> new SoundtrackRole(title));
         } else {
-            return null;
+            return description.map(s -> new SoundtrackRole(title, s)).orElseGet(() -> new SoundtrackRole(title));
         }
     }
 
@@ -196,13 +195,14 @@ public class Manager implements RPManager {
      */
     @Override
     public void addClip(RPPart.PartType type, String title, Optional<String> description,String channel,Double time,
-                        Double duration, Optional<File> content) throws ImportException, IllegalArgumentException, ClipNotFoundException {
+                        Double duration, Optional<File> content)
+            throws ImportException, IllegalArgumentException, ClipNotFoundException {
         if (this.clipLinker.clipExists(title)) {
             throw new IllegalArgumentException("Clip already exists");
         } else if (title.equals("")) {
             throw new IllegalArgumentException("Title is mandatory");
         }
-        RPClip clip;
+        RPClip<?> clip;
         if (content.isPresent()) {
             try {
                 clip = new SampleClip(content.get(),title);
@@ -219,15 +219,13 @@ public class Manager implements RPManager {
     }
 
     private RPPart createPart(RPPart.PartType type, String title, Optional<String> description) {
-        final RPPart part;
         if (type.equals(RPPart.PartType.SPEECH)) {
-            part = description.map(s -> new SpeechPart(title, s)).orElseGet(() -> new SpeechPart(title));
+            return description.map(s -> new SpeechPart(title, s)).orElseGet(() -> new SpeechPart(title));
         } else if (type.equals(RPPart.PartType.EFFECTS)) {
-            part = description.map(s -> new EffectsPart(title, s)).orElseGet(() -> new EffectsPart(title));
+            return description.map(s -> new EffectsPart(title, s)).orElseGet(() -> new EffectsPart(title));
         } else {
-            part = description.map(s -> new SoundtrackPart(title, s)).orElseGet(() -> new SoundtrackPart(title));
+            return description.map(s -> new SoundtrackPart(title, s)).orElseGet(() -> new SoundtrackPart(title));
         }
-        return part;
     }
 
     /**
@@ -248,7 +246,7 @@ public class Manager implements RPManager {
         if (!this.clipLinker.getClipFromPart(this.clipLinker.getPart(clip)).isEmpty()) {
             this.removeFileFromClip(clip);
         }
-        RPClip rpClip = this.getClipFromTitle(clip);
+        RPClip<?> rpClip = this.getClipFromTitle(clip);
         try {
             this.removeClip(channel, clip, clipTimeIn);
             rpClip = this.clipConverter.fromEmptyToSampleClip((EmptyClip) rpClip, content);
@@ -278,7 +276,7 @@ public class Manager implements RPManager {
         String channel = this.getClipChannel(clip);
         double clipTimeIn = this.getClipTime(clip,channel);
         RPPart part = this.clipLinker.getPart(clip);
-        RPClip rpClip = this.clipLinker.getClipFromPart(part);
+        RPClip<?> rpClip = this.clipLinker.getClipFromPart(part);
         this.removeClip(channel, clip, clipTimeIn);
         rpClip = this.clipConverter.fromSampleToEmptyClip((SampleClip) rpClip);
         this.clipLinker.addClipReferences(rpClip, part);
@@ -361,10 +359,6 @@ public class Manager implements RPManager {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * @param channel
-     * @return
-     */
     @Override
     public List<RPPart> getPartList(String channel) {
         List<RPPart> list = new ArrayList<>();
@@ -437,7 +431,7 @@ public class Manager implements RPManager {
     }
 
     @Override
-    public RPClip getClipFromTitle(String title) {
+    public RPClip<?> getClipFromTitle(String title) {
         return this.getClipLinker().getClipFromPart(this.getClipLinker().getPart(title));
     }
 
@@ -494,7 +488,7 @@ public class Manager implements RPManager {
         return time;
     }
 
-    private Double clipEndTime(RPClip clip) throws ClipNotFoundException {
+    private Double clipEndTime(RPClip<?> clip) throws ClipNotFoundException {
         String channel = this.getClipChannel(clip.getTitle());
         return this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
                 .getClipTimeOut(this.getClipTime(clip.getTitle(), channel));
@@ -510,6 +504,26 @@ public class Manager implements RPManager {
             }
         }
         return null;
+    }
+
+    @Override
+    public Speaker createSpeaker(int id, String firstName, String lastName) {
+        return new SimpleSpeaker(id, firstName, lastName);
+    }
+
+    @Override
+    public void addSpeakerToRubric(Speaker speaker) {
+        this.rubric.addSpeaker(speaker);
+    }
+
+    @Override
+    public void removeSpeakerFromRubric(Speaker speaker) {
+        this.rubric.removeSpeaker(speaker);
+    }
+
+    @Override
+    public List<Speaker> getSpeakersInRubric(Speaker speaker) {
+        return this.rubric.getSpeakers();
     }
 
     @Override

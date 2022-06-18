@@ -7,6 +7,7 @@ import daw.core.mixer.RPMixer;
 import planning.RPPart;
 import planning.RPRole;
 import planning.RPSection;
+import planning.Speaker;
 
 import java.io.File;
 import java.util.*;
@@ -182,8 +183,16 @@ public interface RPManager {
 
     void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException;
 
-    RPClip getClipFromTitle(String title);
+    RPClip<?> getClipFromTitle(String title);
 
     String getClipChannel(String clip);
+
+    Speaker createSpeaker(int id, String firstName, String lastName);
+
+    void addSpeakerToRubric(Speaker speaker);
+
+    void removeSpeakerFromRubric(Speaker speaker);
+
+    List<Speaker> getSpeakersInRubric(Speaker speaker);
 
 }
