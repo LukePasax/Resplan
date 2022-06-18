@@ -6,7 +6,8 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import net.beadsproject.beads.ugens.Gain;
 import java.io.IOException;
 
-public class GainSerializer extends StdSerializer<Gain> {
+// package protection as it is used only by the ManagerSerializer
+class GainSerializer extends StdSerializer<Gain> {
 
     protected GainSerializer() {
         this(null);

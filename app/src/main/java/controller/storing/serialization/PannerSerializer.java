@@ -6,7 +6,8 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import net.beadsproject.beads.ugens.Panner;
 import java.io.IOException;
 
-public class PannerSerializer extends StdSerializer<Panner> {
+// package protection as it is used only by the ManagerSerializer
+class PannerSerializer extends StdSerializer<Panner> {
 
     protected PannerSerializer() {
         this(null);

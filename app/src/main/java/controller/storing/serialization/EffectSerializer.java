@@ -9,7 +9,8 @@ import daw.core.audioprocessing.RPEffect;
 import java.io.IOException;
 import static com.fasterxml.jackson.core.JsonToken.START_OBJECT;
 
-public class EffectSerializer extends StdSerializer<RPEffect> {
+// package protection as it is used only by the ManagerSerializer
+class EffectSerializer extends StdSerializer<RPEffect> {
 
     protected EffectSerializer() {
         this(null);

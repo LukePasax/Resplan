@@ -2,8 +2,6 @@ package daw.manager;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import controller.storing.deserialization.RoleKeyDeserializer;
 import daw.core.channel.RPChannel;
 import daw.core.clip.RPTapeChannel;
 import daw.utilities.Pair;

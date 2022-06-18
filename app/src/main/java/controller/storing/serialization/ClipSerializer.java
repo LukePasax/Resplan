@@ -11,7 +11,8 @@ import java.io.IOException;
 
 import static com.fasterxml.jackson.core.JsonToken.START_OBJECT;
 
-public class ClipSerializer extends StdSerializer<RPClip> {
+// package protection as it is used only by the ManagerSerializer
+class ClipSerializer extends StdSerializer<RPClip> {
 
     protected ClipSerializer() {
         this(null);
