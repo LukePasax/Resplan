@@ -2,6 +2,7 @@ package controller.storing;
 
 import com.google.gson.JsonIOException;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -10,7 +11,7 @@ import java.util.Objects;
  */
 public class RPFileWriter implements Writer {
 
-    private java.io.FileWriter fw;
+    private final FileWriter fw;
 
     /**
      * Constructs a file writer. Calling the {@link #write(String)} method on this object will write data onto
