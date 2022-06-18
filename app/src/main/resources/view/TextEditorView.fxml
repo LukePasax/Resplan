@@ -19,7 +19,7 @@
         <RowConstraints maxHeight="285.80000000000007" minHeight="10.0" prefHeight="164.00003662109378" valignment="BOTTOM" vgrow="NEVER" />
         <RowConstraints maxHeight="164.2000183105469" minHeight="0.0" prefHeight="55.99996337890627" vgrow="SOMETIMES" />
     </rowConstraints>
-    <TextArea fx:id="text" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowSpan="2" />
+    <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowSpan="2" />
     <Button fx:id="editButton" mnemonicParsing="false" onAction="#editText" styleClass="buttons" text="Edit text" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
         <GridPane.margin>
           <Insets />

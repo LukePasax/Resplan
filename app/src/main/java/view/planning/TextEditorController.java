@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class TextEditorController {
 
-    public TextArea text;
+    public TextArea textArea;
     public Button editButton;
     public Button saveButton;
     private String clipTitle;
@@ -18,16 +18,17 @@ public class TextEditorController {
 
     public void setClipTitle(String clipTitle) {
         this.clipTitle = clipTitle;
-        this.text.setText(Starter.getController().getClipText(this.clipTitle));
+        this.textArea.setPromptText("Insert clip text here...");
+        Starter.getController().getClipText(this.clipTitle).ifPresent(s -> this.textArea.setText(s));
     }
 
     public void initialize() {
-        this.text.setEditable(false);
+        this.textArea.setEditable(false);
         this.saved();
     }
 
     public void editText() {
-        this.text.setEditable(true);
+        this.textArea.setEditable(true);
         this.editing();
     }
 
@@ -38,8 +39,8 @@ public class TextEditorController {
     }
 
     public void saveText() {
-        Starter.getController().setClipText(this.clipTitle, this.text.getText());
-        this.text.setEditable(false);
+        Starter.getController().setClipText(this.clipTitle, this.textArea.getText());
+        this.textArea.setEditable(false);
         this.saved();
     }
 
@@ -51,16 +52,16 @@ public class TextEditorController {
 
     public void uploadFromFile() {
         final TextFilePicker picker = new TextFilePicker();
-        final File file = picker.getFileChooser().showOpenDialog(this.text.getScene().getWindow());
+        final File file = picker.getFileChooser().showOpenDialog(this.textArea.getScene().getWindow());
         if (file != null) {
             try {
-                Starter.getController().uploadTextFromFile(this.clipTitle, file.getAbsolutePath());
-                this.text.setText(Starter.getController().getClipText(this.clipTitle));
+                Starter.getController().setClipTextFromFile(this.clipTitle, file.getAbsolutePath());
+                Starter.getController().getClipText(this.clipTitle).ifPresent(s -> this.textArea.setText(s));
             } catch (IOException e) {
                 AlertDispatcher.dispatchError(e.getMessage());
             }
         }
-        this.text.setEditable(true);
+        this.textArea.setEditable(true);
         this.editing();
     }
 
