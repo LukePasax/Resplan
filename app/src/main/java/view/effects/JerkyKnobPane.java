@@ -132,7 +132,7 @@ public class JerkyKnobPane extends Pane{
 		if(values.contains(value)) {
 			this.value = value;
 			lvalue.setText(value);
-			rotation.setRotate((270*values.indexOf(value))/(values.size()-1));
+			rotation.setRotate((double)(270*values.indexOf(value))/(values.size()-1));
 		}
 	}
 	

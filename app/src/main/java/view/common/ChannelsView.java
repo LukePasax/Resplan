@@ -85,7 +85,7 @@ public abstract class ChannelsView {
 						groupIndexes.put(ch.getGroup(), groupIndexes.get(ch.getGroup())+1);
 					}
 					groupIndexes.entrySet().stream().filter(entry->{
-						return groupIndexes.get(ch.getGroup())<=entry.getValue() && entry.getKey()!=ch.getGroup();
+						return groupIndexes.get(ch.getGroup())<=entry.getValue() && !entry.getKey().equals(ch.getGroup());
 					}).forEach(entry->{
 						groupIndexes.put(entry.getKey(), entry.getValue()+1);
 					});

@@ -533,12 +533,4 @@ public class Manager implements RPManager {
         return this.rubric.getSpeakers();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Serializer<Manager> serializer = new ManagerSerializer();
-        return serializer.serialize(this).equals(serializer.serialize((Manager) o));
-    }
-
 }

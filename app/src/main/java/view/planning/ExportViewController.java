@@ -33,7 +33,6 @@ public class ExportViewController {
     private NumberFormatConverter converter;
     private Double progress;
     private Window window;
-    private boolean finished;
 
     public void initialize() {
         this.converter = new NumberFormatConverter();

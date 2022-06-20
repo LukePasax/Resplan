@@ -50,8 +50,8 @@ public class PlayersMapBuilderImpl implements PlayersMapBuilder {
 					"Call setChannelLinker(ChannelLinker cl) before of this method.");
 		}
 		
-		Double in = timeIn.isEmpty() ? 0.0 : timeIn.get();
-		Double out = timeOut.isEmpty() ? Clock.Utility.getClockMaxTime() : timeIn.get();
+		double in = timeIn.isEmpty() ? 0.0 : timeIn.get();
+		double out = timeOut.isEmpty() ? Clock.Utility.getClockMaxTime() : timeIn.get();
 
 		this.channelLinker.get().getAudioSet().forEach(channel->{
 			//get iterator of all SampleClips after timeIn and before timeOut

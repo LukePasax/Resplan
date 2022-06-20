@@ -67,7 +67,7 @@ public interface RPManager {
      * @throws ImportException if there were problems importing the file
      * @throws IllegalArgumentException if a Clip with the given title already exists
      */
-    void addClip(RPPart.PartType type, String title, Optional<String> description,String channel,Double time,
+    void addClip(RPPart.PartType type, String title, Optional<String> description, String channel, Double time,
                  Double duration,  Optional<File> content) throws ImportException, IllegalArgumentException;
 
     /**
