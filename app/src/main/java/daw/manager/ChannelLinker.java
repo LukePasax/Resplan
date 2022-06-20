@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import daw.core.channel.RPChannel;
 import daw.core.clip.RPTapeChannel;
-import daw.utilities.Pair;
+import daw.utilities.RPPair;
 import planning.RPRole;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class ChannelLinker implements RPChannelLinker {
 
     @JsonProperty
-    private final Map<RPRole, Pair<RPChannel, RPTapeChannel>> channelMap;
+    private final Map<RPRole, RPPair<RPChannel, RPTapeChannel>> channelMap;
 
     ChannelLinker() {
         this.channelMap = new HashMap<>();
@@ -27,7 +27,7 @@ public class ChannelLinker implements RPChannelLinker {
      */
     @Override
     public void addChannelReferences(RPChannel channel, RPTapeChannel tapeChannel, RPRole role) {
-        channelMap.put(role, new Pair<>(channel,tapeChannel));
+        channelMap.put(role, new RPPair<>(channel,tapeChannel));
     }
 
     /**
@@ -91,7 +91,7 @@ public class ChannelLinker implements RPChannelLinker {
      */
     @Override
     @JsonIgnore
-    public Set<Pair<RPChannel, RPTapeChannel>> getAudioSet() {
+    public Set<RPPair<RPChannel, RPTapeChannel>> getAudioSet() {
         return new HashSet<>(channelMap.values());
     }
 

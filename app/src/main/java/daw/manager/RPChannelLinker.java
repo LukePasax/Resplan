@@ -3,7 +3,7 @@ package daw.manager;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import daw.core.channel.RPChannel;
 import daw.core.clip.RPTapeChannel;
-import daw.utilities.Pair;
+import daw.utilities.RPPair;
 import planning.RPRole;
 import java.util.List;
 import java.util.Set;
@@ -68,7 +68,7 @@ public interface RPChannelLinker {
 	 *
 	 * @return a set of pairs of {@link RPChannel} and {@link RPTapeChannel}
 	 */
-	Set<Pair<RPChannel, RPTapeChannel>> getAudioSet();
+	Set<RPPair<RPChannel, RPTapeChannel>> getAudioSet();
 
 	/**
 	 * This method is used to check if a Channel with the given title exists.
