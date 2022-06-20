@@ -4,6 +4,7 @@ import com.google.gson.JsonIOException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
@@ -20,7 +21,7 @@ public class RPFileWriter implements Writer {
      */
     public RPFileWriter(File file) {
         try {
-            this.fw = new java.io.FileWriter(Objects.requireNonNull(file));
+            this.fw = new java.io.FileWriter(Objects.requireNonNull(file), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new IllegalArgumentException("The given file cannot be used to save information.");
         }
