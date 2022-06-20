@@ -47,7 +47,7 @@ public class App extends Application {
     private void switchScene(KeyEvent keyEvent) {
         if (keyEvent.getCode().equals(KeyCode.A)) {
             Parent temp = this.activeScene.getRoot();
-            this.activeScene.setRoot(sleepingRoot);
+            this.activeScene.setRoot(this.sleepingRoot);
             this.sleepingRoot = temp;
         }
     }

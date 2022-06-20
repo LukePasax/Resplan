@@ -31,7 +31,6 @@ public class PlanningController {
     public AnchorPane windowBar;
     public Button rubricButton;
     private TimeAxisSetter timeAxisSetter;
-    private JsonFilePicker filePicker;
     private MarkersPane markersPane;
     private ToolBarSetter toolBarSetter = new ToolBarSetter();
 
