@@ -30,11 +30,15 @@ public class PlanningController {
     public Button newSectionButton;
     public AnchorPane windowBar;
     public Button rubricButton;
+    public Button magicButton;
     private TimeAxisSetter timeAxisSetter;
     private MarkersPane markersPane;
     private ToolBarSetter toolBarSetter = new ToolBarSetter();
 
     public void initialize() {
+        this.magicButton.setVisible(false);
+        this.toolBarSetter.addTool(Tool.MOVE, this.magicButton);
+        this.toolBarSetter.selectTool(Tool.MOVE);
     	//--------------setting time axis------------
     	timeAxisSetter = new TimeAxisSetter(App.getData().getProjectLenghtProperty().get());
 		App.getData().getProjectLenghtProperty().addListener((obs,old,n)->{
