@@ -53,17 +53,17 @@
   </padding>
   <TableView fx:id="tableView" GridPane.columnIndex="0" GridPane.rowIndex="1">
     <columns>
-      <TableColumn fx:id="speakerCodeColumn" prefWidth="115.0" text="Speaker code">
+      <TableColumn fx:id="speakerCodeColumn" prefWidth="115.0" style="-fx-alignment: CENTER;" text="Speaker code">
         <cellValueFactory>
           <PropertyValueFactory property="code" />
         </cellValueFactory>
       </TableColumn>
-      <TableColumn fx:id="firstNameColumn" prefWidth="115.0" text="First Name">
+      <TableColumn fx:id="firstNameColumn" prefWidth="115.0" style="-fx-alignment: CENTER;" text="First Name">
         <cellValueFactory>
           <PropertyValueFactory property="firstName" />
         </cellValueFactory>
       </TableColumn>
-      <TableColumn fx:id="lastNameColumn" prefWidth="115.0" text="Last Name">
+      <TableColumn fx:id="lastNameColumn" prefWidth="115.0" style="-fx-alignment: CENTER;" text="Last Name">
         <cellValueFactory>
           <PropertyValueFactory property="lastName" />
         </cellValueFactory>
