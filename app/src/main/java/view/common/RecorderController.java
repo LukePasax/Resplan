@@ -26,8 +26,13 @@ public class RecorderController {
 
     public void setClipTitle(String clipTitle) {
         this.clipTitle.setText(clipTitle);
-        Starter.getController().getClipText(clipTitle).ifPresent(s -> this.textArea.setText(s));
-        this.textArea.setEditable(false);
+        Starter.getController().getClipText(clipTitle).ifPresent(s -> {
+            this.textArea = new TextArea(s);
+            this.grid.addRow(1);
+            this.grid.getScene().getWindow().setHeight(370);
+            this.grid.add(this.textArea, 0, 1);
+            this.textArea.setEditable(false);
+        });
     }
 
     public void recPressed(ActionEvent actionEvent) {
