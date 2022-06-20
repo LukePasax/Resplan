@@ -19,8 +19,19 @@ import java.util.Optional;
  */
 public interface Controller {
 
+    /**
+     * Gets the system separator.
+     */
     String SEP = System.getProperty("file.separator");
+
+    /**
+     * Gets the user's current directory.
+     */
     String WORKING_DIRECTORY = System.getProperty("user.dir");
+
+    /**
+     * Defines a global settings file.
+     */
     String APP_SETTINGS = "settings.json";
 
     /**
