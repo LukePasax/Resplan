@@ -17,21 +17,16 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import view.common.ViewDataImpl.Channel;
 import view.common.ViewDataImpl.Clip;
@@ -328,6 +323,18 @@ public abstract class ChannelContentView extends Pane {
 			this.setOnMouseMoved(this::mouseOver);
 			this.setOnMouseDragged(this::mouseDragged);
 			this.setOnMousePressed(this::mousePressed);
+			final var popup = new Popup();
+			this.hoverProperty().addListener((observableValue, oldValue, newValue) -> {
+				final var label = new Label(Starter.getController().getClipDescription(clip.getTitle()));
+				label.setBackground(new Background(new BackgroundFill(Paint.valueOf("#FFFFFF"), null, null)));
+				if (newValue) {
+					var bounds = this.getLayoutBounds();
+					popup.getContent().add(label);
+					popup.show(this.getScene().getWindow(), bounds.getMinX(), bounds.getMinY());
+				} else {
+					popup.hide();
+				}
+			});
 		}
 		
 		private void mouseReleased(MouseEvent e) {
