@@ -24,17 +24,17 @@ public class WindowBar {
     private static final double BUTTON_SIZE = 50;
     private static final double BUTTON_ICON_SIZE = 15;
     private static final double LABEL_WIDTH = 100;
-    private AnchorPane pane;
+    private final AnchorPane pane;
     private FilePicker filePicker;
-    private Label projectName;
+    private final Label projectName;
 
-    private static boolean isMaximized;
-    private static double posX;
-    private static double posY;
-    private static double width;
-    private static double height;
-    private static double offsetX;
-    private static double offsetY;
+    private static boolean IS_MAXIMIZED;
+    private static double POS_X;
+    private static double POS_Y;
+    private static double WIDTH;
+    private static double HEIGHT;
+    private double offsetX;
+    private double offsetY;
 
     public WindowBar(AnchorPane pane) {
         super();
@@ -161,24 +161,24 @@ public class WindowBar {
 
     private void maximize(ActionEvent actionEvent) {
         Stage stage = (Stage) this.pane.getScene().getWindow();
-        if (!this.isMaximized) {
-            this.posX = stage.getX();
-            this.posY = stage.getY();
-            this.width = stage.getWidth();
-            this.height = stage.getHeight();
+        if (!IS_MAXIMIZED) {
+            POS_X = stage.getX();
+            POS_Y = stage.getY();
+            WIDTH = stage.getWidth();
+            HEIGHT = stage.getHeight();
             final var screen = Screen.getPrimary();
             final var bounds = screen.getVisualBounds();
             stage.setX(bounds.getMinX());
             stage.setY(bounds.getMinY());
             stage.setWidth(bounds.getWidth());
             stage.setHeight(bounds.getHeight());
-            this.isMaximized = true;
+            IS_MAXIMIZED = true;
         } else {
-            stage.setX(this.posX);
-            stage.setY(this.posY);
-            stage.setWidth(this.width);
-            stage.setHeight(this.height);
-            this.isMaximized = false;
+            stage.setX(POS_X);
+            stage.setY(POS_Y);
+            stage.setWidth(WIDTH);
+            stage.setHeight(HEIGHT);
+            IS_MAXIMIZED = false;
         }
     }
 
@@ -258,8 +258,7 @@ public class WindowBar {
     private void launchWindow(String fxml, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource(fxml));
-            Scene scene = null;
-            scene = new Scene(loader.load());
+            Scene scene = new Scene(loader.load());
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.initModality(Modality.WINDOW_MODAL);

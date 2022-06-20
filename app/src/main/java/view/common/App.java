@@ -36,7 +36,7 @@ public class App extends Application {
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.show();
         FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
-        this.sleepingRoot = (Parent) editLoader.load();
+        this.sleepingRoot = editLoader.load();
         activeScene.setOnKeyPressed(this::switchScene);
         //this.planningController = planningLoader.getController();
         this.editController = editLoader.getController();
