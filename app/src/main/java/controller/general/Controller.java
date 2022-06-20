@@ -6,7 +6,6 @@ import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
 import net.beadsproject.beads.data.Sample;
 import view.common.App;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -370,5 +369,9 @@ public interface Controller {
     String getClipType(String clip);
 
     String getClipDescription(String clip);
+
+    void addSpeakerToRubric(int code, String firstName, String lastName);
+
+    void removeSpeakerFromRubric(int code, String firstName, String lastName);
 
 }

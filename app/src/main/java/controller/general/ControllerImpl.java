@@ -818,6 +818,16 @@ public class ControllerImpl implements Controller {
         return this.manager.getClipLinker().getPart(clip).getDescription().orElse("");
     }
 
+    @Override
+    public void addSpeakerToRubric(int code, String firstName, String lastName) {
+        this.manager.addSpeakerToRubric(this.manager.createSpeaker(code, firstName, lastName));
+    }
+
+    @Override
+    public void removeSpeakerFromRubric(int code, String firstName, String lastName) {
+        this.manager.removeSpeakerFromRubric(this.manager.createSpeaker(code, firstName, lastName));
+    }
+
     // ONLY FOR TEMPORARY TESTING PURPOSES
     public Manager getManager() {
         return this.manager;

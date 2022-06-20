@@ -515,7 +515,7 @@ public class Manager implements RPManager {
 
     @Override
     public Speaker createSpeaker(int id, String firstName, String lastName) {
-        return new SimpleSpeaker(id, firstName, lastName);
+        return new SimpleSpeaker.Builder(id).firstName(firstName).lastName(lastName).build();
     }
 
     @Override
