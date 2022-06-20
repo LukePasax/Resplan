@@ -127,4 +127,8 @@ public class ExportViewController {
             this.endTime.setDisable(false);
         }
     }
+
+    public void cancelPressed(ActionEvent actionEvent) {
+        this.endTime.getScene().getWindow().hide();
+    }
 }
