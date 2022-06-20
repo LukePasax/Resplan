@@ -24,16 +24,17 @@ public class WindowBar {
     private static final double BUTTON_SIZE = 50;
     private static final double BUTTON_ICON_SIZE = 15;
     private static final double LABEL_WIDTH = 100;
-    private final AnchorPane pane;
+    private AnchorPane pane;
     private FilePicker filePicker;
     private Label projectName;
-    private boolean isMaximized;
-    private double posX;
-    private double posY;
-    private double width;
-    private double height;
-    private double offsetX;
-    private double offsetY;
+
+    private static boolean isMaximized;
+    private static double posX;
+    private static double posY;
+    private static double width;
+    private static double height;
+    private static double offsetX;
+    private static double offsetY;
 
     public WindowBar(AnchorPane pane) {
         super();
