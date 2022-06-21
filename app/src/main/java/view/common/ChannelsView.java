@@ -17,44 +17,50 @@ import javafx.scene.paint.Paint;
 import view.common.ViewDataImpl.Channel;
 import view.common.ViewDataImpl.Clip;
 
+/**
+ * The view for a channel.
+ * This class is responsable of drawing the channel content and channel infos.
+ * Extend this class and implement {@code drawClip(Clip clip)} e {@code drawInfos(Channel channel)} 
+ * for personalize the channel view.
+ */
 public abstract class ChannelsView {
 	
-	protected static final Background SELECTION_BACKGROUND = new Background(new BackgroundFill(Paint.valueOf("#ECF0FD"), null, null));
+	private static final Background SELECTION_BACKGROUND = new Background(new BackgroundFill(Paint.valueOf("#ECF0FD"), null, null));
+	private static final int RGB_COLORS = 256;
+	
 	/**
 	 * Index of last channel of each group.
 	 */
 	private Map<String, Integer> groupIndexes = new HashMap<>();
 	private static Map<String, Color> groupColors = new HashMap<>();
-	StringProperty selected = new SimpleStringProperty();
+	private StringProperty selected = new SimpleStringProperty();
+	private final Random rand = new Random();
 	
-	public ChannelsView(TimeAxisSetter timeAxisSetter, VBox channelsContentPane, VBox channelsInfoPane, ToolBarSetter toolBarSetter) {
+	public ChannelsView(final TimeAxisSetter timeAxisSetter, final VBox channelsContentPane, final VBox channelsInfoPane, final ToolBarSetter toolBarSetter) {
 		App.getData().addChannelsDataListener(new MapChangeListener<Channel, ObservableList<Clip>>() {
 
 			@Override
-			public void onChanged(Change<? extends Channel, ? extends ObservableList<Clip>> c) {
-				if(c.wasAdded()) {
+			public void onChanged(final Change<? extends Channel, ? extends ObservableList<Clip>> c) {
+				if (c.wasAdded()) {
 					//--------CREATE VIEW COMPONENT-----
 					Channel ch = c.getKey();
 					//set ch group color
-					if(groupColors.get(ch.getGroup())==null) {
-						var rand = new Random();
-						groupColors.put(ch.getGroup(), Color.rgb(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
+					if (groupColors.get(ch.getGroup()) == null) {
+						groupColors.put(ch.getGroup(), Color.rgb(rand.nextInt(RGB_COLORS), rand.nextInt(RGB_COLORS), rand.nextInt(RGB_COLORS)));
 					}
-					ChannelContentView cw = new ChannelContentView(ch, timeAxisSetter.getAxis(), toolBarSetter, groupColors.get(ch.getGroup())){
+					ChannelContentView cw = new ChannelContentView(ch, timeAxisSetter.getAxis(), toolBarSetter, groupColors.get(ch.getGroup())) {
 
 						@Override
-						public Node drawClipContent(Clip clip) {
+						public Node drawClipContent(final Clip clip) {
 							return drawClip(clip);
 						}
-						
 					};
 					ChannelInfosView iw = new ChannelInfosView(ch, groupColors.get(ch.getGroup())) {
 
 						@Override
-						public Node drawChannelInfos(Channel ch) {
+						public Node drawChannelInfos(final Channel ch) {
 							return drawInfos(ch);
 						}
-						
 					};
 					//set resize
 					iw.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
@@ -62,15 +68,15 @@ public abstract class ChannelsView {
 					});
 					RegionHeightResizer.makeResizable(iw);
 					//select channel
-					iw.setOnMouseClicked(e->selected.set(ch.getTitle()));
-					cw.setOnMouseClicked(e->{
-						if(toolBarSetter.getCurrentTool().equals(Tool.CURSOR) || toolBarSetter.getCurrentTool().equals(Tool.MOVE)) {
+					iw.setOnMouseClicked(e -> selected.set(ch.getTitle()));
+					cw.setOnMouseClicked(e -> {
+						if (toolBarSetter.getCurrentTool().equals(Tool.CURSOR) || toolBarSetter.getCurrentTool().equals(Tool.MOVE)) {
 							selected.set(ch.getTitle());
 						}
 						cw.clickEvent(e);
 					});
-					selected.addListener((obs, old, n)->{
-						if(n.equals(ch.getTitle())) {
+					selected.addListener((obs, old, n) -> {
+						if (n.equals(ch.getTitle())) {
 							iw.setBackground(SELECTION_BACKGROUND);
 							cw.setBackground(SELECTION_BACKGROUND);
 						} else {
@@ -79,33 +85,33 @@ public abstract class ChannelsView {
 						}
 					});
 					//--------ADDING TO VIEW-----
-					if(!groupIndexes.containsKey(ch.getGroup())) {
+					if (!groupIndexes.containsKey(ch.getGroup())) {
 						groupIndexes.put(ch.getGroup(), channelsInfoPane.getChildren().size());
 					} else {
-						groupIndexes.put(ch.getGroup(), groupIndexes.get(ch.getGroup())+1);
+						groupIndexes.put(ch.getGroup(), groupIndexes.get(ch.getGroup()) + 1);
 					}
-					groupIndexes.entrySet().stream().filter(entry->{
-						return groupIndexes.get(ch.getGroup())<=entry.getValue() && !entry.getKey().equals(ch.getGroup());
-					}).forEach(entry->{
-						groupIndexes.put(entry.getKey(), entry.getValue()+1);
+					groupIndexes.entrySet().stream().filter(entry -> {
+						return groupIndexes.get(ch.getGroup()) <= entry.getValue() && !entry.getKey().equals(ch.getGroup());
+					}).forEach(entry -> {
+						groupIndexes.put(entry.getKey(), entry.getValue() + 1);
 					});
 					channelsInfoPane.getChildren().add(groupIndexes.get(ch.getGroup()), iw);
 					channelsContentPane.getChildren().add(groupIndexes.get(ch.getGroup()), cw);
-					c.getKey().addToViewAll(iw,cw);
+					c.getKey().addToViewAll(iw, cw);
 				}
-				if(c.wasRemoved()) {
+				if (c.wasRemoved()) {
 					//-------REMOVE FROM VIEW
 					Channel ch = c.getKey();
-					boolean last = (groupIndexes.get(ch.getGroup()) <= 0 || groupIndexes.containsValue(groupIndexes.get(ch.getGroup())-1));
-					groupIndexes.entrySet().stream().filter(entry->{
-						if(groupIndexes.get(ch.getGroup())==null) {
+					boolean last = (groupIndexes.get(ch.getGroup()) <= 0 || groupIndexes.containsValue(groupIndexes.get(ch.getGroup()) - 1));
+					groupIndexes.entrySet().stream().filter(entry -> {
+						if (groupIndexes.get(ch.getGroup()) == null) {
 							return false;
 						}
-						return groupIndexes.get(ch.getGroup())<=entry.getValue();
-					}).forEach(entry->{
-						groupIndexes.put(entry.getKey(), entry.getValue()-1);
+						return groupIndexes.get(ch.getGroup()) <= entry.getValue();
+					}).forEach(entry -> {
+						groupIndexes.put(entry.getKey(), entry.getValue() - 1);
 					});
-					if(last) {
+					if (last) {
 						groupIndexes.remove(ch.getGroup());
 					}
 					channelsContentPane.getChildren().removeAll(c.getKey().getViewSet());
@@ -119,7 +125,12 @@ public abstract class ChannelsView {
 	
 	public abstract Node drawInfos(Channel ch);
 	
-	public void addSelectObserver(ChangeListener<String> changeListener) {
+	/**
+	 * Register a listener of the selected channel.
+	 * 
+	 * @param  changeListener  The listener to add.
+	 */
+	public void addSelectListener(final ChangeListener<String> changeListener) {
 		selected.addListener(changeListener);
 	}
 }

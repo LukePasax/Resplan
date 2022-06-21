@@ -13,7 +13,7 @@ public class FXView {
 	private HBox fxPanel;
 
 	public FXView(HBox fxPanel, ChannelsView chView) {
-		chView.addSelectObserver(new ChangeListener<String>() {
+		chView.addSelectListener(new ChangeListener<String>() {
 
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {

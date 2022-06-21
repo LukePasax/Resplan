@@ -12,7 +12,7 @@ import javafx.scene.layout.Region;
  * <p>
  * Only height resizing is currently implemented. Usage: <pre>DragResizer.makeResizable(myAnchorPane);</pre>
  */
-public class RegionHeightResizer {
+public final class RegionHeightResizer {
 
     /**
      * The margin around the control that a user can click in to start resizing
@@ -28,55 +28,58 @@ public class RegionHeightResizer {
 
     private boolean dragging;
 
-    private RegionHeightResizer(Region aRegion) {
+    private RegionHeightResizer(final Region aRegion) {
         region = aRegion;
     }
 
-    public static void makeResizable(Region region) {
+    public static void makeResizable(final Region region) {
         final RegionHeightResizer resizer = new RegionHeightResizer(region);
 
         region.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
+            public void handle(final MouseEvent event) {
                 resizer.mousePressed(event);
-            }});
+            }
+        });
         region.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
+            public void handle(final MouseEvent event) {
                 resizer.mouseDragged(event);
-            }});
+            }
+        });
         region.setOnMouseMoved(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
+            public void handle(final MouseEvent event) {
                 resizer.mouseOver(event);
-            }});
+            }
+        });
         region.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
+            public void handle(final MouseEvent event) {
                 resizer.mouseReleased(event);
-            }});
+            }
+        });
     }
 
-    protected void mouseReleased(MouseEvent event) {
+    protected void mouseReleased(final MouseEvent event) {
         dragging = false;
         region.setCursor(Cursor.DEFAULT);
     }
 
-    protected void mouseOver(MouseEvent event) {
-        if(isInDraggableZone(event) || dragging) {
+    protected void mouseOver(final MouseEvent event) {
+        if (isInDraggableZone(event) || dragging) {
             region.setCursor(Cursor.S_RESIZE);
-        }
-        else {
+        } else {
             region.setCursor(Cursor.DEFAULT);
         }
     }
 
-    protected boolean isInDraggableZone(MouseEvent event) {
+    protected boolean isInDraggableZone(final MouseEvent event) {
         return event.getY() > (region.getHeight() - RESIZE_MARGIN);
     }
 
-    protected void mouseDragged(MouseEvent event) {
-        if(!dragging) {
+    protected void mouseDragged(final MouseEvent event) {
+        if (!dragging) {
             return;
         }
 
@@ -89,15 +92,12 @@ public class RegionHeightResizer {
         y = mousey;
     }
 
-    protected void mousePressed(MouseEvent event) {
-
+    protected void mousePressed(final MouseEvent event) {
         // ignore clicks outside of the draggable margin
-        if(!isInDraggableZone(event)) {
+        if (!isInDraggableZone(event)) {
             return;
         }
-
         dragging = true;
-
         // make sure that the minimum height is set to the current height once,
         // setting a min height that is smaller than the current height will
         // have no effect
@@ -105,7 +105,6 @@ public class RegionHeightResizer {
             region.setMinHeight(region.getHeight());
             initMinHeight = true;
         }
-
         y = event.getY();
     }
 }
