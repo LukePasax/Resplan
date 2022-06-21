@@ -2,7 +2,7 @@ package daw.engine;
 
 public class ClockException extends Exception {
 
-	public ClockException(String string) {
+	public ClockException(final String string) {
 		super(string);
 	}
 

@@ -3,7 +3,6 @@ package daw.core.clip;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
-
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 
@@ -14,7 +13,7 @@ import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
  * in some way or converted to it, so the content position is a time value in milliseconds.
  * A FileClip wrap an Empty RPClip object and add all the File content related features and controls.
  */
-public class FileClip implements RPClip<File> {
+public final class FileClip implements RPClip<File> {
 	
 	/**
 	 * The empty clip that this object wrap.
@@ -44,12 +43,12 @@ public class FileClip implements RPClip<File> {
 	 * @throws  IllegalArgumentException  If the supplied file does not exists
 	 * 							 or if {@link #isEmpty} method of the supplied clip returns {@code false}.
 	 */
-	protected FileClip(File content, RPClip<?> emptyClip) {
-		if(!content.exists()) {
+	protected FileClip(final File content, final RPClip<?> emptyClip) {
+		if (!content.exists()) {
 			throw new IllegalArgumentException("The file does not exists");
 		}
 		this.content = content;
-		if(!emptyClip.isEmpty()) {
+		if (!emptyClip.isEmpty()) {
 			throw new IllegalArgumentException("The supplied clip must be empty");
 		}
 		this.clip = emptyClip;
@@ -59,21 +58,28 @@ public class FileClip implements RPClip<File> {
 	 * Creates a FileClip with a duration of {@value RPClip#DEFAULT_DURATION} milliseconds 
 	 * filled with the specified file.
 	 * 
+	 * @param title The title of this clip.
+	 * 
 	 * @param  content  The File content of this RPClip.
+	 * 
+	 * @throws  IllegalArgumentException  If the supplied file does not exists
+	 * 							 or if {@link #isEmpty} method of the supplied clip returns {@code false}.
 	 */
-	public FileClip(File content, String title) {
+	public FileClip(final String title, final File content) {
 		this(content, new EmptyClip(title));
 	}
 	
 	/**
 	 * Creates a FileClip with the specified duration filled with the specified file.
 	 * 
+	 * @param title The title of this clip.
+	 * 
 	 * @param  duration  The duration of this clip in milliseconds.
 	 * 
 	 * @param  content  The File content of this RPClip.
 	 */
-	public FileClip(double duration, File content, String title) {
-		this(content, new EmptyClip(duration, title));
+	public FileClip(final String title, final double duration, final File content) {
+		this(content, new EmptyClip(title, duration));
 	}
 	
 	/**
@@ -82,7 +88,7 @@ public class FileClip implements RPClip<File> {
 	 * @throws  IllegalArgumentException {@inheritDoc}
 	 */
 	@Override
-	public void setDuration(double milliseconds) {
+	public void setDuration(final double milliseconds) {
 		this.clip.setDuration(milliseconds);
 	}
 
@@ -92,7 +98,7 @@ public class FileClip implements RPClip<File> {
 	 * @throws  IllegalArgumentException {@inheritDoc}
 	 */
 	@Override
-	public void setContentPosition(double milliseconds) {
+	public void setContentPosition(final double milliseconds) {
 		this.contentPosition = milliseconds;
 	}
 
@@ -162,9 +168,13 @@ public class FileClip implements RPClip<File> {
 
 	@Override
 	// DO NOT DELETE!
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 		FileClip fileClip = (FileClip) o;
 		return Objects.equals(clip.getTitle(), fileClip.clip.getTitle());
 	}
@@ -173,5 +183,4 @@ public class FileClip implements RPClip<File> {
 	public int hashCode() {
 		return Objects.hash(clip);
 	}
-
 }

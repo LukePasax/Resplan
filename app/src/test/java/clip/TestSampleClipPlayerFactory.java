@@ -27,10 +27,10 @@ class TestSampleClipPlayerFactory {
 		ClipPlayerFactory factory = new SampleClipPlayerFactory();
 		RPChannel channel = new BasicChannelFactory().basic();
 		try {
-			RPClip<?> clip = new SampleClip(new File(System.getProperty("user.dir") + SEP + "src" +
-				SEP + "test" + SEP + "resources"+ SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"), "ciao");
+			RPClip<?> clip = new SampleClip("title", new File(System.getProperty("user.dir") + SEP + "src"
+				+ SEP + "test" + SEP + "resources" + SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"));
 			RPClipPlayer player = factory.createClipPlayer(clip, channel);
-			assertEquals(clip.getContentPosition() ,player.getPlaybackPosition());
+			assertEquals(clip.getContentPosition(), player.getPlaybackPosition());
 			assertTrue(player.isPaused());
 		} catch (IOException | OperationUnsupportedException | FileFormatException e) {
 			e.printStackTrace();
@@ -40,15 +40,16 @@ class TestSampleClipPlayerFactory {
 	
 	@Test
 	void testSamplePlayerCreationWithCut() {
+		final double cutTime = 0.543;
 		ClipPlayerFactory factory = new SampleClipPlayerFactory();
 		RPChannel channel = new BasicChannelFactory().basic();
 		try {
-			RPClip<?> clip = new SampleClip(new File(System.getProperty("user.dir") + SEP + "src" +
-				SEP + "test" + SEP + "resources"+ SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"), "ciao");
-			RPClipPlayer player = factory.createClipPlayerWithActiveCut(clip, channel, 0.543);
+			RPClip<?> clip = new SampleClip("title", new File(System.getProperty("user.dir") + SEP + "src"
+				+ SEP + "test" + SEP + "resources" + SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"));
+			RPClipPlayer player = factory.createClipPlayerWithActiveCut(clip, channel, cutTime);
 			assertEquals(clip.getContentPosition(), player.getPlaybackPosition());
 			assertTrue(player.isCutActive());
-			assertEquals(0.543, player.getCutTime());
+			assertEquals(cutTime, player.getCutTime());
 		} catch (IOException | OperationUnsupportedException | FileFormatException e) {
 			e.printStackTrace();
 			fail("Exception throwed");
@@ -60,7 +61,7 @@ class TestSampleClipPlayerFactory {
 		ClipPlayerFactory factory = new SampleClipPlayerFactory();
 		RPChannel channel = new BasicChannelFactory().basic();
 		RPClip<?> clip = new EmptyClip("ciao");
-		assertThrows(IllegalArgumentException.class, ()->factory.createClipPlayer(clip, channel));
+		assertThrows(IllegalArgumentException.class, () -> factory.createClipPlayer(clip, channel));
 	}
 
 }

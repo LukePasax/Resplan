@@ -21,8 +21,8 @@ class TestTapeChannel {
 	void testAddingOneClip() {
 		RPTapeChannel tapeChannel = new TapeChannel();
 		assertEquals(tapeChannel.getClipAt(0), Optional.empty());
-		double duration = 500;
-		RPClip<?> clip = new EmptyClip(duration, "ciao");
+		final double duration = 500;
+		RPClip<?> clip = new EmptyClip("title", duration);
 		tapeChannel.insertRPClip(clip, 0);
 		assertFalse(tapeChannel.isEmpty());
 	}
@@ -30,14 +30,13 @@ class TestTapeChannel {
 	@Test
 	void testGetClipAt() {
 		RPTapeChannel tapeChannel = new TapeChannel();
-		double duration = 500;
-		RPClip<?> clip = new EmptyClip(duration, "ciao");
+		final double duration = 500;
+		RPClip<?> clip = new EmptyClip("title", duration);
 		tapeChannel.insertRPClip(clip, 0);
 		assertEquals(tapeChannel.getClipAt(0), Optional.of(new Pair<>(0.0, clip)));
-		assertEquals(tapeChannel.getClipAt(duration/2), Optional.of(new Pair<>(0.0, clip)));
-		assertEquals(tapeChannel.getClipAt(duration-0.1), Optional.of(new Pair<>(0.0, clip)));
+		assertEquals(tapeChannel.getClipAt(duration / 2), Optional.of(new Pair<>(0.0, clip)));
+		assertEquals(tapeChannel.getClipAt(duration - 0.1), Optional.of(new Pair<>(0.0, clip)));
 		assertEquals(tapeChannel.getClipAt(duration), Optional.empty());
-		
 	}
 	
 	@Test
@@ -45,7 +44,7 @@ class TestTapeChannel {
 		RPTapeChannel tapeChannel = new TapeChannel();
 		assertEquals(tapeChannel.getClipAt(0), Optional.empty());
 		double duration = 500;
-		RPClip<?> clip = new EmptyClip(duration, "ciao");
+		RPClip<?> clip = new EmptyClip("title", duration);
 		tapeChannel.insertRPClip(clip, 0);
 		assertEquals(tapeChannel.getClipAt(0), Optional.of(new Pair<>(0.0, clip)));
 		assertThrows(ClipNotFoundException.class, ()->tapeChannel.removeClip(200));
@@ -67,12 +66,12 @@ class TestTapeChannel {
 	@Test
 	void testGetClipWithTimeIterator() {
 		RPTapeChannel tapeChannel = new TapeChannel();
-		for(int i = 0; i<10; i++) {
-			RPClip<?> clip = new EmptyClip(10, "ciao");
-			tapeChannel.insertRPClip(clip, i*10);
+		for (int i = 0; i < 10; i++) {
+			RPClip<?> clip = new EmptyClip("title", 10);
+			tapeChannel.insertRPClip(clip, i * 10);
 		}
 		Iterator<Pair<Double, RPClip<?>>> iterator = tapeChannel.getClipWithTimeIterator();
-		for(double i = 0; i<100; i=i+10) {
+		for (double i = 0; i < 100; i = i + 10) {
 			assertTrue(iterator.hasNext());
 			var x = iterator.next();
 			assertEquals(x.getKey(), i);
@@ -83,12 +82,12 @@ class TestTapeChannel {
 	@Test
 	void testAddingAndOverwriteClip() {
 		RPTapeChannel tapeChannel = new TapeChannel();
-		for(int i = 0; i<10; i++) {
-			RPClip<?> clip = new EmptyClip(100, "ciao");
-			tapeChannel.insertRPClip(clip, i*10);
+		for (int i = 0; i < 10; i++) {
+			RPClip<?> clip = new EmptyClip("title", 100);
+			tapeChannel.insertRPClip(clip, i * 10);
 		}
 		Iterator<Pair<Double, RPClip<?>>> iterator = tapeChannel.getClipWithTimeIterator();
-		for(double i = 0; i<90; i=i+10) {
+		for (double i = 0; i < 90; i = i + 10) {
 			assertTrue(iterator.hasNext());
 			var x = iterator.next();
 			assertEquals(x.getKey(), i);
@@ -104,16 +103,16 @@ class TestTapeChannel {
 	@Test
 	void testAddingClipException() {
 		RPTapeChannel tapeChannel = new TapeChannel();
-		RPClip<?> clip = new EmptyClip(100, "ciao");
+		RPClip<?> clip = new EmptyClip("title", 100);
 		tapeChannel.insertRPClip(clip, 10);
-		RPClip<?> clip2 = new EmptyClip(50, "ciao2");
-		assertThrows(IllegalStateException.class, ()->tapeChannel.insertRPClip(clip2, 10));
+		RPClip<?> clip2 = new EmptyClip("title2", 50);
+		assertThrows(IllegalStateException.class, () -> tapeChannel.insertRPClip(clip2, 10));
 	}
 	
 	@Test
 	void testMoveOneClip() {
 		RPTapeChannel tapeChannel = new TapeChannel();
-		RPClip<?> clip = new EmptyClip(10, "ciao");
+		RPClip<?> clip = new EmptyClip("title", 10);
 		tapeChannel.insertRPClip(clip, 0);
 		assertEquals(tapeChannel.getClipAt(10), Optional.empty());
 		try {
@@ -123,16 +122,16 @@ class TestTapeChannel {
 			fail();
 		}
 		assertEquals(tapeChannel.getClipAt(10), Optional.of(new Pair<>(10.0, clip)));
-		assertThrows(IllegalArgumentException.class, ()->tapeChannel.move(10, -2));
-		assertThrows(ClipNotFoundException.class, ()->tapeChannel.move(0, 10));
+		assertThrows(IllegalArgumentException.class, () -> tapeChannel.move(10, -2));
+		assertThrows(ClipNotFoundException.class, () -> tapeChannel.move(0, 10));
 	}
 	
 	@Test
 	void testMoveAndOverrideClip() {
 		RPTapeChannel tapeChannel = new TapeChannel();
-		RPClip<?> clip = new EmptyClip(100, "ciao");
-		RPClip<?> clip2 = new EmptyClip(100, "ciao2");
-		RPClip<?> clip3 = new EmptyClip(100, "ciao3");
+		RPClip<?> clip = new EmptyClip("title", 100);
+		RPClip<?> clip2 = new EmptyClip("title2", 100);
+		RPClip<?> clip3 = new EmptyClip("title3", 100);
 		tapeChannel.insertRPClip(clip, 0);
 		tapeChannel.insertRPClip(clip2, 200);
 		tapeChannel.insertRPClip(clip3, 400);
@@ -142,7 +141,7 @@ class TestTapeChannel {
 			e.printStackTrace();
 			fail();
 		}
-		assertEquals(tapeChannel.getClipAt(50).get().getValue().getDuration(),100.0);
+		assertEquals(tapeChannel.getClipAt(50).get().getValue().getDuration(), 100.0);
 		assertEquals(tapeChannel.getClipAt(0).get().getValue().getDuration(), 50.0);
 		try {
 			tapeChannel.move(0, 450);

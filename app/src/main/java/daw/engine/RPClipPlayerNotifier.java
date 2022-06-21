@@ -12,17 +12,19 @@ public interface RPClipPlayerNotifier {
 	/**
 	 * Notify all the players associated with the given step to play or stop.
 	 * Then remove them from the observers.
+	 * 
+	 * @param  step  The actual clock step.
 	 */
 	void update(Long step);
 	
 	/**
-	 * Stop all the subscribed players
+	 * Stop all the subscribed players.
 	 */
 	void notifyStopped();
 	
 	/**
 	 * Subscribe a player to this clip player notifier.
-	 *  
+	 *
 	 * @param  step  The step to subscribe the player at.
 	 * 
 	 * @param  clipPlayer  The clip player to subscribe.
@@ -35,7 +37,7 @@ public interface RPClipPlayerNotifier {
 	
 	/**
 	 * Unsubscribe a player to this clip player notifier.
-	 *  
+	 *
 	 * @param  step  The step where to find the player to unsubscribe.
 	 * 
 	 * @param  clipPlayer  The clip player to unsubscribe.

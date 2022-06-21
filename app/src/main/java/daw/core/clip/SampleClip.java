@@ -3,7 +3,6 @@ package daw.core.clip;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.beadsproject.beads.data.Sample;
@@ -15,7 +14,7 @@ import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
  * <p>The default duration is the same as the audio content one.
  * A SampleClip wrap a FileClip object and add all the Audio content related features and controls.
  */
-public class SampleClip implements RPClip<Sample> {
+public final class SampleClip implements RPClip<Sample> {
 	
 	/**
 	 * The FileClip that this object wrap.
@@ -45,13 +44,13 @@ public class SampleClip implements RPClip<Sample> {
 	 * 
 	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
-	private SampleClip(RPClip<File> fileClip) throws IOException, OperationUnsupportedException, FileFormatException {
-		if(fileClip.getClass()!=FileClip.class) {
+	private SampleClip(final RPClip<File> fileClip) throws IOException, OperationUnsupportedException, FileFormatException {
+		if (fileClip.getClass() != FileClip.class) {
 			throw new IllegalArgumentException("The supplied fileClip must be a FileClip class object");
 		}
 		this.clip = fileClip;
 		this.sample = new Sample(clip.getContent().getAbsolutePath());
-		if(this.clip.getDuration()>this.sample.getLength()) {
+		if (this.clip.getDuration() > this.sample.getLength()) {
 			this.setDuration(this.sample.getLength());
 		}
 	}
@@ -73,12 +72,14 @@ public class SampleClip implements RPClip<Sample> {
 	 * 
 	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
-	protected SampleClip(File file, RPClip<?> emptyClip) throws IOException, OperationUnsupportedException, FileFormatException {
+	protected SampleClip(final File file, final RPClip<?> emptyClip) throws IOException, OperationUnsupportedException, FileFormatException {
 		this(new FileClip(file, emptyClip));
 	}
 	
 	/**
 	 * Creates a Sample Clip just specifing an audio file. The duration will be fitted to the audio file duration.
+	 * 
+	 * @param title The title of this clip.
 	 * 
 	 * @param  content  The audio file content.
 	 * 
@@ -88,9 +89,9 @@ public class SampleClip implements RPClip<Sample> {
 	 * 
 	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
-	public SampleClip(File content, String title)
+	public SampleClip(final String title, final File content)
 			throws IOException, OperationUnsupportedException, FileFormatException {
-		this(new FileClip(content, title));
+		this(new FileClip(title, content));
 		this.setDuration(sample.getLength());
 	}
 	
@@ -98,6 +99,8 @@ public class SampleClip implements RPClip<Sample> {
 	 * Creates a Sample Clip just specifing an audio file and a duration. 
 	 * The SampleClip duration will be the same as the content duration 
 	 * if the specified duration is bigger than the content one.
+	 * 
+	 * @param title The title of this clip.
 	 * 
 	 * @param  duration  The duration of the clip in milliseconds.
 	 * 
@@ -110,10 +113,10 @@ public class SampleClip implements RPClip<Sample> {
 	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
 	@JsonCreator
-	public SampleClip(@JsonProperty("duration") double duration, @JsonProperty("content name") File file,
-					  @JsonProperty("name") String title)
+	public SampleClip(@JsonProperty("name") final String title, @JsonProperty("duration") final double duration, 
+			@JsonProperty("content name") final File file)
 			throws IOException, OperationUnsupportedException, FileFormatException {
-		this(new FileClip(duration, file, title));
+		this(new FileClip(title, duration, file));
 	}
 	
 	/**
@@ -123,8 +126,8 @@ public class SampleClip implements RPClip<Sample> {
 	 * specified duration is bigger than the content duration.
 	 */
 	@Override
-	public void setDuration(double milliseconds) {
-		if((sample.getLength()-this.getContentPosition())<milliseconds) {
+	public void setDuration(final double milliseconds) {
+		if ((sample.getLength() - this.getContentPosition()) < milliseconds) {
 			throw new IllegalArgumentException("the new clip duration can't be bigger than the content duration");
 		}
 		this.clip.setDuration(milliseconds);
@@ -136,49 +139,34 @@ public class SampleClip implements RPClip<Sample> {
 	 * @throws  IllegalArgumentException  {@inheritDoc}
 	 */
 	@Override
-	public void setContentPosition(double milliseconds) {
-		if(sample.getLength()<=milliseconds) {
-			throw new IllegalArgumentException("the new content position can't be bigger or equal " +
-					"than the content duration");
+	public void setContentPosition(final double milliseconds) {
+		if (sample.getLength() <= milliseconds) {
+			throw new IllegalArgumentException("the new content position can't be bigger or equal "
+					+ "than the content duration");
 		}
 		this.clip.setContentPosition(milliseconds);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public double getDuration() {
 		return this.clip.getDuration();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public double getContentPosition() {
 		return this.clip.getContentPosition();
 	}
-	
-	/**
-	 *{@inheritDoc}
-	 */
+
 	@Override
 	public double getContentDuration() {
 		return this.sample.getLength();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Sample getContent() {
 		return this.sample;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isEmpty() {
 		return false;
@@ -204,10 +192,13 @@ public class SampleClip implements RPClip<Sample> {
 	}
 
 	@Override
-	// DO NOT DELETE!
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 		SampleClip that = (SampleClip) o;
 		return Objects.equals(clip.getTitle(), that.clip.getTitle());
 	}
@@ -216,5 +207,4 @@ public class SampleClip implements RPClip<Sample> {
 	public int hashCode() {
 		return Objects.hash(clip);
 	}
-
 }

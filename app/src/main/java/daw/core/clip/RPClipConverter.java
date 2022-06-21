@@ -15,7 +15,11 @@ public interface RPClipConverter {
 	
 	/**
 	 * Convert an {@link EmptyClip} to a {@link FileClip}.
+	 * 
 	 * @param  emptyClip  The EmptyClip to convert.
+	 * 
+	 * @param  file  The file to insert in the EmptyClip.
+	 * 
 	 * @return  The FileClip.
 	 */
 	FileClip fromEmptyToFileClip(EmptyClip emptyClip, File file);
@@ -24,6 +28,8 @@ public interface RPClipConverter {
 	 * Convert an {@link EmptyClip} to a {@link SampleClip}.
 	 * 
 	 * @param  emptyClip  The EmptyClip to convert.
+	 * 
+	 * @param  file  The audio file to insert in the EmptyClip.
 	 * 
 	 * @return  The SampleClip.
 	 * 

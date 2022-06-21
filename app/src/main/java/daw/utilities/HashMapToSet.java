@@ -6,23 +6,23 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class HashMapToSet<X, Y> implements MapToSet<X, Y> {
+public final class HashMapToSet<X, Y> implements MapToSet<X, Y> {
 	
-	private final Map<X,Set<Y>> map = new HashMap<>();
+	private final Map<X, Set<Y>> map = new HashMap<>();
 
 	@Override
-	public boolean put(X key, Y value) {
-		if(!map.containsKey(key)) {
+	public boolean put(final X key, final Y value) {
+		if (!map.containsKey(key)) {
 			map.put(key, new HashSet<Y>());
 		}
 		return map.get(key).add(value);
 	}
 
 	@Override
-	public boolean remove(X key, Y value) {
-		if(map.containsKey(key)) {
+	public boolean remove(final X key, final Y value) {
+		if (map.containsKey(key)) {
 			var removed = map.get(key).remove(value);
-			if(map.get(key).isEmpty() && removed) {
+			if (map.get(key).isEmpty() && removed) {
 				return this.removeSet(key) != null;
 			}
 			return removed;
@@ -31,17 +31,17 @@ public class HashMapToSet<X, Y> implements MapToSet<X, Y> {
 	}
 
 	@Override
-	public Set<Y> removeSet(X Key) {
-		 return map.remove(Key);
+	public Set<Y> removeSet(final X key) {
+		 return map.remove(key);
 	}
 
 	@Override
-	public Set<Y> get(X Key) {
-		return map.get(Key);
+	public Set<Y> get(final X key) {
+		return map.get(key);
 	}
 
 	@Override
-	public boolean containsKey(X time) {
+	public boolean containsKey(final X time) {
 		return this.map.containsKey(time);
 	}
 	
@@ -51,8 +51,7 @@ public class HashMapToSet<X, Y> implements MapToSet<X, Y> {
 	}
 	
 	@Override
-	public Set<Entry<X,Set<Y>>> entrySet() {
+	public Set<Entry<X, Set<Y>>> entrySet() {
 		return this.map.entrySet();
 	}
-	
 }

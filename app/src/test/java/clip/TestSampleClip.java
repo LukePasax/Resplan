@@ -12,11 +12,11 @@ class TestSampleClip {
 
 	@Test
 	void testSampleClipCreation() {
-		File content = new File(System.getProperty("user.dir") + SEP + "src" +
-				SEP + "test" + SEP + "resources"+ SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav");
+		File content = new File(System.getProperty("user.dir") + SEP + "src"
+				+ SEP + "test" + SEP + "resources" + SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav");
 		RPClip<?> sampleClip;
 		try {
-			sampleClip = new SampleClip(content, "ciao");
+			sampleClip = new SampleClip("title", content);
 			assertFalse(sampleClip.isEmpty());
 			assertEquals(sampleClip.getDuration(), new Sample(content.getAbsolutePath()).getLength());
 			assertEquals(0, sampleClip.getContentPosition());
@@ -27,8 +27,8 @@ class TestSampleClip {
 	
 	@Test
 	void testFileClipCreationExceptions() {
-		File content = new File(System.getProperty("user.dir") + SEP + "src" +
-				SEP + "test" + SEP + "resources"+ SEP + "text" + SEP + "NotAnAudioFile.txt");
-		assertThrows(Exception.class, ()->new SampleClip(content, "ciao"));
+		File content = new File(System.getProperty("user.dir") + SEP + "src"
+				+ SEP + "test" + SEP + "resources" + SEP + "text" + SEP + "NotAnAudioFile.txt");
+		assertThrows(Exception.class, () -> new SampleClip("title", content));
 	}
 }

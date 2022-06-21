@@ -82,6 +82,6 @@ public interface RPPlayersMap {
 	 * 
 	 * @return a set view of the mappings contained in this map.
 	 */
-	Set<Entry<Long,Set<RPClipPlayer>>> entrySet();
+	Set<Entry<Long, Set<RPClipPlayer>>> entrySet();
 
 }

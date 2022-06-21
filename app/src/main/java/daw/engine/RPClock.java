@@ -30,14 +30,14 @@ public interface RPClock {
 	void setTime(Double time);
 	
 	/**
-	 * Get the current step
+	 * Get the current step.
 	 * 
 	 * @return  The current step in milliseconds.
 	 */
 	Long getStep();
 	
 	/**
-	 * Get the current time
+	 * Get the current time.
 	 * 
 	 * @return  The current time in milliseconds.
 	 */

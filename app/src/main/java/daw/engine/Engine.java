@@ -18,7 +18,7 @@ import daw.manager.ChannelLinker;
  * subscribed to the current clock step will be notified.
  * </ol>
  */
-public class Engine implements RPEngine {
+public final class Engine implements RPEngine {
 	
 	/**
 	 * The ChannelLinker to get the channels and clips from.
@@ -39,31 +39,25 @@ public class Engine implements RPEngine {
 	 * The thread whitch updates clock ad notifier every CLOCK_STEP_UNIT.
 	 */
 	private Optional<Conductor> conductor;
-		
-	public Engine(ChannelLinker channelLinker) {
+
+	public Engine(final ChannelLinker channelLinker) {
 		this.channelLinker = channelLinker;
 		this.conductor = Optional.empty();
 		this.clock = new Clock();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void start() {
-		if(isPaused()) {
+		if (isPaused()) {
 			this.updateObservers();
 			this.conductor = Optional.of(new Conductor(notifier.get(), clock));
 			this.conductor.get().start();
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void pause() {
-		if(!isPaused()) {
+		if (!isPaused()) {
 			this.conductor.get().notifyStopped();
 			this.conductor = Optional.empty();
 			this.notifier.get().notifyStopped();
@@ -71,9 +65,6 @@ public class Engine implements RPEngine {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void stop() {
 		this.pause();
@@ -81,32 +72,23 @@ public class Engine implements RPEngine {
 		this.conductor = Optional.empty();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public void setPlaybackTime(Double time) {
+	public void setPlaybackTime(final Double time) {
 		this.clock.setTime(time);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Double getPlaybackTime() {
 		return this.clock.getTime();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isPaused() {
 		return this.conductor.isEmpty();
 	}
 	
 	private void updateObservers() {
-		this.notifier = Optional.of(new ClipPlayerNotifier( 
+		this.notifier = Optional.of(new ClipPlayerNotifier(
 			new PlayersMapBuilderImpl().setChannelLinker(channelLinker)
 				.addSampleClipsBetween(Optional.of(this.getPlaybackTime()), Optional.empty())
 				.build()

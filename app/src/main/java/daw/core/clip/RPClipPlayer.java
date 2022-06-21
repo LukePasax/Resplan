@@ -102,5 +102,4 @@ public interface RPClipPlayer {
 	 */
 	UGen getUGen();
 	
-	
 }

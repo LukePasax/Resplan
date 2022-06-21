@@ -3,7 +3,7 @@ package daw.core.clip;
 /**
  * An empty content for an RPClip.
  */
-public class NoContent {
+public final class NoContent {
 
 	@Override
 	public String toString() {

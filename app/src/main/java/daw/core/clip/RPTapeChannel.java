@@ -75,6 +75,8 @@ public interface RPTapeChannel {
 	/**
 	 * Get an {@link Iterator} which iterate all the clips of the tape channel that match the {@link Predicate}. All the items are ordered by time.
 	 * 
+	 * @param  predicate  The predicate to filter the clips.
+	 * 
 	 * @return An {@code Iterator} of all {@code Pair<Double, RPClip>} of this tape channel matching the {@code Predicate}.
 	 */
 	Iterator<Pair<Double, RPClip<?>>> getClipWithTimeIteratorFiltered(Predicate<? super Entry<Double, RPClip<?>>> predicate);
@@ -88,7 +90,7 @@ public interface RPTapeChannel {
 	 * 
 	 * @throws ClipNotFoundException  If there's no clip with the specified time in.
 	 */
-	public double getClipTimeOut(double clipTimeIn) throws ClipNotFoundException;
+	double getClipTimeOut(double clipTimeIn) throws ClipNotFoundException;
 	
 	/**
 	 * Move the specified clip in a new position of the timeline of this tape channel.
@@ -149,8 +151,14 @@ public interface RPTapeChannel {
 	void split(double initialClipTimeIn, double splittingTime) throws ClipNotFoundException;
 
 	/**
-	 * Calculate the time out from a time in and a duration.
+	 * Calculate the time out of an ipotetic clip from a time in and a duration.
 	 * <p>There might not be a clip associated with the given time in.
+	 * 
+	 * @param  timeIn  The time in of the ipotetic clip.
+	 * 
+	 * @param  duration  The duration of the ipotetic clip.
+	 * 
+	 * @return  The time out of the ipotetic clip.
 	 */
 	double calculateTimeOut(double timeIn, double duration);
 

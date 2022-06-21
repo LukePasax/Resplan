@@ -2,25 +2,30 @@ package daw.core.clip;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Objects;
 
 /**
  * An {@link RPClip} without a content.
  * <p>Since there's no content an EmptyClip stores only its duration.
  */
-public class EmptyClip implements RPClip<NoContent> {
+public final class EmptyClip implements RPClip<NoContent> {
 
 	/**
 	 * The duration of this RPClip.
 	 */
 	private double duration;
+	
+	/**
+	 * The title of this RPClip.
+	 */
 	private final String title;
 
 	/**
-	 * Creates an EmptyClip with a duration of {@value RPClip#DEFAULT_DURATION}
+	 * Creates an EmptyClip with a duration of {@value RPClip#DEFAULT_DURATION}.
+	 * 
+	 * @param title The title of the clip.
 	 */
-	public EmptyClip(String title) {
+	public EmptyClip(final String title) {
 		this.duration = RPClip.DEFAULT_DURATION;
 		this.title = title;
 	}
@@ -28,10 +33,12 @@ public class EmptyClip implements RPClip<NoContent> {
 	/**
 	 * Creates an EmptyClip with a specified duration.
 	 *
+	 * @param title The title of the clip.
+	 * 
 	 * @param duration The duration of this clip in milliseconds.
 	 */
 	@JsonCreator
-	public EmptyClip(@JsonProperty("duration") double duration, @JsonProperty("name") String title) {
+	public EmptyClip(@JsonProperty("name") final String title, @JsonProperty("duration") final double duration) {
 		if (Double.compare(duration, 0.0) < 0) {
 			throw new IllegalArgumentException("The duration of a clip must be a non-zero and positive value.");
 		}
@@ -50,9 +57,9 @@ public class EmptyClip implements RPClip<NoContent> {
 	 * @throws UnsupportedOperationException {@inheritDoc}
 	 */
 	@Override
-	public void setContentPosition(double milliseconds) {
-		throw new UnsupportedOperationException("Can't set Content Position in an Empty Clip. " +
-				"Convert the clip into one with content then retry.");
+	public void setContentPosition(final double milliseconds) {
+		throw new UnsupportedOperationException("Can't set Content Position in an Empty Clip. "
+				+ "Convert the clip into one with content then retry.");
 	}
 
 	/**
@@ -62,13 +69,10 @@ public class EmptyClip implements RPClip<NoContent> {
 	 */
 	@Override
 	public double getContentPosition() {
-		throw new UnsupportedOperationException("Can't get the Content Position. This is an Empty Clip. " +
-				"Convert the clip into one with content then retry.");
+		throw new UnsupportedOperationException("Can't get the Content Position. This is an Empty Clip. " 
+				+ "Convert the clip into one with content then retry.");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public double getContentDuration() {
 		throw new UnsupportedOperationException("A file content has no duration");
@@ -81,13 +85,10 @@ public class EmptyClip implements RPClip<NoContent> {
 	 */
 	@Override
 	public NoContent getContent() {
-		throw new UnsupportedOperationException("Can't get the Content of an Empty Clip. " +
-				"Convert the clip into one with content then retry.");
+		throw new UnsupportedOperationException("Can't get the Content of an Empty Clip. "
+				+ "Convert the clip into one with content then retry.");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isEmpty() {
 		return true;
@@ -99,33 +100,31 @@ public class EmptyClip implements RPClip<NoContent> {
 	 * @throws IllegalArgumentException {@inheritDoc}
 	 */
 	@Override
-	public void setDuration(double milliseconds) {
+	public void setDuration(final double milliseconds) {
 		if (duration <= 0) {
 			throw new IllegalArgumentException("The duration of a clip must be a non-zero and positive value.");
 		}
 		this.duration = milliseconds;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public double getDuration() {
 		return this.duration;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public RPClip<NoContent> duplicate() {
-		return new EmptyClip(this.duration, this.title + "(Duplicate)");
+		return new EmptyClip(this.title + "(Duplicate)", this.duration);
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 		EmptyClip emptyClip = (EmptyClip) o;
 		return title.equals(emptyClip.title);
 	}
@@ -134,5 +133,4 @@ public class EmptyClip implements RPClip<NoContent> {
 	public int hashCode() {
 		return Objects.hash(title);
 	}
-
 }

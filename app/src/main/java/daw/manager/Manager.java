@@ -204,12 +204,12 @@ public class Manager implements RPManager {
         RPClip<?> clip;
         if (content.isPresent()) {
             try {
-                clip = new SampleClip(content.get(),title);
+                clip = new SampleClip(title, content.get());
             } catch (FileFormatException | OperationUnsupportedException | IOException exception) {
                 throw new ImportException("Error in loading file");
             }
         } else {
-            clip = new EmptyClip(duration,title);
+            clip = new EmptyClip(title, duration);
         }
         final RPPart part = this.createPart(type, title, description);
         this.channelLinker.getTapeChannel(channelLinker.getRole(channel)).insertRPClip(clip, time);

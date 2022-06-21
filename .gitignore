@@ -13,3 +13,5 @@ app/bin
 .idea/
 .settings/
 *.json
+.checkstyle
+.eclipse-pmd

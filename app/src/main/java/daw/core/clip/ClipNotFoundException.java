@@ -1,8 +1,8 @@
 package daw.core.clip;
 
-public class ClipNotFoundException extends Exception{
+public class ClipNotFoundException extends Exception {
 	
-	public ClipNotFoundException(String string) {
+	public ClipNotFoundException(final String string) {
 		super(string);
 	}
 

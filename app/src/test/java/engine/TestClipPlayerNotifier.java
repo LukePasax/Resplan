@@ -18,11 +18,8 @@ class TestClipPlayerNotifier {
 	
 	{
 		this.clock = new Clock();
-		
 		this.channel = new BasicChannelFactory().basic();
-		
 		this.playersMap = new PlayersMap();
-		
 		try {
 			this.createRandomPlayersMap();
 		} catch (Exception e) {
@@ -40,10 +37,10 @@ class TestClipPlayerNotifier {
 	
 	
 	private void createRandomPlayersMap() throws IOException, OperationUnsupportedException, FileFormatException {
-		for(int i = 0; i<10; i++) {
-			SampleClip clip = new SampleClip(new File(System.getProperty("user.dir") + SEP + "src" +
-					SEP + "test" + SEP + "resources"+ SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"), "ciao");
-			this.playersMap.putClipPlayer(Clock.Utility.timeToClockSteps(i/20*Clock.Utility.getClockMaxTime()),
+		for (int i = 0; i < 10; i++) {
+			SampleClip clip = new SampleClip("title", new File(System.getProperty("user.dir") + SEP + "src"
+					+ SEP + "test" + SEP + "resources" + SEP + "audio" + SEP + "Alergy - Brain in the Jelly.wav"));
+			this.playersMap.putClipPlayer(Clock.Utility.timeToClockSteps(i / 20 * Clock.Utility.getClockMaxTime()),
 					new SampleClipPlayerFactory().createClipPlayer(clip, channel));
 		}
 	}
@@ -51,10 +48,10 @@ class TestClipPlayerNotifier {
 	@Test
 	void randomObserversPlay() {
 		ClipPlayerNotifier cpn = new ClipPlayerNotifier(playersMap);
-		playersMap.entrySet().stream().forEach(x->{
+		playersMap.entrySet().stream().forEach(x -> {
 			clock.setTime(Clock.Utility.clockStepToTime(x.getKey()));
-			cpn.update(1l);
-			x.getValue().forEach(player->{
+			cpn.update(1L);
+			x.getValue().forEach(player -> {
 				assertFalse(player.isPaused(), "clipTime: " + x.getKey());
 			});
 		});
@@ -63,15 +60,15 @@ class TestClipPlayerNotifier {
 	@Test
 	void randomObserversPause() {
 		ClipPlayerNotifier cpn = new ClipPlayerNotifier(playersMap);
-		playersMap.entrySet().stream().forEach(x->{
-			x.getValue().forEach(player->{
+		playersMap.entrySet().stream().forEach(x -> {
+			x.getValue().forEach(player -> {
 				player.play();
 				assertFalse(player.isPaused(), "paused: " + player.isPaused());
 			});
 		});
 		cpn.notifyStopped();
-		playersMap.entrySet().stream().forEach(x->{
-			x.getValue().forEach(player->{
+		playersMap.entrySet().stream().forEach(x -> {
+			x.getValue().forEach(player -> {
 				assertTrue(player.isPaused(), "paused: " + player.isPaused());
 			});
 		});	

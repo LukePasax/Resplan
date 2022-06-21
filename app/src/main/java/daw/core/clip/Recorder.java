@@ -6,13 +6,35 @@ import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.data.Sample;
 import net.beadsproject.beads.ugens.RecordToSample;
 
-public class Recorder implements RPRecorder {
+/**
+ * Implementation of {@link RPRecorder}.
+ *
+ */
+public final class Recorder implements RPRecorder {
+
+	/**
+	 * The audio context.
+	 */
+	private AudioContext ac;
 	
-	AudioContext ac;
-	UGen input;
-	Sample recordedData;
-	RecordToSample recorder;
+	/**
+	 * The audio input.
+	 */
+	private UGen input;
 	
+	/**
+	 * The recorded {@link Sample}.
+	 */
+	private Sample recordedData;
+	
+	/**
+	 * The {@code beads} recorder.
+	 */
+	private RecordToSample recorder;
+	
+	/**
+	 * Create a new {@code Recorder} connected to the default system audio input.
+	 */
 	public Recorder() {
 		ac = AudioContextManager.getAudioContext();
 		input = ac.getAudioInput();
@@ -46,5 +68,4 @@ public class Recorder implements RPRecorder {
 	public Sample getSample() {
 		return this.recordedData;
 	}
-
 }
