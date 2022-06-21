@@ -22,7 +22,7 @@ public class Mixer implements RPMixer {
      */
     @Override
     public RPChannel createBasicChannel() {
-        RPChannel channel = this.channelFactory.basic();
+        final RPChannel channel = this.channelFactory.basic();
         this.linkToMaster(channel);
         return channel;
     }
@@ -34,7 +34,7 @@ public class Mixer implements RPMixer {
      */
     @Override
     public RPChannel createGatedChannel() {
-        RPChannel channel = this.channelFactory.gated();
+        final RPChannel channel = this.channelFactory.gated();
         this.linkToMaster(channel);
         return channel;
     }
@@ -46,12 +46,12 @@ public class Mixer implements RPMixer {
      */
     @Override
     public RPChannel createReturnChannel() {
-        RPChannel channel = this.channelFactory.returnChannel();
+        final RPChannel channel = this.channelFactory.returnChannel();
         this.linkToMaster(channel);
         return channel;
     }
 
-    private void linkToMaster(RPChannel channel) {
+    private void linkToMaster( final RPChannel channel) {
         this.masterChannel.connectSource(channel.getOutput());
     }
 
@@ -62,8 +62,8 @@ public class Mixer implements RPMixer {
      * @return the sidechained {@link RPChannel}
      */
     @Override
-    public RPChannel createSidechained(RPChannel channel) {
-        RPChannel sidechained = this.channelFactory.sidechained(channel.getOutput());
+    public RPChannel createSidechained( final RPChannel channel) {
+        final RPChannel sidechained = this.channelFactory.sidechained(channel.getOutput());
         this.linkToMaster(sidechained);
         return sidechained;
     }
@@ -84,7 +84,7 @@ public class Mixer implements RPMixer {
      * @param returnChannel the Return channel which receives the input
      */
     @Override
-    public void linkChannel(RPChannel channel, RPChannel returnChannel) throws IllegalArgumentException {
+    public void linkChannel( final RPChannel channel, final RPChannel returnChannel) throws IllegalArgumentException {
         if (returnChannel.getType() != RPChannel.Type.RETURN) {
             throw new IllegalArgumentException();
         } else {
@@ -99,7 +99,7 @@ public class Mixer implements RPMixer {
      * @param group  the Group
      */
     @Override
-    public void linkToGroup(RPChannel channel, RPChannel group) {
+    public void linkToGroup( final RPChannel channel, final RPChannel group) {
         this.masterChannel.disconnectSource(channel.getOutput());
         group.connectSource(channel.getOutput());
     }
@@ -111,7 +111,7 @@ public class Mixer implements RPMixer {
      * @param group   the group to remove the {@link RPChannel} from
      */
     @Override
-    public void unlinkFromGroup(RPChannel channel, RPChannel group) {
+    public void unlinkFromGroup( final RPChannel channel, final RPChannel group) {
         group.disconnectSource(channel.getOutput());
         this.masterChannel.connectSource(channel.getOutput());
     }
@@ -123,7 +123,7 @@ public class Mixer implements RPMixer {
      * @param sidechainedChannel the sidechained {@link RPChannel}
      */
     @Override
-    public void linkToSidechained(RPChannel channel, RPChannel sidechainedChannel) {
+    public void linkToSidechained( final RPChannel channel, final RPChannel sidechainedChannel) {
     }
 
     @Override
