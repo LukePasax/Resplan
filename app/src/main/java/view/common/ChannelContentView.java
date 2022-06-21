@@ -17,7 +17,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.input.MouseButton;
@@ -26,10 +25,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import view.common.ViewDataImpl.Channel;
 import view.common.ViewDataImpl.Clip;
+import view.planning.ClipDescriptionEditorController;
+import view.planning.ClipTextEditorController;
 import view.planning.NewClipController;
 import view.planning.TextEditorController;
 
@@ -229,7 +229,7 @@ public abstract class ChannelContentView extends Pane {
 		private ClipDragModality mod;
 		private boolean dragging = false;
 		private Clip clip;
-		
+
 		public ClipView(Node content, Clip clip) {
 			super(content);
 			this.clip = clip;
@@ -293,21 +293,37 @@ public abstract class ChannelContentView extends Pane {
 					e.printStackTrace();
 				}
 			});
-			MenuItem clipText = new MenuItem("Text editor");
+			MenuItem clipText = new MenuItem("Edit text");
 			clipText.setOnAction(event -> {
 				try {
 					FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/TextEditorView.fxml"));
+					loader.setController(new ClipTextEditorController());
 					Stage stage = new Stage();
 					stage.setScene(new Scene(loader.load()));
-					stage.setTitle("Text Editor - " + clip.getTitle());
+					stage.setTitle("Text Editor - " + clip.getTitle() + " text");
 					stage.initOwner(this.getScene().getWindow());
-					((TextEditorController) loader.getController()).setClipTitle(clip.getTitle());
+					((ClipTextEditorController) loader.getController()).setTitle(clip.getTitle());
 					stage.showAndWait();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			});
-			ContextMenu menu = new ContextMenu(remove, record, loadAudioFile, clear, clipText);
+			MenuItem clipDescription = new MenuItem("Edit description");
+			clipDescription.setOnAction(event -> {
+				try {
+					FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/TextEditorView.fxml"));
+					loader.setController(new ClipDescriptionEditorController());
+					Stage stage = new Stage();
+					stage.setScene(new Scene(loader.load()));
+					stage.setTitle("Text Editor - " + clip.getTitle() + " description");
+					stage.initOwner(this.getScene().getWindow());
+					((ClipDescriptionEditorController) loader.getController()).setTitle(clip.getTitle());
+					stage.showAndWait();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			});
+			ContextMenu menu = new ContextMenu(remove, record, loadAudioFile, clear, clipText, clipDescription);
 			if (clip.isEmpty()) {
 				clear.setDisable(true);
 			} else {
@@ -323,18 +339,6 @@ public abstract class ChannelContentView extends Pane {
 			this.setOnMouseMoved(this::mouseOver);
 			this.setOnMouseDragged(this::mouseDragged);
 			this.setOnMousePressed(this::mousePressed);
-			final var popup = new Popup();
-			this.hoverProperty().addListener((observableValue, oldValue, newValue) -> {
-				final var label = new Label(Starter.getController().getClipDescription(clip.getTitle()));
-				label.setBackground(new Background(new BackgroundFill(Paint.valueOf("#FFFFFF"), null, null)));
-				if (newValue) {
-					var bounds = this.getLayoutBounds();
-					popup.getContent().add(label);
-					popup.show(this.getScene().getWindow(), bounds.getMinX(), bounds.getMinY());
-				} else {
-					popup.hide();
-				}
-			});
 		}
 		
 		private void mouseReleased(MouseEvent e) {
