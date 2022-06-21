@@ -359,13 +359,6 @@ public interface Controller {
     void setClipTextFromFile(String clipTitle, String fileName) throws IOException;
 
     /**
-     * Gets the string representation of the given channel's type.
-     * @param channel the name of a channel.
-     * @return a string representing the type of the given channel.
-     */
-    String getChannelType(String channel);
-
-    /**
      * Gets the text associated to the given clip.
      * @param clipTitle the name of a clip.
      * @return an optional containing the text if the clip has any, otherwise an empty optional.
@@ -379,7 +372,20 @@ public interface Controller {
      */
     String getClipType(String clip);
 
-    String getClipDescription(String clip);
+    void setClipDescription(String title, String text);
+
+    Optional<String> getClipDescription(String clip);
+
+    /**
+     * Gets the string representation of the given channel's type.
+     * @param channel the name of a channel.
+     * @return a string representing the type of the given channel.
+     */
+    String getChannelType(String channel);
+
+    void setChannelDescription(String title, String text);
+
+    Optional<String> getChannelDescription(String title);
 
     void addSpeakerToRubric(int code, String firstName, String lastName);
 

@@ -767,26 +767,6 @@ public class ControllerImpl implements Controller {
 
     /**
      * {@inheritDoc}
-     * @param channel the name of a channel.
-     * @return {@inheritDoc}
-     */
-    @Override
-    public String getChannelType(String channel) {
-        final var type = this.manager.getRoles().stream()
-                .filter(c -> c.getTitle().equals(channel))
-                .findFirst()
-                .get().getType();
-        if (type.equals(RPRole.RoleType.SPEECH)) {
-            return SPEECH_TYPE;
-        } else if (type.equals(RPRole.RoleType.EFFECTS)) {
-            return EFFECTS_TYPE;
-        } else {
-            return SOUNDTRACK_TYPE;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
      * @param clip the name of a clip.
      * @return {@inheritDoc}
      */
@@ -814,8 +794,50 @@ public class ControllerImpl implements Controller {
     }
 
     @Override
-    public String getClipDescription(String clip) {
-        return this.manager.getClipLinker().getPart(clip).getDescription().orElse("");
+    public void setClipDescription(String title, String text) {
+        this.manager.getClipLinker().getPartFromClip(this.manager.getClipFromTitle(title)).addDescription(text);
+    }
+
+    @Override
+    public Optional<String> getClipDescription(String clip) {
+        return this.manager.getClipLinker().getPart(clip).getDescription();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @param channel the name of a channel.
+     * @return {@inheritDoc}
+     */
+    @Override
+    public String getChannelType(String channel) {
+        final var type = this.manager.getRoles().stream()
+                .filter(c -> c.getTitle().equals(channel))
+                .findFirst()
+                .get().getType();
+        if (type.equals(RPRole.RoleType.SPEECH)) {
+            return SPEECH_TYPE;
+        } else if (type.equals(RPRole.RoleType.EFFECTS)) {
+            return EFFECTS_TYPE;
+        } else {
+            return SOUNDTRACK_TYPE;
+        }
+    }
+
+    @Override
+    public void setChannelDescription(String title, String text) {
+        this.manager.getRoles().stream()
+                .filter(role -> role.getTitle().equals(title))
+                .findFirst()
+                .get()
+                .addDescription(text);
+    }
+
+    @Override
+    public Optional<String> getChannelDescription(String title) {
+        return this.manager.getRoles().stream()
+                .filter(role -> role.getTitle().equals(title))
+                .findFirst()
+                .flatMap(Element::getDescription);
     }
 
     @Override
