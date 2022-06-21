@@ -9,16 +9,19 @@ import java.io.IOException;
 // package protection as it is used only by the ManagerSerializer
 class PannerSerializer extends StdSerializer<Panner> {
 
+    private static final long serialVersionUID = 69531644L;
+
     protected PannerSerializer() {
         this(null);
     }
 
-    protected PannerSerializer(Class<Panner> t) {
+    protected PannerSerializer(final Class<Panner> t) {
         super(t);
     }
 
     @Override
-    public void serialize(Panner value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(final Panner value, final JsonGenerator gen, final SerializerProvider provider)
+            throws IOException {
         gen.writeStartObject();
         gen.writeNumberField("position", value.getPos());
         gen.writeEndObject();

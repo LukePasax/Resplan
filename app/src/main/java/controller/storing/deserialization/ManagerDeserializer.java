@@ -16,7 +16,7 @@ import java.util.Optional;
 /**
  * Jackson deserializer for objects of type {@link daw.manager.Manager}.
  */
-public class ManagerDeserializer extends AbstractJacksonDeserializer<Manager> {
+public final class ManagerDeserializer extends AbstractJacksonDeserializer<Manager> {
 
     /**
      * {@inheritDoc}

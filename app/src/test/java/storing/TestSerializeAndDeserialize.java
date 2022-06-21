@@ -50,7 +50,11 @@ public class TestSerializeAndDeserialize {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(new ManagerSerializer().serialize(man));
+        try {
+            System.out.println(new ManagerSerializer().serialize(man));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test

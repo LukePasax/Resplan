@@ -11,10 +11,12 @@ import daw.manager.Manager;
 import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.Panner;
 
-public class ManagerSerializer extends AbstractJacksonSerializer<Manager> {
+import java.io.IOException;
+
+public final class ManagerSerializer extends AbstractJacksonSerializer<Manager> {
 
     public ManagerSerializer() {
-        this.mapper.registerModule(new SimpleModule()
+        this.getMapper().registerModule(new SimpleModule()
                 .addSerializer(RPEffect.class, new EffectSerializer())
                 .addSerializer(Panner.class, new PannerSerializer())
                 .addSerializer(Gain.class, new GainSerializer())
@@ -22,14 +24,13 @@ public class ManagerSerializer extends AbstractJacksonSerializer<Manager> {
     }
 
     @Override
-    public String serialize(Manager element) {
-        final JsonNode node = mapper.valueToTree(element);
-        final ObjectWriter ow = mapper.writer().with(SerializationFeature.INDENT_OUTPUT);
+    public String serialize(final Manager element) throws IOException {
+        final JsonNode node = this.getMapper().valueToTree(element);
+        final ObjectWriter ow = this.getMapper().writer().with(SerializationFeature.INDENT_OUTPUT);
         try {
             return ow.writeValueAsString(node);
         } catch (JsonProcessingException ex) {
-            throw new IllegalArgumentException("Serialization of the given object of class " +
-                    element.getClass() + " went wrong.");
+            throw new IOException(ex.getMessage());
         }
     }
 
