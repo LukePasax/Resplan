@@ -68,7 +68,6 @@ public class EditViewController implements Initializable{
 		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 16, 0, 0));
 		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 2);
 		timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);
-		timelineToChannelsAligner.setMaxWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth()*0.8);
 		//--------set markers pane---------
 		markersPane = new MarkersPane(timeAxisSetter.getAxis());
 		timelineToChannelsAligner.add(markersPane, 0, 1, 1, 3);
