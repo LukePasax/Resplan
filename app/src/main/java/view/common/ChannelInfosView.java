@@ -1,7 +1,9 @@
 package view.common;
 
 import Resplan.Starter;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -13,7 +15,11 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.stage.Stage;
 import view.common.ViewDataImpl.Channel;
+import view.planning.ChannelDescriptionEditorController;
+
+import java.io.IOException;
 
 /**
  * The view for a channel info.
@@ -28,7 +34,8 @@ public abstract class ChannelInfosView extends AnchorPane {
 	
 	private final Channel ch;
 	private final VBox infos = new VBox();
-	
+	protected ContextMenu menu;
+
 	public ChannelInfosView(final Channel ch, final Color color) {
 		super();
 		this.ch = ch;
@@ -48,8 +55,23 @@ public abstract class ChannelInfosView extends AnchorPane {
 		//set context menu
 		MenuItem remove = new MenuItem("Remove");
 		remove.setOnAction(a -> Starter.getController().deleteChannel(this.ch.getTitle()));
-		ContextMenu menu = new ContextMenu(remove);
-		this.setOnContextMenuRequested(e -> menu.show(this, e.getScreenX(), e.getScreenY()));
+		MenuItem editDescription = new MenuItem("Edit description");
+		editDescription.setOnAction(event -> {
+			try {
+				FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource("view/TextEditorView.fxml"));
+				loader.setController(new ChannelDescriptionEditorController());
+				Stage stage = new Stage();
+				stage.setScene(new Scene(loader.load()));
+				stage.setTitle("Text Editor - " + this.getChannel().getTitle() + " description");
+				stage.initOwner(this.getScene().getWindow());
+				((ChannelDescriptionEditorController) loader.getController()).setTitle(this.getChannel().getTitle());
+				stage.showAndWait();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
+		this.menu = new ContextMenu(remove, editDescription);
+		this.setOnContextMenuRequested(e -> this.menu.show(this, e.getScreenX(), e.getScreenY()));
 	}
 	
 	public abstract Node drawChannelInfos(Channel ch);

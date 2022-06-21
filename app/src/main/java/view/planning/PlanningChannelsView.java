@@ -2,7 +2,6 @@ package view.planning;
 
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -12,7 +11,9 @@ import view.common.ToolBarSetter;
 import view.common.ViewDataImpl;
 
 public class PlanningChannelsView extends ChannelsView {
-    public PlanningChannelsView(TimeAxisSetter timeAxisSetter, VBox channelsContentPane, VBox channelsInfoPane, ToolBarSetter toolBarSetter) {
+
+    public PlanningChannelsView(TimeAxisSetter timeAxisSetter, VBox channelsContentPane, VBox channelsInfoPane,
+                                ToolBarSetter toolBarSetter) {
         super(timeAxisSetter, channelsContentPane, channelsInfoPane, toolBarSetter);
     }
 
