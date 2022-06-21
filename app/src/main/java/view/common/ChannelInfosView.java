@@ -1,6 +1,6 @@
 package view.common;
 
-import Resplan.Starter;
+import resplan.Starter;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;

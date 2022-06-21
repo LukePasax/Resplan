@@ -1,6 +1,6 @@
 package view.common;
 
-import Resplan.Starter;
+import resplan.Starter;
 import controller.general.DownloadingException;
 import controller.general.LoadingException;
 import javafx.event.ActionEvent;
@@ -79,7 +79,7 @@ public class WindowBar {
         AnchorPane.setRightAnchor(menuBar, 0.0);
         menuBar.setOnMousePressed(this::mousePressed);
         menuBar.setOnMouseDragged(this::mouseDragged);
-        this.projectName = new Label("Resplan");
+        this.projectName = new Label("resplan");
         this.projectName.setPrefWidth(LABEL_WIDTH);
         this.projectName.setAlignment(Pos.CENTER);
         AnchorPane.setTopAnchor(this.projectName, 0.0);

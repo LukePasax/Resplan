@@ -1,6 +1,6 @@
 package view.edit;
 
-import Resplan.Starter;
+import resplan.Starter;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

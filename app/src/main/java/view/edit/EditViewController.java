@@ -3,7 +3,7 @@ package view.edit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import Resplan.Starter;
+import resplan.Starter;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

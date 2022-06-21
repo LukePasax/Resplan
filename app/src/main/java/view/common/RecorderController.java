@@ -1,6 +1,6 @@
 package view.common;
 
-import Resplan.Starter;
+import resplan.Starter;
 import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
 import javafx.event.ActionEvent;

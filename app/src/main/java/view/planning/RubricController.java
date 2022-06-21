@@ -1,15 +1,13 @@
 package view.planning;
 
-import Resplan.Starter;
+import resplan.Starter;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
-import javafx.util.StringConverter;
 
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 public class RubricController {
 

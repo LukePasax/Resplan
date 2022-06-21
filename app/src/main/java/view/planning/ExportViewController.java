@@ -1,8 +1,7 @@
 package view.planning;
 
-import Resplan.Starter;
+import resplan.Starter;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;

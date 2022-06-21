@@ -1,19 +1,21 @@
-package Resplan;
+package resplan;
 
 import view.common.App;
 import controller.general.Controller;
 import controller.general.ControllerImpl;
 import javafx.application.Application;
 
-public class Starter {
+public final class Starter {
 
-    final static Controller controller = new ControllerImpl();
+    final static Controller CONTROLLER = new ControllerImpl();
+
+    private Starter() {};
 
     public static Controller getController() {
-        return controller;
+        return CONTROLLER;
     }
 
-    public static void main(String[] args) {
+    public static void main( final String[] args) {
         Application.launch(App.class, args);
     }
 }

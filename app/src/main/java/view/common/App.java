@@ -1,6 +1,6 @@
 package view.common;
 
-import Resplan.Starter;
+import resplan.Starter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,7 +32,7 @@ public class App extends Application {
         this.activeScene = new Scene(planningLoader.load());
         stage.setScene(activeScene);
         stage.getIcons().add(new Image("/icons/icon.png"));
-        stage.setTitle("Resplan");
+        stage.setTitle("resplan");
         stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
         FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));

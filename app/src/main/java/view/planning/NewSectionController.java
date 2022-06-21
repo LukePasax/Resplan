@@ -1,7 +1,6 @@
 package view.planning;
 
-import Resplan.Starter;
-import daw.manager.ImportException;
+import resplan.Starter;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;

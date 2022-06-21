@@ -3,7 +3,7 @@ package view.common;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import Resplan.Starter;
+import resplan.Starter;
 import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
 import javafx.collections.ListChangeListener;

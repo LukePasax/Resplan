@@ -1,6 +1,6 @@
 package view.planning;
 
-import Resplan.Starter;
+import resplan.Starter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;

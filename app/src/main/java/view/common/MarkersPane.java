@@ -1,6 +1,6 @@
 package view.common;
 
-import Resplan.Starter;
+import resplan.Starter;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 import javafx.scene.chart.Axis;

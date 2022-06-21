@@ -1,24 +1,18 @@
 package view.planning;
 
-import Resplan.Starter;
-import daw.core.clip.ClipNotFoundException;
+import resplan.Starter;
 import daw.manager.ImportException;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.stage.FileChooser;
-import javafx.util.StringConverter;
 import view.common.AlertDispatcher;
 import view.common.NumberFormatConverter;
-import view.common.TimeAxisSetter;
 import view.common.WavFilePicker;
 
 import java.io.File;
-import java.util.AbstractList;
 import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
 
 public class NewClipController {
     public TextField clipTitleSelection;

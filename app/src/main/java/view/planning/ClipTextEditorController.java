@@ -1,6 +1,6 @@
 package view.planning;
 
-import Resplan.Starter;
+import resplan.Starter;
 import java.io.File;
 import java.io.IOException;
 

@@ -1,6 +1,6 @@
 package view.planning;
 
-import Resplan.Starter;
+import resplan.Starter;
 import controller.storing.RPFileReader;
 
 import java.io.File;
