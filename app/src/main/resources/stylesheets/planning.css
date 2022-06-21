@@ -3,10 +3,6 @@
     -fx-border-insets : 1px;
 }
 
-.line {
-    -fx-border-width : 0px;
-    -fx-border-insets : 0px;
-}
 
 .buttons {
     -fx-background-color: linear-gradient(to bottom, orange, darkorange 50%, coral 100%);
@@ -17,13 +13,6 @@
     -fx-background-color: linear-gradient(to bottom, white, lightgray);
 }
 
-.channel-container {
-    -fx-background-color: white;
-}
-
-.menu-bar {
-    -fx-background-color: linear-gradient(to bottom, orange, darkorange 50%, coral 100%);
-}
 
 #window-bar-container {
     -fx-background-color: linear-gradient(to bottom, orange, darkorange 50%, coral 100%);
