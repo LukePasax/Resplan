@@ -14,9 +14,9 @@ public class TestProcessingUnitRemoveAndReplace {
     private TestReflection ref = new TestReflection();
     private ProcessingUnit pu = new BasicProcessingUnitBuilder()
             .reverb(1)
-            .highPassFilter(1, 100.0f)
+            .highPassFilter(1)
             .gate(2)
-            .lowPassFilter(1, 120.0f)
+            .lowPassFilter(1)
             .build();
 
     @Test
@@ -50,7 +50,7 @@ public class TestProcessingUnitRemoveAndReplace {
 
     @Test
     public void testCorrectReplacement() {
-        this.pu.replace(3, new DigitalReverb(2));
+        this.pu.replace(3, new DigitalReverb(1));
         assertEquals(List.of(DigitalReverb.class, HighPassFilter.class, Gate.class, DigitalReverb.class),
                 this.ref.getList(this.pu.getEffects()));
         assertEquals(Set.of(Gate.class), this.ref.getSet(this.pu.getEffectAtPosition(3).getConnectedInputs()));

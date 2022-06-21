@@ -17,8 +17,8 @@ public class TestProcessingUnitBuilder {
     public void testCorrectBuildWithSidechaining() {
         final var builder = new BasicProcessingUnitBuilder();
         try {
-            final ProcessingUnit pu = builder.compressor(1).highPassFilter(2,100.0f)
-                    .reverb(1).lowPassFilter(1,100.0f).sidechain(
+            final ProcessingUnit pu = builder.compressor(1).highPassFilter(2)
+                    .reverb(1).lowPassFilter(1).sidechain(
                     new SamplePlayer(AudioContextManager.getAudioContext(),1),1).build();
             assertEquals(List.of(SidechainingImpl.class, Compression.class, HighPassFilter.class,
                             DigitalReverb.class, LowPassFilter.class), this.ref.getList(pu.getEffects()));

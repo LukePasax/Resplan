@@ -11,8 +11,8 @@ public class TestProcessingUnitMoveAndSwap {
     private TestReflection ref = new TestReflection();
     private ProcessingUnit pu = new BasicProcessingUnitBuilder()
             .reverb(2)
-            .lowPassFilter(2, 100.0f)
-            .highPassFilter(2, 150.0f)
+            .lowPassFilter(2)
+            .highPassFilter(2)
             .build();
 
     @Test

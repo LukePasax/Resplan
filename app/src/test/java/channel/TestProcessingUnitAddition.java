@@ -24,7 +24,7 @@ public class TestProcessingUnitAddition {
                 this.ref.getList(this.pu.getEffects()));
         assertEquals(Set.of(DigitalReverb.class), this.ref.getSet(this.pu.getEffectAtPosition(2).getConnectedInputs()));
         // adding at the last position using addEffectAtPosition
-        this.pu.addEffectAtPosition(new HighPassFilter(1, 100.0f), 4);
+        this.pu.addEffectAtPosition(new HighPassFilter(1), 4);
         assertEquals(List.of(Gate.class, DigitalReverb.class, Compression.class, DigitalReverb.class, HighPassFilter.class),
                 this.ref.getList(this.pu.getEffects()));
         assertEquals(Set.of(DigitalReverb.class), this.ref.getSet(this.pu.getEffectAtPosition(4).getConnectedInputs()));

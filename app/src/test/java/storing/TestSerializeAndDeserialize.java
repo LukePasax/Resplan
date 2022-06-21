@@ -59,6 +59,7 @@ public class TestSerializeAndDeserialize {
         man.addChannel(RPRole.RoleType.EFFECTS, "claps", Optional.of("ciao"));
         man.createGroup("myStuff", RPRole.RoleType.EFFECTS);
         man.addToGroup(role,"myStuff");
+        man.addChannel(RPRole.RoleType.SPEECH, "Giacomo", Optional.empty());
         man.addSection("first", Optional.of("ciao"), 0.10, 0.0);
         man.addSection("second", Optional.of("bella"), 0.50, 0.0);
         final var speaker1 = new SimpleSpeaker(1, "Giacomo", "Sirri");
