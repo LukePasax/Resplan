@@ -5,36 +5,56 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import Resplan.Starter;
 import javafx.application.Platform;
-import javafx.fxml.*;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import view.common.*;
+import view.common.App;
+import view.common.MarkersPane;
+import view.common.TimeAxisSetter;
+import view.common.Tool;
+import view.common.ToolBarSetter;
+import view.common.WindowBar;
 
-public class EditViewController implements Initializable{
+public final class EditViewController implements Initializable {
 
-	@FXML
-	private AnchorPane windowBar;
+	private static final int INFO_PANE_MAX_WIDTH = 250;
+	@FXML private AnchorPane windowBar;
 	@FXML private VBox rootNode;
+	
 	/**
 	 * La griglia usata per dimensionare la timeline alla vista dei canali.
 	 */
 	@FXML private GridPane timelineToChannelsAligner;
 	@FXML private ScrollPane scrollPane;
+	
 	/**
 	 * SplitPanel per dimensionare la divisione tra channel info e channel content.
 	 */
 	@FXML private SplitPane channelsInfoResizer;	
+	
 	/**
-	 * VBox per contenuto canali
+	 * VBox per contenuto canali.
 	 */
 	@FXML private VBox channelsContentPane;
+	
 	/**
-	 * VBox per info canali
+	 * VBox per info canali.
 	 */
 	@FXML private VBox channelsInfoPane;
 	@FXML private HBox fxPanel;
@@ -54,7 +74,7 @@ public class EditViewController implements Initializable{
 	private ToolBarSetter toolBarSetter = new ToolBarSetter();
 	
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+	public void initialize(final URL location, final ResourceBundle resources) {
 		//set buttons and tools
 		this.play.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 		this.toolBarSetter.addTool(Tool.CURSOR, cursorButton)
@@ -73,14 +93,14 @@ public class EditViewController implements Initializable{
 		GridPane.setVgrow(markersPane, Priority.ALWAYS);
 		//--------set channels view----------
 		new FXView(fxPanel, new EditChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane, toolBarSetter));
-		channelsInfoPane.setMaxWidth(250);
-		//--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
+		channelsInfoPane.setMaxWidth(INFO_PANE_MAX_WIDTH);
+		//--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------
 		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
-			timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
+			timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1 - (channelsInfoResizer.getDividerPositions()[0])) * 100);
 		});
 		//-------PLAYBACK TIME SET-----
-		channelsContentPane.setOnMouseClicked(e->{
-			if(Starter.getController().isPaused() && toolBarSetter.getCurrentTool().equals(Tool.CURSOR)) {
+		channelsContentPane.setOnMouseClicked(e -> {
+			if (Starter.getController().isPaused() && toolBarSetter.getCurrentTool().equals(Tool.CURSOR)) {
 				Starter.getController().setPlaybackTime(timeAxisSetter.getAxis().getValueForDisplay(e.getX()).doubleValue());
 			}
 		});
@@ -146,8 +166,8 @@ public class EditViewController implements Initializable{
 		this.play.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
 	}
 	
-	public void setPlaybackMarkerPosition(double time) {
-		Platform.runLater(()->{
+	public void setPlaybackMarkerPosition(final double time) {
+		Platform.runLater(() -> {
 			this.markersPane.updatePlaybackMarker(time);
 			this.playbackTimeLabel.setText(timeAxisSetter.getAxis().getTickLabelFormatter().toString(time));
 		});

@@ -24,16 +24,42 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
-public class TimeAxisSetter {
+/**
+ * Setter for time axis.
+ */
+public final class TimeAxisSetter {
 	
-	public final static double MS_TO_MIN = 60000;
-	public final static double MS_TO_SEC = 1000;
-	private final static double LABELS_PX_GAP = 45;
-	private final static int MAX_LABELS = 28;
+	/**
+	 * One minute in milliseconds.
+	 */
+	public static final double MS_TO_MIN = 60000;
+	
+	/**
+	 * One second in milliseconds.
+	 */
+	public static final double MS_TO_SEC = 1000;
+	private static final double LABELS_PX_GAP = 45;
+	private static final int MAX_LABELS = 28;
+	private static final int MIN_WIDTH = 50;
+	private static final int TICK_LABEL_GAP = 5;
+	private static final int SCROLLER_HEIGTH = 7;
+	private static final int SCROLLER_MIN_WIDTH = 20;
 
+	/**
+	 * The time axis.
+	 */
 	private final NumberAxis axis = new NumberAxis();
+	
+	/**
+	 * The navigation bar panel.
+	 */
 	private final AnchorPane navigator = new AnchorPane();
+	
+	/**
+	 * The navigator bar.
+	 */
 	private final Rectangle scroller = new Rectangle();
+	
 	/**
 	 * The time length of the project.
 	 */
@@ -43,97 +69,107 @@ public class TimeAxisSetter {
 	 * The time interval displayed on axis.
 	 */
 	private double timeDelta;
-		
-	public TimeAxisSetter(double projectLength) {
+	
+	/**
+	 * Create a new time axis and the associated setter.
+	 * 
+	 * @param projectLength the initial project length in ms.
+	 */
+	public TimeAxisSetter(final double projectLength) {
 		//set ptoject length
 		this.prLength = projectLength;
-		App.getData().getProjectLenghtProperty().addListener((obs,old,n)->{
+		App.getData().getProjectLenghtProperty().addListener((obs, old, n) -> {
 			this.setProjectLength(n.doubleValue());
 		});
 	//---------NUMBER AXIS-------------
 		axis.setAnimated(false);
 		axis.setAutoRanging(false);
 		axis.setSide(Side.TOP);
-		axis.setMinWidth(50);
+		axis.setMinWidth(MIN_WIDTH);
 		//set the range to 100% prLength
 		resetRange();
-		axis.setTickLabelGap(5);
+		axis.setTickLabelGap(TICK_LABEL_GAP);
 		//------CALCULATE TICK WHEN RESIZE AXIS-------
-		axis.needsLayoutProperty().addListener((obs, old, needsLayout) -> {calculateTicks(); updateScroller();});
+		axis.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
+			calculateTicks(); 
+			updateScroller();
+		});
 		//-----PRINT TIME INSTEAD OF MILLISECONDS-----
 		axis.setTickLabelFormatter(new NumberFormatConverter());
 		//------SET PRECISION NAVIGATION---------
-		axis.setOnMouseClicked(e->{
-			if(e.getButton().equals(MouseButton.SECONDARY)) {
-				class AxisMenu extends Pane {
-					TextField lb = new TextField();
-					TextField ub = new TextField();
-					NumberFormatConverter fc = new NumberFormatConverter();
-					AxisMenu() {
-						//buttons
-						HBox buttons = new HBox();
-						Button reset = new Button("RESET");
-						reset.setOnAction(a->{
-							resetRange();
-							this.getScene().getWindow().hide();
-						});
-						Button ok = new Button("OK");
-						ok.setOnAction(a->{
-							setBounds();
-							this.getScene().getWindow().hide();
-						});
-						buttons.getChildren().addAll(reset, ok);
-						//lower bound
-						HBox lowerBoundSetter = new HBox();	
-						lb.setPromptText(fc.toString(axis.getLowerBound()));
-						lb.setTextFormatter(new TextFormatter<>(fc.getFormatterUnaryOperator()));
-						lowerBoundSetter.getChildren().addAll(new Label("from: "), lb);
-						//upper bound
-						HBox upperBoundSetter = new HBox();
-						ub.setPromptText(fc.toString(axis.getUpperBound()));
-						ub.setTextFormatter(new TextFormatter<>(fc.getFormatterUnaryOperator()));
-						upperBoundSetter.getChildren().addAll(new Label("to: "), ub);
-						//pop-up
-						VBox v = new VBox();
-						v.setPadding(new Insets(12));
-						v.setBorder(new Border(new BorderStroke(Paint.valueOf("#000000"), BorderStrokeStyle.SOLID, null, null)));
-						v.setBackground(new Background(new BackgroundFill(Paint.valueOf("#999999"), null, null)));
-						v.getChildren().addAll(new Label("Set axis range"), lowerBoundSetter, upperBoundSetter, buttons);
-						this.getChildren().add(v);
-					}
-					void setBounds() {
-						if(lb.getText().isBlank() || ub.getText().isBlank()) {
-							return;
+		axis.setOnMouseClicked(e -> {
+			if (e.getButton().equals(MouseButton.SECONDARY)) {
+					class AxisMenu extends Pane {
+						private static final int POPUP_PADDING = 12;
+						private TextField lb = new TextField();
+						private TextField ub = new TextField();
+						private NumberFormatConverter fc = new NumberFormatConverter();
+						AxisMenu() {
+							//buttons
+							HBox buttons = new HBox();
+							Button reset = new Button("RESET");
+							reset.setOnAction(a -> {
+								resetRange();
+								this.getScene().getWindow().hide();
+							});
+							Button ok = new Button("OK");
+							ok.setOnAction(a -> {
+								setBounds();
+								this.getScene().getWindow().hide();
+							});
+							buttons.getChildren().addAll(reset, ok);
+							//lower bound
+							HBox lowerBoundSetter = new HBox();	
+							lb.setPromptText(fc.toString(axis.getLowerBound()));
+							lb.setTextFormatter(new TextFormatter<>(fc.getFormatterUnaryOperator()));
+							lowerBoundSetter.getChildren().addAll(new Label("from: "), lb);
+							//upper bound
+							HBox upperBoundSetter = new HBox();
+							ub.setPromptText(fc.toString(axis.getUpperBound()));
+							ub.setTextFormatter(new TextFormatter<>(fc.getFormatterUnaryOperator()));
+							upperBoundSetter.getChildren().addAll(new Label("to: "), ub);
+							//pop-up
+							VBox v = new VBox();
+							v.setPadding(new Insets(POPUP_PADDING));
+							v.setBorder(new Border(new BorderStroke(Paint.valueOf("#000000"), BorderStrokeStyle.SOLID, null, null)));
+							v.setBackground(new Background(new BackgroundFill(Paint.valueOf("#999999"), null, null)));
+							v.getChildren().addAll(new Label("Set axis range"), lowerBoundSetter, upperBoundSetter, buttons);
+							this.getChildren().add(v);
 						}
-						StringConverter<Number> sc = axis.getTickLabelFormatter();
-						setRange(sc.fromString(lb.getText()).doubleValue(), sc.fromString(ub.getText()).doubleValue());	
+						void setBounds() {
+							if (lb.getText().isBlank() || ub.getText().isBlank()) {
+								return;
+							}
+							StringConverter<Number> sc = axis.getTickLabelFormatter();
+							setRange(sc.fromString(lb.getText()).doubleValue(), sc.fromString(ub.getText()).doubleValue());	
+						}
 					}
+					Pane p = new AxisMenu();
+					Scene s = new Scene(p);
+					Stage stage = new Stage();
+					stage.setScene(s);
+					stage.initModality(Modality.WINDOW_MODAL);
+					stage.setTitle("Precision zoom");
+					stage.setX(e.getScreenX());
+					stage.setY(e.getScreenY());
+					stage.initOwner(axis.getScene().getWindow());
+					stage.showAndWait();
 				}
-				Pane p = new AxisMenu();
-				Scene s = new Scene(p);
-				Stage stage = new Stage();
-				stage.setScene(s);
-				stage.initModality(Modality.WINDOW_MODAL);
-				stage.setTitle("Precision zoom");
-				stage.setX(e.getScreenX());
-				stage.setY(e.getScreenY());
-				stage.initOwner(axis.getScene().getWindow());
-				stage.showAndWait();
-				}		
 			});
 	//----------SCROLLER----------------
 		scroller.setFill(Paint.valueOf("#444444"));
 		AnchorPane.setBottomAnchor(scroller, 0.0);
 		AnchorPane.setTopAnchor(scroller, 0.0);
-		scroller.setHeight(7);
-		scroller.setArcHeight(5);
-		scroller.setArcWidth(5);
+		scroller.setHeight(SCROLLER_HEIGTH);
+		scroller.setArcHeight(SCROLLER_HEIGTH - 2);
+		scroller.setArcWidth(SCROLLER_HEIGTH - 2);
 		navigator.getChildren().add(scroller);
 		//------DRAG RESIZE AND NAVIGATE-----------
 		TimeAxisDragNavigator.makeNavigable(this);
 	}
 
 	//---------FX COMPONENTS GETTERS---------------
+
 	public NumberAxis getAxis() {
 		return axis;
 	}
@@ -141,11 +177,11 @@ public class TimeAxisSetter {
 	public AnchorPane getNavigator() {
 		return navigator;
 	}
-	
+
 	public double getScrollerX() {
 		return AnchorPane.getLeftAnchor(scroller);
 	}
-	
+
 	public double getScrollerWidth() {
 		return scroller.getWidth();
 	}
@@ -158,26 +194,26 @@ public class TimeAxisSetter {
 	 * Needs to be called every time number axis needs layout;
 	 */
 	private void calculateTicks() {
-		Long maxLabels = Double.valueOf(axis.getWidth()/LABELS_PX_GAP).longValue();
-		double minTickUnit = timeDelta/Math.min(MAX_LABELS, maxLabels);
+		Long maxLabels = Double.valueOf(axis.getWidth() / LABELS_PX_GAP).longValue();
+		double minTickUnit = timeDelta / Math.min(MAX_LABELS, maxLabels);
 		//round to multiples of min or sec.
 		double tick;
 		double mTCount;
-		if(minTickUnit<=10) {
+		if (minTickUnit <= 10) {
 			tick = 10;
 			mTCount = 10;
-		} else if(minTickUnit<=100) {
+		} else if (minTickUnit <= 100) {
 			tick = 100;
 			mTCount = 10;
-		} else if(minTickUnit<=MS_TO_SEC) {
+		} else if (minTickUnit <= MS_TO_SEC) {
 			tick = MS_TO_SEC;
 			mTCount = 10;
-		} else if(minTickUnit<=MS_TO_MIN) {
-			tick = minTickUnit-(minTickUnit%MS_TO_SEC);
-			mTCount = tick/MS_TO_SEC;
+		} else if (minTickUnit <= MS_TO_MIN) {
+			tick = minTickUnit - (minTickUnit % MS_TO_SEC);
+			mTCount = tick / MS_TO_SEC;
 		} else {
-			tick = minTickUnit-(minTickUnit%MS_TO_MIN);
-			mTCount = tick/MS_TO_MIN;
+			tick = minTickUnit - (minTickUnit % MS_TO_MIN);
+			mTCount = tick / MS_TO_MIN;
 		}
 		//set
 		axis.setTickUnit(Double.valueOf(tick).longValue());
@@ -190,23 +226,24 @@ public class TimeAxisSetter {
 	 * @param lowerBound
 	 * @param upperBound
 	 */
-	public void setRange(double lowerBound, double upperBound) {
-		if(lowerBound<0 || upperBound>prLength || lowerBound>=upperBound) {
+	public void setRange(final double lowerBound, final double upperBound) {
+		if (lowerBound < 0 || upperBound > prLength || lowerBound >= upperBound) {
 			throw new IllegalArgumentException("Lower and upper bounds must be between 0 and project length.");
 		}
 		double newLB = lowerBound;
 		double newUB = upperBound;
-		if(upperBound-lowerBound>=MS_TO_SEC*5) {
-			newLB = Math.round(newLB/MS_TO_SEC)*MS_TO_SEC;
-			newUB = Math.round(newUB/MS_TO_SEC)*MS_TO_SEC;
-		} else if(upperBound-lowerBound>=MS_TO_SEC) {
-			newLB = Math.round(newLB/100)*100;
-			newUB = Math.round(newUB/100)*100;
+		final int seconds = 5;
+		if (upperBound - lowerBound >= MS_TO_SEC * seconds) {
+			newLB = Math.round(newLB / MS_TO_SEC) * MS_TO_SEC;
+			newUB = Math.round(newUB / MS_TO_SEC) * MS_TO_SEC;
+		} else if (upperBound - lowerBound >= MS_TO_SEC) {
+			newLB = Math.round(newLB / 100) * 100;
+			newUB = Math.round(newUB / 100) * 100;
 		}
 		axis.setTickUnit(Double.MAX_VALUE);
 		axis.setLowerBound(newLB);
 		axis.setUpperBound(newUB);
-		timeDelta = axis.getUpperBound()-axis.getLowerBound();
+		timeDelta = axis.getUpperBound() - axis.getLowerBound();
 		axis.requestAxisLayout();
 	}
 	
@@ -225,12 +262,12 @@ public class TimeAxisSetter {
 	 */
 	private void updateScroller() {
 		//length
-		scroller.setWidth(axis.getWidth()*calculatePercent(prLength, timeDelta));
-		if(scroller.getWidth()<20) {
-			scroller.setWidth(20);
+		scroller.setWidth(axis.getWidth() * calculatePercent(prLength, timeDelta));
+		if (scroller.getWidth() < SCROLLER_MIN_WIDTH) {
+			scroller.setWidth(SCROLLER_MIN_WIDTH);
 		}
 		//position
-		double pos = axis.getWidth()*calculatePercent(prLength, axis.getLowerBound());
+		double pos = axis.getWidth() * calculatePercent(prLength, axis.getLowerBound());
 		AnchorPane.setLeftAnchor(scroller, pos);
 	}
 	
@@ -240,8 +277,8 @@ public class TimeAxisSetter {
 	 * @param part
 	 * @return
 	 */
-	private double calculatePercent(double total, double part) {
-		return part/total;
+	private double calculatePercent(final double total, final double part) {
+		return part / total;
 	}
 	
 	//----PROJECT LENGTH------
@@ -249,7 +286,7 @@ public class TimeAxisSetter {
 		return prLength;
 	}
 	
-	public void setProjectLength(double prLength) {
+	public void setProjectLength(final double prLength) {
 		this.prLength = prLength;
 		calculateTicks();
 		updateScroller();

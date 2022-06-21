@@ -34,7 +34,7 @@ public abstract class ChannelInfosView extends AnchorPane {
 	
 	private final Channel ch;
 	private final VBox infos = new VBox();
-	protected ContextMenu menu;
+	private final ContextMenu menu;
 
 	public ChannelInfosView(final Channel ch, final Color color) {
 		super();

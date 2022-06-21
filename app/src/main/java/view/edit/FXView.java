@@ -7,25 +7,24 @@ import javafx.scene.layout.Priority;
 import view.common.App;
 import view.common.ChannelsView;
 
-public class FXView {
+public final class FXView {
 	
 	private String selectedChannel;
-	private HBox fxPanel;
+	private final HBox fxPanel;
 
-	public FXView(HBox fxPanel, ChannelsView chView) {
+	public FXView(final HBox fxPanel, final ChannelsView chView) {
 		chView.addSelectListener(new ChangeListener<String>() {
 
 			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+			public void changed(final ObservableValue<? extends String> observable, final String oldValue, final String newValue) {
 				selectedChannel = newValue;
-				ChangeFXView();
+				changeFXView();
 			}
-			
 		});
 		this.fxPanel = fxPanel;
 	}
 
-	private void ChangeFXView() {
+	private void changeFXView() {
 		this.fxPanel.getChildren().clear();
 		var fxView = App.getData().getChannel(selectedChannel).getFxView();
 		this.fxPanel.getChildren().add(fxView);

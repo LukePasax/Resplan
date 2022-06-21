@@ -9,22 +9,22 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 
-public class ToolBarSetter {
+public final class ToolBarSetter {
 	
 	private Map<Tool, Button> tools = new HashMap<>();
 	private Tool currentTool = Tool.CURSOR;
 	private Set<ToolChangeListener> listeners = new HashSet<>();
 	
-	public ToolBarSetter addTool(Tool tool, Button button) {
+	public ToolBarSetter addTool(final Tool tool, final Button button) {
 		this.tools.put(tool, button);
 		return this;
 	}
 	
-	public void selectTool(Tool tool) {
-		if(tools.containsKey(tool)) {
+	public void selectTool(final Tool tool) {
+		if (tools.containsKey(tool)) {
 			this.currentTool = tool;
-			this.tools.forEach((t, b)->{
-				if(t.equals(tool)) {
+			this.tools.forEach((t, b) -> {
+				if (t.equals(tool)) {
 					b.setBackground(new Background(new BackgroundFill(Color.ORANGE, null, null)));
 				} else {
 					b.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, null, null)));
@@ -38,7 +38,7 @@ public class ToolBarSetter {
 		return this.currentTool;
 	}
 	
-	public void addToolChangeListener(ToolChangeListener listener) {
+	public void addToolChangeListener(final ToolChangeListener listener) {
 		listeners.add(listener);
 	}
 }

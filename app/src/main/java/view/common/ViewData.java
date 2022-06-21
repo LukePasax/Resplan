@@ -15,9 +15,9 @@ import view.common.ViewDataImpl.Section;
 public interface ViewData {
 
 	//prLenght
-	public void setProjectLenght(Double prLenght);
+	void setProjectLenght(Double prLenght);
 	
-	public DoubleProperty getProjectLenghtProperty();
+	DoubleProperty getProjectLenghtProperty();
 	
 	//channels and clips
 	void addChannel(Channel channel);

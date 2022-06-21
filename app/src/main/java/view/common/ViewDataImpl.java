@@ -21,7 +21,7 @@ import javafx.collections.SetChangeListener;
 import javafx.scene.Node;
 import view.effects.EffectsPane;
 
-public class ViewDataImpl implements ViewData {
+public final class ViewDataImpl implements ViewData {
 	
 	private ObservableMap<Channel, ObservableList<Clip>> data = FXCollections.observableHashMap();
 
@@ -31,7 +31,7 @@ public class ViewDataImpl implements ViewData {
 	
 	//prLenght
 	@Override
-	public void setProjectLenght(Double prLenght) {
+	public void setProjectLenght(final Double prLenght) {
 		this.prLenght.set(prLenght);
 	}
 	
@@ -42,60 +42,59 @@ public class ViewDataImpl implements ViewData {
 	
 	//channels and clips
 	@Override
-	public void addChannel(Channel channel) {
+	public void addChannel(final Channel channel) {
 		data.put(channel, FXCollections.observableArrayList());
 		channel.setFxView(new EffectsPane(channel.getTitle()));
 	}
 
 	@Override
-	public void removeChannel(Channel channel) {
+	public void removeChannel(final Channel channel) {
 		data.remove(channel);
 	}
 
 	@Override
-	public void addClip(Channel channel, Clip clip) {
-		if(!data.containsKey(channel)) {
+	public void addClip(final Channel channel, final Clip clip) {
+		if (!data.containsKey(channel)) {
 			throw new IllegalArgumentException("channel does not exist");
 		}
 		data.get(channel).add(clip);
 	}
 
 	@Override
-	public void removeClip(Channel channel, Clip clip) {
-		if(!data.containsKey(channel)) {
+	public void removeClip(final Channel channel, final Clip clip) {
+		if (!data.containsKey(channel)) {
 			throw new IllegalArgumentException("view channel does not exist");
 		}
-		if(!data.get(channel).remove(clip)) {
+		if (!data.get(channel).remove(clip)) {
 			throw new IllegalArgumentException("view clip does not exist");
 		}
-		
 	}
 	
 	@Override
-	public void clearChannelClips(Channel channel) {
+	public void clearChannelClips(final Channel channel) {
 		data.get(channel).clear();
 	}
 	
 	@Override
-	public Channel getChannel(String title) {
-		var ch = data.keySet().stream().filter(x->x.getTitle().equals(title)).findFirst();
+	public Channel getChannel(final String title) {
+		var ch = data.keySet().stream().filter(x -> x.getTitle().equals(title)).findFirst();
 		return ch.isEmpty() ? null : ch.get();
 	}
 	
 	@Override
-	public Clip getClip(String ch, String cl) {
+	public Clip getClip(final String ch, final String cl) {
 		var channel = getChannel(ch);
-		var clip = data.get(channel).stream().filter(x->x.getTitle().equals(cl)).findFirst();
+		var clip = data.get(channel).stream().filter(x -> x.getTitle().equals(cl)).findFirst();
 		return  clip.isEmpty() ? null : clip.get();
 	}
 	
 	@Override
-	public void addChannelsDataListener(MapChangeListener<Channel, ObservableList<Clip>> mapChangeListener) {
+	public void addChannelsDataListener(final MapChangeListener<Channel, ObservableList<Clip>> mapChangeListener) {
 		data.addListener(mapChangeListener);
 	}
 	
 	@Override
-	public void addClipsDataListener(Channel channel, ListChangeListener<Clip> listChangeListener) {
+	public void addClipsDataListener(final Channel channel, final ListChangeListener<Clip> listChangeListener) {
 		data.get(channel).addListener(listChangeListener);
 	}
 	
@@ -105,14 +104,14 @@ public class ViewDataImpl implements ViewData {
 	}
 	
 	@Override
-	public ObservableList<Clip> getUnmodifiableClips(Channel channel) {
+	public ObservableList<Clip> getUnmodifiableClips(final Channel channel) {
 		return FXCollections.unmodifiableObservableList(data.get(channel));
 	}
 
 	//sections
 	
 		@Override
-	public void addSection(Section section) {
+	public void addSection(final Section section) {
 		sections.add(section);
 	}
 
@@ -122,12 +121,12 @@ public class ViewDataImpl implements ViewData {
 	}
 	
 	@Override
-	public void removeSection(Section section) {
+	public void removeSection(final Section section) {
 		sections.remove(section);
 	}
 
 	@Override
-	public void addSectionDataListener(SetChangeListener<Section> listener) {
+	public void addSectionDataListener(final SetChangeListener<Section> listener) {
 		sections.addListener(listener);
 	}
 
@@ -137,7 +136,7 @@ public class ViewDataImpl implements ViewData {
 		this.sections.clear();
 	}
 	
-	public static class Channel {
+	public static final class Channel {
 		private String title;
 		private String group;
 		private BooleanProperty muted = new SimpleBooleanProperty(false);
@@ -145,16 +144,16 @@ public class ViewDataImpl implements ViewData {
 		private Set<Node> view = new HashSet<>();
 		private ObservableList<Effect> effects = FXCollections.observableArrayList();
 		private Node fxView;
-		
-		public Channel(String title, String group) {
+
+		public Channel(final String title, final String group) {
 			this.title = title;
 			this.group = group;
 		}
-		
+
 		public String getTitle() {
 			return title;
 		}
-		
+
 		public String getGroup() {
 			return group;
 		}
@@ -162,35 +161,35 @@ public class ViewDataImpl implements ViewData {
 		public BooleanProperty isMuted() {
 			return muted;
 		}
-		
-		public void setMute(boolean muted) {
+
+		public void setMute(final boolean muted) {
 			this.muted.set(muted);
 		}
-		
+
 		public BooleanProperty isSolo() {
 			return solo;
 		}
-		
-		public void setSolo(boolean solo) {
+
+		public void setSolo(final boolean solo) {
 			this.solo.set(solo);
 		}
-		
-		public void addToViewAll(Node... nodes) {
-			for(Node n : nodes) {
+
+		public void addToViewAll(final Node... nodes) {
+			for (Node n : nodes) {
 				view.add(n);
 			}
 		}
-		
+
 		public Set<Node> getViewSet() {
 			return Collections.unmodifiableSet(view);
 		}
-		
+
 		public void clearViewSet() {
 			view.clear();
 		}
-		
-		public void removeFromViewAll(Node... nodes) {
-			for(Node n : nodes) {
+
+		public void removeFromViewAll(final Node... nodes) {
+			for (Node n : nodes) {
 				view.remove(n);
 			}
 		}
@@ -198,39 +197,42 @@ public class ViewDataImpl implements ViewData {
 		public Node getFxView() {
 			return fxView;
 		}
-		
-		public void setFxView(Node node) {
+
+		public void setFxView(final Node node) {
 			this.fxView = node;
 		}
-		
+
 		public ObservableList<Effect> getFxList() {
 			return effects;
 		}
-		
-		public void addFxListListener(ListChangeListener<Effect> listChangeListener) {
+
+		public void addFxListListener(final ListChangeListener<Effect> listChangeListener) {
 			effects.addListener(listChangeListener);
 		}
-		
+
 		@Override
 		public int hashCode() {
 			return Objects.hash(title);
 		}
 
 		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
+		public boolean equals(final Object obj) {
+			if (this == obj) {
 				return true;
-			if (obj == null)
+			}
+			if (obj == null) {
 				return false;
-			if (getClass() != obj.getClass())
+			}
+			if (getClass() != obj.getClass()) {
 				return false;
+			}
 			Channel other = (Channel) obj;
 			return Objects.equals(title, other.title);
 		}
 	}
 	
-	public static class Clip {
-		
+	public static final class Clip {
+
 		private String title;
 		private DoubleProperty position = new SimpleDoubleProperty();
 		private DoubleProperty duration = new SimpleDoubleProperty();;
@@ -238,9 +240,8 @@ public class ViewDataImpl implements ViewData {
 		private Optional<Double> contentDuration;
 		private Optional<String> contentFileName;
 		private Set<Node> view = new HashSet<>();
-		
-		
-		public Clip(String title, Double position, Double duration, Optional<Double> contentPosition, Optional<Double> contentDuration, Optional<String> contentFileName) {
+
+		public Clip(final String title, final Double position, final Double duration, final Optional<Double> contentPosition, final Optional<Double> contentDuration, final Optional<String> contentFileName) {
 			super();
 			this.title = title;
 			this.position.set(position);
@@ -248,19 +249,19 @@ public class ViewDataImpl implements ViewData {
 			this.contentFileName = contentFileName;
 			this.contentPosition = contentPosition;
 			this.contentDuration = contentDuration;
-			if(!coerentOptionals()) {
+			if (!coerentOptionals()) {
 				this.contentFileName = Optional.empty();
 				this.contentPosition = Optional.empty();
 				this.contentDuration = Optional.empty();
 				throw new IllegalArgumentException("If the clip is empty no content position and duration must be specified. Else both content position and duration must be specified.");
 			}
 		}
-		
+
 		private boolean coerentOptionals() {
 			boolean check = this.contentDuration.isEmpty();
 			return check == this.contentPosition.isEmpty() && check == this.contentFileName.isEmpty(); 
 		}
-		
+
 		public String getTitle() {
 			return title;
 		}
@@ -268,51 +269,51 @@ public class ViewDataImpl implements ViewData {
 		public DoubleProperty getPosition() {
 			return position;
 		}
-		
+
 		public DoubleProperty getDuration() {
 			return duration;
 		}
-		
-		public void setPosition(Double position) {
+
+		public void setPosition(final Double position) {
 			this.position.set(position);
 		}
-		
-		public void setDuration(Double duration) {
+
+		public void setDuration(final Double duration) {
 			this.duration.set(duration);
 		}
 
 		public boolean isEmpty() {
 			return contentPosition.isEmpty();
 		}
-		
+
 		public Double getContentPosition() {
 			return contentPosition.get();
 		}
-		
+
 		public Double getContentDuration() {
 			return contentDuration.get();
 		}
-		
+
 		public String getContentName() {
 			return contentFileName.get();
 		}
-		
-		public void addToViewAll(Node... nodes) {
-			for(Node n : nodes) {
+
+		public void addToViewAll(final Node... nodes) {
+			for (Node n : nodes) {
 				view.add(n);
 			}
 		}
-		
+
 		public Set<Node> getViewSet() {
 			return Collections.unmodifiableSet(view);
 		}
-		
+
 		public void clearViewSet() {
 			view.clear();
 		}
-		
-		public void removeFromViewAll(Node... nodes) {
-			for(Node n : nodes) {
+
+		public void removeFromViewAll(final Node... nodes) {
+			for (Node n : nodes) {
 				view.remove(n);
 			}
 		}
@@ -323,44 +324,47 @@ public class ViewDataImpl implements ViewData {
 		}
 
 		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
+		public boolean equals(final Object obj) {
+			if (this == obj) {
 				return true;
-			if (obj == null)
+			}
+			if (obj == null) {
 				return false;
-			if (getClass() != obj.getClass())
+			}
+			if (getClass() != obj.getClass()) {
 				return false;
+			}
 			Clip other = (Clip) obj;
 			return Objects.equals(title, other.title);
 		}
-		
+
 	}
 
-	public static class Section {
-		
+	public static final class Section {
+
 		private String title;
 		private Double position;
 		private Set<Node> view = new HashSet<>();
 
-		public Section(String title, Double position) {
+		public Section(final String title, final Double position) {
 			this.title = title;
 			this.position = position;
 		}
-		
+
 		public String getTitle() {
 			return title;
 		}
-		
+
 		public Double getPosition() {
 			return position;
 		}
-		
-		public void addToViewAll(Node... nodes) {
-			for(Node n : nodes) {
+
+		public void addToViewAll(final Node... nodes) {
+			for (Node n : nodes) {
 				view.add(n);
 			}
 		}
-		
+
 		public Set<Node> getViewSet() {
 			return Collections.unmodifiableSet(view);
 		}
@@ -371,30 +375,31 @@ public class ViewDataImpl implements ViewData {
 		}
 
 		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
+		public boolean equals(final Object obj) {
+			if (this == obj) {
 				return true;
-			if (obj == null)
+			}
+			if (obj == null) {
 				return false;
-			if (getClass() != obj.getClass())
+			}
+			if (getClass() != obj.getClass()) {
 				return false;
+			}
 			Section other = (Section) obj;
 			return Objects.equals(title, other.title);
 		}
-		
 	}
 
-	public static class Effect {
-		
+	public static final class Effect {
+
 		private String type;
-		
-		public Effect(String type) {
+
+		public Effect(final String type) {
 			this.type = type;
 		}
-		
+
 		public String getType() {
 			return type;
 		}
-		
 	}
 }

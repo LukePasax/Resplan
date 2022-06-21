@@ -3,16 +3,12 @@ package view.common;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-
-import Resplan.Starter;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
@@ -39,7 +35,6 @@ public abstract class ChannelsView {
 	private static Map<String, Color> groupColors = new HashMap<>();
 	private StringProperty selected = new SimpleStringProperty();
 	private final Random rand = new Random();
-	protected ContextMenu menu;
 	
 	public ChannelsView(final TimeAxisSetter timeAxisSetter, final VBox channelsContentPane, final VBox channelsInfoPane, final ToolBarSetter toolBarSetter) {
 		App.getData().addChannelsDataListener(new MapChangeListener<Channel, ObservableList<Clip>>() {

@@ -16,7 +16,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.input.MouseButton;
@@ -32,14 +31,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import view.common.ViewDataImpl.Channel;
 import view.common.ViewDataImpl.Clip;
 import view.planning.ClipDescriptionEditorController;
 import view.planning.ClipTextEditorController;
 import view.planning.NewClipController;
-import view.planning.TextEditorController;
 
 /**
  * The view for a channel content. 
