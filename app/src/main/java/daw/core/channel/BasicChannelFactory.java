@@ -26,7 +26,7 @@ public class BasicChannelFactory implements ChannelFactory {
     public RPChannel gated() {
         final var bc = new BasicChannel(RPChannel.Type.AUDIO);
         bc.addProcessingUnit(new BasicProcessingUnitBuilder()
-                .highPassFilter(1, 200.0f)
+                .highPassFilter(1)
                 .gate(1)
                 .build());
         return bc;
@@ -55,7 +55,7 @@ public class BasicChannelFactory implements ChannelFactory {
         final var bc = new BasicChannel(RPChannel.Type.RETURN);
         bc.addProcessingUnit(new BasicProcessingUnitBuilder()
                 .reverb(1)
-                .highPassFilter(1, 200.0f)
+                .highPassFilter(1)
                 .build());
         return bc;
     }
@@ -68,8 +68,8 @@ public class BasicChannelFactory implements ChannelFactory {
     public RPChannel masterChannel() {
         final var bc = new BasicChannel(RPChannel.Type.MASTER);
         final var pu = new BasicProcessingUnitBuilder()
-                .lowPassFilter(1, 15000.0f)  // 0
-                .highPassFilter(1, 200.0f)   // 1
+                .lowPassFilter(1)  // 0
+                .highPassFilter(1)   // 1
                 .compressor(1)  // 2
                 .compressor(1)  // 3
                 .build();

@@ -107,9 +107,9 @@ public class EffectsPane extends ScrollPane {
 			} else if(effect.getType().equals("Limiter")) {
 				Starter.getController().addEffectAtPosition(channel, new Compression(1), this.getChildren().indexOf(effects.get(effect)));		//TODO limiter	
 			} else if(effect.getType().equals("Low pass")) {
-				Starter.getController().addEffectAtPosition(channel, new LowPassFilter(1, 10), this.getChildren().indexOf(effects.get(effect)));
+				Starter.getController().addEffectAtPosition(channel, new LowPassFilter(1), this.getChildren().indexOf(effects.get(effect)));
 			} else if(effect.getType().equals("High pass")) {
-				Starter.getController().addEffectAtPosition(channel, new HighPassFilter(1, 10), this.getChildren().indexOf(effects.get(effect)));
+				Starter.getController().addEffectAtPosition(channel, new HighPassFilter(1), this.getChildren().indexOf(effects.get(effect)));
 			} else if(effect.getType().equals("Reverb")) {
 				Starter.getController().addEffectAtPosition(channel, new DigitalReverb(1), this.getChildren().indexOf(effects.get(effect)));
 			} 

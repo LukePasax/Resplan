@@ -27,18 +27,16 @@ public interface ProcessingUnitBuilder {
     /**
      * Adds a {@link LowPassFilter} to the {@link ProcessingUnit}.
      * @param channels the number of input and output channels for this effect.
-     * @param cutoffFrequency the frequency over which sound gets attenuated or eliminated.
      * @return a reference to this object.
      */
-    ProcessingUnitBuilder lowPassFilter(int channels, float cutoffFrequency);
+    ProcessingUnitBuilder lowPassFilter(int channels);
 
     /**
      * Adds a {@link HighPassFilter} to the {@link ProcessingUnit}.
      * @param channels the number of input and output channels for this effect.
-     * @param cutoffFrequency the frequency under which sound gets attenuated or eliminated.
      * @return a reference to this object.
      */
-    ProcessingUnitBuilder highPassFilter(int channels, float cutoffFrequency);
+    ProcessingUnitBuilder highPassFilter(int channels);
 
     /**
      * Adds a {@link DigitalReverb} to the {@link ProcessingUnit}.

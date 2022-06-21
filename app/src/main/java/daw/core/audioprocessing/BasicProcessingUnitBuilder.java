@@ -35,24 +35,22 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
     /**
      * {@inheritDoc}
      * @param channels the number of input and output channels for this effect.
-     * @param cutoffFrequency the frequency over which sound gets attenuated or eliminated.
      * @return a reference to this object.
      */
     @Override
-    public ProcessingUnitBuilder lowPassFilter(int channels, float cutoffFrequency) {
-        this.effects.add(new LowPassFilter(channels, cutoffFrequency));
+    public ProcessingUnitBuilder lowPassFilter(int channels) {
+        this.effects.add(new LowPassFilter(channels));
         return this;
     }
 
     /**
      * {@inheritDoc}
      * @param channels the number of input and output channels for this effect.
-     * @param cutoffFrequency the frequency under which sound gets attenuated or eliminated.
      * @return a reference to this object.
      */
     @Override
-    public ProcessingUnitBuilder highPassFilter(int channels, float cutoffFrequency) {
-        this.effects.add(new HighPassFilter(channels, cutoffFrequency));
+    public ProcessingUnitBuilder highPassFilter(int channels) {
+        this.effects.add(new HighPassFilter(channels));
         return this;
     }
 

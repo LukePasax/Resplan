@@ -13,11 +13,10 @@ public class LowPassFilter extends Equalization {
     /**
      * Constructs a low-pass filter and sets its cutoff frequency to the given value.
      * @param channels the number of inputs and outputs of this effect.
-     * @param cutoffFrequency the frequency of cutoff.
      */
     @JsonCreator
-    public LowPassFilter(@JsonProperty("ins") int channels, @JsonProperty("frequency") float cutoffFrequency) {
-        super(channels, cutoffFrequency, true);
+    public LowPassFilter(@JsonProperty("ins") int channels) {
+        super(channels, true);
     }
 
 }
