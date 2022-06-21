@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * This class represents an implementation of {@link ProcessingUnitBuilder} in which an exception upon
  * the call of the method build is raised only if no effect has been specified.
  */
-public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
+public final class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
 
     private boolean sidechainingPresent;
     private final List<RPEffect> effects;

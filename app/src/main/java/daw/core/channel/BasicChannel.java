@@ -20,7 +20,7 @@ import java.util.Optional;
  * add one is to call the method which does that.
  * A channel can be of one and only one Type, which is immutable and must be declared upon initialization.
  */
-public class BasicChannel implements RPChannel {
+public final class BasicChannel implements RPChannel {
 
     private static final float DEFAULT_GAIN_IN = 0.9f;
 
@@ -71,7 +71,7 @@ public class BasicChannel implements RPChannel {
      * @param in the source that must be connected.
      */
     @Override
-    public void connectSource(UGen in) {
+    public void connectSource(final UGen in) {
         this.gainIn.addInput(in);
     }
 
@@ -80,7 +80,7 @@ public class BasicChannel implements RPChannel {
      * @param u the source that must be disconnected.
      */
     @Override
-    public void disconnectSource(UGen u) {
+    public void disconnectSource(final UGen u) {
         this.gainIn.removeAllConnections(u);
     }
 
@@ -100,11 +100,11 @@ public class BasicChannel implements RPChannel {
      * @throws IllegalArgumentException if the volume is not between 0 and 100.
      */
     @Override
-    public void setVolume(int vol) {
+    public void setVolume(final int vol) {
         if (vol < 0 || vol > 100) {
             throw new IllegalArgumentException("Volume level must be between 0 and 100.");
         }
-        this.gainOut.setGain((float) vol/100);
+        this.gainOut.setGain((float) vol / 100);
     }
 
     /**
@@ -120,6 +120,7 @@ public class BasicChannel implements RPChannel {
      * {@inheritDoc}
      * @return a {@link Panner}.
      */
+    @Override
     public Panner getPanner() {
         return this.pan;
     }
@@ -155,7 +156,8 @@ public class BasicChannel implements RPChannel {
      * {@inheritDoc}
      * @param pu the {@link ProcessingUnit} to be added.
      */
-    public void addProcessingUnit(ProcessingUnit pu) {
+    @Override
+    public void addProcessingUnit(final ProcessingUnit pu) {
         // in -> pu -> pan -> mute -> out
         if (!this.isProcessingUnitPresent()) {
             this.pu = Optional.of(pu);
@@ -206,25 +208,21 @@ public class BasicChannel implements RPChannel {
     }
 
     @Override
-    public String toString() {
-        return "BasicChannel{" +
-                "type=" + type +
-                ", gainOut=" + gainOut +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BasicChannel that = (BasicChannel) o;
-        return enabled == that.enabled &&
-                Objects.equals(pan, that.pan) &&
-                type == that.type &&
-                Objects.equals(pu, that.pu) &&
-                Objects.equals(gainIn, that.gainIn) &&
-                Objects.equals(gainOut, that.gainOut) &&
-                Objects.equals(gainMute, that.gainMute);
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final BasicChannel that = (BasicChannel) o;
+        return enabled == that.enabled
+                && Objects.equals(pan, that.pan)
+                && type == that.type
+                && Objects.equals(pu, that.pu)
+                && Objects.equals(gainIn, that.gainIn)
+                && Objects.equals(gainOut, that.gainOut)
+                && Objects.equals(gainMute, that.gainMute);
     }
 
     @Override

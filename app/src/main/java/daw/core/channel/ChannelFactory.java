@@ -1,10 +1,10 @@
 package daw.core.channel;
 
-import daw.core.audioprocessing.ProcessingUnit;
 import net.beadsproject.beads.core.UGen;
-import daw.core.audioprocessing.Sidechaining;
-import daw.core.audioprocessing.Gate;
+import daw.core.audioprocessing.ProcessingUnit;
 import daw.core.audioprocessing.RPEffect;
+import daw.core.audioprocessing.Gate;
+import daw.core.audioprocessing.Sidechaining;
 
 /**
  * This factory allows the client to acquire a particular form of {@link RPChannel}.

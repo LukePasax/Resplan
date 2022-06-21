@@ -2,7 +2,6 @@ package daw.core.channel;
 
 import daw.core.audioprocessing.BasicProcessingUnitBuilder;
 import net.beadsproject.beads.core.UGen;
-import java.util.Map;
 
 /**
  * Implements a {@link ChannelFactory}.
@@ -38,7 +37,7 @@ public class BasicChannelFactory implements ChannelFactory {
      * @return the {@link RPChannel}.
      */
     @Override
-    public RPChannel sidechained(UGen u) {
+    public RPChannel sidechained(final UGen u) {
         final var bc = new BasicChannel(RPChannel.Type.AUDIO);
         bc.addProcessingUnit(new BasicProcessingUnitBuilder()
                 .sidechain(u, 1)
