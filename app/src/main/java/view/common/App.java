@@ -34,7 +34,6 @@ public class App extends Application {
         stage.getIcons().add(new Image("/icons/icon.png"));
         stage.setTitle("Resplan");
         stage.initStyle(StageStyle.UNDECORATED);
-        ResizeHelper helper = new ResizeHelper(stage, 1000,1000);
         stage.show();
         FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
         this.sleepingRoot = editLoader.load();
