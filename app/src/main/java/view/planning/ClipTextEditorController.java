@@ -4,7 +4,7 @@ import resplan.Starter;
 import java.io.File;
 import java.io.IOException;
 
-public class ClipTextEditorController extends TextEditorController {
+public final class ClipTextEditorController extends TextEditorController {
 
     @Override
     protected void setPromptText() {
@@ -22,7 +22,7 @@ public class ClipTextEditorController extends TextEditorController {
     }
 
     @Override
-    protected void onUploadFromFile( final File file) throws IOException {
+    protected void onUploadFromFile(final File file) throws IOException {
         Starter.getController().setClipTextFromFile(this.title, file.getAbsolutePath());
         this.setTextArea();
     }

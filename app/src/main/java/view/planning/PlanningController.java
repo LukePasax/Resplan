@@ -1,7 +1,6 @@
 package view.planning;
 
 import resplan.Starter;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -53,16 +52,17 @@ public class PlanningController {
         this.channelsInfoPane.setMaxWidth(200);
       //--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
   		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
-  			timelineToChannelsAligner.getColumnConstraints().get(1).setPercentWidth((1-(channelsInfoResizer.getDividerPositions()[0]))*100);
+  			timelineToChannelsAligner.getColumnConstraints().get(1)
+                    .setPercentWidth((1 - (channelsInfoResizer.getDividerPositions()[0]))*100);
   		});
           new WindowBar(this.windowBar);
     }
 
-    public void newChannelPressed( final ActionEvent event) throws IOException {
+    public void newChannelPressed() throws IOException {
         this.launchWindow("view/NewChannelWindow.fxml","New Channel");
     }
 
-    public void newClipPressed( final ActionEvent event) throws IOException {
+    public void newClipPressed() throws IOException {
         if (Starter.getController().getChannelList().isEmpty()) {
             AlertDispatcher.dispatchError("No channels present");
         } else {
@@ -70,15 +70,15 @@ public class PlanningController {
         }
     }
 
-    public void newSectionPressed( final ActionEvent actionEvent) throws IOException {
+    public void newSectionPressed() throws IOException {
         this.launchWindow("view/NewSectionWindow.fxml","New Section");
     }
 
-    public void goToRubricPressed( final ActionEvent actionEvent) throws IOException {
+    public void goToRubricPressed() throws IOException {
         this.launchWindow("view/RubricView.fxml", "Rubric");
     }
 
-    private void launchWindow( final String fxml, final String title) throws IOException {
+    private void launchWindow(final String fxml, final String title) throws IOException {
         final FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource(fxml));
         final Scene scene = new Scene(loader.load());
         final Stage stage = new Stage();

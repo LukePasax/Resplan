@@ -69,6 +69,6 @@ public abstract class TextEditorController {
         this.editing();
     }
 
-    protected abstract void onUploadFromFile(File file) throws IOException;
+    protected abstract void onUploadFromFile(final File file) throws IOException;
 
 }

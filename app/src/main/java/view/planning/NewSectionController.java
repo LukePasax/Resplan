@@ -1,7 +1,6 @@
 package view.planning;
 
 import resplan.Starter;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -22,8 +21,8 @@ public class NewSectionController {
         this.converter = new NumberFormatConverter();
         this.startTime.setTextFormatter(new TextFormatter<>(this.converter.getFormatterUnaryOperator()));
     }
-    public void okPressed( final ActionEvent actionEvent) {
-        if (this.startTime.getText().equals("")) {
+    public void okPressed() {
+        if ("".equals(this.startTime.getText())) {
             AlertDispatcher.dispatchError("Select a start time");
         } else {
             try {
@@ -36,7 +35,7 @@ public class NewSectionController {
         }
     }
 
-    public void cancelPressed( final ActionEvent actionEvent) {
+    public void cancelPressed() {
         this.title.getScene().getWindow().hide();
     }
 }

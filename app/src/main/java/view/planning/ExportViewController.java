@@ -3,7 +3,6 @@ package view.planning;
 import resplan.Starter;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Window;
@@ -42,7 +41,7 @@ public class ExportViewController {
         this.progress = 0.0;
     }
 
-    public void pickFilePressed( final ActionEvent actionEvent) {
+    public void pickFilePressed() {
         final WavFilePicker filePicker = new WavFilePicker();
         this.file = filePicker.getFileChooser().showSaveDialog(this.fileName.getScene().getWindow());
         if (this.file != null) {
@@ -50,7 +49,7 @@ public class ExportViewController {
         }
     }
 
-    public void okPressed( final ActionEvent actionEvent) {
+    public void okPressed() {
         if (this.file == null) {
             AlertDispatcher.dispatchError("Select a file first");
         } else {
@@ -77,7 +76,7 @@ public class ExportViewController {
         }
     }
 
-    private void startProgressBar( final Double duration, final Double tickTime) {
+    private void startProgressBar(final Double duration, final Double tickTime) {
         final AnchorPane pane = new AnchorPane();
         this.progressBar = new ProgressBar(this.progress);
         this.progressBar.progressProperty().addListener(this::changed);
@@ -94,7 +93,7 @@ public class ExportViewController {
         executor.schedule(() -> cancelBar(handler, executor), duration.longValue(), TimeUnit.MILLISECONDS);
     }
 
-    private void cancelBar( final ScheduledFuture<?> handler, final ScheduledExecutorService executor) {
+    private void cancelBar(final ScheduledFuture<?> handler, final ScheduledExecutorService executor) {
         try {
             Starter.getController().stopExport(this.file);
         } catch (IOException e) {
@@ -104,7 +103,7 @@ public class ExportViewController {
         executor.shutdown();
     }
 
-    public void changed( final ObservableValue<? extends Number> observable, final Number oldValue, final Number newValue) {
+    public void changed(final ObservableValue<? extends Number> observable, final Number oldValue, final Number newValue) {
         if (newValue.doubleValue() >= 1.0) {
             Platform.runLater(() -> this.window.hide());
         }
@@ -115,7 +114,7 @@ public class ExportViewController {
         this.progressBar.setProgress(this.progress);
     }
 
-    public void onCheck( final ActionEvent actionEvent) {
+    public void onCheck() {
         if (this.projectCheck.isSelected()) {
             this.startTime.setDisable(true);
             this.endTime.setDisable(true);
@@ -125,7 +124,7 @@ public class ExportViewController {
         }
     }
 
-    public void cancelPressed( final ActionEvent actionEvent) {
+    public void cancelPressed() {
         this.endTime.getScene().getWindow().hide();
     }
 }

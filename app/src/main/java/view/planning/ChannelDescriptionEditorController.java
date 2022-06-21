@@ -6,7 +6,7 @@ import controller.storing.RPFileReader;
 import java.io.File;
 import java.io.IOException;
 
-public class ChannelDescriptionEditorController extends TextEditorController {
+public final class ChannelDescriptionEditorController extends TextEditorController {
 
     @Override
     protected void setPromptText() {
@@ -24,7 +24,7 @@ public class ChannelDescriptionEditorController extends TextEditorController {
     }
 
     @Override
-    protected void onUploadFromFile( final File file) throws IOException {
+    protected void onUploadFromFile(final File file) throws IOException {
         Starter.getController().setChannelDescription(this.title, new RPFileReader(file).read());
         this.setTextArea();
     }

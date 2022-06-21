@@ -1,7 +1,6 @@
 package view.planning;
 
 import resplan.Starter;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import view.common.AlertDispatcher;
 
@@ -18,7 +17,7 @@ public class NewChannelController {
     }
 
 
-    public void okButtonPressed( final ActionEvent event) {
+    public void okButtonPressed() {
         try {
             Starter.getController().newChannel(this.typeChoicebox.getValue(),
                     this.titleSelection.getText(),this.descriptionSelection.getText());
@@ -28,7 +27,7 @@ public class NewChannelController {
         }
     }
 
-    public void cancelButtonPressed( final ActionEvent event) {
+    public void cancelButtonPressed() {
         this.typeChoicebox.getScene().getWindow().hide();
     }
 }

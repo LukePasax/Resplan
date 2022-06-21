@@ -69,19 +69,16 @@ public class RubricController {
             this.lastName = new SimpleStringProperty(this, "lastName");
         }
 
-        public Speaker setCode( final String code) {
+        public void setCode(final String code) {
             this.code.set(code);
-            return this;
         }
 
-        public Speaker setFirstName( final String firstName) {
+        public void setFirstName(final String firstName) {
             this.firstName.set(firstName);
-            return this;
         }
 
-        public Speaker setLastName( final String lastName) {
+        public void setLastName(final String lastName) {
             this.lastName.set(lastName);
-            return this;
         }
 
         public String getCode() {
@@ -99,8 +96,10 @@ public class RubricController {
     }
 
     public void addPerson() {
-        final var speaker = new Speaker().setCode(this.speakerCodeField.getText())
-                .setFirstName(this.firstNameField.getText()).setLastName(this.lastNameField.getText());
+        final var speaker = new Speaker();
+        speaker.setCode(this.speakerCodeField.getText());
+        speaker.setFirstName(this.firstNameField.getText());
+        speaker.setLastName(this.lastNameField.getText());
         if (!Objects.equals(speaker.getCode(), "") &&
                 !Objects.equals(speaker.getFirstName(), "") &&
                 !Objects.equals(speaker.getLastName(), "")) {

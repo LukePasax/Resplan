@@ -36,9 +36,9 @@ public class NewClipController {
     }
 
     public void okButtonPressed( final ActionEvent event) {
-        if (this.startTimePicker.getText().equals("")) {
+        if ("".equals(this.startTimePicker.getText())) {
             AlertDispatcher.dispatchError("Select a start time");
-        } else if (this.durationPicker.getText().equals("")) {
+        } else if ("".equals(this.durationPicker.getText())) {
             AlertDispatcher.dispatchError("Select a duration");
         } else {
             try {
