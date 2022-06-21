@@ -15,6 +15,7 @@ public interface Writer {
 
     /**
      * Generic method that writes data onto a location.
+     * @param data the data to write to a source.
      * @throws IOException if there are problems when writing.
      */
     void write(String data) throws IOException;

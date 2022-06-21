@@ -19,7 +19,7 @@ public class RPFileWriter implements Writer {
      * the file given as input of this constructor.
      * @param file a {@link File} to write.
      */
-    public RPFileWriter(File file) {
+    public RPFileWriter(final File file) {
         try {
             this.fw = new java.io.FileWriter(Objects.requireNonNull(file), StandardCharsets.UTF_8);
         } catch (IOException e) {
@@ -33,7 +33,7 @@ public class RPFileWriter implements Writer {
      * @throws IOException {@inheritDoc}
      */
     @Override
-    public void write(String data) throws IOException {
+    public void write(final String data) throws IOException {
         try {
             this.fw.write(data);
             this.fw.close();

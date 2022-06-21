@@ -18,7 +18,7 @@ public class RPFileReader implements Reader {
      * the file given as input of this constructor.
      * @param file a {@link File} to read.
      */
-    public RPFileReader(File file) {
+    public RPFileReader(final File file) {
         this.file = Objects.requireNonNull(file);
     }
 
