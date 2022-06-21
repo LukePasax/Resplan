@@ -28,8 +28,8 @@ public class ProjectDownloaderImpl implements ProjectDownloader {
      * @throws FileFormatException if the given file is not compatible with the standard format.
      */
     @Override
-    public void download(File file, final Manager manager) throws IOException, FileFormatException {
-        if (!FilenameUtils.getExtension(file.getName()).equals("json")) {
+    public void download(final File file, final Manager manager) throws IOException, FileFormatException {
+        if (!"json".equals(FilenameUtils.getExtension(file.getName()))) {
             throw new FileFormatException("Selected file's format is not supported. Choose only .json files.");
         }
         new RPFileWriter(file).write(this.serializer.serialize(manager));

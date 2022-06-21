@@ -26,8 +26,9 @@ public class ProjectLoaderImpl implements ProjectLoader {
      * @throws IOException if the reader fails to read from the given file.
      * @throws FileFormatException if the given file is not compatible with the standard format.
      */
-    public Manager load(File file) throws IOException, FileFormatException {
-        if (!FilenameUtils.getExtension(file.getName()).equals("json")) {
+    @Override
+    public Manager load(final File file) throws IOException, FileFormatException {
+        if (!"json".equals(FilenameUtils.getExtension(file.getName()))) {
             throw new FileFormatException("Selected file's format is not supported. Choose only .json files.");
         }
         return this.deserializer.deserialize(new RPFileReader(file).read());
