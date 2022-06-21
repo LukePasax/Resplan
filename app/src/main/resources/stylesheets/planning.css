@@ -13,6 +13,9 @@
     -fx-background-color: linear-gradient(to bottom, white, lightgray);
 }
 
+.menu-bar {
+    -fx-background-color: linear-gradient(to bottom, orange, darkorange 50%, coral 100%);
+}
 
 #window-bar-container {
     -fx-background-color: linear-gradient(to bottom, orange, darkorange 50%, coral 100%);
