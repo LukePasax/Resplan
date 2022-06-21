@@ -6,8 +6,10 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
+import javafx.util.StringConverter;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class RubricController {
 
@@ -29,8 +31,10 @@ public class RubricController {
     public void initialize() {
         this.tableView.setItems(this.speakers);
         this.speakerCodeField.setTextFormatter(new TextFormatter<String>(i -> {
-            final String text = i.getText();
-            return (text.matches("\\d")) ? i : null;
+            final var text = i.getText();
+            final var change = text.matches("[0-9]|\b") ? i : null;
+            //System.out.println(change);
+            return change;
         }));
         final var removal = new MenuItem("Remove speaker");
         final var creation = new MenuItem("Create channel");
