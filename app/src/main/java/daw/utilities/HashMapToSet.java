@@ -21,7 +21,7 @@ public final class HashMapToSet<X, Y> implements MapToSet<X, Y> {
 	@Override
 	public boolean remove(final X key, final Y value) {
 		if (map.containsKey(key)) {
-			var removed = map.get(key).remove(value);
+			final var removed = map.get(key).remove(value);
 			if (map.get(key).isEmpty() && removed) {
 				return this.removeSet(key) != null;
 			}
