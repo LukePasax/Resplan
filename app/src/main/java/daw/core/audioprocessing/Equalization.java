@@ -12,17 +12,17 @@ import java.util.Map;
  */
 public abstract class Equalization extends RPEffect {
 
-    private static final float LOW_PASS_DEFAULT_FREQUENCY = 18000.0f;
+    private static final float LOW_PASS_DEFAULT_FREQUENCY = 18_000.0f;
     private static final float HIGH_PASS_DEFAULT_FREQUENCY = 90.0f;
 
-    protected CrossoverFilter filter;
+    private final CrossoverFilter filter;
 
     /**
      * Sets up an equalization effect, which can be either a low pass filter or a high pass filter.
      * @param channels the number of inputs and outputs of this effect.
      * @param low true if the requested filter is the low pass, false if it is the high pass.
      */
-    protected Equalization(int channels, boolean low) {
+    protected Equalization(final int channels, final boolean low) {
         super(channels);
         this.filter = new CrossoverFilter(AudioContextManager.getAudioContext(), 1);
         this.filter.addInput(this.getGainIn());
@@ -40,7 +40,7 @@ public abstract class Equalization extends RPEffect {
      * @return {@inheritDoc}
      */
     @Override
-    public Map<String, Float> getParameters() {
+    public final Map<String, Float> getParameters() {
         return Map.of("frequency", this.filter.getFrequency());
     }
 
@@ -49,7 +49,7 @@ public abstract class Equalization extends RPEffect {
      * @param parameters the {@link Map} that contains the parameters that must be modified
      */
     @Override
-    public void setParameters(Map<String, Float> parameters) {
+    public final void setParameters(final Map<String, Float> parameters) {
         final DataBead db = new DataBead();
         db.putAll(parameters);
         this.filter.sendData(db);
@@ -59,7 +59,7 @@ public abstract class Equalization extends RPEffect {
      * {@inheritDoc}
      */
     @Override
-    public void calculateBuffer() {
+    public final void calculateBuffer() {
         this.filter.calculateBuffer();
     }
 

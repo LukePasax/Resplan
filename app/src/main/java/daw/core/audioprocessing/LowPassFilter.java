@@ -15,7 +15,7 @@ public class LowPassFilter extends Equalization {
      * @param channels the number of inputs and outputs of this effect.
      */
     @JsonCreator
-    public LowPassFilter(@JsonProperty("ins") int channels) {
+    public LowPassFilter(@JsonProperty("ins") final int channels) {
         super(channels, true);
     }
 

@@ -15,7 +15,7 @@ public class HighPassFilter extends Equalization {
      * @param channels the number of inputs and outputs of this effect.
      */
     @JsonCreator
-    public HighPassFilter(@JsonProperty("ins") int channels) {
+    public HighPassFilter(@JsonProperty("ins") final int channels) {
         super(channels, false);
     }
 

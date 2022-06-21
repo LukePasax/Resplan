@@ -33,7 +33,7 @@ public abstract class RPEffect extends UGen implements AudioElement {
      * Base constructor for all the effects of this software.
      * @param channels the number of inputs and outputs of this effect.
      */
-    protected RPEffect(int channels) {
+    protected RPEffect(final int channels) {
         super(AudioContextManager.getAudioContext(), channels, channels);
         this.gainIn = new Gain(AudioContextManager.getAudioContext(), channels, 1.0f);
         this.gainOut = new Gain(AudioContextManager.getAudioContext(), channels, 1.0f);
@@ -43,12 +43,14 @@ public abstract class RPEffect extends UGen implements AudioElement {
      * {@inheritDoc}
      * @return {@inheritDoc}
      */
+    @Override
     public abstract Map<String, Float> getParameters();
 
     /**
      * {@inheritDoc}
      * @param parameters the {@link Map} that contains the parameters that must be modified.
      */
+    @Override
     public abstract void setParameters(Map<String, Float> parameters);
 
     /**

@@ -1,7 +1,8 @@
 package daw.core.audioprocessing;
 
 import net.beadsproject.beads.core.UGen;
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * This class represents an implementation of {@link ProcessingUnitBuilder} in which an exception upon
@@ -24,7 +25,7 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
      * @return a reference to this object.
      */
     @Override
-    public ProcessingUnitBuilder sidechain(UGen u, int channels) {
+    public ProcessingUnitBuilder sidechain(final UGen u, final int channels) {
         if (!this.sidechainingPresent) {
             this.effects.add(new SidechainingImpl(u, channels));
             this.sidechainingPresent = true;
@@ -38,7 +39,7 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
      * @return a reference to this object.
      */
     @Override
-    public ProcessingUnitBuilder lowPassFilter(int channels) {
+    public ProcessingUnitBuilder lowPassFilter(final int channels) {
         this.effects.add(new LowPassFilter(channels));
         return this;
     }
@@ -49,7 +50,7 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
      * @return a reference to this object.
      */
     @Override
-    public ProcessingUnitBuilder highPassFilter(int channels) {
+    public ProcessingUnitBuilder highPassFilter(final int channels) {
         this.effects.add(new HighPassFilter(channels));
         return this;
     }
@@ -60,7 +61,7 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
      * @return a reference to this object.
      */
     @Override
-    public ProcessingUnitBuilder reverb(int channels) {
+    public ProcessingUnitBuilder reverb(final int channels) {
         this.effects.add(new DigitalReverb(channels));
         return this;
     }
@@ -71,7 +72,7 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
      * @return a reference to this object.
      */
     @Override
-    public ProcessingUnitBuilder gate(int channels) {
+    public ProcessingUnitBuilder gate(final int channels) {
         this.effects.add(new Gate(channels));
         return this;
     }
@@ -82,7 +83,7 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
      * @return a reference to this object.
      */
     @Override
-    public ProcessingUnitBuilder compressor(int channels) {
+    public ProcessingUnitBuilder compressor(final int channels) {
         this.effects.add(new Compression(channels));
         return this;
     }
@@ -93,7 +94,7 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
      * @return a reference to this object.
      */
     @Override
-    public ProcessingUnitBuilder limiter(int channels) {
+    public ProcessingUnitBuilder limiter(final int channels) {
         this.effects.add(new Limiter(channels));
         return this;
     }

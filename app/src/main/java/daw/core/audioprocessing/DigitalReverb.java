@@ -22,7 +22,7 @@ public class DigitalReverb extends RPEffect {
      * @param channels the number of inputs and outputs of this effect.
      */
     @JsonCreator
-    public DigitalReverb(@JsonProperty("ins") int channels) {
+    public DigitalReverb(@JsonProperty("ins") final int channels) {
         super(channels);
         this.rev = new Reverb(AudioContextManager.getAudioContext(), channels);
         this.rev.addInput(this.getGainIn());
@@ -35,7 +35,7 @@ public class DigitalReverb extends RPEffect {
      * @return {@inheritDoc}
      */
     @Override
-    public Map<String, Float> getParameters() {
+    public final Map<String, Float> getParameters() {
         return Map.of("damping", this.rev.getDamping(), "roomSize", this.rev.getSize());
     }
 
@@ -44,7 +44,7 @@ public class DigitalReverb extends RPEffect {
      * @param parameters the {@link Map} that contains the parameters that must be modified.
      */
     @Override
-    public void setParameters(Map<String, Float> parameters) {
+    public final void setParameters(final Map<String, Float> parameters) {
         final DataBead db = new DataBead();
         db.putAll(parameters);
         this.rev.sendData(db);
@@ -54,7 +54,7 @@ public class DigitalReverb extends RPEffect {
      * {@inheritDoc}
      */
     @Override
-    public void calculateBuffer() {
+    public final void calculateBuffer() {
         this.rev.calculateBuffer();
     }
 

@@ -16,7 +16,7 @@ public class Compression extends Dynamics {
      * @param channels the number of inputs and outputs of this effect.
      */
     @JsonCreator
-    public Compression(@JsonProperty("ins") int channels) {
+    public Compression(@JsonProperty("ins") final int channels) {
         super(channels);
     }
 

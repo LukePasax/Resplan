@@ -19,7 +19,7 @@ public abstract class Dynamics extends RPEffect {
      * Sets up a dynamics effect.
      * @param channels the number of inputs and outputs of this effect.
      */
-    public Dynamics(int channels) {
+    public Dynamics(final int channels) {
         super(channels);
         this.compressor = new Compressor(AudioContextManager.getAudioContext(), channels);
         this.compressor.addInput(this.getGainIn());
@@ -32,7 +32,7 @@ public abstract class Dynamics extends RPEffect {
      * current value of each parameter of the effect.
      */
     @Override
-    public Map<String, Float> getParameters() {
+    public final Map<String, Float> getParameters() {
         return Map.of("threshold", this.compressor.getThreshold(), "ratio", this.compressor.getRatio(),
                 "attack", this.compressor.getAttack(), "decay", this.compressor.getDecay(),
                 "current compression", this.compressor.getCurrentCompression());
@@ -43,7 +43,7 @@ public abstract class Dynamics extends RPEffect {
      * @param parameters the {@link Map} that contains the parameters that must be modified.
      */
     @Override
-    public void setParameters(Map<String, Float> parameters) {
+    public final void setParameters(final Map<String, Float> parameters) {
         final DataBead db = new DataBead();
         db.putAll(parameters);
         this.compressor.sendData(db);
@@ -53,7 +53,7 @@ public abstract class Dynamics extends RPEffect {
      * {@inheritDoc}
      */
     @Override
-    public void calculateBuffer() {
+    public final void calculateBuffer() {
         this.compressor.calculateBuffer();
     }
 

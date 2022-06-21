@@ -14,17 +14,17 @@ import java.util.Map;
  */
 public class Gate extends RPEffect {
 
-    private final GateEffect gate;
+    private final GateEffect gateEffect;
 
     /**
      * Creates a gate and sets its parameters to the default value.
      * @param channels the number of inputs and outputs of this effect.
      */
-    public Gate(@JsonProperty("ins") int channels) {
+    public Gate(@JsonProperty("ins") final int channels) {
         super(channels);
-        this.gate = new GateEffect(AudioContextManager.getAudioContext(), channels);
-        this.gate.addInput(this.getGainIn());
-        this.getGainOut().addInput(this.gate);
+        this.gateEffect = new GateEffect(AudioContextManager.getAudioContext(), channels);
+        this.gateEffect.addInput(this.getGainIn());
+        this.getGainOut().addInput(this.gateEffect);
     }
 
     /**
@@ -32,10 +32,10 @@ public class Gate extends RPEffect {
      * @return {@inheritDoc}
      */
     @Override
-    public Map<String, Float> getParameters() {
-        return Map.of("threshold", this.gate.getThreshold(), "ratio", this.gate.getRatio(),
-                "attack", this.gate.getAttack(), "decay", this.gate.getDecay(),
-                "current compression", this.gate.getCurrentCompression());
+    public final Map<String, Float> getParameters() {
+        return Map.of("threshold", this.gateEffect.getThreshold(), "ratio", this.gateEffect.getRatio(),
+                "attack", this.gateEffect.getAttack(), "decay", this.gateEffect.getDecay(),
+                "current compression", this.gateEffect.getCurrentCompression());
     }
 
     /**
@@ -43,18 +43,18 @@ public class Gate extends RPEffect {
      * @param parameters the {@link Map} that contains the parameters that must be modified.
      */
     @Override
-    public void setParameters(Map<String, Float> parameters) {
+    public final void setParameters(final Map<String, Float> parameters) {
         final DataBead db = new DataBead();
         db.putAll(parameters);
-        this.gate.sendData(db);
+        this.gateEffect.sendData(db);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void calculateBuffer() {
-        this.gate.calculateBuffer();
+    public final void calculateBuffer() {
+        this.gateEffect.calculateBuffer();
     }
 
 }

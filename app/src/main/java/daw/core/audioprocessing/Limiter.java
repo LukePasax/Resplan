@@ -14,7 +14,7 @@ public class Limiter extends Dynamics {
      *
      * @param channels the number of inputs and outputs of this effect.
      */
-    public Limiter(@JsonProperty("ins") int channels) {
+    public Limiter(@JsonProperty("ins") final int channels) {
         super(channels);
         this.compressor.setRatio(Float.POSITIVE_INFINITY);
     }

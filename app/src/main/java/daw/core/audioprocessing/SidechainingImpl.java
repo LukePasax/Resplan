@@ -17,13 +17,13 @@ public class SidechainingImpl extends Dynamics implements Sidechaining {
      * @param u the channel to be sidechained.
      * @param channels the number of inputs and outputs of the given channel.
      */
-    public SidechainingImpl(UGen u, int channels) {
+    public SidechainingImpl(final UGen u, final int channels) {
         this(channels);
         this.compressor.setSideChain(u);
     }
 
     @JsonCreator
-    private SidechainingImpl(@JsonProperty("ins") int channels) {
+    private SidechainingImpl(@JsonProperty("ins") final int channels) {
         super(channels);
     }
 
