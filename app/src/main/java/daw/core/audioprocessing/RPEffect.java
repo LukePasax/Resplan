@@ -17,6 +17,7 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Compression.class, name = "compression"),
+        @JsonSubTypes.Type(value = Limiter.class, name = "limiter"),
         @JsonSubTypes.Type(value = HighPassFilter.class, name = "high pass"),
         @JsonSubTypes.Type(value = LowPassFilter.class, name = "low pass"),
         @JsonSubTypes.Type(value = Gate.class, name = "gate"),

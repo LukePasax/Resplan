@@ -89,6 +89,17 @@ public class BasicProcessingUnitBuilder implements ProcessingUnitBuilder {
 
     /**
      * {@inheritDoc}
+     * @param channels the number of input and output channels for this effect.
+     * @return a reference to this object.
+     */
+    @Override
+    public ProcessingUnitBuilder limiter(int channels) {
+        this.effects.add(new Limiter(channels));
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
      * @return a {@link ProcessingUnit} with the ordered sequence of effects.
      * @throws IllegalStateException if no {@link AudioElement} has been added through this builder.
      */

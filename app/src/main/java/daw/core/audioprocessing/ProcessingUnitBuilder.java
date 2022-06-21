@@ -60,6 +60,13 @@ public interface ProcessingUnitBuilder {
     ProcessingUnitBuilder compressor(int channels);
 
     /**
+     * Adds a {@link Limiter} to the {@link ProcessingUnit}.
+     * @param channels the number of input and output channels for this effect.
+     * @return a reference to this object.
+     */
+    ProcessingUnitBuilder limiter(int channels);
+
+    /**
      * Allows to obtain the {@link ProcessingUnit}.
      * @return a {@link ProcessingUnit} with the ordered sequence of effects.
      * @throws IllegalStateException if no {@link AudioElement} has been added through this builder.

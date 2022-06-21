@@ -9,6 +9,7 @@ import controller.storing.deserialization.AbstractJacksonDeserializer;
 import controller.storing.deserialization.ManagerDeserializer;
 import controller.storing.serialization.AbstractJacksonSerializer;
 import controller.storing.serialization.ManagerSerializer;
+import daw.core.audioprocessing.BasicProcessingUnitBuilder;
 import daw.manager.ImportException;
 import daw.manager.Manager;
 import org.junit.jupiter.api.Test;
@@ -57,8 +58,12 @@ public class TestSerializeAndDeserialize {
         final Manager man = new Manager();
         RPRole role = new EffectsRole("claps");
         man.addChannel(RPRole.RoleType.EFFECTS, "claps", Optional.of("ciao"));
-        man.createGroup("myStuff", RPRole.RoleType.EFFECTS);
-        man.addToGroup(role,"myStuff");
+        man.addChannel(RPRole.RoleType.EFFECTS, "myStuff", Optional.of("what do i know"));
+        man.getChannelFromTitle("myStuff").addProcessingUnit(new BasicProcessingUnitBuilder()
+                .limiter(1)
+                .gate(1)
+                .highPassFilter(1)
+                .build());
         man.addChannel(RPRole.RoleType.SPEECH, "Giacomo", Optional.empty());
         man.addSection("first", Optional.of("ciao"), 0.10, 0.0);
         man.addSection("second", Optional.of("bella"), 0.50, 0.0);
@@ -85,7 +90,7 @@ public class TestSerializeAndDeserialize {
         try {
             writer.write(serializer.serialize(man));
             final var manAfterRead = deserializer.deserialize(reader.read());
-            System.out.println(serializer.serialize(manAfterRead));
+            assertEquals(serializer.serialize(manAfterRead), new RPFileReader(new File(FILENAME)).read());
         } catch (IOException e) {
             fail();
         }

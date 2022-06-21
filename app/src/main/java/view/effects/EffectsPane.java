@@ -4,11 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import Resplan.Starter;
-import daw.core.audioprocessing.Compression;
-import daw.core.audioprocessing.DigitalReverb;
-import daw.core.audioprocessing.HighPassFilter;
-import daw.core.audioprocessing.LowPassFilter;
-import daw.core.audioprocessing.RPEffect;
+import daw.core.audioprocessing.*;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -103,16 +99,16 @@ public class EffectsPane extends ScrollPane {
 			effects.put(effect, effectsType.get(effect.getType()).getDeclaredConstructor(String.class).newInstance(effect.getType()));
 			this.getChildren().add(new EffectPane(effects.get(effect)));
 			if(effect.getType().equals("Compressor")) {
-				Starter.getController().addEffectAtPosition(channel, new Compression(1), this.getChildren().indexOf(effects.get(effect)));				
+				Starter.getController().addEffectAtPosition(channel, new Compression(1), this.getChildren().indexOf(effects.get(effect)));
 			} else if(effect.getType().equals("Limiter")) {
-				Starter.getController().addEffectAtPosition(channel, new Compression(1), this.getChildren().indexOf(effects.get(effect)));		//TODO limiter	
+				Starter.getController().addEffectAtPosition(channel, new Limiter(1), this.getChildren().indexOf(effects.get(effect)));
 			} else if(effect.getType().equals("Low pass")) {
 				Starter.getController().addEffectAtPosition(channel, new LowPassFilter(1), this.getChildren().indexOf(effects.get(effect)));
 			} else if(effect.getType().equals("High pass")) {
 				Starter.getController().addEffectAtPosition(channel, new HighPassFilter(1), this.getChildren().indexOf(effects.get(effect)));
 			} else if(effect.getType().equals("Reverb")) {
 				Starter.getController().addEffectAtPosition(channel, new DigitalReverb(1), this.getChildren().indexOf(effects.get(effect)));
-			} 
+			}
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
