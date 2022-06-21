@@ -24,7 +24,7 @@ public class ClipDescriptionEditorController extends TextEditorController {
     }
 
     @Override
-    protected void onUploadFromFile(File file) throws IOException {
+    protected void onUploadFromFile( final File file) throws IOException {
         Starter.getController().setClipDescription(this.title, new RPFileReader(file).read());
         this.setTextArea();
     }

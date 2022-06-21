@@ -30,8 +30,7 @@ public class PlanningController {
     public Button rubricButton;
     public Button magicButton;
     private TimeAxisSetter timeAxisSetter;
-    private MarkersPane markersPane;
-    private ToolBarSetter toolBarSetter = new ToolBarSetter();
+    private final ToolBarSetter toolBarSetter = new ToolBarSetter();
 
     public void initialize() {
         this.magicButton.setVisible(false);
@@ -46,7 +45,7 @@ public class PlanningController {
 		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 2);
 		timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);
 		//--------set markers pane---------
-		markersPane = new MarkersPane(timeAxisSetter.getAxis());
+        final MarkersPane markersPane = new MarkersPane(timeAxisSetter.getAxis());
 		timelineToChannelsAligner.add(markersPane, 0, 1, 1, 3);
 		GridPane.setVgrow(markersPane, Priority.ALWAYS);
 		//--------set channels view----------
@@ -59,11 +58,11 @@ public class PlanningController {
           new WindowBar(this.windowBar);
     }
 
-    public void newChannelPressed(ActionEvent event) throws IOException {
+    public void newChannelPressed( final ActionEvent event) throws IOException {
         this.launchWindow("view/NewChannelWindow.fxml","New Channel");
     }
 
-    public void newClipPressed(ActionEvent event) throws IOException {
+    public void newClipPressed( final ActionEvent event) throws IOException {
         if (Starter.getController().getChannelList().isEmpty()) {
             AlertDispatcher.dispatchError("No channels present");
         } else {
@@ -71,18 +70,18 @@ public class PlanningController {
         }
     }
 
-    public void newSectionPressed(ActionEvent actionEvent) throws IOException {
+    public void newSectionPressed( final ActionEvent actionEvent) throws IOException {
         this.launchWindow("view/NewSectionWindow.fxml","New Section");
     }
 
-    public void goToRubricPressed(ActionEvent actionEvent) throws IOException {
+    public void goToRubricPressed( final ActionEvent actionEvent) throws IOException {
         this.launchWindow("view/RubricView.fxml", "Rubric");
     }
 
-    private void launchWindow(String fxml, String title) throws IOException {
-        FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource(fxml));
-        Scene scene = new Scene(loader.load());
-        Stage stage = new Stage();
+    private void launchWindow( final String fxml, final String title) throws IOException {
+        final FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemResource(fxml));
+        final Scene scene = new Scene(loader.load());
+        final Stage stage = new Stage();
         stage.setScene(scene);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.setTitle(title);

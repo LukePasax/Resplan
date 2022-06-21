@@ -20,7 +20,7 @@ public abstract class TextEditorController {
         this.saved();
     }
 
-    public void setTitle(String title) {
+    public void setTitle( final String title) {
         this.title = title;
         this.setPromptText();
         this.setTextArea();

@@ -30,9 +30,7 @@ public class RubricController {
         this.tableView.setItems(this.speakers);
         this.speakerCodeField.setTextFormatter(new TextFormatter<String>(i -> {
             final var text = i.getText();
-            final var change = text.matches("[0-9]|\b") ? i : null;
-            //System.out.println(change);
-            return change;
+            return text.matches("\\d|\b") ? i : null;
         }));
         final var removal = new MenuItem("Remove speaker");
         final var creation = new MenuItem("Create channel");
@@ -71,17 +69,17 @@ public class RubricController {
             this.lastName = new SimpleStringProperty(this, "lastName");
         }
 
-        public Speaker setCode(String code) {
+        public Speaker setCode( final String code) {
             this.code.set(code);
             return this;
         }
 
-        public Speaker setFirstName(String firstName) {
+        public Speaker setFirstName( final String firstName) {
             this.firstName.set(firstName);
             return this;
         }
 
-        public Speaker setLastName(String lastName) {
+        public Speaker setLastName( final String lastName) {
             this.lastName.set(lastName);
             return this;
         }

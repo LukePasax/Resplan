@@ -22,7 +22,7 @@ public class NewSectionController {
         this.converter = new NumberFormatConverter();
         this.startTime.setTextFormatter(new TextFormatter<>(this.converter.getFormatterUnaryOperator()));
     }
-    public void okPressed(ActionEvent actionEvent) {
+    public void okPressed( final ActionEvent actionEvent) {
         if (this.startTime.getText().equals("")) {
             AlertDispatcher.dispatchError("Select a start time");
         } else {
@@ -36,7 +36,7 @@ public class NewSectionController {
         }
     }
 
-    public void cancelPressed(ActionEvent actionEvent) {
+    public void cancelPressed( final ActionEvent actionEvent) {
         this.title.getScene().getWindow().hide();
     }
 }

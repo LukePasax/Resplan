@@ -27,7 +27,6 @@ public class ExportViewController {
     public TextField startTime;
 
     private ProgressBar progressBar;
-    private AnchorPane pane;
     private File file;
     private NumberFormatConverter converter;
     private Double progress;
@@ -43,29 +42,29 @@ public class ExportViewController {
         this.progress = 0.0;
     }
 
-    public void pickFilePressed(ActionEvent actionEvent) {
-        WavFilePicker filePicker = new WavFilePicker();
+    public void pickFilePressed( final ActionEvent actionEvent) {
+        final WavFilePicker filePicker = new WavFilePicker();
         this.file = filePicker.getFileChooser().showSaveDialog(this.fileName.getScene().getWindow());
         if (this.file != null) {
             this.fileName.setText(file.getAbsolutePath());
         }
     }
 
-    public void okPressed(ActionEvent actionEvent) {
+    public void okPressed( final ActionEvent actionEvent) {
         if (this.file == null) {
             AlertDispatcher.dispatchError("Select a file first");
         } else {
             this.window = this.fileName.getScene().getWindow();
             try {
                 if (this.projectCheck.isSelected()) {
-                    Double tickTime = Starter.getController().getProjectLength() / 100;
+                    final Double tickTime = Starter.getController().getProjectLength() / 100;
                     this.startProgressBar(Starter.getController().getProjectLength(), tickTime);
                     Starter.getController().startExport(0d);
                 } else {
-                    Double startTime =  this.converter.fromString(this.startTime.getText()).doubleValue();
-                    Double endTime =  this.converter.fromString(this.endTime.getText()).doubleValue();
+                    final Double startTime =  this.converter.fromString(this.startTime.getText()).doubleValue();
+                    final Double endTime =  this.converter.fromString(this.endTime.getText()).doubleValue();
                     if (endTime > startTime) {
-                        Double tickTime = (endTime - startTime) / 100;
+                        final Double tickTime = (endTime - startTime) / 100;
                         this.startProgressBar(endTime - startTime, tickTime);
                         Starter.getController().startExport(startTime);
                     } else {
@@ -78,24 +77,24 @@ public class ExportViewController {
         }
     }
 
-    private void startProgressBar(Double duration, Double tickTime) {
-        this.pane = new AnchorPane();
+    private void startProgressBar( final Double duration, final Double tickTime) {
+        final AnchorPane pane = new AnchorPane();
         this.progressBar = new ProgressBar(this.progress);
         this.progressBar.progressProperty().addListener(this::changed);
         AnchorPane.setTopAnchor(this.progressBar,140.0);
         AnchorPane.setBottomAnchor(this.progressBar,140.0);
         AnchorPane.setRightAnchor(this.progressBar,10.0);
         AnchorPane.setLeftAnchor(this.progressBar,10.0);
-        this.pane.getChildren().add(this.progressBar);
-        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        this.fileName.getScene().setRoot(this.pane);
+        pane.getChildren().add(this.progressBar);
+        final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        this.fileName.getScene().setRoot(pane);
         this.window = this.progressBar.getScene().getWindow();
-        ScheduledFuture<?> handler = executor.scheduleAtFixedRate(
+        final ScheduledFuture<?> handler = executor.scheduleAtFixedRate(
                 this::updateProgress, 0, tickTime.longValue(), TimeUnit.MILLISECONDS);
         executor.schedule(() -> cancelBar(handler, executor), duration.longValue(), TimeUnit.MILLISECONDS);
     }
 
-    private void cancelBar(ScheduledFuture<?> handler, ScheduledExecutorService executor) {
+    private void cancelBar( final ScheduledFuture<?> handler, final ScheduledExecutorService executor) {
         try {
             Starter.getController().stopExport(this.file);
         } catch (IOException e) {
@@ -105,7 +104,7 @@ public class ExportViewController {
         executor.shutdown();
     }
 
-    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+    public void changed( final ObservableValue<? extends Number> observable, final Number oldValue, final Number newValue) {
         if (newValue.doubleValue() >= 1.0) {
             Platform.runLater(() -> this.window.hide());
         }
@@ -116,7 +115,7 @@ public class ExportViewController {
         this.progressBar.setProgress(this.progress);
     }
 
-    public void onCheck(ActionEvent actionEvent) {
+    public void onCheck( final ActionEvent actionEvent) {
         if (this.projectCheck.isSelected()) {
             this.startTime.setDisable(true);
             this.endTime.setDisable(true);
@@ -126,7 +125,7 @@ public class ExportViewController {
         }
     }
 
-    public void cancelPressed(ActionEvent actionEvent) {
+    public void cancelPressed( final ActionEvent actionEvent) {
         this.endTime.getScene().getWindow().hide();
     }
 }

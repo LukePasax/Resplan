@@ -35,7 +35,7 @@ public class NewClipController {
 
     }
 
-    public void okButtonPressed(ActionEvent event) {
+    public void okButtonPressed( final ActionEvent event) {
         if (this.startTimePicker.getText().equals("")) {
             AlertDispatcher.dispatchError("Select a start time");
         } else if (this.durationPicker.getText().equals("")) {
@@ -53,12 +53,12 @@ public class NewClipController {
         }
     }
 
-    public void cancelButtonPressed(ActionEvent event) {
+    public void cancelButtonPressed( final ActionEvent event) {
         this.clipTitleSelection.getScene().getWindow().hide();
     }
 
-    public void pickFilePressed(ActionEvent event) {
-        WavFilePicker picker = new WavFilePicker();
+    public void pickFilePressed( final ActionEvent event) {
+        final WavFilePicker picker = new WavFilePicker();
         this.file = picker.getFileChooser().showOpenDialog(this.channelPicker.getScene().getWindow());
         if (this.file != null) {
             this.clipFileUrl.setText(this.file.getAbsolutePath());

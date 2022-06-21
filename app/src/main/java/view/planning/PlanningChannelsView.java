@@ -12,22 +12,22 @@ import view.common.ViewDataImpl;
 
 public class PlanningChannelsView extends ChannelsView {
 
-    public PlanningChannelsView(TimeAxisSetter timeAxisSetter, VBox channelsContentPane, VBox channelsInfoPane,
-                                ToolBarSetter toolBarSetter) {
+    public PlanningChannelsView( final TimeAxisSetter timeAxisSetter, final VBox channelsContentPane, final VBox channelsInfoPane,
+                                 final ToolBarSetter toolBarSetter) {
         super(timeAxisSetter, channelsContentPane, channelsInfoPane, toolBarSetter);
     }
 
     @Override
-    public Node drawClip(ViewDataImpl.Clip clip) {
+    public Node drawClip( final ViewDataImpl.Clip clip) {
         return new Label(clip.getTitle());
     }
 
     @Override
-    public Node drawInfos(ViewDataImpl.Channel ch) {
-        Label groupLabel = new Label(ch.getGroup());
+    public Node drawInfos( final ViewDataImpl.Channel ch) {
+        final Label groupLabel = new Label(ch.getGroup());
         groupLabel.setTextFill(Color.GRAY);
         groupLabel.setFont(Font.font(12));
-        VBox pane  = new VBox(groupLabel);
+        final VBox pane  = new VBox(groupLabel);
         pane.setMinHeight(20);
         return pane;
     }

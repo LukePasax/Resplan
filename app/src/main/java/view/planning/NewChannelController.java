@@ -18,7 +18,7 @@ public class NewChannelController {
     }
 
 
-    public void okButtonPressed(ActionEvent event) {
+    public void okButtonPressed( final ActionEvent event) {
         try {
             Starter.getController().newChannel(this.typeChoicebox.getValue(),
                     this.titleSelection.getText(),this.descriptionSelection.getText());
@@ -28,7 +28,7 @@ public class NewChannelController {
         }
     }
 
-    public void cancelButtonPressed(ActionEvent event) {
+    public void cancelButtonPressed( final ActionEvent event) {
         this.typeChoicebox.getScene().getWindow().hide();
     }
 }
