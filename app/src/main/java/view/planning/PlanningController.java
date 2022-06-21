@@ -14,8 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import view.common.*;
-
-import java.awt.*;
 import java.io.IOException;
 
 public class PlanningController {

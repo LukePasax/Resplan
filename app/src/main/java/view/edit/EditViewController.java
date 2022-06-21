@@ -1,6 +1,5 @@
 package view.edit;
 
-import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
