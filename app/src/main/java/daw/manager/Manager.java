@@ -2,19 +2,45 @@ package daw.manager;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import controller.storing.serialization.ManagerSerializer;
-import controller.storing.serialization.Serializer;
 import daw.core.channel.RPChannel;
-import daw.core.clip.*;
+import daw.core.clip.ClipConverter;
+import daw.core.clip.ClipNotFoundException;
+import daw.core.clip.EmptyClip;
+import daw.core.clip.RPClip;
+import daw.core.clip.RPClipConverter;
+import daw.core.clip.RPTapeChannel;
+import daw.core.clip.SampleClip;
+import daw.core.clip.TapeChannel;
 import daw.core.mixer.Mixer;
 import daw.core.mixer.RPMixer;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
-import planning.*;
+import planning.EffectsPart;
+import planning.EffectsRole;
+import planning.RPPart;
+import planning.RPRole;
+import planning.RPSection;
+import planning.RPTimeline;
+import planning.SectionImpl;
+import planning.SimpleSpeaker;
+import planning.SimpleSpeakerRubric;
+import planning.SoundtrackPart;
+import planning.SoundtrackRole;
+import planning.Speaker;
+import planning.SpeakerRubric;
+import planning.SpeechPart;
+import planning.SpeechRole;
+import planning.TimelineImpl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Manager implements RPManager {
@@ -61,7 +87,8 @@ public class Manager implements RPManager {
      * @throws IllegalArgumentException if the given title is already in use
      */
     @Override
-    public void addChannel(RPRole.RoleType type, String title, Optional<String> description)
+    public void addChannel(
+            RPRole.RoleType type, String title, Optional<String> description)
             throws IllegalArgumentException {
         if (this.channelLinker.channelExists(title)) {
             throw new IllegalArgumentException("Channel already exists");
