@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.core.JsonToken.START_OBJECT;
 // package protection as it is used only by the ManagerSerializer
 class ClipSerializer extends StdSerializer<RPClip> {
 
-    private static final long serialVersionUID = 45529632L;
+    private static final long serialVersionUID = 3787228129180295107L;
 
     protected ClipSerializer() {
         this(null);

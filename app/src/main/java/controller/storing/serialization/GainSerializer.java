@@ -9,7 +9,7 @@ import java.io.IOException;
 // package protection as it is used only by the ManagerSerializer
 class GainSerializer extends StdSerializer<Gain> {
 
-    private static final long serialVersionUID = 15039624L;
+    private static final long serialVersionUID = -4247269831969043474L;
 
     protected GainSerializer() {
         this(null);

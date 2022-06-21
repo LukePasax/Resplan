@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.core.JsonToken.START_OBJECT;
 // package protection as it is used only by the ManagerSerializer
 class EffectSerializer extends StdSerializer<RPEffect> {
 
-    private static final long serialVersionUID = 40039632L;
+    private static final long serialVersionUID = -4288773732614581128L;
 
     protected EffectSerializer() {
         this(null);

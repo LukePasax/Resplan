@@ -9,7 +9,7 @@ import java.io.IOException;
 // package protection as it is used only by the ManagerSerializer
 class PannerSerializer extends StdSerializer<Panner> {
 
-    private static final long serialVersionUID = 69531644L;
+    private static final long serialVersionUID = -3209115649196199305L;
 
     protected PannerSerializer() {
         this(null);
