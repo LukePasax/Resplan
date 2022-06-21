@@ -1,5 +1,7 @@
 package controller.storing.deserialization;
 
+import java.io.IOException;
+
 /**
  * General interface for deserialization of objects.
  * @param <T> the type of the deserialized object.
@@ -11,6 +13,7 @@ public interface Deserializer<T> {
      * @param text the textual data to be deserialized.
      * @return a deserialized object.
      */
-    T deserialize(String text);
+    T deserialize(String text) throws IOException;
 
 }
+

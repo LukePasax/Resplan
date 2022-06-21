@@ -10,6 +10,7 @@ import planning.RPPart;
 import planning.RPRole;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -24,22 +25,21 @@ public class ManagerDeserializer extends AbstractJacksonDeserializer<Manager> {
      * can be immediately used in the context of this application.
      */
     @Override
-    public Manager deserialize(String text) {
+    public Manager deserialize(final String text) throws IOException {
         try {
-            this.mapper.registerModule(new SimpleModule()
+            this.getMapper().registerModule(new SimpleModule()
                     .addKeyDeserializer(RPRole.class, new RoleKeyDeserializer())
                     .addKeyDeserializer(RPPart.class, new PartKeyDeserializer()));
-            final var man = this.mapper.readValue(text, Manager.class);
+            final var man = this.getMapper().readValue(text, Manager.class);
             final var finalMan = new Manager();
             this.transferData(finalMan, man);
             return finalMan;
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Deserialization of manager has gone wrong.");
+            throw new IOException("Deserialization of manager has gone wrong.");
         }
     }
 
-    private void transferData(Manager finalMan, Manager man) {
+    private void transferData(final Manager finalMan, final Manager man) {
         // add all channels
         man.getRoles().forEach(r -> finalMan.addChannel(r.getType(), r.getTitle(), r.getDescription()));
         // add effects
@@ -64,7 +64,7 @@ public class ManagerDeserializer extends AbstractJacksonDeserializer<Manager> {
                                     .getFileName())));
                 }
             } catch (ImportException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(e.getMessage());
             }
         }));
         // add all speakers
@@ -77,3 +77,4 @@ public class ManagerDeserializer extends AbstractJacksonDeserializer<Manager> {
     }
 
 }
+
