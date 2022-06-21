@@ -10,13 +10,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class JerkyKnobPane extends Pane{
+public final class JerkyKnobPane extends Pane{
 	private String min;
 	private String max;
 	private String value = "";
 	private List<String> values;
-	final Pane rotation;
-	final Label lvalue;
+	private final Pane rotation;
+	private final Label lvalue;
 	private final static double correctionx = 18;
 	private final static double correctiony = correctionx/1.5;
 	private final static double size = 80.0;
@@ -128,7 +128,7 @@ public class JerkyKnobPane extends Pane{
 		this.getChildren().add(lname);
 	}
 	
-	public void setValue(String value) {
+	public final void setValue(String value) {
 		if(values.contains(value)) {
 			this.value = value;
 			lvalue.setText(value);
@@ -136,16 +136,16 @@ public class JerkyKnobPane extends Pane{
 		}
 	}
 	
-	public String getValue() {
+	public final String getValue() {
 		return this.value;
 	}
 	
-	private void mousePressed(MouseEvent e) {
+	private final void mousePressed(MouseEvent e) {
 		initialValue = e.getSceneY();
 		current = getValue();
 	}
 	
-	private void mouseDragged(MouseEvent e) {
+	private final void mouseDragged(MouseEvent e) {
 		double poslimit = 5.0;
 		double neglimit = -5.0;
 		double move = ((-e.getSceneY())+initialValue)*0.1;
@@ -162,7 +162,7 @@ public class JerkyKnobPane extends Pane{
 		}
 	}
 	
-	private void mouseReleased(MouseEvent e) {
+	private final void mouseReleased(MouseEvent e) {
 		initialValue = 0.0;
 		drag = false;
 	}

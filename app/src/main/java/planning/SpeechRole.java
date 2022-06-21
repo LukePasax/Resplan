@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * This is the real implementation of the {@link planning.RPRole} of type "SPEECH"
  */
-public class SpeechRole extends RoleImpl {
+public final class SpeechRole extends RoleImpl {
 	
 	private Optional<Speaker> speaker = Optional.empty();
 	
@@ -38,7 +38,7 @@ public class SpeechRole extends RoleImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addSpeaker(Speaker speaker) {
+	public final void addSpeaker(Speaker speaker) {
 		this.speaker = Optional.of(speaker);		
 	}
 	
@@ -46,7 +46,7 @@ public class SpeechRole extends RoleImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isSpeakerPresent() {
+	public final boolean isSpeakerPresent() {
 		return this.speaker.isPresent();
 	}
 	
@@ -54,7 +54,7 @@ public class SpeechRole extends RoleImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Optional<Speaker> getSpeaker() {
+	public final Optional<Speaker> getSpeaker() {
 		return this.speaker;	
 	}
 }

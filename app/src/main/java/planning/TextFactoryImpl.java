@@ -7,13 +7,13 @@ import java.nio.file.Path;
 /**
  * This is the implementation of a {@link planning.TextFactory}
  */
-public class TextFactoryImpl implements TextFactory {
+public final class TextFactoryImpl implements TextFactory {
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Text createFromString(final String content) {
+	public final Text createFromString(final String content) {
 		return () -> content;
 	}
 	
@@ -21,7 +21,7 @@ public class TextFactoryImpl implements TextFactory {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Text createFromFile(final String fileName) throws IOException {
+	public final Text createFromFile(final String fileName) throws IOException {
 		return this.createFromString(Files.readString(Path.of(fileName)));
 	}
 

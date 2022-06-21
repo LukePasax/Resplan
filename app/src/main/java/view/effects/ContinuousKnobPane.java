@@ -8,13 +8,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class ContinuousKnobPane extends Pane {
+public final class ContinuousKnobPane extends Pane {
 	
 	private Double min;
 	private Double max;
 	private Double value = 0.0;
-	final Pane rotation;
-	final Label lvalue;
+	private final Pane rotation;
+	private final Label lvalue;
 	private final static double correctionx = 18;
 	private final static double correctiony = correctionx/1.5;
 	private final static double size = 80.0;
@@ -139,7 +139,7 @@ public class ContinuousKnobPane extends Pane {
 		this.getChildren().add(lname);
 	}
 	
-	public double setValue(double value) {
+	public final double setValue(double value) {
 		double minangle;
 		double newangle = 0.0;
 		value = (double)Math.round(value*100)/100;
@@ -172,20 +172,20 @@ public class ContinuousKnobPane extends Pane {
 		return newangle;
 	}
 	
-	public double getValue() {
+	public final double getValue() {
 		return this.value;
 	}
 	
-	private void mousePressed(MouseEvent e) {
+	private final void mousePressed(MouseEvent e) {
 		initialValue = e.getSceneY();
 		current = getValue();
 	}
 	
-	private void mouseDragged(MouseEvent e) {
+	private final void mouseDragged(MouseEvent e) {
 		setValue(current + (((-e.getSceneY())+initialValue)*((max-min)/100)));
 	}
 	
-	private void mouseReleased(MouseEvent e) {
+	private final void mouseReleased(MouseEvent e) {
 		initialValue = 0.0;
 	}
 }

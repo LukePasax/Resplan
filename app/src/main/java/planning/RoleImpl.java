@@ -1,8 +1,6 @@
 package planning;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -56,7 +54,7 @@ public abstract class RoleImpl implements RPRole {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getTitle() {
+	public final String getTitle() {
 		return this.title;
 	}
 	
@@ -64,7 +62,7 @@ public abstract class RoleImpl implements RPRole {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addDescription(final String description) {
+	public final void addDescription(final String description) {
 		this.description = Optional.of(description);
 	}
 	
@@ -72,7 +70,7 @@ public abstract class RoleImpl implements RPRole {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Optional<String> getDescription() {
+	public final Optional<String> getDescription() {
 		return this.description;
 	}
 	
@@ -80,7 +78,7 @@ public abstract class RoleImpl implements RPRole {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public RoleType getType() {
+	public final RoleType getType() {
 		return this.type;
 	}
 	
@@ -88,7 +86,7 @@ public abstract class RoleImpl implements RPRole {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addNote(String note) {
+	public final void addNote(String note) {
 		this.notesList.add(note);
 	}
 	
@@ -102,7 +100,7 @@ public abstract class RoleImpl implements RPRole {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<String> getNotes() {
+	public final List<String> getNotes() {
 		return this.notesList;
 	}
 	
@@ -122,7 +120,7 @@ public abstract class RoleImpl implements RPRole {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return Objects.hash(title, type);
 	}
 	
@@ -130,7 +128,7 @@ public abstract class RoleImpl implements RPRole {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public final boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -145,7 +143,7 @@ public abstract class RoleImpl implements RPRole {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "RoleImpl [title=" + title + ", description=" + description + ", type=" + type + "]";
 	}
 }

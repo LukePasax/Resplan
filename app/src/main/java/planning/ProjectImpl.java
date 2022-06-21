@@ -5,7 +5,7 @@ import java.util.Optional;
 /**
  * It's the implementation of a {@link planning.RPProject}
  */
-public class ProjectImpl implements RPProject {
+public final class ProjectImpl implements RPProject {
 	
 	private String title;
 	private Optional<String> description = Optional.empty();
@@ -47,7 +47,7 @@ public class ProjectImpl implements RPProject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getTitle() {
+	public final String getTitle() {
 		return this.title;
 	}
 	
@@ -55,7 +55,7 @@ public class ProjectImpl implements RPProject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addDescription(final String description) {
+	public final void addDescription(final String description) {
 		this.description = Optional.of(description);
 	}
 	
@@ -63,7 +63,7 @@ public class ProjectImpl implements RPProject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Optional<String> getDescription() {
+	public final Optional<String> getDescription() {
 		return this.description;
 	}
 	
@@ -71,7 +71,7 @@ public class ProjectImpl implements RPProject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ProjectType getType() {
+	public final ProjectType getType() {
 		return this.type;
 	}
 }

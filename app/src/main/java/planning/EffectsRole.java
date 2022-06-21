@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * This is the real implementation of the {@link planning.RPRole} of type "EFFECTS"
  */
-public class EffectsRole extends RoleImpl {
+public final class EffectsRole extends RoleImpl {
 	
 	/**
 	 * Builds a role of type "EFFECTS" with a description
@@ -36,7 +36,7 @@ public class EffectsRole extends RoleImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addSpeaker(Speaker speaker) {
+	public final void addSpeaker(Speaker speaker) {
 		
 	}
 	
@@ -44,7 +44,7 @@ public class EffectsRole extends RoleImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isSpeakerPresent() {
+	public final boolean isSpeakerPresent() {
 		return false;
 	}
 	
@@ -52,7 +52,7 @@ public class EffectsRole extends RoleImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Optional<Speaker> getSpeaker() {
+	public final Optional<Speaker> getSpeaker() {
 		return Optional.empty();
 	}
 

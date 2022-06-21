@@ -51,7 +51,7 @@ public abstract class PartImpl implements RPPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getTitle() {
+	public final String getTitle() {
 		return this.title;
 	}
 	
@@ -59,7 +59,7 @@ public abstract class PartImpl implements RPPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addDescription(final String description) {
+	public final void addDescription(final String description) {
 		this.description = Optional.of(description);
 	}
 	
@@ -67,7 +67,7 @@ public abstract class PartImpl implements RPPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Optional<String> getDescription() {
+	public final Optional<String> getDescription() {
 		return this.description;
 	}
 	
@@ -75,7 +75,7 @@ public abstract class PartImpl implements RPPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addNote(String note) {
+	public final void addNote(String note) {
 		this.notes.add(note);
 	}
 	
@@ -83,7 +83,7 @@ public abstract class PartImpl implements RPPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<String> getNotes() {
+	public final List<String> getNotes() {
 		return this.notes;
 	}
 	
@@ -91,7 +91,7 @@ public abstract class PartImpl implements RPPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public PartType getType() {
+	public final PartType getType() {
 		return this.type;
 	}
 	
@@ -117,7 +117,7 @@ public abstract class PartImpl implements RPPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return Objects.hash(title, type);
 	}
 	
@@ -125,7 +125,7 @@ public abstract class PartImpl implements RPPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public final boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -140,7 +140,7 @@ public abstract class PartImpl implements RPPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "PartImpl [title=" + title + ", description=" + description + ", type=" + type + "]";
 	}
 }

@@ -9,7 +9,7 @@ import java.util.Optional;
 /**
  * It's the implementation of a {@link planning.RPSection}
  */
-public class SectionImpl implements RPSection {
+public final class SectionImpl implements RPSection {
 	
 	private String title;
 	private Optional<String> description = Optional.empty();
@@ -58,7 +58,7 @@ public class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getTitle() {
+	public final String getTitle() {
 		return this.title;
 	}
 	
@@ -66,7 +66,7 @@ public class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addDescription(final String description) {
+	public final void addDescription(final String description) {
 		this.description = Optional.of(description);
 	}
 	
@@ -74,7 +74,7 @@ public class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Optional<String> getDescription() {
+	public final Optional<String> getDescription() {
 		return this.description;
 	}
 	
@@ -82,7 +82,7 @@ public class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public double getDuration() {
+	public final double getDuration() {
 		return this.duration;
 	}
 	
@@ -90,7 +90,7 @@ public class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return Objects.hash(title);
 	}
 	
@@ -98,7 +98,7 @@ public class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public final boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -113,7 +113,7 @@ public class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "SectionImpl [title=" + title + ", description=" + description + ", duration=" + duration + "]";
 	}
 }

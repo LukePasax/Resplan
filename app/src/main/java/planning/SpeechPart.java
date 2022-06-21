@@ -5,7 +5,7 @@ import java.util.Optional;
 /**
  * This is the real implementation of the {@link planning.RPPart} of type "SPEECH"
  */
-public class SpeechPart extends PartImpl {
+public final class SpeechPart extends PartImpl {
 	
 	private Optional<Text> text = Optional.empty();
 	
@@ -35,21 +35,21 @@ public class SpeechPart extends PartImpl {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void addText(final Text text) {
+	public final void addText(final Text text) {
 		this.text = Optional.of(text);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isTextPresent() {
+	public final boolean isTextPresent() {
 		return this.text.isPresent();
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
-	public Optional<Text> getText() {
+	public final Optional<Text> getText() {
 		return this.text;
 	}
 

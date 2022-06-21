@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * This is a simple implementation of a {@link planning.Speaker}
  */
-public class SimpleSpeaker implements Speaker {
+public final class SimpleSpeaker implements Speaker {
 	
 	private int speakerCode;
 	private String firstName;
@@ -39,7 +39,7 @@ public class SimpleSpeaker implements Speaker {
 	 * This is the realization of the pattern builder
 	 * for a {@link planning.SimpleSpeaker}
 	 */
-	public static class Builder {
+	public final static class Builder {
 		private Integer speakerCode;
 		private String firstName;
 		private String lastName;
@@ -62,7 +62,7 @@ public class SimpleSpeaker implements Speaker {
 		 * 
 		 * @return the current builder
 		 */
-		public Builder firstName(final String firstName) {
+		public final Builder firstName(final String firstName) {
 			this.firstName = firstName;
 			return this;
 		}
@@ -75,7 +75,7 @@ public class SimpleSpeaker implements Speaker {
 		 * 
 		 * @return the current builder
 		 */
-		public Builder lastName(final String lastName) {
+		public final Builder lastName(final String lastName) {
 			this.lastName = lastName;
 			return this;
 		}
@@ -88,7 +88,7 @@ public class SimpleSpeaker implements Speaker {
 		 * @throws IllegalStateException if the code, the first
 		 * name or the last name have not been entered
 		 */
-		public Speaker build() throws IllegalStateException {
+		public final Speaker build() throws IllegalStateException {
 			if(this.speakerCode == null || this.firstName == null || this.lastName == null) {
 				throw new IllegalStateException();
 			}
@@ -100,7 +100,7 @@ public class SimpleSpeaker implements Speaker {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getSpeakerCode() {
+	public final int getSpeakerCode() {
 		return this.speakerCode;
 	}
 	
@@ -108,7 +108,7 @@ public class SimpleSpeaker implements Speaker {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getFirstName() {
+	public final String getFirstName() {
 		return this.firstName;
 	}
 	
@@ -116,7 +116,7 @@ public class SimpleSpeaker implements Speaker {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String getLastName() {
+	public final String getLastName() {
 		return this.lastName;
 	}
 	
@@ -124,7 +124,7 @@ public class SimpleSpeaker implements Speaker {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return Objects.hash(speakerCode);
 	}
 	
@@ -132,7 +132,7 @@ public class SimpleSpeaker implements Speaker {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public final boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)

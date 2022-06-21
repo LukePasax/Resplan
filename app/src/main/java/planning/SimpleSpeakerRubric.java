@@ -8,15 +8,15 @@ import java.util.function.Predicate;
 /**
  * This is the implementation of a {@link planning.SpeakerRubric}
  */
-public class SimpleSpeakerRubric implements SpeakerRubric {
+public final class SimpleSpeakerRubric implements SpeakerRubric {
 	
-	private List<Speaker> rubric = new ArrayList<>();
+	private final List<Speaker> rubric = new ArrayList<>();
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<Speaker> getSpeakers() {
+	public final List<Speaker> getSpeakers() {
 		return this.rubric;
 	}
 	
@@ -24,7 +24,7 @@ public class SimpleSpeakerRubric implements SpeakerRubric {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean addSpeaker(Speaker speaker) {
+	public final boolean addSpeaker(Speaker speaker) {
 		for(Speaker s : this.rubric) {
 			if(speaker.equals(s)) {
 				return false;
@@ -38,7 +38,7 @@ public class SimpleSpeakerRubric implements SpeakerRubric {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean removeSpeaker(Speaker speaker) {
+	public final boolean removeSpeaker(Speaker speaker) {
 		for(Speaker s : this.rubric) {
 			if(speaker.equals(s) && speaker.getFirstName().equals(s.getFirstName()) && speaker.getLastName().equals(s.getLastName())) {
 				this.rubric.remove(speaker);
@@ -52,7 +52,7 @@ public class SimpleSpeakerRubric implements SpeakerRubric {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Optional<Speaker> searchSpeaker(int speakerCode) {
+	public final Optional<Speaker> searchSpeaker(int speakerCode) {
 		for(Speaker s : this.rubric) {
 			if(speakerCode == s.getSpeakerCode()) {
 				return Optional.of(s);
@@ -65,7 +65,7 @@ public class SimpleSpeakerRubric implements SpeakerRubric {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<Speaker> getFilteredSpeakers(Predicate<? super Speaker> filter) {
+	public final List<Speaker> getFilteredSpeakers(Predicate<? super Speaker> filter) {
 		List<Speaker> filteredRubric = new ArrayList<>();
 		this.rubric.stream()
 			.filter(filter)

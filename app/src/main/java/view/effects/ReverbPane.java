@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ReverbPane extends BorderPane {
+public final class ReverbPane extends BorderPane {
 	
 	final private static VBox effects = new VBox();
 	
@@ -84,8 +84,8 @@ public class ReverbPane extends BorderPane {
 		this.getStylesheets().add(css);
 	}
 	
-	public static class Reverb {
-		public static void show(final String title, final double currentDamping, final double currentRoomsize, final double currentEarly,
+	public final static class Reverb {
+		public final static void show(final String title, final double currentDamping, final double currentRoomsize, final double currentEarly,
 								final double currentLate, final double currentDry, final double currentWet) {
 			BorderPane root = new BorderPane();
 			final HBox titlebox = new HBox(new Label(title));

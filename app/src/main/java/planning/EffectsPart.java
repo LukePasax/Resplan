@@ -5,7 +5,7 @@ import java.util.Optional;
 /**
  * This is the real implementation of the {@link planning.RPPart} of type "EFFECTS"
  */
-public class EffectsPart extends PartImpl {
+public final class EffectsPart extends PartImpl {
 	
 	/**
 	 * Builds a part of type "EFFECTS" with a description
@@ -34,7 +34,7 @@ public class EffectsPart extends PartImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addText(Text text) {
+	public final void addText(Text text) {
 		
 	}
 	
@@ -42,7 +42,7 @@ public class EffectsPart extends PartImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean isTextPresent() {
+	public final boolean isTextPresent() {
 		return false;
 	}
 	
@@ -50,7 +50,7 @@ public class EffectsPart extends PartImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Optional<Text> getText() {
+	public final Optional<Text> getText() {
 		return Optional.empty();
 	}
 

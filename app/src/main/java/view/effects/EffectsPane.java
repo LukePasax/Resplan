@@ -22,7 +22,7 @@ import javafx.scene.shape.Circle;
 import view.common.App;
 import view.common.ViewDataImpl.Effect;
 
-public class EffectsPane extends ScrollPane {
+public final class EffectsPane extends ScrollPane {
 	
 	private final static Map<String, Class<? extends Pane>> effectsType = createEffects();
 	private final Map<Effect, Node> effects = new HashMap<>();
@@ -84,7 +84,7 @@ public class EffectsPane extends ScrollPane {
 		
 	}
 	
-	private static Map<String, Class<? extends Pane>> createEffects(){
+	private final static Map<String, Class<? extends Pane>> createEffects(){
 		Map<String, Class<? extends Pane>> effects = new HashMap<>();
 		effects.put("Compressor", CompressorPane.class);
 		effects.put("Limiter", LimiterPane.class);
@@ -94,7 +94,7 @@ public class EffectsPane extends ScrollPane {
 		return effects;
 	}
 	
-	private void addEffect(final Effect effect) {
+	private final void addEffect(final Effect effect) {
 		try {
 			effects.put(effect, effectsType.get(effect.getType()).getDeclaredConstructor(String.class).newInstance(effect.getType()));
 			this.getChildren().add(new EffectPane(effects.get(effect)));
@@ -115,18 +115,18 @@ public class EffectsPane extends ScrollPane {
 		}
 	}
 	
-	private void removeEffect(final Effect effect) {
+	private final void removeEffect(final Effect effect) {
 		effects.remove(effect);
 		this.getChildren().remove(effects.get(effect));
 		Starter.getController().removeEffectAtPosition(channel, this.getChildren().indexOf(effects.get(effect)));
 	}
 	
-	private void setEffect(final int newPos, Effect effect) {
+	private final void setEffect(final int newPos, Effect effect) {
 		this.getChildren().set(newPos, effects.get(effect));
 		Starter.getController().moveEffect(channel, newPos, this.getChildren().indexOf(effects.get(effect)));
 	}
 	
-	public static class EffectPane extends BorderPane {
+	public final static class EffectPane extends BorderPane {
 		
 		public EffectPane(final Node effect) {
 			final HBox firstrow = new HBox();

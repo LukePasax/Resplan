@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class CompressorPane extends BorderPane {
+public final class CompressorPane extends BorderPane {
 	
 	final private static VUMeterPane compressor = new VUMeterPane(Double.NEGATIVE_INFINITY, 0.0);
 	
@@ -78,12 +78,12 @@ public class CompressorPane extends BorderPane {
 		this.getStylesheets().add(css);
 	}
 	
-	public void setValue(final Double value) {
+	public final void setValue(final Double value) {
 		compressor.setValue(value);
 	}
 	
-	public static class Compressor {
-		public static void show(final String title, final double currentThreshold, final double currentAttack, final double currentDecay) {
+	public final static class Compressor {
+		public final static void show(final String title, final double currentThreshold, final double currentAttack, final double currentDecay) {
 			BorderPane root = new BorderPane();
 			final HBox titlebox = new HBox(new Label(title));
 			titlebox.setAlignment(Pos.CENTER);

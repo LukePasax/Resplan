@@ -6,7 +6,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
-public class VUMeterPane extends HBox {
+public final class VUMeterPane extends HBox {
 
 	private double lowerbound;
 	private double upperbound;
@@ -53,7 +53,7 @@ public class VUMeterPane extends HBox {
 		this.getChildren().add(root);
 	}
 	
-	public void setValue(final double value) {
+	public final void setValue(final double value) {
 		if(value >= lowerbound && value <= upperbound) {
 			compressor.setProgress(-value/(-lowerbound));
 		} else if (value < lowerbound) {

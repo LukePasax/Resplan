@@ -11,12 +11,12 @@ import java.util.Set;
 /**
  * It's the implementation of a {@link planning.RPTimeline}
  */
-public class TimelineImpl implements RPTimeline{
+public final class TimelineImpl implements RPTimeline{
 
 	@JsonProperty
-	private Map<Double, RPSection> sections = new HashMap<>();
+	private final Map<Double, RPSection> sections = new HashMap<>();
 
-	private boolean isAddValid(double initialTime, RPSection section) {
+	private final boolean isAddValid(double initialTime, RPSection section) {
 		for(Double i : this.sections.keySet()) {
 			if(i.equals(initialTime)) {
 				return false;
@@ -39,7 +39,7 @@ public class TimelineImpl implements RPTimeline{
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean addSection(double initialTime, RPSection section) {
+	public final boolean addSection(double initialTime, RPSection section) {
 		if(this.isAddValid(initialTime, section)) {
 			this.sections.put(initialTime, section);
 			return true;
@@ -51,7 +51,7 @@ public class TimelineImpl implements RPTimeline{
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void removeSection(RPSection section) {
+	public final void removeSection(RPSection section) {
 		this.sections.forEach((i, s) -> {
 			if(s.equals(section)) {
 				this.sections.remove(i);
@@ -63,7 +63,7 @@ public class TimelineImpl implements RPTimeline{
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Optional<RPSection> getSection(double initialTime) {
+	public final Optional<RPSection> getSection(double initialTime) {
 		for(Double i : this.sections.keySet()) {
 			if(i.equals(initialTime)) {
 				return Optional.of(this.sections.get(i));
@@ -76,7 +76,7 @@ public class TimelineImpl implements RPTimeline{
 	 * {@inheritDoc}
 	 */
 	@Override
-	public double getOverallDuration() {
+	public final double getOverallDuration() {
 		double totalDuration = 0.0;
 		if(this.sections.size() == 0) {
 			return totalDuration;
@@ -96,7 +96,7 @@ public class TimelineImpl implements RPTimeline{
 	 */
 	@Override
 	@JsonIgnore
-	public Set<Map.Entry<Double,RPSection>> getAllSections() {
+	public final Set<Map.Entry<Double,RPSection>> getAllSections() {
 		return this.sections.entrySet();
 	}
 }
