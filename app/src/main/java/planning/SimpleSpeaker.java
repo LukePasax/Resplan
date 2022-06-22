@@ -10,9 +10,9 @@ import java.util.Objects;
  */
 public final class SimpleSpeaker implements Speaker {
 	
-	private int speakerCode;
-	private String firstName;
-	private String lastName;
+	private final int speakerCode;
+	private final String firstName;
+	private final String lastName;
 	
 	/**
 	 * Builds a speaker 
@@ -40,7 +40,7 @@ public final class SimpleSpeaker implements Speaker {
 	 * for a {@link planning.SimpleSpeaker}
 	 */
 	public final static class Builder {
-		private Integer speakerCode;
+		private final Integer speakerCode;
 		private String firstName;
 		private String lastName;
 		

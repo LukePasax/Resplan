@@ -71,7 +71,7 @@ public final class EditViewController implements Initializable {
 	 */
 	private TimeAxisSetter timeAxisSetter;
 	private MarkersPane markersPane;
-	private ToolBarSetter toolBarSetter = new ToolBarSetter();
+	private final ToolBarSetter toolBarSetter = new ToolBarSetter();
 	
 	@Override
 	public void initialize(final URL location, final ResourceBundle resources) {

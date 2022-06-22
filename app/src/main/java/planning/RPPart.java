@@ -22,7 +22,7 @@ public interface RPPart extends Element{
 	/**
 	 * Represents the three possible types of a RPPart
 	 */
-	public enum PartType{
+    enum PartType{
 		SPEECH, SOUNDTRACK, EFFECTS
 	}
 	

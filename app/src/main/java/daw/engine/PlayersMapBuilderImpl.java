@@ -27,7 +27,7 @@ public final class PlayersMapBuilderImpl implements PlayersMapBuilder {
 	/**
 	 * The sample player factory.
 	 */
-	private ClipPlayerFactory samplePlayerFactory = new SampleClipPlayerFactory();
+	private final ClipPlayerFactory samplePlayerFactory = new SampleClipPlayerFactory();
 
 	@Override
 	public RPPlayersMap build() {
@@ -54,7 +54,7 @@ public final class PlayersMapBuilderImpl implements PlayersMapBuilder {
 			//get iterator of all SampleClips after timeIn and before timeOut
 			var clipIterator = ((TapeChannel) channel.getValue()).
 					getClipWithTimeIteratorFiltered(x -> x.getValue().getClass().equals(SampleClip.class)
-							&& ((TapeChannel) channel.getValue()).calculateTimeOut(x.getKey(), x.getValue().getDuration()) > in
+							&& channel.getValue().calculateTimeOut(x.getKey(), x.getValue().getDuration()) > in
 							&& x.getKey() < out);
 			clipIterator.forEachRemaining(clip -> {
 				try {
@@ -62,11 +62,11 @@ public final class PlayersMapBuilderImpl implements PlayersMapBuilder {
 					if (clip.getKey() < in) {
 						this.playersMap.putClipPlayer(Clock.Utility.timeToClockSteps(in),
 								this.samplePlayerFactory.createClipPlayerWithActiveCut(clip.getValue(),
-										(RPChannel) channel.getKey(), in - clip.getKey()));
+										channel.getKey(), in - clip.getKey()));
 					} else {
 						this.playersMap.putClipPlayer(Clock.Utility.timeToClockSteps(clip.getKey()),
 								this.samplePlayerFactory.createClipPlayer(clip.getValue(),
-										(RPChannel) channel.getKey()));
+										channel.getKey()));
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

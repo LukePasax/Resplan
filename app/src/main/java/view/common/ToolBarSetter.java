@@ -11,9 +11,9 @@ import javafx.scene.paint.Color;
 
 public final class ToolBarSetter {
 	
-	private Map<Tool, Button> tools = new HashMap<>();
+	private final Map<Tool, Button> tools = new HashMap<>();
 	private Tool currentTool = Tool.CURSOR;
-	private Set<ToolChangeListener> listeners = new HashSet<>();
+	private final Set<ToolChangeListener> listeners = new HashSet<>();
 	
 	public ToolBarSetter addTool(final Tool tool, final Button button) {
 		this.tools.put(tool, button);

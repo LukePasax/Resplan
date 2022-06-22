@@ -11,9 +11,9 @@ import java.util.Optional;
  */
 public abstract class RoleImpl implements RPRole {
 	
-	private String title;
+	private final String title;
 	private Optional<String> description = Optional.empty();
-	private RoleType type;
+	private final RoleType type;
 	private final List<String> notesList = new ArrayList<>();
 	
 	/**

@@ -9,7 +9,7 @@ public interface RPProject extends Element {
 	/**
 	 * Represents the three possible types of a RPProjects
 	 */
-	public enum ProjectType{
+    enum ProjectType{
 		PODCAST, AUDIOBOOK, LESSON
 	}
 	

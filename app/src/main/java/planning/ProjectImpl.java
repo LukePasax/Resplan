@@ -7,9 +7,9 @@ import java.util.Optional;
  */
 public final class ProjectImpl implements RPProject {
 	
-	private String title;
+	private final String title;
 	private Optional<String> description = Optional.empty();
-	private ProjectType type;
+	private final ProjectType type;
 	
 	/**
 	 * It is used to build a new Object of type RPProject, with a description

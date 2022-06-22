@@ -35,7 +35,7 @@ public final class SampleClipPlayerFactory implements ClipPlayerFactory {
 	/**
 	 * An {@link RPClipPlayer} for a {@link SampleClip}.
 	 */
-	public final class SampleClipPlayer implements RPClipPlayer {
+	public static final class SampleClipPlayer implements RPClipPlayer {
 
 		/**
 		 * The wrapped UGen.

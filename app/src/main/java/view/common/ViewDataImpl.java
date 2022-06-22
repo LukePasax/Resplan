@@ -23,11 +23,11 @@ import view.effects.EffectsPane;
 
 public final class ViewDataImpl implements ViewData {
 	
-	private ObservableMap<Channel, ObservableList<Clip>> data = FXCollections.observableHashMap();
+	private final ObservableMap<Channel, ObservableList<Clip>> data = FXCollections.observableHashMap();
 
-	private ObservableSet<Section> sections = FXCollections.observableSet();
+	private final ObservableSet<Section> sections = FXCollections.observableSet();
 	
-	private DoubleProperty prLenght = new SimpleDoubleProperty(Starter.getController().getProjectLength());
+	private final DoubleProperty prLenght = new SimpleDoubleProperty(Starter.getController().getProjectLength());
 	
 	//prLenght
 	@Override
@@ -137,12 +137,12 @@ public final class ViewDataImpl implements ViewData {
 	}
 	
 	public static final class Channel {
-		private String title;
-		private String group;
-		private BooleanProperty muted = new SimpleBooleanProperty(false);
-		private BooleanProperty solo = new SimpleBooleanProperty(false);
-		private Set<Node> view = new HashSet<>();
-		private ObservableList<Effect> effects = FXCollections.observableArrayList();
+		private final String title;
+		private final String group;
+		private final BooleanProperty muted = new SimpleBooleanProperty(false);
+		private final BooleanProperty solo = new SimpleBooleanProperty(false);
+		private final Set<Node> view = new HashSet<>();
+		private final ObservableList<Effect> effects = FXCollections.observableArrayList();
 		private Node fxView;
 
 		public Channel(final String title, final String group) {
@@ -233,13 +233,13 @@ public final class ViewDataImpl implements ViewData {
 	
 	public static final class Clip {
 
-		private String title;
-		private DoubleProperty position = new SimpleDoubleProperty();
-		private DoubleProperty duration = new SimpleDoubleProperty();;
+		private final String title;
+		private final DoubleProperty position = new SimpleDoubleProperty();
+		private final DoubleProperty duration = new SimpleDoubleProperty();
 		private Optional<Double> contentPosition;
 		private Optional<Double> contentDuration;
 		private Optional<String> contentFileName;
-		private Set<Node> view = new HashSet<>();
+		private final Set<Node> view = new HashSet<>();
 
 		public Clip(final String title, final Double position, final Double duration, final Optional<Double> contentPosition, final Optional<Double> contentDuration, final Optional<String> contentFileName) {
 			super();
@@ -342,9 +342,9 @@ public final class ViewDataImpl implements ViewData {
 
 	public static final class Section {
 
-		private String title;
-		private Double position;
-		private Set<Node> view = new HashSet<>();
+		private final String title;
+		private final Double position;
+		private final Set<Node> view = new HashSet<>();
 
 		public Section(final String title, final Double position) {
 			this.title = title;
@@ -392,7 +392,7 @@ public final class ViewDataImpl implements ViewData {
 
 	public static final class Effect {
 
-		private String type;
+		private final String type;
 
 		public Effect(final String type) {
 			this.type = type;

@@ -101,9 +101,9 @@ public final class TimeAxisSetter {
 			if (e.getButton().equals(MouseButton.SECONDARY)) {
 					class AxisMenu extends Pane {
 						private static final int POPUP_PADDING = 12;
-						private TextField lb = new TextField();
-						private TextField ub = new TextField();
-						private NumberFormatConverter fc = new NumberFormatConverter();
+						private final TextField lb = new TextField();
+						private final TextField ub = new TextField();
+						private final NumberFormatConverter fc = new NumberFormatConverter();
 						AxisMenu() {
 							//buttons
 							HBox buttons = new HBox();

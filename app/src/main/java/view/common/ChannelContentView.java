@@ -142,7 +142,7 @@ public abstract class ChannelContentView extends Pane {
 						try {
 							scene = new Scene(loader.load());
 							Stage stage = new Stage();
-							NewClipController controller = ((NewClipController) loader.getController());
+							NewClipController controller = loader.getController();
 				            stage.setScene(scene);
 				            stage.initModality(Modality.WINDOW_MODAL);
 				            stage.setTitle("New Clip");
@@ -223,9 +223,7 @@ public abstract class ChannelContentView extends Pane {
 				return clipFromData.getPosition().get() >= axis.getUpperBound() || (clipFromData.getPosition().get() + clipFromData.getDuration().get()) <= axis.getLowerBound();
 			}).forEach(nonInTimeClip -> {
 				nonInTimeClip.getViewSet().stream().forEach(view -> {
-					if (getChildren().contains(view)) {
-						getChildren().remove(view);
-					}
+					getChildren().remove(view);
 				});
 			});
 		}
@@ -284,7 +282,7 @@ public abstract class ChannelContentView extends Pane {
 		private double timeDelta;
 		private ClipDragModality mod;
 		private boolean dragging = false;
-		private Clip clip;
+		private final Clip clip;
 
 		ClipView(final Node content, final Clip clip) {
 			super(content);

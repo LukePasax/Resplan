@@ -11,10 +11,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public final class JerkyKnobPane extends Pane{
-	private String min;
-	private String max;
+	private final String min;
+	private final String max;
 	private String value = "";
-	private List<String> values;
+	private final List<String> values;
 	private final Pane rotation;
 	private final Label lvalue;
 	private final static double correctionx = 18;

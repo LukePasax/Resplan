@@ -10,10 +10,10 @@ import java.util.Optional;
  */
 public abstract class PartImpl implements RPPart {
 	
-	private String title;
+	private final String title;
 	private Optional<String> description = Optional.empty();
-	private PartType type;
-	private List<String> notes = new ArrayList<>();
+	private final PartType type;
+	private final List<String> notes = new ArrayList<>();
 	
 	/**
 	 * It is used to build a new Object of type RPPart, with the description, but it can't be istantieted

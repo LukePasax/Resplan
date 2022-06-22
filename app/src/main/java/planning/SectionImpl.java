@@ -11,9 +11,9 @@ import java.util.Optional;
  */
 public final class SectionImpl implements RPSection {
 	
-	private String title;
+	private final String title;
 	private Optional<String> description = Optional.empty();
-	private double duration;
+	private final double duration;
 	
 	/**
 	 * It is used to build a new Object of type RPSection with a description

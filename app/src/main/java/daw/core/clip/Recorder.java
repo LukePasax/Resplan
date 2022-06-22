@@ -15,22 +15,22 @@ public final class Recorder implements RPRecorder {
 	/**
 	 * The audio context.
 	 */
-	private AudioContext ac;
+	private final AudioContext ac;
 	
 	/**
 	 * The audio input.
 	 */
-	private UGen input;
+	private final UGen input;
 	
 	/**
 	 * The recorded {@link Sample}.
 	 */
-	private Sample recordedData;
+	private final Sample recordedData;
 	
 	/**
 	 * The {@code beads} recorder.
 	 */
-	private RecordToSample recorder;
+	private final RecordToSample recorder;
 	
 	/**
 	 * Create a new {@code Recorder} connected to the default system audio input.

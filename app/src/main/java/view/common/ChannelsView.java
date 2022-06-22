@@ -31,9 +31,9 @@ public abstract class ChannelsView {
 	/**
 	 * Index of last channel of each group.
 	 */
-	private Map<String, Integer> groupIndexes = new HashMap<>();
-	private static Map<String, Color> groupColors = new HashMap<>();
-	private StringProperty selected = new SimpleStringProperty();
+	private final Map<String, Integer> groupIndexes = new HashMap<>();
+	private static final Map<String, Color> groupColors = new HashMap<>();
+	private final StringProperty selected = new SimpleStringProperty();
 	private final Random rand = new Random();
 	
 	public ChannelsView(final TimeAxisSetter timeAxisSetter, final VBox channelsContentPane, final VBox channelsInfoPane, final ToolBarSetter toolBarSetter) {

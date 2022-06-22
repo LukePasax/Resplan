@@ -8,8 +8,8 @@ import javafx.scene.layout.HBox;
 
 public final class VUMeterPane extends HBox {
 
-	private double lowerbound;
-	private double upperbound;
+	private final double lowerbound;
+	private final double upperbound;
 	private final ProgressBar compressor = new ProgressBar();
 	private final Label lcurrent;
 	
