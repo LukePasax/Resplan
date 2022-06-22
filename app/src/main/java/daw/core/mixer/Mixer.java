@@ -5,7 +5,7 @@ import daw.core.channel.ChannelFactory;
 import daw.core.channel.RPChannel;
 import daw.utilities.AudioContextManager;
 
-public class Mixer implements RPMixer {
+public final class  Mixer implements RPMixer {
 
     private final ChannelFactory channelFactory;
     private final RPChannel masterChannel;
@@ -16,7 +16,7 @@ public class Mixer implements RPMixer {
     }
 
     /**
-     * A method to create a Basic {@link RPChannel} in the mixer
+     * A method to create a Basic {@link RPChannel} in the mixer.
      *
      * @return the {@link RPChannel} that is created
      */
@@ -28,7 +28,7 @@ public class Mixer implements RPMixer {
     }
 
     /**
-     * A method to create a Gated {@link RPChannel} in the mixer
+     * A method to create a Gated {@link RPChannel} in the mixer.
      *
      * @return the {@link RPChannel} that is created
      */
@@ -40,7 +40,7 @@ public class Mixer implements RPMixer {
     }
 
     /**
-     * A method to create a Return {@link RPChannel} in the mixer
+     * A method to create a Return {@link RPChannel} in the mixer.
      *
      * @return the {@link RPChannel} that is created
      */
@@ -56,7 +56,7 @@ public class Mixer implements RPMixer {
     }
 
     /**
-     * This method is used to create a sidechained {@link RPChannel}
+     * This method is used to create a sidechained {@link RPChannel}.
      *
      * @param channel the {@link RPChannel} to sidechain
      * @return the sidechained {@link RPChannel}
@@ -78,7 +78,7 @@ public class Mixer implements RPMixer {
     }
 
     /**
-     * A method to add a {@link RPChannel} to a group
+     * A method to add a {@link RPChannel} to a group.
      *
      * @param channel the {@link RPChannel} to be added
      * @param group  the Group
