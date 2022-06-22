@@ -194,7 +194,7 @@ public final class BasicProcessingUnit implements ProcessingUnit {
                 if (index != this.size() - 1) {
                     this.getEffectAtPosition(index + 1).removeAllConnections(this.getEffectAtPosition(index));
                     if (index != 0) {
-                        this.getEffectAtPosition(index + 1).addInput(this.getEffectAtPosition(index - 1));
+                        this.connectEffects(this.getEffectAtPosition(index - 1), this.getEffectAtPosition(index + 1));
                     }
                 }
                 this.effects.remove(index);

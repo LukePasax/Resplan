@@ -5,13 +5,12 @@ import daw.core.audioprocessing.*;
 import net.beadsproject.beads.ugens.SamplePlayer;
 import org.junit.jupiter.api.Test;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestProcessingUnitBuilder {
 
-    private final TestReflection ref = new TestReflection();
+    private final TestUtility ref = new TestUtility();
 
     @Test
     public void testCorrectBuildWithSidechaining() {
@@ -23,10 +22,8 @@ public class TestProcessingUnitBuilder {
             assertEquals(List.of(SidechainingImpl.class, Compression.class, HighPassFilter.class,
                             DigitalReverb.class, LowPassFilter.class), this.ref.getList(pu.getEffects()));
             assertTrue(pu.isSidechainingPresent());
-            assertEquals(Set.of(SidechainingImpl.class),
-                    this.ref.getSet(pu.getEffectAtPosition(1).getConnectedInputs()));
-            assertEquals(Set.of(HighPassFilter.class),
-                    this.ref.getSet(pu.getEffectAtPosition(3).getConnectedInputs()));
+            assertTrue(this.ref.effectsAreConnected(pu.getEffectAtPosition(0), pu.getEffectAtPosition(1)));
+            assertTrue(this.ref.effectsAreConnected(pu.getEffectAtPosition(2), pu.getEffectAtPosition(3)));
         } catch (IllegalStateException e) {
             fail("Builder should have succeeded");
         }
@@ -39,7 +36,6 @@ public class TestProcessingUnitBuilder {
             final ProcessingUnit pu = builder.gate(1).reverb(1).compressor(1).build();
             assertEquals(List.of(Gate.class, DigitalReverb.class, Compression.class),
                     this.ref.getList(pu.getEffects()));
-            assertEquals(Set.of(), this.ref.getSet(pu.getEffectAtPosition(0).getConnectedInputs()));
             assertFalse(pu.isSidechainingPresent());
         } catch (IllegalStateException ex) {
             fail("Builder should have succeeded");

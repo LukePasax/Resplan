@@ -3,13 +3,14 @@ package channel;
 import daw.core.audioprocessing.*;
 import org.junit.jupiter.api.Test;
 import java.util.List;
-import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestProcessingUnitMoveAndSwap {
 
-    private TestReflection ref = new TestReflection();
-    private ProcessingUnit pu = new BasicProcessingUnitBuilder()
+    private final TestUtility ref = new TestUtility();
+    private final ProcessingUnit pu = new BasicProcessingUnitBuilder()
             .reverb(2)
             .lowPassFilter(2)
             .highPassFilter(2)
@@ -21,8 +22,8 @@ public class TestProcessingUnitMoveAndSwap {
         pu.swapEffects(0,2);
         assertEquals(List.of(HighPassFilter.class, LowPassFilter.class, DigitalReverb.class),
                 this.ref.getList(pu.getEffects()));
-        assertEquals(Set.of(HighPassFilter.class), this.ref.getSet(this.pu.getEffectAtPosition(1).getConnectedInputs()));
-        assertEquals(Set.of(LowPassFilter.class), this.ref.getSet(this.pu.getEffectAtPosition(2).getConnectedInputs()));
+        assertTrue(this.ref.effectsAreConnected(this.pu.getEffectAtPosition(0), this.pu.getEffectAtPosition(1)));
+        assertTrue(this.ref.effectsAreConnected(this.pu.getEffectAtPosition(1), this.pu.getEffectAtPosition(2)));
     }
 
     @Test
@@ -31,8 +32,8 @@ public class TestProcessingUnitMoveAndSwap {
         pu.moveEffect(0,2);
         assertEquals(List.of(LowPassFilter.class, HighPassFilter.class, DigitalReverb.class),
                 this.ref.getList(pu.getEffects()));
-        assertEquals(Set.of(LowPassFilter.class), this.ref.getSet(this.pu.getEffectAtPosition(1).getConnectedInputs()));
-        assertEquals(Set.of(HighPassFilter.class), this.ref.getSet(this.pu.getEffectAtPosition(2).getConnectedInputs()));
+        assertTrue(this.ref.effectsAreConnected(this.pu.getEffectAtPosition(0), this.pu.getEffectAtPosition(1)));
+        assertTrue(this.ref.effectsAreConnected(this.pu.getEffectAtPosition(1), this.pu.getEffectAtPosition(2)));
     }
 
     @Test
