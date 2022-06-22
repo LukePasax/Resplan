@@ -1,7 +1,5 @@
 package view.common;
 
-import javafx.stage.FileChooser;
-
 public class WavFilePicker extends FilePicker {
 
     public WavFilePicker() {
