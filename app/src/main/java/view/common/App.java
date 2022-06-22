@@ -14,28 +14,26 @@ import view.edit.EditViewController;
 
 public class App extends Application {
     
-    static final ViewData viewData = new ViewDataImpl();
-    
-    public static ViewData getData() {
-    	return viewData;
-    }
-
+    static final ViewData VIEW_DATA = new ViewDataImpl();
     private Scene activeScene;
     private Parent sleepingRoot;
-    
     private EditViewController editController;
-    //private PlanningController planningController;
+    
+    public static ViewData getData() {
+    	return VIEW_DATA;
+    }
+
     
     @Override
-    public void start(Stage stage) throws Exception {
-        FXMLLoader planningLoader = new FXMLLoader(getClass().getResource("/view/PlanningView.fxml"));
+    public void start(final Stage stage) throws Exception {
+        final FXMLLoader planningLoader = new FXMLLoader(getClass().getResource("/view/PlanningView.fxml"));
         this.activeScene = new Scene(planningLoader.load());
         stage.setScene(activeScene);
         stage.getIcons().add(new Image("/icons/icon.png"));
         stage.setTitle("resplan");
         stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
-        FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
+        final FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
         this.sleepingRoot = editLoader.load();
         activeScene.setOnKeyPressed(this::switchScene);
         //this.planningController = planningLoader.getController();
@@ -44,15 +42,15 @@ public class App extends Application {
         Starter.getController().loadViewData();
     }
 
-    private void switchScene(KeyEvent keyEvent) {
+    private void switchScene(final KeyEvent keyEvent) {
         if (keyEvent.getCode().equals(KeyCode.A)) {
-            Parent temp = this.activeScene.getRoot();
+            final Parent temp = this.activeScene.getRoot();
             this.activeScene.setRoot(this.sleepingRoot);
             this.sleepingRoot = temp;
         }
     }
     
-    public void updatePlaybackTime(double time) {
+    public void updatePlaybackTime(final double time) {
     	editController.setPlaybackMarkerPosition(time);
     }
 }
