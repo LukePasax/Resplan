@@ -8,6 +8,8 @@ import net.beadsproject.beads.core.UGen;
  */
 public class BasicChannelFactory implements ChannelFactory {
 
+    private final static int INS = 2;
+
     /**
      * {@inheritDoc}
      * @return the {@link RPChannel}.
@@ -25,8 +27,8 @@ public class BasicChannelFactory implements ChannelFactory {
     public RPChannel gated() {
         final var bc = new BasicChannel(RPChannel.Type.AUDIO);
         bc.addProcessingUnit(new BasicProcessingUnitBuilder()
-                .highPassFilter(1)
-                .gate(1)
+                .highPassFilter(INS)
+                .gate(INS)
                 .build());
         return bc;
     }
@@ -40,7 +42,7 @@ public class BasicChannelFactory implements ChannelFactory {
     public RPChannel sidechained(final UGen u) {
         final var bc = new BasicChannel(RPChannel.Type.AUDIO);
         bc.addProcessingUnit(new BasicProcessingUnitBuilder()
-                .sidechain(u, 1)
+                .sidechain(u, INS)
                 .build());
         return bc;
     }
@@ -53,8 +55,8 @@ public class BasicChannelFactory implements ChannelFactory {
     public RPChannel returnChannel() {
         final var bc = new BasicChannel(RPChannel.Type.RETURN);
         bc.addProcessingUnit(new BasicProcessingUnitBuilder()
-                .reverb(1)
-                .highPassFilter(1)
+                .reverb(INS)
+                .highPassFilter(INS)
                 .build());
         return bc;
     }
@@ -67,10 +69,10 @@ public class BasicChannelFactory implements ChannelFactory {
     public RPChannel masterChannel() {
         final var bc = new BasicChannel(RPChannel.Type.MASTER);
         final var pu = new BasicProcessingUnitBuilder()
-                .lowPassFilter(1)  // 0
-                .highPassFilter(1)   // 1
-                .compressor(1)  // 2
-                .limiter(1)  // 3
+                .lowPassFilter(INS)  // 0
+                .highPassFilter(INS)   // 1
+                .compressor(INS)  // 2
+                .limiter(INS)  // 3
                 .build();
         bc.addProcessingUnit(pu);
         return bc;

@@ -17,6 +17,7 @@ import java.util.Collections;
 public final class BasicProcessingUnit implements ProcessingUnit {
 
     private static final String ILLEGAL_INDEX_ERROR = "The given index is not legal.";
+    private static final int INS = 2;
 
     private final LinkedList<RPEffect> effects = new LinkedList<>();
     private final Gain gainIn;
@@ -28,8 +29,8 @@ public final class BasicProcessingUnit implements ProcessingUnit {
      */
     @JsonCreator
     public BasicProcessingUnit(@JsonProperty("effects") final List<RPEffect> effects) {
-        this.gainIn = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
-        this.gainOut = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
+        this.gainIn = new Gain(AudioContextManager.getAudioContext(), INS, 1.0f);
+        this.gainOut = new Gain(AudioContextManager.getAudioContext(), INS, 1.0f);
         for (final var effect: effects) {
             if (effect instanceof Sidechaining) {
                 this.addSidechaining((SidechainingImpl) effect);

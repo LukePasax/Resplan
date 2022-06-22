@@ -23,6 +23,7 @@ import java.util.Optional;
 public final class BasicChannel implements RPChannel {
 
     private static final float DEFAULT_GAIN_IN = 0.9f;
+    private static final int INS = 2;
 
     private final Panner pan;
     private final Type type;
@@ -37,7 +38,8 @@ public final class BasicChannel implements RPChannel {
      * no {@link ProcessingUnit}.
      * @param type a {@link Type}.
      */
-    protected BasicChannel(@JsonProperty("type") final Type type) {
+    // package-protected since it is only used by BasicChannelFactory
+    BasicChannel(@JsonProperty("type") final Type type) {
         this(type, null);
     }
 
@@ -46,11 +48,11 @@ public final class BasicChannel implements RPChannel {
                         final ProcessingUnit processingUnit) {
         this.pan = new Panner(AudioContextManager.getAudioContext());
         this.type = type;
-        this.gainIn = new Gain(AudioContextManager.getAudioContext(), 1, DEFAULT_GAIN_IN);
-        this.gainOut = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
+        this.gainIn = new Gain(AudioContextManager.getAudioContext(), INS, DEFAULT_GAIN_IN);
+        this.gainOut = new Gain(AudioContextManager.getAudioContext(), INS, 1.0f);
         // channel is initially enabled
         this.enabled = true;
-        this.gainMute = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
+        this.gainMute = new Gain(AudioContextManager.getAudioContext(), INS, 1.0f);
         this.setStructure();
         // processing unit is present only after deserialization
         this.pu = Optional.empty();
