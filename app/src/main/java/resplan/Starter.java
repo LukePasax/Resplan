@@ -9,7 +9,7 @@ public final class Starter {
 
     final static Controller CONTROLLER = new ControllerImpl();
 
-    private Starter() {};
+    private Starter() {}
 
     public static Controller getController() {
         return CONTROLLER;

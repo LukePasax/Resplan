@@ -37,9 +37,8 @@ public class PlanningController {
         this.toolBarSetter.selectTool(Tool.MOVE);
     	//--------------setting time axis------------
     	timeAxisSetter = new TimeAxisSetter(App.getData().getProjectLenghtProperty().get());
-		App.getData().getProjectLenghtProperty().addListener((obs,old,n)->{
-			timeAxisSetter.setProjectLength(n.doubleValue());
-		});
+		App.getData().getProjectLenghtProperty().addListener((obs,old,n)->
+                timeAxisSetter.setProjectLength(n.doubleValue()));
 		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 16, 0, 0));
 		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 2);
 		timelineToChannelsAligner.add(timeAxisSetter.getNavigator(), 0, 0);
@@ -51,10 +50,9 @@ public class PlanningController {
         new PlanningChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane, toolBarSetter);
         this.channelsInfoPane.setMaxWidth(200);
       //--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
-  		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) -> {
+  		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) ->
   			timelineToChannelsAligner.getColumnConstraints().get(1)
-                    .setPercentWidth((1 - (channelsInfoResizer.getDividerPositions()[0]))*100);
-  		});
+                    .setPercentWidth((1 - (channelsInfoResizer.getDividerPositions()[0]))*100));
           new WindowBar(this.windowBar);
     }
 
