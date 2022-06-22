@@ -7,15 +7,15 @@ import javafx.application.Application;
 
 public final class Starter {
 
-    final static Controller CONTROLLER = new ControllerImpl();
+    static final Controller CONTROLLER = new ControllerImpl();
 
-    private Starter() {}
+    private Starter() { }
 
     public static Controller getController() {
         return CONTROLLER;
     }
 
-    public static void main( final String[] args) {
+    public static void main(final String[] args) {
         Application.launch(App.class, args);
     }
 }
