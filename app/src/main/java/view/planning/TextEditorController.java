@@ -9,11 +9,14 @@ import java.io.IOException;
 
 public abstract class TextEditorController {
 
-    protected TextArea textArea;
-    protected Button editButton;
-    protected Button saveButton;
+    // Some of these fields are public despite not being directly linked to any FXML file.
+    // In fact, to allow re-factorization with Template Method, the binding to the view is made at runtime.
+    // Please, do NOT change visibility of these fields.
+    public TextArea textArea;
+    public Button editButton;
+    public Button saveButton;
     protected String title;
-    protected Button uploadButton;
+    public Button uploadButton;
 
     public void initialize() {
         this.textArea.setEditable(false);
