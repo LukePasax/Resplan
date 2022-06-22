@@ -74,7 +74,7 @@
     <TextField fx:id="speakerCodeField" prefHeight="26.0" prefWidth="99.0" promptText="Speaker code" />
     <TextField fx:id="firstNameField" prefHeight="26.0" prefWidth="88.0" promptText="First name" />
     <TextField fx:id="lastNameField" prefHeight="26.0" prefWidth="88.0" promptText="Last name" />
-    <Button fx:id="addButton" onAction="#addPerson" styleClass="buttons" stylesheets="@../stylesheets/planning.css" text="Add" />
+    <Button fx:id="addButton" defaultButton="true" onAction="#addPerson" styleClass="buttons" stylesheets="@../stylesheets/planning.css" text="Add" />
   </HBox>
    <Label text="Rubric" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
       <font>

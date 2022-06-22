@@ -5,6 +5,7 @@ import daw.core.channel.RPChannel;
 import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
 import net.beadsproject.beads.data.Sample;
+import planning.Speaker;
 import view.common.App;
 import java.io.File;
 import java.io.IOException;
@@ -390,5 +391,7 @@ public interface Controller {
     void addSpeakerToRubric(int code, String firstName, String lastName);
 
     void removeSpeakerFromRubric(int code, String firstName, String lastName);
+
+    List<Speaker> getSpeakers();
 
 }

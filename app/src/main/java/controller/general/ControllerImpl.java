@@ -851,6 +851,11 @@ public class ControllerImpl implements Controller {
         this.manager.removeSpeakerFromRubric(this.manager.createSpeaker(code, firstName, lastName));
     }
 
+    @Override
+    public List<Speaker> getSpeakers() {
+        return this.manager.getSpeakersInRubric();
+    }
+
     // ONLY FOR TEMPORARY TESTING PURPOSES
     public Manager getManager() {
         return this.manager;
