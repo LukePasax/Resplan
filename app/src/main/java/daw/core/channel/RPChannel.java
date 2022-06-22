@@ -18,8 +18,18 @@ public interface RPChannel {
      * Identifies different forms of channels.
      */
     enum Type {
+        /**
+         * Audio channels are all channels that are neither return nor master.
+         */
         AUDIO,
+        /**
+         * Auxiliary channel that takes the duplicate of an audio channel's output as input,
+         * to allow parallel signal processing.
+         */
         RETURN,
+        /**
+         * Channel that takes as input the sum of all the other channels' outputs.
+         */
         MASTER
     }
 
