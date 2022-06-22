@@ -742,7 +742,7 @@ public class ControllerImpl implements Controller {
      * @return {@inheritDoc}
      */
     private ProcessingUnit getProcessingUnit(final String channel) {
-        return this.manager.getChannelLinker().getChannel(this.manager.getGroup(channel)).getProcessingUnit().get();
+        return this.manager.getChannelLinker().getChannel(this.manager.getGroup(channel)).getProcessingUnit().orElseThrow();
     }
 
     /**
@@ -814,7 +814,7 @@ public class ControllerImpl implements Controller {
         final var type = this.manager.getRoles().stream()
                 .filter(c -> c.getTitle().equals(channel))
                 .findFirst()
-                .get().getType();
+                .orElseThrow().getType();
         if (type.equals(RPRole.RoleType.SPEECH)) {
             return SPEECH_TYPE;
         } else if (type.equals(RPRole.RoleType.EFFECTS)) {
@@ -829,7 +829,7 @@ public class ControllerImpl implements Controller {
         this.manager.getRoles().stream()
                 .filter(role -> role.getTitle().equals(title))
                 .findFirst()
-                .get()
+                .orElseThrow()
                 .addDescription(text);
     }
 
