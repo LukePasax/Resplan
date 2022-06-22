@@ -26,7 +26,7 @@ public final class EffectsPane extends ScrollPane {
 	private final String channel;
 	private static EffectsPane first = null;
 	
-	private final HBox effectsRoot = new HBox();
+	private final static HBox effectsRoot = new HBox();
 
 	public EffectsPane(final String channel) {
 		first = this;
@@ -63,7 +63,8 @@ public final class EffectsPane extends ScrollPane {
 		add.setOnMouseClicked(e -> menu.show(this.getScene().getWindow(), e.getScreenX(), e.getScreenY()));
 		menu.setOnAction(e -> {
 			if(((MenuItem)e.getTarget()).getText().equals("Compressor")) {	//Try
-				addEffect(new Effect("Compressor"));
+				Effect newEffect = new Effect("Compressor");
+				addEffect(newEffect);
 			}
 		});
 		/*root.getChildren().add(new EffectPane(new CompressorPane("Compressor")));
@@ -89,10 +90,10 @@ public final class EffectsPane extends ScrollPane {
 	
 	private void addEffect(final Effect effect) {
 		try {
-			effects.put(effect, effectsType.get(effect.getType()).getDeclaredConstructor(String.class).newInstance(effect.getType()));
-			EffectPane newPane = new EffectPane(effects.get(effect));
+			//effects.put(effect, effectsType.get(effect.getType()).getDeclaredConstructor(String.class).newInstance(effect.getType()));
+			EffectPane newPane = new EffectPane(effectsType.get(effect.getType()).getDeclaredConstructor(String.class).newInstance(effect.getType()));
+			effects.put(effect, newPane);
 			effectsRoot.getChildren().add(newPane);
-			System.out.println(effectsRoot.getChildren().indexOf(newPane));
 			Starter.getController().addEffectAtPosition(channel, effect.getType(), effectsRoot.getChildren().indexOf(newPane));
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
@@ -117,7 +118,7 @@ public final class EffectsPane extends ScrollPane {
 			firstRow.setAlignment(Pos.CENTER);
 			final Button remove = new Button("X");
 			remove.setOnMouseClicked(e -> {
-				first.getChildren().remove(this);	//try
+				effectsRoot.getChildren().remove(this);	//try
 			});
 			remove.setShape(new Circle(1.5));
 			final Button moveLeft = new Button("<");
