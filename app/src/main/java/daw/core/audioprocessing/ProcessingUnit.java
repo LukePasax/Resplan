@@ -67,7 +67,7 @@ public interface ProcessingUnit {
      * Gets the amount of {@link RPEffect}s currently stored in the processing unit.
      * @return the number of effects.
      */
-    int numberOfEffects();
+    int size();
 
     /**
      * Adds a new effect at the last position of the sequence.
