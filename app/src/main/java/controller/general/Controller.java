@@ -1,6 +1,5 @@
 package controller.general;
 
-import daw.core.audioprocessing.RPEffect;
 import daw.core.channel.RPChannel;
 import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
@@ -273,13 +272,15 @@ public interface Controller {
 
     /**
      * Stops the recorder.
-     * @param text the name of the clip the recording has to be put into.
+     */
+    void stopRecording();
+
+    /**
+     * Stops the recorder.
      * @param file the file the recording has to be saved on.
-     * @throws ImportException if there are problems importing the recording into the clip.
-     * @throws ClipNotFoundException if there is no clip with the given name.
      * @throws IOException if there are problems writing onto the given file.
      */
-    void stopRecording(String text, File file) throws ImportException, ClipNotFoundException, IOException;
+    void writeRecordingOnFile(File file) throws IOException;
 
     /**
      * Starts the export of the project.

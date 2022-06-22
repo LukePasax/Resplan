@@ -2,7 +2,6 @@ package view.common;
 
 import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -36,26 +35,28 @@ public final class RecorderController {
         });
     }
 
-    public void recPressed(final ActionEvent actionEvent) {
+    public void recPressed() {
         Starter.getController().startRecording();
         timeLabel.setText("Recording...");
     }
 
-    public void stopPressed(final ActionEvent actionEvent) {
+    public void stopPressed() {
+        Starter.getController().stopRecording();
         final WavFilePicker picker = new WavFilePicker();
         final File file = picker.getFileChooser().showSaveDialog(this.recButton.getScene().getWindow());
         try {
             if (file != null) { 
             	timeLabel.setText("");
-                Starter.getController().stopRecording(this.clipTitle.getText(), file);
+                Starter.getController().writeRecordingOnFile(file);
+                Starter.getController().addContentToClip(this.clipTitle.getText(), file);
                 this.recButton.getScene().getWindow().hide();
             }
-        } catch (ImportException | ClipNotFoundException | IOException e) {
+        } catch (IOException | ImportException | ClipNotFoundException e) {
             AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
     }
 
-    public void cancelPressed(final ActionEvent actionEvent) {
+    public void cancelPressed() {
         this.recButton.getScene().getWindow().hide();
     }
 }

@@ -564,17 +564,20 @@ public final class ControllerImpl implements Controller {
 
     /**
      * {@inheritDoc}
-     * @param clip the name of the clip the recording has to be put into.
+     */
+    @Override
+    public void stopRecording() {
+        this.recorder.pause();
+    }
+
+    /**
+     * {@inheritDoc}
      * @param file the file the recording has to be saved on.
-     * @throws ImportException {@inheritDoc}
-     * @throws ClipNotFoundException {@inheritDoc}
      * @throws IOException {@inheritDoc}
      */
     @Override
-    public void stopRecording(final String clip, final File file) throws ImportException, ClipNotFoundException, IOException {
-        this.recorder.pause();
+    public void writeRecordingOnFile(File file) throws IOException {
         this.recorder.getSample().write(file.getAbsolutePath(), AudioFileType.WAV);
-        this.addContentToClip(clip, file);
     }
 
     /**
