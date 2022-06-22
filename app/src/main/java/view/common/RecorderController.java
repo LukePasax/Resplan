@@ -1,35 +1,36 @@
 package view.common;
 
-import resplan.Starter;
 import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-
+import resplan.Starter;
 import java.io.File;
 import java.io.IOException;
 
-public class RecorderController {
+public final class RecorderController {
 
-    public Button recButton;
-    public Button stopButton;
-    public Button cancelButton;
-    public Label clipTitle;
-    public Label timeLabel;
-    public TextArea textArea;
-    public VBox recorderBox;
-    public GridPane grid;
+    public static final int HEIGHT = 370;
+    @FXML
+    private Button recButton;
+    @FXML
+    private Label clipTitle;
+    @FXML
+    private Label timeLabel;
+    private TextArea textArea;
+    @FXML
+    private GridPane grid;
 
     public void setClipTitle(final String clipTitle) {
         this.clipTitle.setText(clipTitle);
         Starter.getController().getClipText(clipTitle).ifPresent(s -> {
             this.textArea = new TextArea(s);
             this.grid.addRow(1);
-            this.grid.getScene().getWindow().setHeight(370);
+            this.grid.getScene().getWindow().setHeight(HEIGHT);
             this.grid.add(this.textArea, 0, 1);
             this.textArea.setEditable(false);
         });
