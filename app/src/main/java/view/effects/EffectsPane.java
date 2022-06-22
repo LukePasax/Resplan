@@ -103,7 +103,6 @@ public final class EffectsPane extends ScrollPane {
 	
 	private void setEffect(final int newPos, Effect effect) {
 		this.getChildren().set(newPos, effects.get(effect));
-		Starter.getController().moveEffect(channel, newPos, this.getChildren().indexOf(effects.get(effect)));
 	}
 	
 	public final static class EffectPane extends BorderPane {

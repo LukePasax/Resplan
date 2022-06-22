@@ -25,7 +25,6 @@ import planning.RPRole;
 import planning.Speaker;
 import planning.Text;
 import planning.TextFactoryImpl;
-import resplan.Starter;
 import view.common.AlertDispatcher;
 import view.common.App;
 import view.common.ViewDataImpl;
@@ -697,7 +696,12 @@ public final class ControllerImpl implements Controller {
 
     @Override
     public void addEffectAtPosition(final String channel, final String effect, final int index) {
-        this.getProcessingUnit(channel).addEffectAtPosition(this.createEffect(effect), index);
+        try {
+            this.getProcessingUnit(channel).addEffectAtPosition(this.createEffect(effect), index);
+        } catch (NoSuchElementException e) {
+            this.manager.getChannelFromTitle(channel).addProcessingUnit(new BasicProcessingUnit(
+                    List.of(this.createEffect(effect))));
+        }
     }
 
     private RPEffect createEffect(final String effect) {
@@ -722,8 +726,8 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public void moveEffect(final String channel, final int index1, final int index2) {
-        this.getProcessingUnit(channel).moveEffect(index1, index2);
+    public void swapEffects(final String channel, final int index1, final int index2) {
+        this.getProcessingUnit(channel).swapEffects(index1, index2);
     }
 
     @Override
@@ -762,7 +766,7 @@ public final class ControllerImpl implements Controller {
      * @return {@inheritDoc}
      */
     private ProcessingUnit getProcessingUnit(final String channel) {
-        return this.manager.getChannelLinker().getChannel(this.manager.getGroup(channel)).getProcessingUnit().orElseThrow();
+        return this.manager.getChannelFromTitle(channel).getProcessingUnit().orElseThrow();
     }
 
     /**
