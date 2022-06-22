@@ -15,7 +15,7 @@ public final class ClipPlayerNotifier implements RPClipPlayerNotifier {
 	/**
 	 * The players to notify.
 	 */
-	private final RPPlayersMap observers;
+	private final RPPlayersMap toPlay;
 	
 	/**
 	 * Creates a clip player notifier with all the given observers subscribed.
@@ -23,7 +23,7 @@ public final class ClipPlayerNotifier implements RPClipPlayerNotifier {
 	 * @param  observers  The clip players to register.
 	 */
 	public ClipPlayerNotifier(final RPPlayersMap observers) {
-		this.observers = observers;
+		this.toPlay = observers;
 	}
 	
 	/**
@@ -35,7 +35,7 @@ public final class ClipPlayerNotifier implements RPClipPlayerNotifier {
 
 	@Override
 	public void update(final Long step) {
-		observers.entrySet().stream().filter(entry -> {
+		toPlay.entrySet().stream().filter(entry -> {
 			return entry.getKey() <= step && entry.getKey() > oldStep;
 		}).forEach(entry -> {
 			//play
@@ -73,18 +73,18 @@ public final class ClipPlayerNotifier implements RPClipPlayerNotifier {
 
 	@Override
 	public void notifyStopped() {
-		this.observers.entrySet().stream().forEach(e -> {
+		this.toPlay.entrySet().stream().forEach(e -> {
 			stop(e.getValue());
 		});
 	}
 
 	@Override
 	public boolean addObserver(final Long step, final RPClipPlayer clipPlayer) {
-		return this.observers.putClipPlayer(step, clipPlayer);
+		return this.toPlay.putClipPlayer(step, clipPlayer);
 	}
 
 	@Override
 	public boolean removeObserver(final Long step, final RPClipPlayer clipPlayer) {
-		return this.observers.removeClipPlayer(step, clipPlayer);
+		return this.toPlay.removeClipPlayer(step, clipPlayer);
 	}
 }
