@@ -43,7 +43,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Manager implements RPManager {
+public final class Manager implements RPManager {
 
     private static final double MIN_LENGTH = 600_000;
     private static final double MIN_SPACING = 120_000;
@@ -114,7 +114,7 @@ public class Manager implements RPManager {
      * @throws NoSuchElementException if a Channel with the given title does not exist
      */
     @Override
-    public void removeChannel( final String title) throws NoSuchElementException {
+    public void removeChannel(final String title) throws NoSuchElementException {
         if (!this.channelLinker.channelExists(title)) {
             throw new NoSuchElementException("The Channel does not exist");
         }
@@ -127,7 +127,7 @@ public class Manager implements RPManager {
         this.channelLinker.removeChannel(this.channelLinker.getRole(title));
     }
 
-    private String getGroupName( final RPRole part) {
+    private String getGroupName(final RPRole part) {
         return this.groupMap.entrySet().stream()
                 .filter(e -> e.getValue().contains(part))
                 .map(e -> e.getKey().getTitle())
@@ -135,7 +135,7 @@ public class Manager implements RPManager {
                 .orElseThrow();
     }
 
-    private void automaticGrouping( final RPRole role) {
+    private void automaticGrouping(final RPRole role) {
         if (role.getType().equals(RPRole.RoleType.SPEECH)) {
             this.addToGroup(role, "Speech");
         } else if (role.getType().equals(RPRole.RoleType.EFFECTS)) {
@@ -145,11 +145,11 @@ public class Manager implements RPManager {
         }
     }
 
-    private boolean groupExists( final String name) {
+    private boolean groupExists(final String name) {
         return this.groupMap.keySet().stream().anyMatch(k -> k.getTitle().equals(name));
     }
 
-    private RPRole createRole( final RPRole.RoleType type, final String title, final Optional<String> description) {
+    private RPRole createRole(final RPRole.RoleType type, final String title, final Optional<String> description) {
         if (type.equals(RPRole.RoleType.SPEECH)) {
             return description.map(s -> new SpeechRole(title, s)).orElseGet(() -> new SpeechRole(title));
         } else if (type.equals(RPRole.RoleType.EFFECTS)) {
@@ -167,8 +167,8 @@ public class Manager implements RPManager {
      * @throws NoSuchElementException if a group with the given name does not exist
      */
     @Override
-    public void addToGroup( final RPRole role, final String groupName) throws NoSuchElementException {
-        if(!this.groupContains(role, groupName)) {
+    public void addToGroup(final RPRole role, final String groupName) throws NoSuchElementException {
+        if (!this.groupContains(role, groupName)) {
             this.getGroupList(groupName).add(role);
             this.mixer.linkToGroup(this.channelLinker.getChannel(role),
                     this.channelLinker.getChannel(this.getGroup(groupName)));
@@ -177,7 +177,7 @@ public class Manager implements RPManager {
         }
     }
 
-    private boolean groupContains( final RPRole role, final String groupName) {
+    private boolean groupContains(final RPRole role, final String groupName) {
         if (this.groupExists(groupName)) {
             return this.getGroupList(groupName).contains(role);
         }
@@ -192,7 +192,7 @@ public class Manager implements RPManager {
      * @throws IllegalArgumentException if a Group with the given name already exists
      */
     @Override
-    public void createGroup( final String groupName, final RPRole.RoleType type) {
+    public void createGroup(final String groupName, final RPRole.RoleType type) {
         if (this.groupExists(groupName)) {
             throw new IllegalArgumentException("Group already exists");
         } else {
@@ -221,7 +221,7 @@ public class Manager implements RPManager {
      * @throws ImportException if there were problems importing the file
      */
     @Override
-    public void addClip( final RPPart.PartType type, final String title, final Optional<String> description, final String channel, final Double time,
+    public void addClip(final RPPart.PartType type, final String title, final Optional<String> description, final String channel, final Double time,
                         final Double duration, final Optional<File> content) throws ImportException, IllegalArgumentException {
         if (this.clipLinker.clipExists(title)) {
             throw new IllegalArgumentException("Clip already exists");
@@ -244,7 +244,7 @@ public class Manager implements RPManager {
         this.updateProjectLength();
     }
 
-    private RPPart createPart( final RPPart.PartType type, final String title, final Optional<String> description) {
+    private RPPart createPart(final RPPart.PartType type, final String title, final Optional<String> description) {
         if (type.equals(RPPart.PartType.SPEECH)) {
             return description.map(s -> new SpeechPart(title, s)).orElseGet(() -> new SpeechPart(title));
         } else if (type.equals(RPPart.PartType.EFFECTS)) {
@@ -262,13 +262,13 @@ public class Manager implements RPManager {
      * @throws NoSuchElementException if no Clip with the given title exists
      */
     @Override
-    public void addFileToClip( final String clip, final File content)
+    public void addFileToClip(final String clip, final File content)
             throws ImportException, NoSuchElementException, ClipNotFoundException {
         if (!this.clipLinker.clipExists(clip)) {
             throw new NoSuchElementException("The Clip does not exist");
         }
         final String channel = this.getClipChannel(clip);
-        final double clipTimeIn = this.getClipTime(clip,channel);
+        final double clipTimeIn = this.getClipTime(clip, channel);
         final RPPart part = this.clipLinker.getPart(clip);
         if (!this.clipLinker.getClipFromPart(this.clipLinker.getPart(clip)).isEmpty()) {
             this.removeFileFromClip(clip);
@@ -280,7 +280,7 @@ public class Manager implements RPManager {
         } catch (OperationUnsupportedException | FileFormatException | IOException exception) {
             throw new ImportException("Error in loading file");
         }
-        this.clipLinker.addClipReferences(rpClip,part);
+        this.clipLinker.addClipReferences(rpClip, part);
         this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel)).insertRPClip(rpClip, clipTimeIn);
         this.updateProjectLength();
     }
@@ -293,7 +293,7 @@ public class Manager implements RPManager {
      * @throws NoSuchElementException   if no Clip with the given title exists
      */
     @Override
-    public void removeFileFromClip( final String clip)
+    public void removeFileFromClip(final String clip)
             throws NoSuchElementException, IllegalArgumentException, ClipNotFoundException {
         if (!this.clipLinker.clipExists(clip)) {
             throw new NoSuchElementException("The Clip does not exist");
@@ -302,7 +302,7 @@ public class Manager implements RPManager {
             throw new IllegalArgumentException("The Clip has no content");
         }
         final String channel = this.getClipChannel(clip);
-        final double clipTimeIn = this.getClipTime(clip,channel);
+        final double clipTimeIn = this.getClipTime(clip, channel);
         final RPPart part = this.clipLinker.getPart(clip);
         RPClip<?> rpClip = this.clipLinker.getClipFromPart(part);
         this.removeClip(channel, clip, clipTimeIn);
@@ -321,7 +321,7 @@ public class Manager implements RPManager {
      * @throws NoSuchElementException if the Clip does not exist
      */
     @Override
-    public void removeClip( final String channel, final String clip, final double time) throws ClipNotFoundException {
+    public void removeClip(final String channel, final String clip, final double time) throws ClipNotFoundException {
         this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel)).removeClip(time);
         this.clipLinker.removeClip(this.getClipLinker().getPart(clip));
         this.updateProjectLength();
@@ -335,7 +335,7 @@ public class Manager implements RPManager {
      * @throws NoSuchElementException if the group does non exist
      */
     @Override
-    public RPRole getGroup( final String groupName) throws NoSuchElementException {
+    public RPRole getGroup(final String groupName) throws NoSuchElementException {
         return this.groupMap.keySet().stream()
                 .filter(k -> k.getTitle().equals(groupName))
                 .findAny()
@@ -350,7 +350,7 @@ public class Manager implements RPManager {
      * @throws NoSuchElementException if the group does not exist
      */
     @Override
-    public List<RPRole> getGroupList( final String groupName) throws NoSuchElementException {
+    public List<RPRole> getGroupList(final String groupName) throws NoSuchElementException {
         return this.groupMap.get(this.getGroup(groupName));
     }
 
@@ -388,7 +388,7 @@ public class Manager implements RPManager {
     }
 
     @Override
-    public List<RPPart> getPartList( final String channel) {
+    public List<RPPart> getPartList(final String channel) {
         final List<RPPart> list = new ArrayList<>();
         this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel)).getClipWithTimeIterator()
                 .forEachRemaining(p -> list.add(this.clipLinker.getPartFromClip(p.getValue())));
@@ -400,7 +400,7 @@ public class Manager implements RPManager {
      * @return the start time of a clip
      */
     @Override
-    public Double getClipTime( final String clip, final String channel) {
+    public Double getClipTime(final String clip, final String channel) {
         final var it =
                 this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel)).getClipWithTimeIterator();
         while (it.hasNext()) {
@@ -417,7 +417,7 @@ public class Manager implements RPManager {
      * @return the duration of a clip
      */
     @Override
-    public Double getClipDuration( final String clip) {
+    public Double getClipDuration(final String clip) {
         return this.clipLinker.getClipFromPart(this.clipLinker.getPart(clip)).getDuration();
     }
 
@@ -427,28 +427,28 @@ public class Manager implements RPManager {
     }
 
     @Override
-    public void moveClip( final String clip, final String channel, final Double finalTimeIn) throws ClipNotFoundException {
+    public void moveClip(final String clip, final String channel, final Double finalTimeIn) throws ClipNotFoundException {
         this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
-                .move(this.getClipTime(clip,channel),finalTimeIn);
+                .move(this.getClipTime(clip, channel), finalTimeIn);
         this.updateProjectLength();
     }
 
     @Override
-    public void setClipTimeIn( final String clip, final String channel, final Double finalTimeIn) throws ClipNotFoundException {
+    public void setClipTimeIn(final String clip, final String channel, final Double finalTimeIn) throws ClipNotFoundException {
     	this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
-                .setTimeIn(this.getClipTime(clip,channel),finalTimeIn);
+                .setTimeIn(this.getClipTime(clip, channel), finalTimeIn);
         this.updateProjectLength();
     }
 
     @Override
-    public void setClipTimeOut( final String clip, final String channel, final Double finalTimeOut) throws ClipNotFoundException {
+    public void setClipTimeOut(final String clip, final String channel, final Double finalTimeOut) throws ClipNotFoundException {
         this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
-                .setTimeOut(this.getClipTime(clip,channel),finalTimeOut);
+                .setTimeOut(this.getClipTime(clip, channel), finalTimeOut);
         this.updateProjectLength();
     }
 
     @Override
-    public void splitClip( final String clip, final String channel, final Double splittingTime) throws ClipNotFoundException {
+    public void splitClip(final String clip, final String channel, final Double splittingTime) throws ClipNotFoundException {
         final String newClip = clip + "(Duplicate)";
         final Double time = this.getClipTime(clip, channel);
         final RPPart part = this.clipLinker.getPart(clip);
@@ -459,17 +459,17 @@ public class Manager implements RPManager {
     }
 
     @Override
-    public RPClip<?> getClipFromTitle( final String title) {
+    public RPClip<?> getClipFromTitle(final String title) {
         return this.getClipLinker().getClipFromPart(this.getClipLinker().getPart(title));
     }
 
     @Override
-    public RPChannel getChannelFromTitle( final String title) {
+    public RPChannel getChannelFromTitle(final String title) {
         return this.channelLinker.getChannel(this.channelLinker.getRole(title));
     }
 
     @Override
-    public void addSection( final String title, final Optional<String> description, final Double initialTime, final Double duration)
+    public void addSection(final String title, final Optional<String> description, final Double initialTime, final Double duration)
             throws IllegalArgumentException {
         final RPSection section = this.createSection(title, description, duration);
         final boolean flag = this.timeline.addSection(initialTime, section);
@@ -478,12 +478,12 @@ public class Manager implements RPManager {
         }
     }
 
-    private RPSection createSection( final String title, final Optional<String> description, final Double duration) {
-        return description.map(d -> new SectionImpl(title,d,duration)).orElseGet(() -> new SectionImpl(title,duration));
+    private RPSection createSection(final String title, final Optional<String> description, final Double duration) {
+        return description.map(d -> new SectionImpl(title, d, duration)).orElseGet(() -> new SectionImpl(title, duration));
     }
 
     @Override
-    public void removeSection( final Double time) throws NoSuchElementException{
+    public void removeSection(final Double time) throws NoSuchElementException {
         if (this.timeline.getSection(time).isEmpty()) {
             throw new NoSuchElementException("No section present at that time");
         } else {
@@ -514,7 +514,7 @@ public class Manager implements RPManager {
             final var i = this.channelLinker.getTapeChannel(r).getClipWithTimeIterator();
             while (i.hasNext()) {
                 final var clip = i.next().getValue();
-                if (Double.compare(this.clipEndTime(clip),time) > 0) {
+                if (Double.compare(this.clipEndTime(clip), time) > 0) {
                     time = this.clipEndTime(clip);
                 }
             }
@@ -522,14 +522,14 @@ public class Manager implements RPManager {
         return time;
     }
 
-    private Double clipEndTime( final RPClip<?> clip) throws ClipNotFoundException {
+    private Double clipEndTime(final RPClip<?> clip) throws ClipNotFoundException {
         final String channel = this.getClipChannel(clip.getTitle());
         return this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
                 .getClipTimeOut(this.getClipTime(clip.getTitle(), channel));
     }
 
     @Override
-    public String getClipChannel( final String clip) {
+    public String getClipChannel(final String clip) {
         for (final var r : this.getRoles()) {
             final var i = this.channelLinker.getTapeChannel(r)
                     .getClipWithTimeIteratorFiltered(c -> c.getValue().getTitle().equals(clip));
@@ -541,17 +541,17 @@ public class Manager implements RPManager {
     }
 
     @Override
-    public Speaker createSpeaker( final int id, final String firstName, final String lastName) {
+    public Speaker createSpeaker(final int id, final String firstName, final String lastName) {
         return new SimpleSpeaker.Builder(id).firstName(firstName).lastName(lastName).build();
     }
 
     @Override
-    public void addSpeakerToRubric( final Speaker speaker) {
+    public void addSpeakerToRubric(final Speaker speaker) {
         this.rubric.addSpeaker(speaker);
     }
 
     @Override
-    public void removeSpeakerFromRubric( final Speaker speaker) {
+    public void removeSpeakerFromRubric(final Speaker speaker) {
         this.rubric.removeSpeaker(speaker);
     }
 

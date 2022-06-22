@@ -8,9 +8,12 @@ import planning.RPPart;
 import planning.RPRole;
 import planning.RPSection;
 import planning.Speaker;
-
 import java.io.File;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * This interface represents a manager that takes decisions for the user, simplifying its experience. It is used to
@@ -63,6 +66,7 @@ public interface RPManager {
      * @param description the optional description to associate with the clip
      * @param channel the channel where to insert the clip
      * @param time the starting time of the clip in the channel
+     * @param duration the duration of the clip
      * @param content the Optional content of the clip
      * @throws ImportException if there were problems importing the file
      * @throws IllegalArgumentException if a Clip with the given title already exists

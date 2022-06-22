@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class ClipLinker implements RPClipLinker{
+public class ClipLinker implements RPClipLinker {
 
     @JsonProperty
     private final Map<RPPart, RPClip<?>> clipMap;

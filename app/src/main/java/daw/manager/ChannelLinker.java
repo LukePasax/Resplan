@@ -6,10 +6,15 @@ import daw.core.channel.RPChannel;
 import daw.core.clip.RPTapeChannel;
 import daw.utilities.RPPair;
 import planning.RPRole;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ChannelLinker implements RPChannelLinker {
+public final class ChannelLinker implements RPChannelLinker {
 
     @JsonProperty
     private final Map<RPRole, RPPair<RPChannel, RPTapeChannel>> channelMap;
@@ -27,7 +32,7 @@ public class ChannelLinker implements RPChannelLinker {
      */
     @Override
     public void addChannelReferences(final RPChannel channel, final RPTapeChannel tapeChannel, final RPRole role) {
-        channelMap.put(role, new RPPair<>(channel,tapeChannel));
+        channelMap.put(role, new RPPair<>(channel, tapeChannel));
     }
 
     /**
@@ -37,7 +42,7 @@ public class ChannelLinker implements RPChannelLinker {
      * @return the {@link RPChannel} linked to the given {@link RPRole}
      */
     @Override
-    public RPChannel getChannel( final RPRole role) {
+    public RPChannel getChannel(final RPRole role) {
         return channelMap.get(role).getKey();
     }
 
@@ -48,7 +53,7 @@ public class ChannelLinker implements RPChannelLinker {
      * @return the {@link RPTapeChannel} linked to the given {@link RPRole}
      */
     @Override
-    public RPTapeChannel getTapeChannel( final RPRole role) {
+    public RPTapeChannel getTapeChannel(final RPRole role) {
         return channelMap.get(role).getValue();
     }
 
@@ -69,7 +74,7 @@ public class ChannelLinker implements RPChannelLinker {
      * @param role the {@link RPRole} of the Channel that needs to be eliminated
      */
     @Override
-    public void removeChannel( final RPRole role) {
+    public void removeChannel(final RPRole role) {
         channelMap.remove(role);
     }
 
@@ -80,7 +85,7 @@ public class ChannelLinker implements RPChannelLinker {
      * @return a set containing all the {@link  RPRole} of the type given
      */
     @Override
-    public Set<RPRole> getRoleSet( final RPRole.RoleType type) {
+    public Set<RPRole> getRoleSet(final RPRole.RoleType type) {
         return channelMap.keySet().stream().filter(k -> k.getType().equals(type)).collect(Collectors.toSet());
     }
 
@@ -102,7 +107,7 @@ public class ChannelLinker implements RPChannelLinker {
      * @return true if the Channel exists, false otherwise
      */
     @Override
-    public boolean channelExists( final String title) {
+    public boolean channelExists(final String title) {
         return this.channelMap.keySet().stream().anyMatch(k -> k.getTitle().equals(title));
     }
 
