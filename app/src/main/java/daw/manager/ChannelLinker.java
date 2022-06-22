@@ -38,7 +38,7 @@ public class ChannelLinker implements RPChannelLinker {
      */
     @Override
     public RPChannel getChannel( final RPRole role) {
-        return (RPChannel) channelMap.get(role).getKey();
+        return channelMap.get(role).getKey();
     }
 
     /**
@@ -49,7 +49,7 @@ public class ChannelLinker implements RPChannelLinker {
      */
     @Override
     public RPTapeChannel getTapeChannel( final RPRole role) {
-        return (RPTapeChannel) channelMap.get(role).getValue();
+        return channelMap.get(role).getValue();
     }
 
     /**

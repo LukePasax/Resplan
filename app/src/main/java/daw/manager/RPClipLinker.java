@@ -16,7 +16,7 @@ public interface RPClipLinker {
 	 * @param clip the {@link RPClip} to link
 	 * @param part the {@link RPPart} to link
 	 */
-	void addClipReferences(RPClip clip, RPPart part);
+	void addClipReferences(RPClip<?> clip, RPPart part);
 
 	/**
 	 * A method that returns the {@link RPClip} linked to the given {@link RPPart}.
@@ -24,14 +24,14 @@ public interface RPClipLinker {
 	 * @param part the {@link RPPart} linked
 	 * @return the {@link RPClip} linked
 	 */
-	RPClip getClipFromPart(RPPart part);
+	RPClip<?> getClipFromPart(RPPart part);
 
 	/**
 	 *
 	 * @param clip the {@link RPClip} linked
 	 * @return the {@link RPPart} linked
 	 */
-	RPPart getPartFromClip(RPClip clip);
+	RPPart getPartFromClip(RPClip<?> clip);
 
 	/**
 	 * A method that returns the {@link RPPart} with the given title.

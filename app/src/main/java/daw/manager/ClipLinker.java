@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
 public class ClipLinker implements RPClipLinker{
 
     @JsonProperty
-    private final Map<RPPart, RPClip> clipMap;
+    private final Map<RPPart, RPClip<?>> clipMap;
 
     ClipLinker() {
         clipMap = new HashMap<>();
@@ -23,7 +23,7 @@ public class ClipLinker implements RPClipLinker{
      * @param part the {@link RPPart} to link
      */
     @Override
-    public void addClipReferences( final RPClip clip, final RPPart part) {
+    public void addClipReferences(final RPClip<?> clip, final RPPart part) {
         clipMap.put(part, clip);
     }
 
@@ -34,7 +34,7 @@ public class ClipLinker implements RPClipLinker{
      * @return the {@link RPClip} linked
      */
     @Override
-    public RPClip getClipFromPart( final RPPart part) {
+    public RPClip<?> getClipFromPart(final RPPart part) {
         return clipMap.get(part);
     }
 
@@ -43,7 +43,7 @@ public class ClipLinker implements RPClipLinker{
      * @return the {@link RPPart} linked
      */
     @Override
-    public RPPart getPartFromClip( final RPClip clip) {
+    public RPPart getPartFromClip(final RPClip<?> clip) {
         return this.clipMap.entrySet().stream().filter(k -> k.getValue().equals(clip)).map(Map.Entry::getKey)
                 .findFirst().orElseThrow();
     }
@@ -55,7 +55,7 @@ public class ClipLinker implements RPClipLinker{
      * @return the {@link RPPart} with the given title
      */
     @Override
-    public RPPart getPart( final String title) {
+    public RPPart getPart(final String title) {
         return this.clipMap.keySet().stream().filter(k -> k.getTitle().equals(title)).findAny().orElseThrow(() ->
                 new NoSuchElementException("Clip does not exists"));
     }
@@ -67,7 +67,7 @@ public class ClipLinker implements RPClipLinker{
      * @return true if the Clip exists, false otherwise
      */
     @Override
-    public boolean clipExists( final String title) {
+    public boolean clipExists(final String title) {
         return this.clipMap.keySet().stream().anyMatch(k -> k.getTitle().equals(title));
     }
 
@@ -77,7 +77,7 @@ public class ClipLinker implements RPClipLinker{
      * @param part the {@link RPPart} of the Clip
      */
     @Override
-    public void removeClip( final RPPart part) {
+    public void removeClip(final RPPart part) {
         this.clipMap.remove(part);
     }
 }

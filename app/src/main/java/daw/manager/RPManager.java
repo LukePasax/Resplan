@@ -171,7 +171,7 @@ public interface RPManager {
 
     Set<Map.Entry<Double, RPSection>> getSections();
 
-    void updateProjectLength() throws ClipNotFoundException;
+    void updateProjectLength();
 
     double getProjectLength();
 

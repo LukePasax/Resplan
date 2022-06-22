@@ -455,7 +455,7 @@ public class Manager implements RPManager {
         final RPPart newPart = this.createPart(part.getType(), newClip, part.getDescription());
         final RPTapeChannel tapeChannel = this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel));
         tapeChannel.split(this.getClipTime(clip, channel), splittingTime);
-        this.clipLinker.addClipReferences(tapeChannel.getClipAt(time).get().getValue(), newPart);
+        this.clipLinker.addClipReferences(tapeChannel.getClipAt(time).orElseThrow().getValue(), newPart);
     }
 
     @Override
