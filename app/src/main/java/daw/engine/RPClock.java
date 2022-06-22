@@ -3,7 +3,7 @@ package daw.engine;
 /**
  * A clock ticks the current playback time.
  * <p>The clock current time is updated in steps. 
- * Each step of the clock corresponds to a predefinited time interval, so the clock 
+ * Each step of the clock corresponds to a pre-definite time interval, so the clock
  * do not memorize all possible time values.
  * <br>The clock could be set to a specific time. 
  * In this case the given time will be converted to an existing clock time.

@@ -13,7 +13,7 @@ public final class HashMapToSet<X, Y> implements MapToSet<X, Y> {
 	@Override
 	public boolean put(final X key, final Y value) {
 		if (!map.containsKey(key)) {
-			map.put(key, new HashSet<Y>());
+			map.put(key, new HashSet<>());
 		}
 		return map.get(key).add(value);
 	}

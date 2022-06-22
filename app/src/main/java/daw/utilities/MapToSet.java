@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 /**
  * A {@link Map} that maps Keys to set of values.
  *
- * @param  <X>  the type of Keys manteined by this map.
+ * @param  <X>  the type of Keys maintained by this map.
  * 
  * @param  <Y>  the type of mapped values.
  */
@@ -22,7 +22,7 @@ public interface MapToSet<X, Y> {
 	 * 
 	 * @param value  {@code value} to be associated with the specified key.
 	 * 
-	 * @return {@code true} if and only if the {@code value} was succesfully mapped.
+	 * @return {@code true} if and only if the {@code value} was successfully mapped.
 	 */
 	boolean put(X key, Y value);
 	
@@ -35,7 +35,7 @@ public interface MapToSet<X, Y> {
 	 * 
 	 * @param  value  The {@code value} to remove from the set associated to the specified {@code key}.
 	 * 
-	 * @return  {@code true} if and only if the value was succesfully removed.
+	 * @return  {@code true} if and only if the value was successfully removed.
 	 */
 	boolean remove(X key, Y value);
 	

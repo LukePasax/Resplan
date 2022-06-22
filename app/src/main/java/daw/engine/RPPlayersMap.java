@@ -21,7 +21,7 @@ public interface RPPlayersMap {
 	 * 
 	 * @param  clipPlayer  The clip player to associate at the given step.
 	 * 
-	 * @return  {@code true} If and only if the player was succesfully 
+	 * @return  {@code true} If and only if the player was successfully
 	 * 							added to the step set.
 	 * 			{@code false} otherwise.
 	 */
@@ -30,13 +30,13 @@ public interface RPPlayersMap {
 	/**
 	 * Remove a clip player from the set associated to the specified step.
 	 * If the removed clip player was the last player associated to the specified step, 
-	 * the corrisponding set will be removed.
+	 * the corresponding set will be removed.
 	 * 
 	 * @param  step  The step whose clip player is to be removed.
 	 * 
 	 * @param  clipPlayer  The clip player to remove.
 	 * 
-	 * @return  {@code true} If and only if the player was succesfully 
+	 * @return  {@code true} If and only if the player was successfully
 	 * 							removed to the step set.
 	 * 			{@code false} otherwise.
 	 */

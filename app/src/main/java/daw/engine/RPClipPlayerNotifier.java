@@ -3,9 +3,9 @@ package daw.engine;
 import daw.core.clip.RPClipPlayer;
 
 /**
- * Read the current step from {@link RPClock} and play all the {@link clipPlayers} 
+ * Read the current step from {@link RPClock} and play all the {@link RPClipPlayer}s
  * subscribed at that step.
- * When the {@link RPEngine} is stopped stop all the subscribed players.
+ * When the {@link RPEngine} is stopped, stop all the subscribed players.
  */
 public interface RPClipPlayerNotifier {
 	
@@ -29,7 +29,7 @@ public interface RPClipPlayerNotifier {
 	 * 
 	 * @param  clipPlayer  The clip player to subscribe.
 	 * 
-	 * @return  {@code true} If and only if the player was succesfully 
+	 * @return  {@code true} If and only if the player was successfully
 	 * 							added to the observer list
 	 * 			{@code false} otherwise.
 	 */
@@ -42,7 +42,7 @@ public interface RPClipPlayerNotifier {
 	 * 
 	 * @param  clipPlayer  The clip player to unsubscribe.
 	 * 
-	 * @return  {@code true} If and only if the player was succesfully 
+	 * @return  {@code true} If and only if the player was successfully
 	 * 							removed to the observer list
 	 * 			{@code false} otherwise.
 	 */

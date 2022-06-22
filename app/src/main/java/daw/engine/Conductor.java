@@ -27,7 +27,7 @@ public final class Conductor extends Thread {
 	private volatile boolean stopped;
 	
 	/**
-	 * The sleep time of this thread, corrisponding to the {@code Clock.CLOCK_TIME_UNIT}.
+	 * The sleep time of this thread, corresponding to the {@code Clock.CLOCK_TIME_UNIT}.
 	 */
 	private final Pair<Long, Integer> sleepTime;
 

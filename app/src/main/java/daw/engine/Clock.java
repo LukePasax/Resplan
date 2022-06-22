@@ -8,13 +8,13 @@ import daw.utilities.AudioContextManager;
 public final class Clock implements RPClock {
 	
 	/**
-	 * The corrisponding time in ms to a single step of the clock.
+	 * The corresponding time in ms to a single step of the clock.
 	 */
-	private static final Double CLOCK_STEP_UNIT = Double.valueOf(1 / AudioContextManager.getAudioContext().getSampleRate());
+	private static final Double CLOCK_STEP_UNIT = (double) (1 / AudioContextManager.getAudioContext().getSampleRate());
 	
 	/**
-	 * Approximatly one year is the max time value reachable for this clock.
-	 * CLOCK_MAX_TIME avoids Double rappresentation problems.
+	 * Approximately one year is the max time value reachable for this clock.
+	 * CLOCK_MAX_TIME avoids Double representation problems.
 	 */
 	private static final Double CLOCK_MAX_TIME = Clock.Utility.roundToExistingClockTime(3.154E10);
 	
@@ -69,7 +69,7 @@ public final class Clock implements RPClock {
 		}
 
 		/**
-		 * Narrow conversion from time to the corrisponding clock step.
+		 * Narrow conversion from time to the corresponding clock step.
 		 * 
 		 * @param  time  The time to convert in steps.
 		 * 
@@ -80,7 +80,7 @@ public final class Clock implements RPClock {
 		}
 	
 		/**
-		 * Conversion from clockStep to the corrisponding time.
+		 * Conversion from clockStep to the corresponding time.
 		 * 
 		 * @param  clockStep  The step to convert in time.
 		 * 
@@ -91,7 +91,7 @@ public final class Clock implements RPClock {
 		}
 	
 		/**
-		 * Get the corrisponding time in ms to a single step of the clock.
+		 * Get the corresponding time in ms to a single step of the clock.
 		 * 
 		 * @return  The clock step unit in milliseconds.
 		 */

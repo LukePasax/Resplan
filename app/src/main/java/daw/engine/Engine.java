@@ -36,7 +36,7 @@ public final class Engine implements RPEngine {
 	private Optional<RPClipPlayerNotifier> notifier;
 	
 	/**
-	 * The thread whitch updates clock ad notifier every CLOCK_STEP_UNIT.
+	 * The thread which updates clock ad notifier every CLOCK_STEP_UNIT.
 	 */
 	private Optional<Conductor> conductor;
 
