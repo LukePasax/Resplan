@@ -24,7 +24,7 @@ public class RecorderController {
     public VBox recorderBox;
     public GridPane grid;
 
-    public void setClipTitle(String clipTitle) {
+    public void setClipTitle(final String clipTitle) {
         this.clipTitle.setText(clipTitle);
         Starter.getController().getClipText(clipTitle).ifPresent(s -> {
             this.textArea = new TextArea(s);
@@ -35,14 +35,14 @@ public class RecorderController {
         });
     }
 
-    public void recPressed(ActionEvent actionEvent) {
+    public void recPressed(final ActionEvent actionEvent) {
         Starter.getController().startRecording();
         timeLabel.setText("Recording...");
     }
 
-    public void stopPressed(ActionEvent actionEvent) {
-        WavFilePicker picker = new WavFilePicker();
-        File file = picker.getFileChooser().showSaveDialog(this.recButton.getScene().getWindow());
+    public void stopPressed(final ActionEvent actionEvent) {
+        final WavFilePicker picker = new WavFilePicker();
+        final File file = picker.getFileChooser().showSaveDialog(this.recButton.getScene().getWindow());
         try {
             if (file != null) { 
             	timeLabel.setText("");
@@ -54,7 +54,7 @@ public class RecorderController {
         }
     }
 
-    public void cancelPressed(ActionEvent actionEvent) {
+    public void cancelPressed(final ActionEvent actionEvent) {
         this.recButton.getScene().getWindow().hide();
     }
 }
