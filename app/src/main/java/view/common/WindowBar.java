@@ -5,7 +5,12 @@ import controller.general.LoadingException;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -13,12 +18,10 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import resplan.Starter;
-
 import java.io.IOException;
-
 import static javafx.scene.layout.Region.USE_PREF_SIZE;
 
-public class WindowBar {
+public final class WindowBar {
 
     private static final double ICON_SIZE = 25;
     private static final double BUTTON_SIZE = 50;
@@ -27,6 +30,7 @@ public class WindowBar {
     public static final String GRADIENT = "-fx-background-color: linear-gradient(to bottom, orange, darkorange 50%, coral 100%)";
     public static final String RED = "-fx-background-color: red";
     public static final String ORANGE = "-fx-background-color: orange";
+    public static final double HORIZONTAL_ANCHOR = 295.0;
     private final AnchorPane pane;
     private FilePicker filePicker;
 
@@ -47,7 +51,7 @@ public class WindowBar {
         final ImageView resplanIcon = new ImageView("/icons/icon.png");
         resplanIcon.setFitHeight(ICON_SIZE);
         resplanIcon.setFitWidth(ICON_SIZE);
-        AnchorPane.setLeftAnchor(resplanIcon,0.0);
+        AnchorPane.setLeftAnchor(resplanIcon, 0.0);
         AnchorPane.setTopAnchor(resplanIcon, 0.0);
         final MenuItem saveProject = new MenuItem("Save Project");
         saveProject.setOnAction(event -> this.saveProject());
@@ -77,7 +81,7 @@ public class WindowBar {
         editMenu.getItems().addAll(newChannel, new SeparatorMenuItem(), newClip, new SeparatorMenuItem(), newSection);
         final MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, editMenu);
-        AnchorPane.setLeftAnchor(menuBar, ICON_SIZE -1);
+        AnchorPane.setLeftAnchor(menuBar, ICON_SIZE - 1);
         AnchorPane.setRightAnchor(menuBar, 0.0);
         menuBar.setOnMousePressed(this::mousePressed);
         menuBar.setOnMouseDragged(this::mouseDragged);
@@ -86,8 +90,8 @@ public class WindowBar {
         projectName.setAlignment(Pos.CENTER);
         AnchorPane.setTopAnchor(projectName, 0.0);
         AnchorPane.setBottomAnchor(projectName, 0.0);
-        AnchorPane.setLeftAnchor(projectName, 295.0);
-        AnchorPane.setRightAnchor(projectName, 295.0);
+        AnchorPane.setLeftAnchor(projectName, HORIZONTAL_ANCHOR);
+        AnchorPane.setRightAnchor(projectName, HORIZONTAL_ANCHOR);
         final Button closeButton = new Button("");
         ImageView icon = new ImageView("/icons/close-window.jpg");
         icon.setFitWidth(BUTTON_ICON_SIZE);
@@ -124,28 +128,28 @@ public class WindowBar {
         minimizeButton.setPrefWidth(BUTTON_SIZE);
         minimizeButton.setMinWidth(USE_PREF_SIZE);
         minimizeButton.setMinWidth(USE_PREF_SIZE);
-        AnchorPane.setRightAnchor(minimizeButton, 2*BUTTON_SIZE);
+        AnchorPane.setRightAnchor(minimizeButton, 2 * BUTTON_SIZE);
         AnchorPane.setTopAnchor(minimizeButton, 0.0);
         AnchorPane.setBottomAnchor(minimizeButton, 0.0);
         minimizeButton.setStyle("-fx-shape: rectangle");
         minimizeButton.setStyle(GRADIENT);
         minimizeButton.setOnAction(event -> this.minimize());
         closeButton.hoverProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue) {
+            if (newValue) {
                 closeButton.setStyle(RED);
             } else {
                 closeButton.setStyle(GRADIENT);
             }
         });
         maximizeButton.hoverProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue) {
+            if (newValue) {
                 maximizeButton.setStyle(ORANGE);
             } else {
                 maximizeButton.setStyle(GRADIENT);
             }
         });
         minimizeButton.hoverProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue) {
+            if (newValue) {
                 minimizeButton.setStyle(ORANGE);
             } else {
                 minimizeButton.setStyle(GRADIENT);
@@ -238,23 +242,23 @@ public class WindowBar {
     }
 
     public void export() {
-        this.launchWindow("view/ExportView.fxml","Export");
+        this.launchWindow("view/ExportView.fxml", "Export");
     }
 
     public void newChannel()  {
-        this.launchWindow("view/NewChannelWindow.fxml","New Channel");
+        this.launchWindow("view/NewChannelWindow.fxml", "New Channel");
     }
 
     public void newClip() {
         if (Starter.getController().getChannelList().isEmpty()) {
             AlertDispatcher.dispatchError("No channels present");
         } else {
-            this.launchWindow("view/NewClipWindow.fxml","New Clip");
+            this.launchWindow("view/NewClipWindow.fxml", "New Clip");
         }
     }
 
     public void newSection() {
-        this.launchWindow("view/NewSectionWindow.fxml","New Section");
+        this.launchWindow("view/NewSectionWindow.fxml", "New Section");
     }
 
     private void launchWindow(final String fxml, final String title) {
