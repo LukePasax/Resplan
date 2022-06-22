@@ -68,9 +68,7 @@ public final class WindowBar {
         final MenuItem export = new MenuItem("Export");
         export.setOnAction(event -> this.export());
         final Menu fileMenu = new Menu("File");
-        fileMenu.getItems().addAll(saveProject, new SeparatorMenuItem(), newProject, new SeparatorMenuItem(),
-                openProject, new SeparatorMenuItem(), closeProject, new SeparatorMenuItem(),
-                setTemplate, new SeparatorMenuItem(), resetTemplate, new SeparatorMenuItem(), export);
+        fileMenu.getItems().addAll(saveProject, newProject, openProject, closeProject, setTemplate, resetTemplate, export);
         final MenuItem newChannel = new MenuItem("New Channel");
         newChannel.setOnAction(event -> this.newChannel());
         final MenuItem newClip = new MenuItem("New Clip");
@@ -78,7 +76,7 @@ public final class WindowBar {
         final MenuItem newSection = new MenuItem("New Section");
         newSection.setOnAction(event -> this.newSection());
         final Menu editMenu = new Menu("Edit");
-        editMenu.getItems().addAll(newChannel, new SeparatorMenuItem(), newClip, new SeparatorMenuItem(), newSection);
+        editMenu.getItems().addAll(newChannel, newClip, newSection);
         final MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(fileMenu, editMenu);
         AnchorPane.setLeftAnchor(menuBar, ICON_SIZE - 1);
