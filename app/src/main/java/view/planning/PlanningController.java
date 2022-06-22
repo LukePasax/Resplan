@@ -1,5 +1,6 @@
 package view.planning;
 
+import javafx.fxml.FXML;
 import resplan.Starter;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -12,22 +13,29 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import view.common.*;
+import view.common.AlertDispatcher;
+import view.common.App;
+import view.common.MarkersPane;
+import view.common.TimeAxisSetter;
+import view.common.Tool;
+import view.common.ToolBarSetter;
+import view.common.WindowBar;
 import java.io.IOException;
 
-public class PlanningController {
-    public SplitPane mainPanel;
-    public VBox commandBox;
-    public Button newChannelButton;
-    public Button newClipButton;
-    public GridPane timelineToChannelsAligner;
-    public SplitPane channelsInfoResizer;
-    public VBox channelsContentPane;
-    public VBox channelsInfoPane;
-    public Button newSectionButton;
-    public AnchorPane windowBar;
-    public Button rubricButton;
-    public Button magicButton;
+public final class PlanningController {
+    public static final int MAX_WIDTH = 200;
+    @FXML
+    private GridPane timelineToChannelsAligner;
+    @FXML
+    private SplitPane channelsInfoResizer;
+    @FXML
+    private VBox channelsContentPane;
+    @FXML
+    private VBox channelsInfoPane;
+    @FXML
+    private AnchorPane windowBar;
+    @FXML
+    private Button magicButton;
     private TimeAxisSetter timeAxisSetter;
     private final ToolBarSetter toolBarSetter = new ToolBarSetter();
 
@@ -37,7 +45,7 @@ public class PlanningController {
         this.toolBarSetter.selectTool(Tool.MOVE);
     	//--------------setting time axis------------
     	timeAxisSetter = new TimeAxisSetter(App.getData().getProjectLenghtProperty().get());
-		App.getData().getProjectLenghtProperty().addListener((obs,old,n)->
+		App.getData().getProjectLenghtProperty().addListener((obs, old, n) ->
                 timeAxisSetter.setProjectLength(n.doubleValue()));
 		GridPane.setMargin(timeAxisSetter.getAxis(), new Insets(0, 16, 0, 0));
 		timelineToChannelsAligner.add(timeAxisSetter.getAxis(), 0, 2);
@@ -48,28 +56,28 @@ public class PlanningController {
 		GridPane.setVgrow(markersPane, Priority.ALWAYS);
 		//--------set channels view----------
         new PlanningChannelsView(timeAxisSetter, channelsContentPane, channelsInfoPane, toolBarSetter);
-        this.channelsInfoPane.setMaxWidth(200);
-      //--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------		
+        this.channelsInfoPane.setMaxWidth(MAX_WIDTH);
+        //--------------CHANNEL CONTENT - INFO - TIMELINE SPLIT RESIZE--------------
   		channelsInfoResizer.needsLayoutProperty().addListener((obs, old, needsLayout) ->
   			timelineToChannelsAligner.getColumnConstraints().get(1)
-                    .setPercentWidth((1 - (channelsInfoResizer.getDividerPositions()[0]))*100));
+                    .setPercentWidth((1 - (channelsInfoResizer.getDividerPositions()[0])) * 100));
           new WindowBar(this.windowBar);
     }
 
     public void newChannelPressed() throws IOException {
-        this.launchWindow("view/NewChannelWindow.fxml","New Channel");
+        this.launchWindow("view/NewChannelWindow.fxml", "New Channel");
     }
 
     public void newClipPressed() throws IOException {
         if (Starter.getController().getChannelList().isEmpty()) {
             AlertDispatcher.dispatchError("No channels present");
         } else {
-            this.launchWindow("view/NewClipWindow.fxml","New Clip");
+            this.launchWindow("view/NewClipWindow.fxml", "New Clip");
         }
     }
 
     public void newSectionPressed() throws IOException {
-        this.launchWindow("view/NewSectionWindow.fxml","New Section");
+        this.launchWindow("view/NewSectionWindow.fxml", "New Section");
     }
 
     public void goToRubricPressed() throws IOException {

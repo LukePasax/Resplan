@@ -147,9 +147,9 @@ public abstract class ChannelContentView extends Pane {
 				            stage.initModality(Modality.WINDOW_MODAL);
 				            stage.setTitle("New Clip");
 				            stage.initOwner(getScene().getWindow());
-				            controller.channelPicker.setValue(ch.getTitle());
-							controller.durationPicker.setText(new NumberFormatConverter().toString(out - in));
-							controller.startTimePicker.setText(new NumberFormatConverter().toString(in));
+				            controller.getChannelPicker().setValue(ch.getTitle());
+							controller.getDurationPicker().setText(new NumberFormatConverter().toString(out - in));
+							controller.getStartTimePicker().setText(new NumberFormatConverter().toString(in));
 				            stage.showAndWait();
 						} catch (IOException e1) {
 							e1.printStackTrace();

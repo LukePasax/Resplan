@@ -9,18 +9,18 @@ import java.io.IOException;
 
 public abstract class TextEditorController {
 
-    public TextArea textArea;
-    public Button editButton;
-    public Button saveButton;
+    protected TextArea textArea;
+    protected Button editButton;
+    protected Button saveButton;
     protected String title;
-    public Button uploadButton;
+    protected Button uploadButton;
 
     public void initialize() {
         this.textArea.setEditable(false);
         this.saved();
     }
 
-    public void setTitle( final String title) {
+    public void setTitle(final String title) {
         this.title = title;
         this.setPromptText();
         this.setTextArea();
@@ -69,6 +69,6 @@ public abstract class TextEditorController {
         this.editing();
     }
 
-    protected abstract void onUploadFromFile(final File file) throws IOException;
+    protected abstract void onUploadFromFile(File file) throws IOException;
 
 }

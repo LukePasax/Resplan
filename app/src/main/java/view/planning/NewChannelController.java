@@ -1,15 +1,18 @@
 package view.planning;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import resplan.Starter;
-import javafx.scene.control.*;
 import view.common.AlertDispatcher;
 
-public class NewChannelController {
-    public TextField titleSelection;
-    public TextField descriptionSelection;
-    public ChoiceBox<String> typeChoicebox;
-    public Button newChannelConfirm;
-    public Button cancelButton;
+public final class NewChannelController {
+    @FXML
+    private TextField titleSelection;
+    @FXML
+    private TextField descriptionSelection;
+    @FXML
+    private ChoiceBox<String> typeChoicebox;
 
     public void initialize() {
         this.typeChoicebox.getItems().addAll("SPEECH", "EFFECTS", "SOUNDTRACK");
@@ -20,7 +23,7 @@ public class NewChannelController {
     public void okButtonPressed() {
         try {
             Starter.getController().newChannel(this.typeChoicebox.getValue(),
-                    this.titleSelection.getText(),this.descriptionSelection.getText());
+                    this.titleSelection.getText(), this.descriptionSelection.getText());
             titleSelection.getScene().getWindow().hide();
         } catch (IllegalArgumentException e) {
             AlertDispatcher.dispatchError(e.getLocalizedMessage());

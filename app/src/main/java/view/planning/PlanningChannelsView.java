@@ -10,7 +10,10 @@ import view.common.TimeAxisSetter;
 import view.common.ToolBarSetter;
 import view.common.ViewDataImpl;
 
-public class PlanningChannelsView extends ChannelsView {
+public final class PlanningChannelsView extends ChannelsView {
+
+    public static final int FONT_SIZE = 12;
+    public static final int MIN_HEIGHT = 20;
 
     public PlanningChannelsView(final TimeAxisSetter timeAxisSetter, final VBox channelsContentPane,
                                 final VBox channelsInfoPane, final ToolBarSetter toolBarSetter) {
@@ -26,9 +29,9 @@ public class PlanningChannelsView extends ChannelsView {
     public Node drawInfos(final ViewDataImpl.Channel ch) {
         final Label groupLabel = new Label(ch.getGroup());
         groupLabel.setTextFill(Color.GRAY);
-        groupLabel.setFont(Font.font(12));
+        groupLabel.setFont(Font.font(FONT_SIZE));
         final VBox pane  = new VBox(groupLabel);
-        pane.setMinHeight(20);
+        pane.setMinHeight(MIN_HEIGHT);
         return pane;
     }
 }

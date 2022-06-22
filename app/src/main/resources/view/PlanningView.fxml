@@ -13,14 +13,14 @@
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" stylesheets="@../stylesheets/planning.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.planning.PlanningController">
    <children>
       <AnchorPane id="window-bar-container" fx:id="windowBar" prefHeight="27.0" prefWidth="640.0" />
-      <SplitPane fx:id="mainPanel" dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+      <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
         <items>
-            <VBox fx:id="commandBox" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="120.0" spacing="10.0" styleClass="tool-container">
+            <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="120.0" spacing="10.0" styleClass="tool-container">
                <children>
-                  <Button fx:id="newChannelButton" mnemonicParsing="false" onAction="#newChannelPressed" prefHeight="25.0" prefWidth="100.0" styleClass="buttons" text="New Channel" />
-                  <Button fx:id="newClipButton" mnemonicParsing="false" onAction="#newClipPressed" prefWidth="100.0" styleClass="buttons" text="New Clip" />
-                  <Button fx:id="newSectionButton" layoutX="35.0" layoutY="56.0" mnemonicParsing="false" onAction="#newSectionPressed" prefWidth="100.0" styleClass="buttons" text="New Section" />
-                  <Button fx:id="rubricButton" mnemonicParsing="false" onAction="#goToRubricPressed" prefWidth="100.0" styleClass="buttons" text="Go to rubric" />
+                  <Button mnemonicParsing="false" onAction="#newChannelPressed" prefHeight="25.0" prefWidth="100.0" styleClass="buttons" text="New Channel" />
+                  <Button mnemonicParsing="false" onAction="#newClipPressed" prefWidth="100.0" styleClass="buttons" text="New Clip" />
+                  <Button layoutX="35.0" layoutY="56.0" mnemonicParsing="false" onAction="#newSectionPressed" prefWidth="100.0" styleClass="buttons" text="New Section" />
+                  <Button mnemonicParsing="false" onAction="#goToRubricPressed" prefWidth="100.0" styleClass="buttons" text="Go to rubric" />
                   <Button fx:id="magicButton" disable="true" mnemonicParsing="false" text="Button" visible="false" />
                </children>
                <padding>
@@ -39,7 +39,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
                </rowConstraints>
                <children>
-                  <ScrollPane id="channels vertical scroll" fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minViewportHeight="40.0" minViewportWidth="40.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                  <ScrollPane id="channels vertical scroll" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minViewportHeight="40.0" minViewportWidth="40.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
                      <content>
                         <SplitPane id="clips-channel info divider" fx:id="channelsInfoResizer" dividerPositions="0.752092050209205" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                            <items>

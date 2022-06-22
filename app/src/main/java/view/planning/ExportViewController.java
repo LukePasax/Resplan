@@ -1,15 +1,18 @@
 package view.planning;
 
-import resplan.Starter;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.*;
+import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Window;
+import resplan.Starter;
 import view.common.AlertDispatcher;
 import view.common.NumberFormatConverter;
 import view.common.WavFilePicker;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Executors;
@@ -17,13 +20,19 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class ExportViewController {
-    public TextField fileName;
-    public Button pickFile;
-    public Button okButton;
-    public TextField endTime;
-    public CheckBox projectCheck;
-    public TextField startTime;
+public final class ExportViewController {
+
+    public static final double VERTICAL_ANCHOR = 140.0;
+    public static final double HORIZONTAL_ANCHOR = 10.0;
+    public static final double PROGRESS = 0.01;
+    @FXML
+    private TextField fileName;
+    @FXML
+    private TextField endTime;
+    @FXML
+    private CheckBox projectCheck;
+    @FXML
+    private TextField startTime;
 
     private ProgressBar progressBar;
     private File file;
@@ -80,10 +89,10 @@ public class ExportViewController {
         final AnchorPane pane = new AnchorPane();
         this.progressBar = new ProgressBar(this.progress);
         this.progressBar.progressProperty().addListener(this::changed);
-        AnchorPane.setTopAnchor(this.progressBar,140.0);
-        AnchorPane.setBottomAnchor(this.progressBar,140.0);
-        AnchorPane.setRightAnchor(this.progressBar,10.0);
-        AnchorPane.setLeftAnchor(this.progressBar,10.0);
+        AnchorPane.setTopAnchor(this.progressBar, VERTICAL_ANCHOR);
+        AnchorPane.setBottomAnchor(this.progressBar, VERTICAL_ANCHOR);
+        AnchorPane.setRightAnchor(this.progressBar, HORIZONTAL_ANCHOR);
+        AnchorPane.setLeftAnchor(this.progressBar, HORIZONTAL_ANCHOR);
         pane.getChildren().add(this.progressBar);
         final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         this.fileName.getScene().setRoot(pane);
@@ -110,7 +119,7 @@ public class ExportViewController {
     }
 
     private void updateProgress() {
-        this.progress += 0.01;
+        this.progress += PROGRESS;
         this.progressBar.setProgress(this.progress);
     }
 

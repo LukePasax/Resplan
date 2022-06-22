@@ -1,12 +1,11 @@
 package view.planning;
 
-import resplan.Starter;
 import daw.manager.ImportException;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
+import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import resplan.Starter;
 import view.common.AlertDispatcher;
 import view.common.NumberFormatConverter;
 import view.common.WavFilePicker;
@@ -14,15 +13,19 @@ import view.common.WavFilePicker;
 import java.io.File;
 import java.util.NoSuchElementException;
 
-public class NewClipController {
-    public TextField clipTitleSelection;
-    public TextField clipDescriptionSelection;
-    public Button newClipConfirm;
-    public Button clipFilePicker;
-    public TextField clipFileUrl;
-    public ChoiceBox<String> channelPicker;
-    public TextField startTimePicker;
-    public TextField durationPicker;
+public final class NewClipController {
+    @FXML
+    private TextField clipTitleSelection;
+    @FXML
+    private TextField clipDescriptionSelection;
+    @FXML
+    private TextField clipFileUrl;
+    @FXML
+    private ChoiceBox<String> channelPicker;
+    @FXML
+    private TextField startTimePicker;
+    @FXML
+    private TextField durationPicker;
     private File file;
     private NumberFormatConverter converter;
 
@@ -35,7 +38,19 @@ public class NewClipController {
 
     }
 
-    public void okButtonPressed( final ActionEvent event) {
+    public ChoiceBox<String> getChannelPicker() {
+        return channelPicker;
+    }
+
+    public TextField getStartTimePicker() {
+        return startTimePicker;
+    }
+
+    public TextField getDurationPicker() {
+        return durationPicker;
+    }
+
+    public void okButtonPressed() {
         if ("".equals(this.startTimePicker.getText())) {
             AlertDispatcher.dispatchError("Select a start time");
         } else if ("".equals(this.durationPicker.getText())) {
@@ -53,11 +68,11 @@ public class NewClipController {
         }
     }
 
-    public void cancelButtonPressed( final ActionEvent event) {
+    public void cancelButtonPressed() {
         this.clipTitleSelection.getScene().getWindow().hide();
     }
 
-    public void pickFilePressed( final ActionEvent event) {
+    public void pickFilePressed() {
         final WavFilePicker picker = new WavFilePicker();
         this.file = picker.getFileChooser().showOpenDialog(this.channelPicker.getScene().getWindow());
         if (this.file != null) {

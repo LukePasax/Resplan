@@ -1,25 +1,29 @@
 package view.planning;
 
-import resplan.Starter;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.*;
+import javafx.fxml.FXML;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import resplan.Starter;
 import view.common.AlertDispatcher;
 
 import java.util.Objects;
 
-public class RubricController {
-
-    public TableView<Speaker> tableView;
-    public TableColumn<Speaker, String> speakerCodeColumn;
-    public TableColumn<Speaker, String> firstNameColumn;
-    public TableColumn<Speaker, String> lastNameColumn;
-    public TextField speakerCodeField;
-    public TextField firstNameField;
-    public TextField lastNameField;
-    public Button addButton;
+public final class RubricController {
+    @FXML
+    private TableView<Speaker> tableView;
+    @FXML
+    private TextField speakerCodeField;
+    @FXML
+    private TextField firstNameField;
+    @FXML
+    private TextField lastNameField;
     private final ObservableList<Speaker> speakers;
     private TableRow<Speaker> clickedRow;
 
@@ -69,11 +73,11 @@ public class RubricController {
         });
     }
 
-    public static class Speaker {
+    public static final class Speaker {
 
-        final StringProperty code;
-        final StringProperty firstName;
-        final StringProperty lastName;
+        private final StringProperty code;
+        private final StringProperty firstName;
+        private final StringProperty lastName;
 
         public Speaker() {
             this.code = new SimpleStringProperty(this, "code");
@@ -129,7 +133,7 @@ public class RubricController {
         }
     }
 
-    private boolean checkIntegrity(String code) {
+    private boolean checkIntegrity(final String code) {
         return this.speakers.stream().noneMatch(i -> i.getCode().equals(code));
     }
 

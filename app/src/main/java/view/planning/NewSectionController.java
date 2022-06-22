@@ -1,20 +1,21 @@
 package view.planning;
 
-import resplan.Starter;
-import javafx.scene.control.Button;
+import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import resplan.Starter;
 import view.common.AlertDispatcher;
 import view.common.NumberFormatConverter;
 
 import java.util.NoSuchElementException;
 
-public class NewSectionController {
-    public TextField title;
-    public TextField description;
-    public TextField startTime;
-    public Button ok;
-    public Button cancel;
+public final class NewSectionController {
+    @FXML
+    private TextField title;
+    @FXML
+    private TextField description;
+    @FXML
+    private TextField startTime;
     private NumberFormatConverter converter;
 
     public void initialize() {
