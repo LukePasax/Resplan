@@ -1,5 +1,7 @@
 package daw.engine;
 
+import daw.core.clip.RPClip;
+
 /**
  * The engine which sets and starts playback of each playable {@link RPClip}.
  * <p>The engine could be started, paused and stopped. 
