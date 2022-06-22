@@ -318,13 +318,11 @@ public interface Controller {
      */
     void setSolo(String channel);
 
-    void addEffectAtPosition(String channel, RPEffect e, int index);
+    void addEffectAtPosition(String channel, String effect, int index);
 
     void removeEffectAtPosition(String channel, int index);
 
     void moveEffect(String channel, int index1, int index2);
-
-    void replaceEffect(String channel, int index, RPEffect e);
 
     void setEffectParameters(String channel, int index, Map<String, Float> parameters);
 

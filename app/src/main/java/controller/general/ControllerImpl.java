@@ -3,8 +3,7 @@ package controller.general;
 import controller.storing.RPFileReader;
 import controller.storing.Writer;
 import controller.storing.RPFileWriter;
-import daw.core.audioprocessing.ProcessingUnit;
-import daw.core.audioprocessing.RPEffect;
+import daw.core.audioprocessing.*;
 import daw.core.clip.ClipNotFoundException;
 import daw.core.clip.RPClip;
 import daw.core.clip.RPRecorder;
@@ -26,6 +25,7 @@ import planning.RPRole;
 import planning.Speaker;
 import planning.Text;
 import planning.TextFactoryImpl;
+import resplan.Starter;
 import view.common.AlertDispatcher;
 import view.common.App;
 import view.common.ViewDataImpl;
@@ -696,8 +696,24 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
-    public void addEffectAtPosition(final String channel, final RPEffect e, final int index) {
-        this.getProcessingUnit(channel).addEffectAtPosition(e, index);
+    public void addEffectAtPosition(final String channel, final String effect, final int index) {
+        this.getProcessingUnit(channel).addEffectAtPosition(this.createEffect(effect), index);
+    }
+
+    private RPEffect createEffect(final String effect) {
+        if ("Compressor".equals(effect)) {
+            return new Compression(2);
+        } else if (effect.equals("Limiter")) {
+            return new Limiter(2);
+        } else if ("Low pass".equals(effect)) {
+            return new LowPassFilter(2);
+        } else if ("High pass".equals(effect)) {
+            return new HighPassFilter(2);
+        } else if ("Reverb".equals(effect)) {
+            return new DigitalReverb(2);
+        } else {
+            return new Gate(2);
+        }
     }
 
     @Override
@@ -708,11 +724,6 @@ public final class ControllerImpl implements Controller {
     @Override
     public void moveEffect(final String channel, final int index1, final int index2) {
         this.getProcessingUnit(channel).moveEffect(index1, index2);
-    }
-
-    @Override
-    public void replaceEffect(final String channel, final int index, final RPEffect e) {
-        this.getProcessingUnit(channel).replace(index, e);
     }
 
     @Override
