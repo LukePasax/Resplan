@@ -20,17 +20,26 @@ import net.beadsproject.beads.data.Sample;
 import net.beadsproject.beads.data.audiofile.AudioFileType;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.ugens.RecordToSample;
-import planning.*;
+import planning.Element;
+import planning.RPPart;
+import planning.RPRole;
+import planning.Speaker;
+import planning.Text;
+import planning.TextFactoryImpl;
 import view.common.AlertDispatcher;
 import view.common.App;
 import view.common.ViewDataImpl;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ControllerImpl implements Controller {
+public final class ControllerImpl implements Controller {
 
     private static final String SPEECH_TYPE = "SPEECH";
     private static final String EFFECTS_TYPE = "EFFECTS";
@@ -116,7 +125,7 @@ public class ControllerImpl implements Controller {
                 } else {
                     App.getData().addClip(App.getData().getChannel(c.getTitle()), new ViewDataImpl.Clip(
                             p.getTitle(), this.manager.getClipTime(p.getTitle(), c.getTitle()), clip.getDuration(),
-                            Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration()), Optional.of(new File(((Sample)clip.getContent()).getFileName()).getName())));
+                            Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration()), Optional.of(new File(((Sample) clip.getContent()).getFileName()).getName())));
                 }
             });
         });
@@ -190,8 +199,8 @@ public class ControllerImpl implements Controller {
             final Writer writer = new RPFileWriter(this.appSettings);
             writer.write(this.currentProject.getAbsolutePath());
         } catch (IOException e) {
-            throw new DownloadingException("Unable to perform this operation. " +
-                    "Retry to set this project as the template.");
+            throw new DownloadingException("Unable to perform this operation. "
+                    + "Retry to set this project as the template.");
         }
     }
 
@@ -269,7 +278,7 @@ public class ControllerImpl implements Controller {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(title, time,
                     this.manager.getClipDuration(title), Optional.of(clip.getContentPosition()),
                     Optional.of(clip.getContentDuration()),
-                    Optional.of(new File(((Sample)clip.getContent()).getFileName()).getName())));
+                    Optional.of(new File(((Sample) clip.getContent()).getFileName()).getName())));
         }
         App.getData().setProjectLenght(this.getProjectLength());
     }
@@ -298,7 +307,7 @@ public class ControllerImpl implements Controller {
     public void deleteClip(final String title, final String channel, final Double time) {
         try {
             this.manager.removeClip(channel, title, time);
-            App.getData().removeClip(App.getData().getChannel(channel), App.getData().getClip(channel,title));
+            App.getData().removeClip(App.getData().getChannel(channel), App.getData().getClip(channel, title));
         } catch (NoSuchElementException | ClipNotFoundException e) {
             AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
@@ -422,7 +431,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void moveClip(final String clip, final String channel, final Double finalTimeIn) throws ClipNotFoundException {
         //App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
-        this.manager.moveClip(clip,channel,finalTimeIn);
+        this.manager.moveClip(clip, channel, finalTimeIn);
         //createClipView(clip, channel);
         updateChannelClipsView(channel);
         App.getData().setProjectLenght(this.getProjectLength());
@@ -432,9 +441,9 @@ public class ControllerImpl implements Controller {
     	App.getData().clearChannelClips(App.getData().getChannel(channel));
         this.manager.getPartList(channel).forEach(p -> this.createClipView(p.getTitle(), channel));
     }
-    
+
     private void createClipView(final String clip, final String channel) {
-        final Double time = this.manager.getClipTime(clip,channel);
+        final Double time = this.manager.getClipTime(clip, channel);
         final Double duration = this.manager.getClipDuration(clip);
         final RPClip<?> rpClip = this.manager.getClipFromTitle(clip);
         if (rpClip.isEmpty()) {
@@ -443,7 +452,7 @@ public class ControllerImpl implements Controller {
         } else {
             App.getData().addClip(App.getData().getChannel(channel), new ViewDataImpl.Clip(clip, time, duration,
                     Optional.of(rpClip.getContentPosition()), Optional.of(rpClip.getContentDuration()),
-                    Optional.of(new File(((Sample)rpClip.getContent()).getFileName()).getName())));
+                    Optional.of(new File(((Sample) rpClip.getContent()).getFileName()).getName())));
         }
     }
 
@@ -457,7 +466,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void setClipTimeIn(final String clip, final String channel, final Double finalTimeIn) throws ClipNotFoundException {
     	//App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
-    	this.manager.setClipTimeIn(clip,channel,finalTimeIn);
+    	this.manager.setClipTimeIn(clip, channel, finalTimeIn);
     	this.updateChannelClipsView(channel);
         //createClipView(clip, channel);
         App.getData().setProjectLenght(this.getProjectLength());
@@ -473,7 +482,7 @@ public class ControllerImpl implements Controller {
     @Override
     public void setClipTimeOut(final String clip, final String channel, final Double finalTimeOut) throws ClipNotFoundException {
         //App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
-        this.manager.setClipTimeOut(clip,channel,finalTimeOut);
+        this.manager.setClipTimeOut(clip, channel, finalTimeOut);
         //createClipView(clip, channel);
         this.updateChannelClipsView(channel);
         App.getData().setProjectLenght(this.getProjectLength());
@@ -488,7 +497,7 @@ public class ControllerImpl implements Controller {
      */
     @Override
     public void splitClip(final String clip, final String channel, final Double splittingTime) throws ClipNotFoundException {
-        this.manager.splitClip(clip,channel,splittingTime);
+        this.manager.splitClip(clip, channel, splittingTime);
         this.updateChannelClipsView(channel);
     }
 
@@ -502,9 +511,9 @@ public class ControllerImpl implements Controller {
     @Override
     public void addContentToClip(final String clip, final File content) throws ImportException, ClipNotFoundException {
         final String channel = this.manager.getClipChannel(clip);
-        App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
-        this.manager.addFileToClip(clip,content);
-        this.createClipView(clip,channel);
+        App.getData().removeClip(App.getData().getChannel(channel), App.getData().getClip(channel, clip));
+        this.manager.addFileToClip(clip, content);
+        this.createClipView(clip, channel);
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
@@ -516,9 +525,9 @@ public class ControllerImpl implements Controller {
     @Override
     public void removeContentFromClip(final String clip) throws ClipNotFoundException {
         final String channel = this.manager.getClipChannel(clip);
-        App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
+        App.getData().removeClip(App.getData().getChannel(channel), App.getData().getClip(channel, clip));
         this.manager.removeFileFromClip(clip);
-        this.createClipView(clip,channel);
+        this.createClipView(clip, channel);
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
@@ -737,7 +746,7 @@ public class ControllerImpl implements Controller {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}.
      * @param channel
      * @return {@inheritDoc}
      */
