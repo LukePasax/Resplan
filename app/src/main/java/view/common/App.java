@@ -12,18 +12,18 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import view.edit.EditViewController;
 
-public class App extends Application {
-    
+public final class App extends Application {
+
     static final ViewData VIEW_DATA = new ViewDataImpl();
     private Scene activeScene;
     private Parent sleepingRoot;
     private EditViewController editController;
-    
+
     public static ViewData getData() {
     	return VIEW_DATA;
     }
 
-    
+
     @Override
     public void start(final Stage stage) throws Exception {
         final FXMLLoader planningLoader = new FXMLLoader(getClass().getResource("/view/PlanningView.fxml"));
@@ -49,7 +49,7 @@ public class App extends Application {
             this.sleepingRoot = temp;
         }
     }
-    
+
     public void updatePlaybackTime(final double time) {
     	editController.setPlaybackMarkerPosition(time);
     }
