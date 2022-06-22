@@ -17,7 +17,7 @@ public abstract class RoleImpl implements RPRole {
 	private final List<String> notesList = new ArrayList<>();
 	
 	/**
-	 * It is used to build a new Object of type RPRole, with description, but it can't be istantieted
+	 * It is used to build a new Object of type RPRole, with description, but it can't be instantiated
 	 * 
 	 * @param title
 	 * the title of the role
@@ -37,7 +37,7 @@ public abstract class RoleImpl implements RPRole {
 	}
 	
 	/**
-	 * It is used to build a new Object of type RPRole, without description, but it can't be istantieted
+	 * It is used to build a new Object of type RPRole, without description, but it can't be instantiated
 	 * 
 	 * @param title
 	 * the title of the role

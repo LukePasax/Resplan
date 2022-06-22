@@ -37,7 +37,7 @@ public interface SpeakerRubric {
 	 * the speaker to remove
 	 * 
 	 * @return true if the removal is ok,
-	 * false if the speaker doesn't exists
+	 * false if the speaker doesn't exist
 	 */
 	boolean removeSpeaker(Speaker speaker);
 	

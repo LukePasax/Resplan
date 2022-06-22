@@ -36,7 +36,7 @@ public final class EffectsRole extends RoleImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void addSpeaker(Speaker speaker) {
+	public void addSpeaker(Speaker speaker) {
 		
 	}
 	
@@ -44,7 +44,7 @@ public final class EffectsRole extends RoleImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final boolean isSpeakerPresent() {
+	public boolean isSpeakerPresent() {
 		return false;
 	}
 	
@@ -52,7 +52,7 @@ public final class EffectsRole extends RoleImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final Optional<Speaker> getSpeaker() {
+	public Optional<Speaker> getSpeaker() {
 		return Optional.empty();
 	}
 

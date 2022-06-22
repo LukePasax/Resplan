@@ -13,7 +13,7 @@ public final class TextFactoryImpl implements TextFactory {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final Text createFromString(final String content) {
+	public Text createFromString(final String content) {
 		return () -> content;
 	}
 	
@@ -21,7 +21,7 @@ public final class TextFactoryImpl implements TextFactory {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final Text createFromFile(final String fileName) throws IOException {
+	public Text createFromFile(final String fileName) throws IOException {
 		return this.createFromString(Files.readString(Path.of(fileName)));
 	}
 

@@ -27,24 +27,24 @@ public interface RPRole extends Element {
 	}
 	
 	/**
-	 * Returns the type of a role
+	 * Returns the type of role
 	 * 
 	 * @return the chosen type of the role
 	 */
 	@JsonIgnore
 	RoleType getType();
-	
+
 	/**
 	 * Allows to add notes in a role
-	 * 
+	 *
 	 * @param note
 	 * the note to add
 	 */
 	void addNote(String note);
-	
+
 	/**
 	 * Returns a list of notes
-	 * 
+	 *
 	 * @return the list of notes belonging to a role
 	 */
 	List<String> getNotes();

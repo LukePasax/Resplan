@@ -16,7 +16,7 @@ public abstract class PartImpl implements RPPart {
 	private final List<String> notes = new ArrayList<>();
 	
 	/**
-	 * It is used to build a new Object of type RPPart, with the description, but it can't be istantieted
+	 * It is used to build a new Object of type RPPart, with the description, but it can't be instantiated
 	 * 
 	 * @param title
 	 * the title of the part
@@ -34,7 +34,7 @@ public abstract class PartImpl implements RPPart {
 	}
 	
 	/**
-	 * It is used to build a new Object of type RPPart, without the description, but it can't be istantieted
+	 * It is used to build a new Object of type RPPart, without the description, but it can't be instantiated
 	 * 
 	 * @param title
 	 * the title of the part

@@ -42,7 +42,7 @@ public interface RPTimeline {
 	 * the starting time of the section to be obtained
 	 * 
 	 * @return the optional section, Optional.empty()
-	 * if the section doesn't exists
+	 * if the section doesn't exist
 	 */
 	Optional<RPSection> getSection(double initialTime);
 	

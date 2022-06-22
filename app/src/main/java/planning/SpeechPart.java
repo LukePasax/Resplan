@@ -35,21 +35,21 @@ public final class SpeechPart extends PartImpl {
 	/**
 	 * {@inheritDoc}
 	 */
-	public final void addText(final Text text) {
+	public void addText(final Text text) {
 		this.text = Optional.of(text);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
-	public final boolean isTextPresent() {
+	public boolean isTextPresent() {
 		return this.text.isPresent();
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
-	public final Optional<Text> getText() {
+	public Optional<Text> getText() {
 		return this.text;
 	}
 

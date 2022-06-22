@@ -25,24 +25,24 @@ public interface RPPart extends Element{
     enum PartType{
 		SPEECH, SOUNDTRACK, EFFECTS
 	}
-	
+
 	/**
 	 * Allows to add notes in a part
-	 * 
+	 *
 	 * @param note
 	 * the note to add
 	 */
 	void addNote(String note);
-	
+
 	/**
 	 * Returns a list of notes
-	 * 
+	 *
 	 * @return the list of notes belonging to a part
 	 */
 	List<String> getNotes();
 	
 	/**
-	 * Returns the type of a part
+	 * Returns the type of part
 	 * 
 	 * @return the chosen type of the part
 	 */

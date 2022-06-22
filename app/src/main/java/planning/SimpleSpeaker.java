@@ -62,7 +62,7 @@ public final class SimpleSpeaker implements Speaker {
 		 * 
 		 * @return the current builder
 		 */
-		public final Builder firstName(final String firstName) {
+		public Builder firstName(final String firstName) {
 			this.firstName = firstName;
 			return this;
 		}
@@ -75,7 +75,7 @@ public final class SimpleSpeaker implements Speaker {
 		 * 
 		 * @return the current builder
 		 */
-		public final Builder lastName(final String lastName) {
+		public Builder lastName(final String lastName) {
 			this.lastName = lastName;
 			return this;
 		}
@@ -88,8 +88,8 @@ public final class SimpleSpeaker implements Speaker {
 		 * @throws IllegalStateException if the code, the first
 		 * name or the last name have not been entered
 		 */
-		public final Speaker build() throws IllegalStateException {
-			if(this.speakerCode == null || this.firstName == null || this.lastName == null) {
+		public Speaker build() throws IllegalStateException {
+			if(this.firstName == null || this.lastName == null) {
 				throw new IllegalStateException();
 			}
 			return new SimpleSpeaker(this.speakerCode, this.firstName, this.lastName);
@@ -100,7 +100,7 @@ public final class SimpleSpeaker implements Speaker {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final int getSpeakerCode() {
+	public int getSpeakerCode() {
 		return this.speakerCode;
 	}
 	
@@ -108,7 +108,7 @@ public final class SimpleSpeaker implements Speaker {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final String getFirstName() {
+	public String getFirstName() {
 		return this.firstName;
 	}
 	
@@ -116,7 +116,7 @@ public final class SimpleSpeaker implements Speaker {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final String getLastName() {
+	public String getLastName() {
 		return this.lastName;
 	}
 	
@@ -124,7 +124,7 @@ public final class SimpleSpeaker implements Speaker {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final int hashCode() {
+	public int hashCode() {
 		return Objects.hash(speakerCode);
 	}
 	
@@ -132,7 +132,7 @@ public final class SimpleSpeaker implements Speaker {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final boolean equals(Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)

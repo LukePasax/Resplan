@@ -47,7 +47,7 @@ public final class ProjectImpl implements RPProject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final String getTitle() {
+	public String getTitle() {
 		return this.title;
 	}
 	
@@ -55,7 +55,7 @@ public final class ProjectImpl implements RPProject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void addDescription(final String description) {
+	public void addDescription(final String description) {
 		this.description = Optional.of(description);
 	}
 	
@@ -63,7 +63,7 @@ public final class ProjectImpl implements RPProject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final Optional<String> getDescription() {
+	public Optional<String> getDescription() {
 		return this.description;
 	}
 	
@@ -71,7 +71,7 @@ public final class ProjectImpl implements RPProject {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final ProjectType getType() {
+	public ProjectType getType() {
 		return this.type;
 	}
 }

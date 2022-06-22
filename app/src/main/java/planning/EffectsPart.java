@@ -34,7 +34,7 @@ public final class EffectsPart extends PartImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void addText(Text text) {
+	public void addText(Text text) {
 		
 	}
 	
@@ -42,7 +42,7 @@ public final class EffectsPart extends PartImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final boolean isTextPresent() {
+	public boolean isTextPresent() {
 		return false;
 	}
 	
@@ -50,7 +50,7 @@ public final class EffectsPart extends PartImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final Optional<Text> getText() {
+	public Optional<Text> getText() {
 		return Optional.empty();
 	}
 

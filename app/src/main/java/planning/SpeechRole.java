@@ -38,7 +38,7 @@ public final class SpeechRole extends RoleImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void addSpeaker(Speaker speaker) {
+	public void addSpeaker(Speaker speaker) {
 		this.speaker = Optional.of(speaker);		
 	}
 	
@@ -46,7 +46,7 @@ public final class SpeechRole extends RoleImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final boolean isSpeakerPresent() {
+	public boolean isSpeakerPresent() {
 		return this.speaker.isPresent();
 	}
 	
@@ -54,7 +54,7 @@ public final class SpeechRole extends RoleImpl {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final Optional<Speaker> getSpeaker() {
+	public Optional<Speaker> getSpeaker() {
 		return this.speaker;	
 	}
 }

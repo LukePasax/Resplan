@@ -58,7 +58,7 @@ public final class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final String getTitle() {
+	public String getTitle() {
 		return this.title;
 	}
 	
@@ -66,7 +66,7 @@ public final class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void addDescription(final String description) {
+	public void addDescription(final String description) {
 		this.description = Optional.of(description);
 	}
 	
@@ -74,7 +74,7 @@ public final class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final Optional<String> getDescription() {
+	public Optional<String> getDescription() {
 		return this.description;
 	}
 	
@@ -82,7 +82,7 @@ public final class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final double getDuration() {
+	public double getDuration() {
 		return this.duration;
 	}
 	
@@ -90,7 +90,7 @@ public final class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final int hashCode() {
+	public int hashCode() {
 		return Objects.hash(title);
 	}
 	
@@ -98,7 +98,7 @@ public final class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final boolean equals(Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -113,7 +113,7 @@ public final class SectionImpl implements RPSection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final String toString() {
+	public String toString() {
 		return "SectionImpl [title=" + title + ", description=" + description + ", duration=" + duration + "]";
 	}
 }

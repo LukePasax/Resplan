@@ -3,7 +3,7 @@ package planning;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * This interface represents a speaker who can participate to a project
+ * This interface represents a speaker who can participate in a project
  */
 @JsonDeserialize(as = SimpleSpeaker.class)
 public interface Speaker {
