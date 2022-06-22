@@ -20,7 +20,7 @@ public interface RPRecorder {
 	void pause();
 	
 	/**
-	 * Delate all the recorded data and reset the recorder.
+	 * Delete all the recorded data and reset the recorder.
 	 */
 	void reset();
 	

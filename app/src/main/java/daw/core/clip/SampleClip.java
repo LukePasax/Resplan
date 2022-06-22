@@ -30,7 +30,7 @@ public final class SampleClip implements RPClip<Sample> {
 	/**
 	 * Private internal constructor used by other public/protected constructors.
 	 * <p>Uses the proxy pattern for create a SampleClip from a FileClip 
-	 * and be shure that the file is an Audio File.
+	 * and be sure that the file is an Audio File.
 	 * The SampleClip duration is the same as the supplied FileClip or the same as the content duration 
 	 * if the duration of the supplied clip is bigger than the content one.
 	 * 
@@ -56,7 +56,7 @@ public final class SampleClip implements RPClip<Sample> {
 	}
 
 	/**
-	 * Creates a SampleClip from the suplied file content and an empty clip.
+	 * Creates a SampleClip from the supplied file content and an empty clip.
 	 * <p>Constructor reserved for {@link RPClipConverter}. 
 	 * It takes an empty clip and creates a sample clip adding an audio file.
 	 * The SampleClip duration is the same as the supplied FileClip or the same as the content duration 
@@ -77,7 +77,7 @@ public final class SampleClip implements RPClip<Sample> {
 	}
 	
 	/**
-	 * Creates a Sample Clip just specifing an audio file. The duration will be fitted to the audio file duration.
+	 * Creates a Sample Clip just specifying an audio file. The duration will be fitted to the audio file duration.
 	 * 
 	 * @param title The title of this clip.
 	 * 
@@ -96,7 +96,7 @@ public final class SampleClip implements RPClip<Sample> {
 	}
 	
 	/**
-	 * Creates a Sample Clip just specifing an audio file and a duration. 
+	 * Creates a Sample Clip just specifying an audio file and a duration.
 	 * The SampleClip duration will be the same as the content duration 
 	 * if the specified duration is bigger than the content one.
 	 * 

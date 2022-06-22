@@ -5,7 +5,7 @@ import daw.core.channel.RPChannel;
 /**
  *	A Factory for {@link RPClipPlayer}
  *	<p>Creates a player and connect it with the given {@link RPChannel}.
- *	Could also create a player with an active cut already setted.
+ *	Could also create a player with an active cut already set.
  */
 public interface ClipPlayerFactory {
 	
@@ -27,7 +27,7 @@ public interface ClipPlayerFactory {
 	 * 
 	 * @param  channel  The channel to connect the player to.
 	 * 
-	 * @param  cut  The time where to set the cut.
+	 * @param  cut  The time when to set the cut.
 	 * 
 	 * @return The created player.
 	 */

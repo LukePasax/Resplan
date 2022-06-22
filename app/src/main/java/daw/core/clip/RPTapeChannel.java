@@ -9,7 +9,7 @@ import javafx.util.Pair;
 
 /**
  * Place and Manage {@link RPClip} in a Timeline.
- * <p>The tape rapresent the physical support where you can record your audio.
+ * <p>The tape represents the physical support where you can record your audio.
  * <br>For every channel of the Tape is supported one source at time so clips of one RPTapeChannel can't overlap in the timeline.
  * <p>The time in and time out refers to the starting and ending position of a clip in the timeline.
  * Each clip is identified from his time in.
@@ -19,12 +19,12 @@ public interface RPTapeChannel {
 	
 	/**
 	 * Add an {@link RPClip} in the timeline of this tape channel. 
-	 * <p>If another clip with a different time in is already present at the specified time the old one will be cutted 
+	 * <p>If another clip with a different time in is already present at the specified time the old one will be cut
 	 * and the new one will be placed at the specified time.
 	 * 
 	 * @param  clip  The clip to insert.
 	 * 
-	 * @param  time  The time where to insert the clip.
+	 * @param  time  The time when to insert the clip.
 	 * 
 	 * @throws  IllegalStateException  If another clip with the same time in already exists or if 
 	 * 						the same clip already exists in this tape channel.
@@ -56,7 +56,7 @@ public interface RPTapeChannel {
 	boolean isEmpty();
 	
 	/**
-	 * If present get an {@link Optional} of {@link Pair} of the clip intersected at the specified time and it's time in.
+	 * If present get an {@link Optional} of {@link Pair} of the clip intersected at the specified time, and it's time in.
 	 * 
 	 * @param  time  The timeline position where to search the clip.
 	 * 
@@ -94,7 +94,7 @@ public interface RPTapeChannel {
 	
 	/**
 	 * Move the specified clip in a new position of the timeline of this tape channel.
-	 * <p>If another clip is already present at the specified time the old one will be cutted 
+	 * <p>If another clip is already present at the specified time the old one will be cut
 	 * and the new one will be placed at the specified time.
 	 * 
 	 * @param  initialClipTimeIn  The time in of the clip to move.
@@ -107,7 +107,7 @@ public interface RPTapeChannel {
 	
 	/**
 	 * Set the duration of the specified clip.
-	 * <p>If you extend the clip over another, the secondone will be cutted.
+	 * <p>If you extend the clip over another, the second one will be cut.
 	 * 
 	 * @param  clipTimeIn  The time in of the clip to modify.
 	 * 
@@ -137,12 +137,12 @@ public interface RPTapeChannel {
 	
 	/**
 	 * Split a clip in two different clips.
-	 * <p>The splitting time does not refere to the timeline, but to the clip duration.
-	 * So the time where to split the clip it's calculated considering the zero at the beginning of the clip.
+	 * <p>The splitting time does not refer to the timeline, but to the clip duration.
+	 * So the time when to split the clip it's calculated considering the zero at the beginning of the clip.
 	 * 
 	 * @param  initialClipTimeIn  The time in of the clip to modify.
 	 *
-	 * @param  splittingTime  The time where to split the clip.
+	 * @param  splittingTime  The time when to split the clip.
 	 * 
 	 * @throws ClipNotFoundException  If there's no clip with the specified time in.
 	 * 
@@ -151,14 +151,14 @@ public interface RPTapeChannel {
 	void split(double initialClipTimeIn, double splittingTime) throws ClipNotFoundException;
 
 	/**
-	 * Calculate the time out of an ipotetic clip from a time in and a duration.
+	 * Calculate the time out of a hypothetical clip from a time in and a duration.
 	 * <p>There might not be a clip associated with the given time in.
 	 * 
-	 * @param  timeIn  The time in of the ipotetic clip.
+	 * @param  timeIn  The time in of the hypothetical clip.
 	 * 
-	 * @param  duration  The duration of the ipotetic clip.
+	 * @param  duration  The duration of the hypothetical clip.
 	 * 
-	 * @return  The time out of the ipotetic clip.
+	 * @return  The time out of the hypothetical clip.
 	 */
 	double calculateTimeOut(double timeIn, double duration);
 

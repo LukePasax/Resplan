@@ -7,8 +7,8 @@ import net.beadsproject.beads.core.UGen;
  * <p>A player could handle only some type of RPClips and some 
  * RPClips could not have any player which support them (for example an {@link EmptyClip}, 
  * which has no content, could not be played).
- * <p>A cut point could be setted on any player. When a cut point is active the player will start the playback to it's cut position.
- * <p>Any player wraps an {@link UGen} so it must supply the wrapped {@link UGen} for connecting it's output to some audio channel.
+ * <p>A cut point could be set on any player. When a cut point is active the player will start the playback to it's cut position.
+ * <p>Any player wraps an {@link UGen} so it must supply the wrapped {@link UGen} for connecting it's output to some audio channels.
  */
 public interface RPClipPlayer {
 	
@@ -29,8 +29,8 @@ public interface RPClipPlayer {
 	
 	/**
 	 * Set the playback position.
-	 * <p>The time position is referred to the clip lenght so if {@code clip.getContentPosition()} is not zero, 
-	 * after a {@code this.setPlaybackPosition(0.0)} call the playback position of the clip content will be setted 
+	 * <p>The time position is referred to the clip length so if {@code clip.getContentPosition()} is not zero,
+	 * after a {@code this.setPlaybackPosition(0.0)} call the playback position of the clip content will be set
 	 * to {@code clip.getContentPosition()}, which is equals to the zero position of the clip.
 	 * 
 	 * @param  milliseconds  The playback position in milliseconds.
@@ -56,7 +56,7 @@ public interface RPClipPlayer {
 	
 	/**
 	 * Get this playback position.
-	 * <p>The time position is referred to the clip lenght so if {@code this.getPlaybackPosition()} is zero, 
+	 * <p>The time position is referred to the clip length so if {@code this.getPlaybackPosition()} is zero,
 	 * the playback position of the clip content could be a different value.
 	 * 
 	 * @return  The playback position in milliseconds.
@@ -80,7 +80,7 @@ public interface RPClipPlayer {
 	boolean isCutActive();
 	
 	/**
-	 * Get this cut time referred to the clip lenght if {@code this.isCutActive()}.
+	 * Get this cut time referred to the clip length if {@code this.isCutActive()}.
 	 * 
 	 * @return  The current cut time in milliseconds.
 	 * 

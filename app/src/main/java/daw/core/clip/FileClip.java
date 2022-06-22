@@ -40,10 +40,10 @@ public final class FileClip implements RPClip<File> {
 	 * 
 	 * @param  emptyClip  The empty RPClip to wrap.
 	 * 
-	 * @throws  IllegalArgumentException  If the supplied file does not exists
+	 * @throws  IllegalArgumentException  If the supplied file does not exist
 	 * 							 or if {@link #isEmpty} method of the supplied clip returns {@code false}.
 	 */
-	protected FileClip(final File content, final RPClip<?> emptyClip) {
+	FileClip(final File content, final RPClip<?> emptyClip) {
 		if (!content.exists()) {
 			throw new IllegalArgumentException("The file does not exists");
 		}
@@ -62,7 +62,7 @@ public final class FileClip implements RPClip<File> {
 	 * 
 	 * @param  content  The File content of this RPClip.
 	 * 
-	 * @throws  IllegalArgumentException  If the supplied file does not exists
+	 * @throws  IllegalArgumentException  If the supplied file does not exist
 	 * 							 or if {@link #isEmpty} method of the supplied clip returns {@code false}.
 	 */
 	public FileClip(final String title, final File content) {

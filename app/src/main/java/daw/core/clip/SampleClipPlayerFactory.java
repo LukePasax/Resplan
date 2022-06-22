@@ -11,7 +11,7 @@ import net.beadsproject.beads.ugens.SamplePlayer.LoopType;
 /**
  * A Factory for {@link RPClipPlayer} which plays a {@link SampleClip}
  *	<p>Creates a {@link SampleClipPlayer} and connect it with the given {@link RPChannel}.
- *	Could also create a player with an active cut already setted.
+ *	Could also create a player with an active cut already set.
  */
 public final class SampleClipPlayerFactory implements ClipPlayerFactory {
 
