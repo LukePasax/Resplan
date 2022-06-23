@@ -55,7 +55,6 @@ public final class Recorder implements RPRecorder {
 	@Override
 	public void pause() {
 		recorder.pause(true);
-		recorder.clip();
 		ac.stop();
 	}
 
@@ -66,6 +65,7 @@ public final class Recorder implements RPRecorder {
 
 	@Override
 	public Sample getSample() {
+		recorder.clip();
 		return this.recordedData;
 	}
 }
