@@ -1,5 +1,6 @@
 package view.common;
 
+import javafx.stage.Screen;
 import resplan.Starter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +33,11 @@ public final class App extends Application {
         stage.getIcons().add(new Image("/icons/icon.png"));
         stage.setTitle("resplan");
         stage.initStyle(StageStyle.UNDECORATED);
+        stage.setMinWidth(Screen.getPrimary().getVisualBounds().getWidth()*2/5);
+        stage.setMinHeight(Screen.getPrimary().getVisualBounds().getHeight()*2/5);
+        stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth()*3/5);
+        stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight()*3/5);
+        ResizeHelper.addResizeListener(stage);
         stage.show();
         final FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
         this.sleepingRoot = editLoader.load();
