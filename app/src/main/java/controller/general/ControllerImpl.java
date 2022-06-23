@@ -422,6 +422,11 @@ public final class ControllerImpl implements Controller {
         return this.manager.getProjectLength();
     }
 
+    @Override
+    public double getProjectTimeOut() {
+        return this.manager.getProjectTimeOut();
+    }
+
     /**
      * {@inheritDoc}
      * @param clip the name of a clip.

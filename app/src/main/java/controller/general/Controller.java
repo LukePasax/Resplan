@@ -199,6 +199,9 @@ public interface Controller {
      */
     double getProjectLength();
 
+
+    double getProjectTimeOut();
+
     /**
      * Moves a clip from a position to another in the timeline.
      * @param clip the name of a clip.

@@ -65,8 +65,8 @@ public final class ExportViewController {
             this.window = this.fileName.getScene().getWindow();
             try {
                 if (this.projectCheck.isSelected()) {
-                    final Double tickTime = Starter.getController().getProjectLength() / 100;
-                    this.startProgressBar(Starter.getController().getProjectLength(), tickTime);
+                    final Double tickTime = Starter.getController().getProjectTimeOut() / 100;
+                    this.startProgressBar(Starter.getController().getProjectTimeOut(), tickTime);
                     Starter.getController().startExport(0d);
                 } else {
                     final Double startTime =  this.converter.fromString(this.startTime.getText()).doubleValue();
@@ -134,6 +134,7 @@ public final class ExportViewController {
     }
 
     public void cancelPressed() {
+        Starter.getController().stop();
         this.endTime.getScene().getWindow().hide();
     }
 }

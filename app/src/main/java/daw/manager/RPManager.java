@@ -177,7 +177,18 @@ public interface RPManager {
 
     void updateProjectLength();
 
+    /**
+     * Gets the current project length. Project length is defined as the furthest timeout position of a clip, plus
+     * an eventual minimum spacing for visual purposes.
+     * @return the length of the projects in milliseconds.
+     */
     double getProjectLength();
+
+    /**
+     * This method is used to get the time out of the last clip in the project.
+     * @return the time out of the last clip
+     */
+    double getProjectTimeOut() throws ClipNotFoundException;
 
     void moveClip(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException;
 

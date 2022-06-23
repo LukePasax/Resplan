@@ -420,9 +420,27 @@ public final class Manager implements RPManager {
         return this.clipLinker.getClipFromPart(this.clipLinker.getPart(clip)).getDuration();
     }
 
+    /**
+     * Gets the current project length. Project length is defined as the furthest timeout position of a clip, plus
+     * an eventual minimum spacing for visual purposes.
+     * @return the length of the projects in milliseconds.
+     */
     @Override
     public double getProjectLength() {
         return projectLength;
+    }
+
+    /**
+     * This method is used to get the time out of the last clip in the project.
+     * @return the time out of the last clip or the project length if there are no clips
+     */
+    @Override
+    public double getProjectTimeOut() {
+        try {
+            return this.furthestClipTime();
+        } catch (ClipNotFoundException e) {
+            return this.projectLength;
+        }
     }
 
     @Override
