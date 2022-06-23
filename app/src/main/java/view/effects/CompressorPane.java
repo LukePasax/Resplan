@@ -1,6 +1,9 @@
 package view.effects;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import resplan.Starter;
 
 public final class CompressorPane extends BorderPane {
 	
@@ -21,9 +25,13 @@ public final class CompressorPane extends BorderPane {
 	final private Label attackValue = new Label("0.2");
 	final private Label ratioValue = new Label("1:1");
 	final private Label decayValue = new Label("0.2");
+	private String channel;
+	private int index;
 	
 
-	public CompressorPane(final String title) {	
+	public CompressorPane(final String title, final String channel, final int index) {
+		this.index = index;
+		this.channel = channel;
 		final HBox titlebox = new HBox();
 		titlebox.setAlignment(Pos.CENTER);
 		final Label ltitle = new Label(title);
@@ -95,6 +103,9 @@ public final class CompressorPane extends BorderPane {
 			final VBox firstcolumn = new VBox();
 			
 			final ContinuousKnobPane threshold = new ContinuousKnobPane(Double.NEGATIVE_INFINITY, 0.0, currentThreshold, 0, "THRESHOLD");
+			threshold.getValueProperty().addListener((ch, old, n) -> {
+				setParameters("Threshold", n.floatValue());
+			});
 			final ContinuousKnobPane attack = new ContinuousKnobPane(0.2, 20.0, currentAttack, 3, "ATTACK");
 			firstrow.getChildren().addAll(threshold, attack);
 			
@@ -131,6 +142,12 @@ public final class CompressorPane extends BorderPane {
 			scene.getStylesheets().add(css);
 			stage.setScene(scene);
 			stage.show();
+		}
+		
+		private void setParameters(String par, Float value) {
+			Map<String, Float> values = new HashMap<>();
+			values.put(par, value);
+			Starter.getController().setEffectParameters(channel, index, values);
 		}
 	}
 }

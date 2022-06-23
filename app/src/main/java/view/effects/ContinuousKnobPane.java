@@ -1,5 +1,7 @@
 package view.effects;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -12,7 +14,7 @@ public final class ContinuousKnobPane extends Pane {
 	
 	private Double min;
 	private Double max;
-	private Double value = 0.0;
+	private DoubleProperty value = new SimpleDoubleProperty(0.0);
 	private final Pane rotation;
 	private final Label lvalue;
 	private final static double correctionx = 18;
@@ -151,19 +153,19 @@ public final class ContinuousKnobPane extends Pane {
 		if(min.equals(Double.NEGATIVE_INFINITY)) {
 			if(value <= max) {
 				min = -500.0;
-				this.value = value;
+				this.value.set(value);
 				lvalue.setText("" + value);
 			}
 		}
 		else if(max.equals(Double.POSITIVE_INFINITY)) {
 			if(value >= min) {
 				max = 500.0;
-				this.value = value;
+				this.value.set(value);
 				lvalue.setText("" + value);
 			}
 		} else {
 			if(value >= min && value <= max) {			
-				this.value = value;
+				this.value.set(value);
 				lvalue.setText("" + value);
 				newangle = minangle + ((270*value)/(max-min));
 				rotation.setRotate(newangle);
@@ -173,6 +175,10 @@ public final class ContinuousKnobPane extends Pane {
 	}
 	
 	public final double getValue() {
+		return this.value.get();
+	}
+	
+	public final DoubleProperty getValueProperty() {
 		return this.value;
 	}
 	

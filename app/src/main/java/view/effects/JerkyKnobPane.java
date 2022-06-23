@@ -1,7 +1,8 @@
 package view.effects;
 
 import java.util.List;
-
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -13,7 +14,7 @@ import javafx.scene.shape.Circle;
 public final class JerkyKnobPane extends Pane{
 	private final String min;
 	private final String max;
-	private String value = "";
+	private StringProperty value = new SimpleStringProperty("");
 	private final List<String> values;
 	private final Pane rotation;
 	private final Label lvalue;
@@ -68,7 +69,7 @@ public final class JerkyKnobPane extends Pane{
 		lmax.setLayoutY(56.0);
 		lmax.setStyle("-fx-font-size: 11;");
 		//Value label
-		lvalue = new Label(value);
+		lvalue = new Label(value.get());
 		lvalue.setLayoutX(15);
 		lvalue.setLayoutY(half-10);
 		lvalue.setPrefWidth(radius*2);
@@ -130,13 +131,17 @@ public final class JerkyKnobPane extends Pane{
 	
 	public final void setValue(String value) {
 		if(values.contains(value)) {
-			this.value = value;
+			this.value.set(value);
 			lvalue.setText(value);
 			rotation.setRotate((double)(270*values.indexOf(value))/(values.size()-1));
 		}
 	}
 	
 	public final String getValue() {
+		return this.value.get();
+	}
+	
+	public final StringProperty getValueProperty() {
 		return this.value;
 	}
 	

@@ -80,8 +80,8 @@ public final class EffectsPane extends ScrollPane {
 	
 	private void addEffect(final Effect effect, final int index) {
 		try {
-			final EffectPane newPane = new EffectPane(effectsType.get(effect.getType()).getDeclaredConstructor(String.class).
-										newInstance(effect.getType()));
+			final EffectPane newPane = new EffectPane(effectsType.get(effect.getType()).getDeclaredConstructor(String.class, String.class, int.class).
+										newInstance(effect.getType(), channel, index));
 			effects.put(effect, newPane);
 			effectsRoot.getChildren().add(index, newPane);
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
@@ -96,8 +96,7 @@ public final class EffectsPane extends ScrollPane {
 	}
 	
 	private void setEffect(ObservableList<? extends Effect> list) {
-		System.out.println(list);
-		effectsRoot.getChildren().removeAll();
+		effectsRoot.getChildren().forEach(e -> effectsRoot.getChildren().remove(e));
 		list.forEach(e -> {
 			try {
 				effectsRoot.getChildren().add(new EffectPane(effectsType.get(e.getType()).getDeclaredConstructor(String.class).
