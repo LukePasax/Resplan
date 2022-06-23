@@ -10,7 +10,7 @@ import javafx.scene.layout.Region;
  * and make it resizable by the user by clicking and dragging the border in the
  * same way as a window.
  * <p>
- * Only height resizing is currently implemented. Usage: <pre>DragResizer.makeResizable(myAnchorPane);</pre>
+ * Only height resizing is currently implemented.
  */
 public final class RegionHeightResizer {
 

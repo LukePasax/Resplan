@@ -1,16 +1,18 @@
 package engine;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.junit.jupiter.api.Test;
-
 import daw.core.channel.BasicChannelFactory;
 import daw.core.channel.RPChannel;
-import daw.core.clip.*;
-import daw.engine.*;
+import daw.core.clip.SampleClip;
+import daw.core.clip.SampleClipPlayerFactory;
+import daw.engine.ClipPlayerNotifier;
+import daw.engine.Clock;
+import daw.engine.PlayersMap;
 import net.beadsproject.beads.data.audiofile.FileFormatException;
 import net.beadsproject.beads.data.audiofile.OperationUnsupportedException;
 

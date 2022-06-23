@@ -1,12 +1,18 @@
 package clip;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Iterator;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
-import daw.core.clip.*;
+import daw.core.clip.ClipNotFoundException;
+import daw.core.clip.EmptyClip;
+import daw.core.clip.RPClip;
+import daw.core.clip.RPTapeChannel;
+import daw.core.clip.TapeChannel;
 import javafx.util.Pair;
 
 class TestTapeChannel {
@@ -67,7 +73,7 @@ class TestTapeChannel {
 	void testGetClipWithTimeIterator() {
 		RPTapeChannel tapeChannel = new TapeChannel();
 		for (int i = 0; i < 10; i++) {
-			RPClip<?> clip = new EmptyClip("title", 10);
+			RPClip<?> clip = new EmptyClip("title" + i, 10);
 			tapeChannel.insertRPClip(clip, i * 10);
 		}
 		Iterator<Pair<Double, RPClip<?>>> iterator = tapeChannel.getClipWithTimeIterator();
@@ -83,7 +89,7 @@ class TestTapeChannel {
 	void testAddingAndOverwriteClip() {
 		RPTapeChannel tapeChannel = new TapeChannel();
 		for (int i = 0; i < 10; i++) {
-			RPClip<?> clip = new EmptyClip("title", 100);
+			RPClip<?> clip = new EmptyClip("title" + i, 100);
 			tapeChannel.insertRPClip(clip, i * 10);
 		}
 		Iterator<Pair<Double, RPClip<?>>> iterator = tapeChannel.getClipWithTimeIterator();

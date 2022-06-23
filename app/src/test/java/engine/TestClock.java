@@ -1,9 +1,13 @@
 package engine;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-import daw.engine.*;
+import daw.engine.Clock;
+import daw.engine.ClockException;
+import daw.engine.RPClock;
 
 class TestClock {
 

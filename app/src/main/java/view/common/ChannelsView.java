@@ -32,7 +32,7 @@ public abstract class ChannelsView {
 	 * Index of last channel of each group.
 	 */
 	private final Map<String, Integer> groupIndexes = new HashMap<>();
-	private static final Map<String, Color> groupColors = new HashMap<>();
+	private static final Map<String, Color> GROUP_COLORS = new HashMap<>();
 	private final StringProperty selected = new SimpleStringProperty();
 	private final Random rand = new Random();
 	
@@ -45,17 +45,17 @@ public abstract class ChannelsView {
 					//--------CREATE VIEW COMPONENT-----
 					Channel ch = c.getKey();
 					//set ch group color
-					if (groupColors.get(ch.getGroup()) == null) {
-						groupColors.put(ch.getGroup(), Color.rgb(rand.nextInt(RGB_COLORS), rand.nextInt(RGB_COLORS), rand.nextInt(RGB_COLORS)));
+					if (GROUP_COLORS.get(ch.getGroup()) == null) {
+						GROUP_COLORS.put(ch.getGroup(), Color.rgb(rand.nextInt(RGB_COLORS), rand.nextInt(RGB_COLORS), rand.nextInt(RGB_COLORS)));
 					}
-					ChannelContentView cw = new ChannelContentView(ch, timeAxisSetter.getAxis(), toolBarSetter, groupColors.get(ch.getGroup())) {
+					ChannelContentView cw = new ChannelContentView(ch, timeAxisSetter.getAxis(), toolBarSetter, GROUP_COLORS.get(ch.getGroup())) {
 
 						@Override
 						public Node drawClipContent(final Clip clip) {
 							return drawClip(clip);
 						}
 					};
-					ChannelInfosView iw = new ChannelInfosView(ch, groupColors.get(ch.getGroup())) {
+					ChannelInfosView iw = new ChannelInfosView(ch, GROUP_COLORS.get(ch.getGroup())) {
 
 						@Override
 						public Node drawChannelInfos(final Channel ch) {

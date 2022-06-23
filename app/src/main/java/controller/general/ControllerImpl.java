@@ -28,6 +28,8 @@ import planning.TextFactoryImpl;
 import view.common.AlertDispatcher;
 import view.common.App;
 import view.common.ViewDataImpl;
+import view.common.ViewDataImpl.Effect;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
@@ -701,6 +703,7 @@ public final class ControllerImpl implements Controller {
     public void addEffectAtPosition(final String channel, final String effect, final int index) {
         try {
             this.getProcessingUnit(channel).addEffectAtPosition(this.createEffect(effect), index);
+            App.getData().getChannel(channel).getFxList().add(index, new Effect(effect));
         } catch (NoSuchElementException e) {
             this.manager.getChannelFromTitle(channel).addProcessingUnit(new BasicProcessingUnit(
                     List.of(this.createEffect(effect))));
