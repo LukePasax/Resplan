@@ -19,13 +19,12 @@ public final class App extends Application {
     private Scene activeScene;
     private Parent sleepingRoot;
     private EditViewController editController;
-    private static final int MIN_RATIO = 2 / 5;
-    private static final int OPEN_RATIO = 3 / 5;
+    private static final double MIN_RATIO = 0.6;
+    private static final double OPEN_RATIO = 0.7;
 
     public static ViewData getData() {
     	return VIEW_DATA;
     }
-
 
     @Override
     public void start(final Stage stage) throws Exception {

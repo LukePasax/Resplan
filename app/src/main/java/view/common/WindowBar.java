@@ -10,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -83,7 +82,7 @@ public final class WindowBar {
         AnchorPane.setRightAnchor(menuBar, 0.0);
         menuBar.setOnMousePressed(this::mousePressed);
         menuBar.setOnMouseDragged(this::mouseDragged);
-        final Label projectName = new Label("resplan");
+        final Label projectName = new Label("Resplan");
         projectName.setPrefWidth(LABEL_WIDTH);
         projectName.setAlignment(Pos.CENTER);
         AnchorPane.setTopAnchor(projectName, 0.0);
