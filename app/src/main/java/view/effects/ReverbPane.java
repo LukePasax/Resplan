@@ -12,14 +12,14 @@ import javafx.stage.Stage;
 
 public final class ReverbPane extends BorderPane {
 	
-	final private static VBox effects = new VBox();
+	final private VBox effects = new VBox();
 	
-	final private static Label dampingValue = new Label("0.0");
-	final private static Label roomsizeValue = new Label("0.0");
-	final private static Label earlyValue = new Label("0.0");
-	final private static Label lateValue = new Label("0.0");
-	final private static Label dryValue = new Label("0.0");
-	final private static Label wetValue = new Label("0.0");
+	final private Label dampingValue = new Label("0.0");
+	final private Label roomsizeValue = new Label("0.0");
+	final private Label earlyValue = new Label("0.0");
+	final private Label lateValue = new Label("0.0");
+	final private Label dryValue = new Label("0.0");
+	final private Label wetValue = new Label("0.0");
 	
 	public ReverbPane(final String title) {
 		final HBox titlebox = new HBox();
@@ -73,7 +73,8 @@ public final class ReverbPane extends BorderPane {
 		effects.getChildren().add(hbutton);
 		
 		expand.setOnMouseClicked(e -> {
-			Reverb.show(title, Double.parseDouble(dampingValue.getText()), Double.parseDouble(roomsizeValue.getText()), Double.parseDouble(earlyValue.getText()),
+			final Reverb reverb = new Reverb();
+			reverb.show(title, Double.parseDouble(dampingValue.getText()), Double.parseDouble(roomsizeValue.getText()), Double.parseDouble(earlyValue.getText()),
 						Double.parseDouble(lateValue.getText()), Double.parseDouble(dryValue.getText()), Double.parseDouble(wetValue.getText()));
 		});
 		this.setCenter(effects);
@@ -84,8 +85,8 @@ public final class ReverbPane extends BorderPane {
 		this.getStylesheets().add(css);
 	}
 	
-	public final static class Reverb {
-		public final static void show(final String title, final double currentDamping, final double currentRoomsize, final double currentEarly,
+	public final class Reverb {
+		public final void show(final String title, final double currentDamping, final double currentRoomsize, final double currentEarly,
 								final double currentLate, final double currentDry, final double currentWet) {
 			BorderPane root = new BorderPane();
 			final HBox titlebox = new HBox(new Label(title));
