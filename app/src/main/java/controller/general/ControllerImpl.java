@@ -735,6 +735,10 @@ public final class ControllerImpl implements Controller {
     @Override
     public void swapEffects(final String channel, final int index1, final int index2) {
         this.getProcessingUnit(channel).swapEffects(index1, index2);
+        var oldFirst = App.getData().getChannel(channel).getFxList().get(index1);
+        var oldSecond = App.getData().getChannel(channel).getFxList().get(index2);
+        App.getData().getChannel(channel).getFxList().set(index2, oldFirst);
+        App.getData().getChannel(channel).getFxList().set(index1, oldSecond);
     }
 
     @Override

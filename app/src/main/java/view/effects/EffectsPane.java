@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import resplan.Starter;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -41,9 +42,9 @@ public final class EffectsPane extends ScrollPane {
 			if(c.wasRemoved()) {
 				c.getRemoved().forEach(e -> removeEffect(e));
 			}
-
-			if(c.wasPermutated()) {
-				c.getAddedSubList().forEach(e -> setEffect(c.getPermutation(c.getList().indexOf(e)), e));
+			
+			if(c.wasReplaced()) {
+				this.setEffect(c.getList());
 			}
 		});
 		final HBox root = new HBox();
@@ -94,8 +95,18 @@ public final class EffectsPane extends ScrollPane {
 		effects.remove(effect);
 	}
 	
-	private void setEffect(final int newPos, Effect effect) {
-		effectsRoot.getChildren().set(newPos, effects.get(effect));
+	private void setEffect(ObservableList<? extends Effect> list) {
+		System.out.println(list);
+		effectsRoot.getChildren().removeAll();
+		list.forEach(e -> {
+			try {
+				effectsRoot.getChildren().add(new EffectPane(effectsType.get(e.getType()).getDeclaredConstructor(String.class).
+						newInstance(e.getType())));
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
+				e1.printStackTrace();
+			}
+		});
 	}
 	
 	public final class EffectPane extends BorderPane {
@@ -111,7 +122,9 @@ public final class EffectsPane extends ScrollPane {
 			final Button moveLeft = new Button("<");
 			moveLeft.setShape(new Circle(1.5));
 			moveLeft.setOnMouseClicked(e -> {
-				
+				//if(effectsRoot.getChildren().contains(effectsRoot.getChildren().get(0)
+				Starter.getController().swapEffects(channel, 
+						effectsRoot.getChildren().indexOf(this), effectsRoot.getChildren().indexOf(this)-1);
 			});
 			final Button moveRight = new Button(">");
 			moveRight.setShape(new Circle(1.5));
