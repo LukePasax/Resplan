@@ -760,7 +760,8 @@ public final class ControllerImpl implements Controller {
      */
     @Override
     public void setPan(final String channel, final float value) {
-        this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel)).getPanner().setPos(value);
+        this.manager.getChannelLinker().getChannel(this.manager.getChannelLinker().getRole(channel))
+                .getPanner().setParameters(Map.of("value", value));
     }
 
     /**

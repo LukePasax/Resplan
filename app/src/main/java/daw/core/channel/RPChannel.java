@@ -1,10 +1,10 @@
 package daw.core.channel;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import daw.core.audioprocessing.Pan;
 import daw.core.audioprocessing.ProcessingUnit;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
-import net.beadsproject.beads.ugens.Panner;
 import java.util.Optional;
 
 /**
@@ -69,9 +69,9 @@ public interface RPChannel {
     /**
      * Gets the panner, that is the tool which controls the distribution of an audio signal
      * into a new stereo or multichannel sound field.
-     * @return a {@link Panner}.
+     * @return an object of type {@link Pan}.
      */
-    Panner getPanner();
+    Pan getPanner();
 
     /**
      * Enables the audio of the channel. After this operation is done,

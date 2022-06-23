@@ -24,7 +24,7 @@ public abstract class Equalization extends RPEffect {
      */
     protected Equalization(final int channels, final boolean low) {
         super(channels);
-        this.filter = new CrossoverFilter(AudioContextManager.getAudioContext(), 1);
+        this.filter = new CrossoverFilter(AudioContextManager.getAudioContext(), channels);
         this.filter.addInput(this.getGainIn());
         if (low) {
             this.filter.setFrequency(LOW_PASS_DEFAULT_FREQUENCY);

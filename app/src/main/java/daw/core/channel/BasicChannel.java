@@ -3,11 +3,11 @@ package daw.core.channel;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import daw.core.audioprocessing.Pan;
 import daw.utilities.AudioContextManager;
 import daw.core.audioprocessing.ProcessingUnit;
 import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.ugens.Gain;
-import net.beadsproject.beads.ugens.Panner;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -25,7 +25,7 @@ public final class BasicChannel implements RPChannel {
     private static final float DEFAULT_GAIN_IN = 0.9f;
     private static final int INS = 2;
 
-    private final Panner pan;
+    private final Pan pan;
     private final Type type;
     private Optional<ProcessingUnit> pu;
     private final Gain gainIn;
@@ -46,7 +46,7 @@ public final class BasicChannel implements RPChannel {
     @JsonCreator
     private BasicChannel(@JsonProperty("type") final Type type, @JsonProperty("processingUnit")
                         final ProcessingUnit processingUnit) {
-        this.pan = new Panner(AudioContextManager.getAudioContext());
+        this.pan = new Pan();
         this.type = type;
         this.gainIn = new Gain(AudioContextManager.getAudioContext(), INS, DEFAULT_GAIN_IN);
         this.gainOut = new Gain(AudioContextManager.getAudioContext(), INS, 1.0f);
@@ -63,8 +63,8 @@ public final class BasicChannel implements RPChannel {
 
     private void setStructure() {
         // in -> pan -> mute -> out
-        this.pan.addInput(this.gainIn);
-        this.gainMute.addInput(this.pan);
+        this.pan.getGainIn().addInput(this.gainIn);
+        this.gainMute.addInput(this.pan.getGainOut());
         this.gainOut.addInput(this.gainMute);
     }
 
@@ -120,10 +120,10 @@ public final class BasicChannel implements RPChannel {
 
     /**
      * {@inheritDoc}
-     * @return a {@link Panner}.
+     * @return an object of type {@link Pan}.
      */
     @Override
-    public Panner getPanner() {
+    public Pan getPanner() {
         return this.pan;
     }
 
@@ -164,8 +164,8 @@ public final class BasicChannel implements RPChannel {
         if (!this.isProcessingUnitPresent()) {
             this.pu = Optional.of(pu);
             this.pu.get().addInput(this.gainIn);
-            this.pan.clearInputConnections();
-            this.pu.get().connect(this.pan);
+            this.pan.getGainIn().clearInputConnections();
+            this.pu.get().connect(this.pan.getGainIn());
         }
     }
 
@@ -176,8 +176,8 @@ public final class BasicChannel implements RPChannel {
     public void removeProcessingUnit() {
         if (this.isProcessingUnitPresent()) {
             this.pu = Optional.empty();
-            this.pan.clearInputConnections();
-            this.pan.addInput(this.gainIn);
+            this.pan.getGainIn().clearInputConnections();
+            this.pan.getGainIn().addInput(this.gainIn);
         }
     }
 
