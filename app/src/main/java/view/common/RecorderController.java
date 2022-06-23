@@ -23,6 +23,7 @@ public final class RecorderController {
     private TextArea textArea;
     @FXML
     private GridPane grid;
+    private boolean hasStarted;
 
     public void setClipTitle(final String clipTitle) {
         this.clipTitle.setText(clipTitle);
@@ -38,25 +39,29 @@ public final class RecorderController {
     public void recPressed() {
         Starter.getController().startRecording();
         timeLabel.setText("Recording...");
+        this.hasStarted = true;
     }
 
     public void stopPressed() {
-        Starter.getController().stopRecording();
-        final WavFilePicker picker = new WavFilePicker();
-        final File file = picker.getFileChooser().showSaveDialog(this.recButton.getScene().getWindow());
-        try {
-            if (file != null) { 
-            	timeLabel.setText("");
-                Starter.getController().writeRecordingOnFile(file);
-                Starter.getController().addContentToClip(this.clipTitle.getText(), file);
-                this.recButton.getScene().getWindow().hide();
+        if (this.hasStarted) {
+            Starter.getController().stopRecording();
+            final WavFilePicker picker = new WavFilePicker();
+            final File file = picker.getFileChooser().showSaveDialog(this.recButton.getScene().getWindow());
+            try {
+                if (file != null) {
+                    timeLabel.setText("");
+                    Starter.getController().writeRecordingOnFile(file);
+                    Starter.getController().addContentToClip(this.clipTitle.getText(), file);
+                    this.recButton.getScene().getWindow().hide();
+                }
+            } catch (IOException | ImportException | ClipNotFoundException e) {
+                AlertDispatcher.dispatchError(e.getLocalizedMessage());
             }
-        } catch (IOException | ImportException | ClipNotFoundException e) {
-            AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
     }
 
     public void cancelPressed() {
         this.recButton.getScene().getWindow().hide();
     }
+
 }
