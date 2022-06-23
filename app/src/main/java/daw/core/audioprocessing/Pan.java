@@ -57,8 +57,8 @@ public class Pan extends UGen implements AudioElement {
     @Override
     public void setParameters(Map<String, Float> parameters) {
         this.value = parameters.get("value");
-        this.left.setGain((float) Math.cos(Math.PI * (1 + value) / 4));
-        this.right.setGain((float) Math.sin(Math.PI * (1 + value) / 4));
+        this.left.setGain((float) Math.cos(Math.PI * (1 + this.value) / 4));
+        this.right.setGain((float) Math.sin(Math.PI * (1 + this.value) / 4));
     }
 
     /**

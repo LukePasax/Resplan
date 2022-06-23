@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import daw.utilities.AudioContextManager;
 import net.beadsproject.beads.data.DataBead;
+import net.beadsproject.beads.ugens.Gain;
 import net.beadsproject.beads.ugens.Reverb;
 import java.util.Map;
 
@@ -16,6 +17,9 @@ import java.util.Map;
 public class DigitalReverb extends RPEffect {
 
     private final Reverb rev;
+    private final Gain wet;
+    private final Gain dry;
+    private float dryWetValue;
 
     /**
      * Constructs a reverb and sets its parameters to the default value.
@@ -25,9 +29,19 @@ public class DigitalReverb extends RPEffect {
     public DigitalReverb(@JsonProperty("ins") final int channels) {
         super(channels);
         this.rev = new Reverb(AudioContextManager.getAudioContext(), channels);
+        this.wet = new Gain(AudioContextManager.getAudioContext(), 2, 1.0f);
+        this.dry = new Gain(AudioContextManager.getAudioContext(), 2, 1.0f);
+        this.initializeStructure();
+    }
+
+    private void initializeStructure() {
         this.rev.addInput(this.getGainIn());
-        this.getGainOut().addInput(this.getGainIn());
-        this.getGainOut().addInput(this.rev);
+        this.dry.addInput(this.getGainIn());
+        this.wet.addInput(this.rev);
+        this.getGainOut().addInput(0, this.dry, 0);
+        this.getGainOut().addInput(0, this.wet, 0);
+        this.getGainOut().addInput(1, this.dry, 1);
+        this.getGainOut().addInput(1, this.wet, 1);
     }
 
     /**
@@ -36,7 +50,9 @@ public class DigitalReverb extends RPEffect {
      */
     @Override
     public final Map<String, Float> getParameters() {
-        return Map.of("damping", this.rev.getDamping(), "roomSize", this.rev.getSize());
+        return Map.of("damping", this.rev.getDamping(), "roomSize", this.rev.getSize(),
+                "earlyReflectionsLevel", this.rev.getEarlyReflectionsLevel(),
+                "lateReverbLevel", this.rev.getLateReverbLevel(), "dryWet", this.dryWetValue);
     }
 
     /**
@@ -47,6 +63,9 @@ public class DigitalReverb extends RPEffect {
     public final void setParameters(final Map<String, Float> parameters) {
         final DataBead db = new DataBead();
         db.putAll(parameters);
+        this.dryWetValue = parameters.get("value");
+        this.dry.setGain((float) Math.cos(Math.PI * (1 + this.dryWetValue) / 4));
+        this.wet.setGain((float) Math.sin(Math.PI * (1 + this.dryWetValue) / 4));
         this.rev.sendData(db);
     }
 
