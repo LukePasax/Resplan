@@ -326,6 +326,8 @@ public interface Controller {
 
     void removeEffectAtPosition(String channel, int index);
 
+    void removeProcessingUnit(String channel);
+
     void swapEffects(String channel, int index1, int index2);
 
     void setEffectParameters(String channel, int index, Map<String, Float> parameters);

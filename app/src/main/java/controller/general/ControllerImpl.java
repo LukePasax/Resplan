@@ -732,6 +732,11 @@ public final class ControllerImpl implements Controller {
     }
 
     @Override
+    public void removeProcessingUnit(final String channel) {
+        this.manager.getChannelFromTitle(channel).removeProcessingUnit();
+    }
+
+    @Override
     public void swapEffects(final String channel, final int index1, final int index2) {
         this.getProcessingUnit(channel).swapEffects(index1, index2);
         var oldFirst = App.getData().getChannel(channel).getFxList().get(index1);
