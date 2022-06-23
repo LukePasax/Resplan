@@ -19,6 +19,8 @@ public final class App extends Application {
     private Scene activeScene;
     private Parent sleepingRoot;
     private EditViewController editController;
+    private static final int MIN_RATIO = 2 / 5;
+    private static final int OPEN_RATIO = 3 / 5;
 
     public static ViewData getData() {
     	return VIEW_DATA;
@@ -33,16 +35,15 @@ public final class App extends Application {
         stage.getIcons().add(new Image("/icons/icon.png"));
         stage.setTitle("resplan");
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.setMinWidth(Screen.getPrimary().getVisualBounds().getWidth()*2/5);
-        stage.setMinHeight(Screen.getPrimary().getVisualBounds().getHeight()*2/5);
-        stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth()*3/5);
-        stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight()*3/5);
+        stage.setMinWidth(Screen.getPrimary().getVisualBounds().getWidth() * MIN_RATIO);
+        stage.setMinHeight(Screen.getPrimary().getVisualBounds().getHeight() * MIN_RATIO);
+        stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth() * OPEN_RATIO);
+        stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight() * OPEN_RATIO);
         ResizeHelper.addResizeListener(stage);
         stage.show();
         final FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
         this.sleepingRoot = editLoader.load();
         activeScene.setOnKeyPressed(this::switchScene);
-        //this.planningController = planningLoader.getController();
         this.editController = editLoader.getController();
         Starter.getController().setApp(this);
         Starter.getController().loadViewData();
