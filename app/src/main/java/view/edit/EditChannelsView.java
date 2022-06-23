@@ -82,8 +82,7 @@ public final class EditChannelsView extends ChannelsView {
 		pan.setMajorTickUnit(PAN_RANGE);
 		pan.setShowTickMarks(true);
 		pan.setShowTickLabels(true);
-		pan.setLabelFormatter(new StringConverter<Double>() {
-
+		pan.setLabelFormatter(new StringConverter<>() {
 			@Override
 			public String toString(final Double object) {
 				return object < 0 ? "L" : object > 0 ? "R" : "C";
@@ -94,7 +93,8 @@ public final class EditChannelsView extends ChannelsView {
 				return null;
 			}
 		});
-		pan.setOnMouseReleased(e -> Starter.getController().setPan(ch.getTitle(), Double.valueOf(pan.getValue()).floatValue()));
+		pan.valueProperty().addListener(((observable, oldValue, newValue) ->
+			Starter.getController().setPan(ch.getTitle(), newValue.floatValue())));
 		//volume
 		Slider volume = new Slider(0, 100, 100);
 		volume.setOnMouseClicked(e -> {
@@ -107,8 +107,7 @@ public final class EditChannelsView extends ChannelsView {
 		volume.setMajorTickUnit(100);
 		volume.setShowTickMarks(true);
 		volume.setShowTickLabels(true);
-		volume.setLabelFormatter(new StringConverter<Double>() {
-
+		volume.setLabelFormatter(new StringConverter<>() {
 			@Override
 			public String toString(final Double object) {
 				return object == 0 ? "-∞" : object == 100 ? "0.0" : ""; 
@@ -119,7 +118,8 @@ public final class EditChannelsView extends ChannelsView {
 				return null;
 			}
 		});
-		volume.setOnMouseReleased(e -> Starter.getController().setVolume(ch.getTitle(), Double.valueOf(volume.getValue()).intValue()));
+		volume.valueProperty().addListener(((observable, oldValue, newValue) ->
+				Starter.getController().setVolume(ch.getTitle(), newValue.intValue())));
 		var pane = new VBox(groupLabel, new FlowPane(muteButton, soloButton, pan), volume);
 		pane.setMinHeight(100);
 		return pane;
