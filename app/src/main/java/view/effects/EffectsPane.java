@@ -159,6 +159,31 @@ public final class EffectsPane extends ScrollPane {
 				}
 			});
 			final Button moveRight = new Button(">");
+			moveRight.setOnMouseClicked(e -> {
+				final List<EffectPane> effectPanes = new ArrayList<>();
+				effectsRoot.getChildren().forEach(eff -> {
+					effectPanes.add((EffectPane) eff);
+				});
+				var firstPos = effectsRoot.getChildren().indexOf(this);
+				var secondPos = effectsRoot.getChildren().indexOf(this)+1;
+				if(secondPos < effectPanes.size()) {
+					var firstElement = effectsRoot.getChildren().get(firstPos);
+					var secondElement = effectsRoot.getChildren().get(secondPos);
+					effectPanes.set(firstPos, (EffectPane) secondElement);
+					effectPanes.set(secondPos, (EffectPane) firstElement);
+					
+					for(int i = 0; i < effectPanes.size(); i++) {
+						Starter.getController().removeEffectAtPosition(channel, 0);
+					}
+					effectPanes.forEach(ep -> {
+						var current = ep.getChildren().get(2).getClass();
+						paneTypes.forEach((p, s) -> {
+							if(p.equals(current))
+								Starter.getController().addEffectAtPosition(channel, s, effectPanes.indexOf(ep));												
+						});
+					});
+				}
+			});
 			moveRight.setShape(new Circle(1.5));
 			HBox.setMargin(remove, new Insets(0,0,0,10));
 			
