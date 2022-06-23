@@ -436,9 +436,7 @@ public final class ControllerImpl implements Controller {
      */
     @Override
     public void moveClip(final String clip, final String channel, final Double finalTimeIn) throws ClipNotFoundException {
-        //App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.moveClip(clip, channel, finalTimeIn);
-        //createClipView(clip, channel);
         updateChannelClipsView(channel);
         App.getData().setProjectLenght(this.getProjectLength());
     }
@@ -471,10 +469,8 @@ public final class ControllerImpl implements Controller {
      */
     @Override
     public void setClipTimeIn(final String clip, final String channel, final Double finalTimeIn) throws ClipNotFoundException {
-    	//App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
     	this.manager.setClipTimeIn(clip, channel, finalTimeIn);
     	this.updateChannelClipsView(channel);
-        //createClipView(clip, channel);
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
@@ -487,9 +483,7 @@ public final class ControllerImpl implements Controller {
      */
     @Override
     public void setClipTimeOut(final String clip, final String channel, final Double finalTimeOut) throws ClipNotFoundException {
-        //App.getData().removeClip(App.getData().getChannel(channel),App.getData().getClip(channel,clip));
         this.manager.setClipTimeOut(clip, channel, finalTimeOut);
-        //createClipView(clip, channel);
         this.updateChannelClipsView(channel);
         App.getData().setProjectLenght(this.getProjectLength());
     }
