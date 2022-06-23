@@ -40,6 +40,8 @@ public final class WindowBar {
     private static double height;
     private double offsetX;
     private double offsetY;
+    private static boolean dragging;
+
 
     public WindowBar(final AnchorPane pane) {
         super();
@@ -155,6 +157,10 @@ public final class WindowBar {
         pane.getChildren().addAll(resplanIcon, menuBar, projectName, minimizeButton, maximizeButton, closeButton);
         pane.setOnMousePressed(this::mousePressed);
         pane.setOnMouseDragged(this::mouseDragged);
+    }
+
+    public static boolean isDragging() {
+        return dragging;
     }
 
     private void close() {
@@ -280,9 +286,13 @@ public final class WindowBar {
     }
 
     private void mouseDragged(final MouseEvent mouseEvent) {
-        final Stage stage = (Stage) this.pane.getScene().getWindow();
-        stage.setX(mouseEvent.getScreenX() - this.offsetX);
-        stage.setY(mouseEvent.getScreenY() - this.offsetY);
+        if (!ResizeHelper.ResizeListener.isResizing()) {
+            dragging = true;
+            final Stage stage = (Stage) this.pane.getScene().getWindow();
+            stage.setX(mouseEvent.getScreenX() - this.offsetX);
+            stage.setY(mouseEvent.getScreenY() - this.offsetY);
+
+        }
     }
 
 }
