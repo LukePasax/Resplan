@@ -12,8 +12,8 @@ import javafx.stage.Stage;
 
 public final class PassPane extends BorderPane {
 	
-	final private static Label frequencyValue = new Label("10.0");
-	final private static VBox effects = new VBox();
+	final private Label frequencyValue = new Label("10.0");
+	final private VBox effects = new VBox();
 
 	public PassPane(final String title) {
 		final HBox titlebox = new HBox();
@@ -37,7 +37,8 @@ public final class PassPane extends BorderPane {
 		effects.getChildren().add(hbutton);
 		
 		expand.setOnMouseClicked(e -> {
-			Pass.show(title, Double.parseDouble(frequencyValue.getText()));
+			final Pass pass = new Pass();
+			pass.show(title, Double.parseDouble(frequencyValue.getText()));
 		});
 		hfrequency.autosize();
 		this.setCenter(effects);		
@@ -51,8 +52,8 @@ public final class PassPane extends BorderPane {
 		this.getStylesheets().add(css);
 	}
 	
-	public final static class Pass {
-		public final static void show(final String title, final double currentFrequency) {
+	public final class Pass {
+		public final void show(final String title, final double currentFrequency) {
 			BorderPane root = new BorderPane();
 			final HBox titlebox = new HBox(new Label(title));
 			titlebox.setAlignment(Pos.CENTER);
