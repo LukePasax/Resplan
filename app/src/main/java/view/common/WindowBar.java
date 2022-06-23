@@ -204,7 +204,10 @@ public final class WindowBar {
         } catch (IllegalStateException e) {
             this.filePicker =  new JsonFilePicker();
             try {
-                Starter.getController().saveWithName(this.filePicker.getFileChooser().showSaveDialog(this.pane.getScene().getWindow()));
+                final var file = this.filePicker.getFileChooser().showSaveDialog(this.pane.getScene().getWindow());
+                if (file != null) {
+                    Starter.getController().saveWithName(file);
+                }
             } catch (DownloadingException ex) {
                 AlertDispatcher.dispatchError(e.getLocalizedMessage());
             }
@@ -218,7 +221,10 @@ public final class WindowBar {
     public void openProject() {
         this.filePicker = new JsonFilePicker();
         try {
-            Starter.getController().openProject(this.filePicker.getFileChooser().showOpenDialog(this.pane.getScene().getWindow()));
+            final var file = this.filePicker.getFileChooser().showOpenDialog(this.pane.getScene().getWindow());
+            if (file != null) {
+                Starter.getController().openProject(file);
+            }
         } catch (LoadingException e) {
             AlertDispatcher.dispatchError(e.getLocalizedMessage());
         }
