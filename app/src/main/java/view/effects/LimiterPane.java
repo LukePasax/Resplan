@@ -12,13 +12,13 @@ import javafx.stage.Stage;
 
 public final class LimiterPane extends BorderPane {
 	
-	final private static VUMeterPane compressor = new VUMeterPane(Double.NEGATIVE_INFINITY, 0.0);
+	final private VUMeterPane compressor = new VUMeterPane(Double.NEGATIVE_INFINITY, 0.0);
 	
-	final private static VBox effects = new VBox();
+	final private VBox effects = new VBox();
 	
-	final private static Label thresholdValue = new Label("0.0");
-	final private static Label attackValue = new Label("0.2");
-	final private static Label decayValue = new Label("0.2");
+	final private Label thresholdValue = new Label("0.0");
+	final private Label attackValue = new Label("0.2");
+	final private Label decayValue = new Label("0.2");
 	
 	public LimiterPane(final String title) {
 		final HBox titlebox = new HBox();

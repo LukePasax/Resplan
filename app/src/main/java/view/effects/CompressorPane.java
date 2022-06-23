@@ -15,12 +15,12 @@ public final class CompressorPane extends BorderPane {
 	
 	final private static VUMeterPane compressor = new VUMeterPane(Double.NEGATIVE_INFINITY, 0.0);
 	
-	final private static VBox effects = new VBox();
+	final private VBox effects = new VBox();
 	
-	final private static Label thresholdValue = new Label("0.0");
-	final private static Label attackValue = new Label("0.2");
-	final private static Label ratioValue = new Label("1:1");
-	final private static Label decayValue = new Label("0.2");
+	final private Label thresholdValue = new Label("0.0");
+	final private Label attackValue = new Label("0.2");
+	final private Label ratioValue = new Label("1:1");
+	final private Label decayValue = new Label("0.2");
 	
 
 	public CompressorPane(final String title) {	
@@ -68,7 +68,9 @@ public final class CompressorPane extends BorderPane {
 		effects.getChildren().add(hbutton);
 		
 		expand.setOnMouseClicked(e -> {
-			Compressor.show(title, Double.parseDouble(thresholdValue.getText()), Double.parseDouble(attackValue.getText()), Double.parseDouble(decayValue.getText()));
+			Compressor compressor = new Compressor();
+			compressor.show(title, Double.parseDouble(thresholdValue.getText()), Double.parseDouble(attackValue.getText()), 
+							Double.parseDouble(decayValue.getText()));
 		});
 		this.setCenter(effects);
 		effects.setPadding(new Insets(10));
@@ -82,8 +84,8 @@ public final class CompressorPane extends BorderPane {
 		compressor.setValue(value);
 	}
 	
-	public final static class Compressor {
-		public final static void show(final String title, final double currentThreshold, final double currentAttack, final double currentDecay) {
+	public final class Compressor {
+		public final void show(final String title, final double currentThreshold, final double currentAttack, final double currentDecay) {
 			BorderPane root = new BorderPane();
 			final HBox titlebox = new HBox(new Label(title));
 			titlebox.setAlignment(Pos.CENTER);
@@ -121,7 +123,7 @@ public final class CompressorPane extends BorderPane {
 				attackValue.setText("" + attack.getValue());
 				ratioValue.setText(ratio.getValue());
 				decayValue.setText("" + decay.getValue());
-				effects.autosize();
+				//effects.autosize();
 				stage.close();
 			});
 			Scene scene = new Scene(root);

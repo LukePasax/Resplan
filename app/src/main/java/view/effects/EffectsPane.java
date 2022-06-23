@@ -24,12 +24,10 @@ public final class EffectsPane extends ScrollPane {
 	private final static Map<String, Class<? extends Pane>> effectsType = createEffects();
 	private final Map<Effect, Node> effects = new HashMap<>();
 	private final String channel;
-	private static EffectsPane first = null;
 	
 	private final static HBox effectsRoot = new HBox();
 
 	public EffectsPane(final String channel) {
-		first = this;
 		this.channel = channel;
 		this.setFitToHeight(true);
 		this.setFitToWidth(true);
@@ -65,14 +63,11 @@ public final class EffectsPane extends ScrollPane {
 			if(((MenuItem)e.getTarget()).getText().equals("Compressor")) {	//Try
 				Effect newEffect = new Effect("Compressor");
 				addEffect(newEffect);
+			} else if(((MenuItem)e.getTarget()).getText().equals("Limiter")) {	//Try
+				Effect newEffect = new Effect("Limiter");
+				addEffect(newEffect);
 			}
 		});
-		/*root.getChildren().add(new EffectPane(new CompressorPane("Compressor")));
-		root.getChildren().add(new EffectPane(new LimiterPane("Limiter")));
-		root.getChildren().add(new EffectPane(new PassPane("Pass")));
-		root.getChildren().add(new EffectPane(new ReverbPane("Reverb")));*/
-		//root.autosize();
-		//this.autosize();
 		root.getChildren().add(effectsRoot);
 		this.setContent(root);
 		
@@ -90,8 +85,8 @@ public final class EffectsPane extends ScrollPane {
 	
 	private void addEffect(final Effect effect) {
 		try {
-			//effects.put(effect, effectsType.get(effect.getType()).getDeclaredConstructor(String.class).newInstance(effect.getType()));
-			EffectPane newPane = new EffectPane(effectsType.get(effect.getType()).getDeclaredConstructor(String.class).newInstance(effect.getType()));
+			final EffectPane newPane = new EffectPane(effectsType.get(effect.getType()).getDeclaredConstructor(String.class).
+										newInstance(effect.getType()));
 			effects.put(effect, newPane);
 			effectsRoot.getChildren().add(newPane);
 			Starter.getController().addEffectAtPosition(channel, effect.getType(), effectsRoot.getChildren().indexOf(newPane));
@@ -102,9 +97,9 @@ public final class EffectsPane extends ScrollPane {
 	}
 	
 	private void removeEffect(final Effect effect) {
-		effects.remove(effect);
 		this.getChildren().remove(effects.get(effect));
 		Starter.getController().removeEffectAtPosition(channel, this.getChildren().indexOf(effects.get(effect)));
+		effects.remove(effect);
 	}
 	
 	private void setEffect(final int newPos, Effect effect) {
