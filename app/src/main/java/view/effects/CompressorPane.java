@@ -104,13 +104,22 @@ public final class CompressorPane extends BorderPane {
 			
 			final ContinuousKnobPane threshold = new ContinuousKnobPane(Double.NEGATIVE_INFINITY, 0.0, currentThreshold, 0, "THRESHOLD");
 			threshold.getValueProperty().addListener((ch, old, n) -> {
-				setParameters("Threshold", n.floatValue());
+				setParameters("threshold", n.floatValue());
 			});
 			final ContinuousKnobPane attack = new ContinuousKnobPane(0.2, 20.0, currentAttack, 3, "ATTACK");
+			attack.getValueProperty().addListener((ch, old, n) -> {
+				setParameters("attack", n.floatValue());
+			});
 			firstrow.getChildren().addAll(threshold, attack);
 			
 			final JerkyKnobPane ratio = new JerkyKnobPane(List.of("1:1", "2:1", "4:1", "8:1"), "RATIO");
+			ratio.getValueProperty().addListener((ch, old, n) -> {
+				//setParameters("ratio", n.chars()); TODO
+			});
 			final ContinuousKnobPane decay = new ContinuousKnobPane(0.2, 40.0, currentDecay, 3, "DECAY");
+			decay.getValueProperty().addListener((ch, old, n) -> {
+				setParameters("decay", n.floatValue());
+			});
 			secondrow.getChildren().addAll(ratio, decay);
 			
 			firstcolumn.getChildren().addAll(firstrow, secondrow);

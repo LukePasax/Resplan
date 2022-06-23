@@ -1,5 +1,8 @@
 package view.effects;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import resplan.Starter;
 
 public final class LimiterPane extends BorderPane {
 	
@@ -19,8 +23,12 @@ public final class LimiterPane extends BorderPane {
 	final private Label thresholdValue = new Label("0.0");
 	final private Label attackValue = new Label("0.2");
 	final private Label decayValue = new Label("0.2");
+	private String channel;
+	private int index;
 	
-	public LimiterPane(final String title) {
+	public LimiterPane(final String title, final String channel, final int index) {
+		this.channel = channel;
+		this.index = index;
 		final HBox titlebox = new HBox();
 		titlebox.setAlignment(Pos.CENTER);
 		final Label ltitle = new Label(title);
@@ -87,10 +95,19 @@ public final class LimiterPane extends BorderPane {
 			final VBox secondcolumn = new VBox(20);
 			
 			final ContinuousKnobPane threshold = new ContinuousKnobPane(Double.NEGATIVE_INFINITY, 0.0, currentThreshold, 3, "THRESHOLD");
+			threshold.getValueProperty().addListener((ch, old, n) -> {
+				setParameters("threshold", n.floatValue());
+			});
 			final ContinuousKnobPane attack = new ContinuousKnobPane(0.2, 20.0, currentAttack, 3, "ATTACK");
+			attack.getValueProperty().addListener((ch, old, n) -> {
+				setParameters("attack", n.floatValue());
+			});
 			firstrow.getChildren().addAll(threshold, attack);
 			
 			final ContinuousKnobPane decay = new ContinuousKnobPane(0.2, 40.0, currentDecay, 3, "DECAY");
+			decay.getValueProperty().addListener((ch, old, n) -> {
+				setParameters("decay", n.floatValue());
+			});
 			secondrow.getChildren().addAll(decay);
 			secondrow.setAlignment(Pos.CENTER);
 			
@@ -124,6 +141,12 @@ public final class LimiterPane extends BorderPane {
 			scene.getStylesheets().add(css);
 			stage.setScene(scene);
 			stage.show();
+		}
+		
+		private void setParameters(String par, Float value) {
+			Map<String, Float> values = new HashMap<>();
+			values.put(par, value);
+			Starter.getController().setEffectParameters(channel, index, values);
 		}
 	}
 }
