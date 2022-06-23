@@ -59,7 +59,8 @@ public final class LimiterPane extends BorderPane {
 		effects.getChildren().add(hbutton);
 		
 		expand.setOnMouseClicked(e -> {
-			Limiter.show(title, Double.parseDouble(thresholdValue.getText()), Double.parseDouble(attackValue.getText()), Double.parseDouble(decayValue.getText()));
+			final Limiter limiter = new Limiter();
+			limiter.show(title, Double.parseDouble(thresholdValue.getText()), Double.parseDouble(attackValue.getText()), Double.parseDouble(decayValue.getText()));
 		});
 		this.setCenter(effects);		
 		
@@ -74,8 +75,8 @@ public final class LimiterPane extends BorderPane {
 		compressor.setValue(value);
 	}
 	
-	public final static class Limiter {
-		public final static void show(final String title, final double currentThreshold, final double currentAttack, final double currentDecay) {
+	public final class Limiter {
+		public final void show(final String title, final double currentThreshold, final double currentAttack, final double currentDecay) {
 			BorderPane root = new BorderPane();
 			final HBox titlebox = new HBox(new Label(title));
 			titlebox.setAlignment(Pos.CENTER);

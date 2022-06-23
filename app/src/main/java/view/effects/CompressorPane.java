@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 public final class CompressorPane extends BorderPane {
 	
-	final private static VUMeterPane compressor = new VUMeterPane(Double.NEGATIVE_INFINITY, 0.0);
+	final private VUMeterPane compressor = new VUMeterPane(Double.NEGATIVE_INFINITY, 0.0);
 	
 	final private VBox effects = new VBox();
 	
@@ -68,7 +68,7 @@ public final class CompressorPane extends BorderPane {
 		effects.getChildren().add(hbutton);
 		
 		expand.setOnMouseClicked(e -> {
-			Compressor compressor = new Compressor();
+			final Compressor compressor = new Compressor();
 			compressor.show(title, Double.parseDouble(thresholdValue.getText()), Double.parseDouble(attackValue.getText()), 
 							Double.parseDouble(decayValue.getText()));
 		});
@@ -123,7 +123,7 @@ public final class CompressorPane extends BorderPane {
 				attackValue.setText("" + attack.getValue());
 				ratioValue.setText(ratio.getValue());
 				decayValue.setText("" + decay.getValue());
-				//effects.autosize();
+				effects.autosize();
 				stage.close();
 			});
 			Scene scene = new Scene(root);
