@@ -17,7 +17,7 @@ public final class ResizeHelper {
     private ResizeHelper() { }
 
     public static void addResizeListener(final Stage stage) {
-        addResizeListener(stage, 1, 1, Double.MAX_VALUE, Double.MAX_VALUE);
+        addResizeListener(stage, App.getMinWidth(), App.getMinHeight(), Double.MAX_VALUE, Double.MAX_VALUE);
     }
 
     public static void addResizeListener(final Stage stage, final double minWidth, final double minHeight, final double maxWidth, final double maxHeight) {
@@ -175,12 +175,6 @@ public final class ResizeHelper {
                 resizing = false;
                 screenOffsetX = stage.getX() - mouseEvent.getScreenX();
                 screenOffsetY = stage.getY() - mouseEvent.getScreenY();
-
-            }
-
-            if (MouseEvent.MOUSE_DRAGGED.equals(mouseEventType) && Cursor.DEFAULT.equals(cursorEvent) && !resizing) {
-                stage.setX(mouseEvent.getScreenX() + screenOffsetX);
-                stage.setY(mouseEvent.getScreenY() + screenOffsetY);
 
             }
 

@@ -22,6 +22,14 @@ public final class App extends Application {
     private static final double MIN_RATIO = 0.6;
     private static final double OPEN_RATIO = 0.7;
 
+    public static double getMinHeight() {
+        return MIN_RATIO * Screen.getPrimary().getVisualBounds().getHeight();
+    }
+
+    public static double getMinWidth() {
+        return MIN_RATIO * Screen.getPrimary().getVisualBounds().getWidth();
+    }
+
     public static ViewData getData() {
     	return VIEW_DATA;
     }
@@ -30,30 +38,35 @@ public final class App extends Application {
     public void start(final Stage stage) throws Exception {
         final FXMLLoader planningLoader = new FXMLLoader(getClass().getResource("/view/PlanningView.fxml"));
         this.activeScene = new Scene(planningLoader.load());
+        final FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
+        this.sleepingRoot = editLoader.load();
+        activeScene.setOnKeyPressed(this::switchSceneListener);
+        this.editController = editLoader.getController();
         stage.setScene(activeScene);
         stage.getIcons().add(new Image("/icons/icon.png"));
         stage.setTitle("resplan");
         stage.initStyle(StageStyle.UNDECORATED);
-        stage.setMinWidth(Screen.getPrimary().getVisualBounds().getWidth() * MIN_RATIO);
-        stage.setMinHeight(Screen.getPrimary().getVisualBounds().getHeight() * MIN_RATIO);
         stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth() * OPEN_RATIO);
         stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight() * OPEN_RATIO);
         ResizeHelper.addResizeListener(stage);
+        this.switchScene();
+        ResizeHelper.addResizeListener(stage);
+        this.switchScene();
         stage.show();
-        final FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/EditView.fxml"));
-        this.sleepingRoot = editLoader.load();
-        activeScene.setOnKeyPressed(this::switchScene);
-        this.editController = editLoader.getController();
         Starter.getController().setApp(this);
         Starter.getController().loadViewData();
     }
 
-    private void switchScene(final KeyEvent keyEvent) {
+    private void switchSceneListener(final KeyEvent keyEvent) {
         if (keyEvent.getCode().equals(KeyCode.A)) {
-            final Parent temp = this.activeScene.getRoot();
-            this.activeScene.setRoot(this.sleepingRoot);
-            this.sleepingRoot = temp;
+            this.switchScene();
         }
+    }
+
+    private void switchScene() {
+        final Parent temp = this.activeScene.getRoot();
+        this.activeScene.setRoot(this.sleepingRoot);
+        this.sleepingRoot = temp;
     }
 
     public void updatePlaybackTime(final double time) {
