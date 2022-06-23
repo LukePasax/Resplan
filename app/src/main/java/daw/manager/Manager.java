@@ -87,8 +87,7 @@ public final class Manager implements RPManager {
      * @throws IllegalArgumentException if the given title is already in use
      */
     @Override
-    public void addChannel(
-            final RPRole.RoleType type, final String title, final Optional<String> description)
+    public void addChannel(final RPRole.RoleType type, final String title, final Optional<String> description)
             throws IllegalArgumentException {
         if (this.channelLinker.channelExists(title)) {
             throw new IllegalArgumentException("Channel already exists");
