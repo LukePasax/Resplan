@@ -21,8 +21,7 @@ public final class ReverbPane extends BorderPane {
 	final private Label roomsizeValue = new Label("0.0");
 	final private Label earlyValue = new Label("0.0");
 	final private Label lateValue = new Label("0.0");
-	final private Label dryValue = new Label("0.0");
-	final private Label wetValue = new Label("0.0");
+	final private Label dryWetValue = new Label("0.0");
 	private String channel;
 	private int index;
 	
@@ -60,17 +59,11 @@ public final class ReverbPane extends BorderPane {
 		hlate.setAlignment(Pos.CENTER);
 		effects.getChildren().add(hlate);
 		//Dry
-		final HBox hdry = new HBox();
-		final Label dry = new Label("Dry: ");
-		hdry.getChildren().addAll(dry, dryValue);
-		hdry.setAlignment(Pos.CENTER);
-		effects.getChildren().add(hdry);
-		//Wet
-		final HBox hwet = new HBox();
-		final Label wet = new Label("Wet: ");
-		hwet.getChildren().addAll(wet, wetValue);
-		hwet.setAlignment(Pos.CENTER);
-		effects.getChildren().add(hwet);
+		final HBox hdryWet = new HBox();
+		final Label dryWet = new Label("Dry Wet: ");
+		hdryWet.getChildren().addAll(dryWet, dryWetValue);
+		hdryWet.setAlignment(Pos.CENTER);
+		effects.getChildren().add(hdryWet);
 		
 		final Button expand = new Button("View details");
 		final HBox hbutton = new HBox();
@@ -82,7 +75,7 @@ public final class ReverbPane extends BorderPane {
 		expand.setOnMouseClicked(e -> {
 			final Reverb reverb = new Reverb();
 			reverb.show(title, Double.parseDouble(dampingValue.getText()), Double.parseDouble(roomsizeValue.getText()), Double.parseDouble(earlyValue.getText()),
-						Double.parseDouble(lateValue.getText()), Double.parseDouble(dryValue.getText()), Double.parseDouble(wetValue.getText()));
+						Double.parseDouble(lateValue.getText()), Double.parseDouble(dryWetValue.getText()));
 		});
 		this.setCenter(effects);
 		effects.setAlignment(Pos.CENTER);
@@ -94,7 +87,7 @@ public final class ReverbPane extends BorderPane {
 	
 	public final class Reverb {
 		public final void show(final String title, final double currentDamping, final double currentRoomsize, final double currentEarly,
-								final double currentLate, final double currentDry, final double currentWet) {
+								final double currentLate, final double currentDryWet) {
 			BorderPane root = new BorderPane();
 			final HBox titlebox = new HBox(new Label(title));
 			titlebox.setAlignment(Pos.CENTER);
@@ -123,9 +116,8 @@ public final class ReverbPane extends BorderPane {
 			});
 			secondrow.getChildren().addAll(early, late);
 			
-			final ContinuousKnobPane dry = new ContinuousKnobPane(0.0, 100.0, currentDry, 3, "DRY");
-			final ContinuousKnobPane wet = new ContinuousKnobPane(0.0, 100.0, currentWet, 3, "WET");
-			thirdrow.getChildren().addAll(dry, wet);
+			final ContinuousKnobPane dryWet = new ContinuousKnobPane(0.0, 100.0, currentDryWet, 3, "DRYWET");
+			thirdrow.getChildren().addAll(dryWet);
 			
 			firstcolumn.getChildren().addAll(titlebox, firstrow, secondrow, thirdrow);
 			root.setCenter(firstcolumn);
@@ -146,8 +138,7 @@ public final class ReverbPane extends BorderPane {
 				roomsizeValue.setText("" + roomsize.getValue());
 				earlyValue.setText("" + early.getValue());
 				lateValue.setText("" + late.getValue());
-				dryValue.setText("" + dry.getValue());
-				wetValue.setText("" + wet.getValue());
+				dryWetValue.setText("" + dryWet.getValue());
 				effects.autosize();
 				stage.close();
 			});
