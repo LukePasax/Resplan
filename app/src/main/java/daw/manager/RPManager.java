@@ -167,14 +167,38 @@ public interface RPManager {
      */
     Double getClipDuration(String clip);
 
+    /**
+     *
+     * @param title the name of a role.
+     * @return the channel corresponding to the given role.
+     */
     RPChannel getChannelFromTitle(String title);
 
+    /**
+     * Adds a new {@link RPSection}.
+     * @param title the title of the new section.
+     * @param description the description of the new section.
+     * @param initialTime the initial time in the timeline of the new section.
+     * @param duration the duration of the new section.
+     */
     void addSection(String title, Optional<String> description, Double initialTime, Double duration);
 
+    /**
+     * Removes a section.
+     * @param time a position in the timeline that is associated with the section that needs removing.
+     */
     void removeSection(Double time);
 
+    /**
+     * Gets all the sections.
+     * @return a set of the {@link Map.Entry}s that represents the sections.
+     */
     Set<Map.Entry<Double, RPSection>> getSections();
 
+    /**
+     * Updates the length of the project, that is the timeout of the last clip or a minimum length if the
+     * project is shorter than that.
+     */
     void updateProjectLength();
 
     /**
@@ -190,24 +214,83 @@ public interface RPManager {
      */
     double getProjectTimeOut() throws ClipNotFoundException;
 
+    /**
+     * Moves a clip to a new position in the timeline.
+     * @param clip the name of clip that has to be moved.
+     * @param channel the channel that contains the given clip.
+     * @param finalTimeIn the position in the timeline the clip has to be moved to.
+     * @throws ClipNotFoundException if there is no clip with the given name in the given channel.
+     */
     void moveClip(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException;
 
+    /**
+     * Sets the given clip's timeout, which is its beginning.
+     * @param clip the name of a clip.
+     * @param channel the name of the channel that contains the given clip.
+     * @param finalTimeIn the position in the timeline where this clip must begin.
+     * @throws ClipNotFoundException if there is no clip with the given name in the given channel.
+     */
     void setClipTimeIn(String clip, String channel, Double finalTimeIn) throws ClipNotFoundException;
 
+    /**
+     * Sets the given clip's timeout, which is its end.
+     * @param clip the name of a clip.
+     * @param channel the name of the channel that contains the given clip.
+     * @param finalTimeOut the position in the timeline where this clip must end.
+     * @throws ClipNotFoundException if there is no clip with the given name in the given channel.
+     */
     void setClipTimeOut(String clip, String channel, Double finalTimeOut) throws ClipNotFoundException;
 
+    /**
+     * Splits the clip that has the given title. Splitting means creating a duplicate of the clip and inserting
+     * that duplicate into the same channel of the clip at the specified splitting time.
+     * @param clip the name of a clip.
+     * @param channel the channel that contains the given clip.
+     * @param splittingTime the position in the timeline where to put the duplicate of the clip.
+     * @throws ClipNotFoundException if there is no clip with the given name in the given channel.
+     */
     void splitClip(String clip, String channel, Double splittingTime) throws ClipNotFoundException;
 
+    /**
+     * Gets the clip whose part has the given title.
+     * @param title the name of a clip.
+     * @return a {@link RPClip}.
+     */
     RPClip<?> getClipFromTitle(String title);
 
+    /**
+     * Gets the name of the channel that contains the given clip. If there is no such channel,
+     * this method returns null.
+     * @param clip the name of a clip.
+     * @return the name of a channel, or null.
+     */
     String getClipChannel(String clip);
 
+    /**
+     * Creates a new {@link Speaker}.
+     * @param id a numeric value representing the speaker.
+     * @param firstName the speaker's first name.
+     * @param lastName the speaker's last name.
+     * @return a {@link Speaker}.
+     */
     Speaker createSpeaker(int id, String firstName, String lastName);
 
+    /**
+     * Adds a speaker to the rubric
+     * @param speaker a {@link Speaker}.
+     */
     void addSpeakerToRubric(Speaker speaker);
 
+    /**
+     * Remove a speaker from the rubric.
+     * @param speaker a {@link Speaker}.
+     */
     void removeSpeakerFromRubric(Speaker speaker);
 
+    /**
+     * Gets all the speakers currently in the rubric.
+     * @return a list of {@link Speaker}.
+     */
     List<Speaker> getSpeakersInRubric();
 
 }

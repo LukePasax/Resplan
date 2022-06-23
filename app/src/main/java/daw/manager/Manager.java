@@ -43,6 +43,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * This class implements most of the logic behind this software, connecting multiple data structures that
+ * manage roles, channels, parts, clips and many other elements of the model.
+ */
 public final class Manager implements RPManager {
 
     private static final double MIN_LENGTH = 600_000;
@@ -378,6 +382,10 @@ public final class Manager implements RPManager {
         return this.mixer;
     }
 
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Override
     @JsonIgnore
     public List<RPRole> getRoles() {
@@ -386,6 +394,11 @@ public final class Manager implements RPManager {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     * @param channel the name of the channel
+     * @return {@inheritDoc}
+     */
     @Override
     public List<RPPart> getPartList(final String channel) {
         final List<RPPart> list = new ArrayList<>();
@@ -443,6 +456,13 @@ public final class Manager implements RPManager {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of clip that has to be moved.
+     * @param channel the channel that contains the given clip.
+     * @param finalTimeIn the position in the timeline the clip has to be moved to.
+     * @throws ClipNotFoundException {@inheritDoc}
+     */
     @Override
     public void moveClip(final String clip, final String channel, final Double finalTimeIn) throws ClipNotFoundException {
         this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
@@ -450,6 +470,13 @@ public final class Manager implements RPManager {
         this.updateProjectLength();
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @param channel the name of the channel that contains the given clip.
+     * @param finalTimeIn the position in the timeline where this clip must begin.
+     * @throws ClipNotFoundException {@inheritDoc}
+     */
     @Override
     public void setClipTimeIn(final String clip, final String channel, final Double finalTimeIn) throws ClipNotFoundException {
     	this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
@@ -457,6 +484,13 @@ public final class Manager implements RPManager {
         this.updateProjectLength();
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @param channel the name of the channel that contains the given clip.
+     * @param finalTimeOut the position in the timeline where this clip must end.
+     * @throws ClipNotFoundException {@inheritDoc}
+     */
     @Override
     public void setClipTimeOut(final String clip, final String channel, final Double finalTimeOut) throws ClipNotFoundException {
         this.channelLinker.getTapeChannel(this.channelLinker.getRole(channel))
@@ -464,6 +498,13 @@ public final class Manager implements RPManager {
         this.updateProjectLength();
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @param channel the channel that contains the given clip.
+     * @param splittingTime the position in the timeline where to put the duplicate of the clip.
+     * @throws ClipNotFoundException {@inheritDoc}
+     */
     @Override
     public void splitClip(final String clip, final String channel, final Double splittingTime) throws ClipNotFoundException {
         final String newClip = clip + "(Duplicate)";
@@ -475,16 +516,34 @@ public final class Manager implements RPManager {
         this.clipLinker.addClipReferences(tapeChannel.getClipAt(time).orElseThrow().getValue(), newPart);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param title the name of a clip.
+     * @return {@inheritDoc}
+     */
     @Override
     public RPClip<?> getClipFromTitle(final String title) {
         return this.getClipLinker().getClipFromPart(this.getClipLinker().getPart(title));
     }
 
+    /**
+     * {@inheritDoc}
+     * @param title the name of a role.
+     * @return {@inheritDoc}
+     */
     @Override
     public RPChannel getChannelFromTitle(final String title) {
         return this.channelLinker.getChannel(this.channelLinker.getRole(title));
     }
 
+    /**
+     * {@inheritDoc}
+     * @param title the title of the new section.
+     * @param description the description of the new section.
+     * @param initialTime the initial time in the timeline of the new section.
+     * @param duration the duration of the new section.
+     * @throws IllegalArgumentException {@inheritDoc}
+     */
     @Override
     public void addSection(final String title, final Optional<String> description, final Double initialTime, final Double duration)
             throws IllegalArgumentException {
@@ -499,6 +558,11 @@ public final class Manager implements RPManager {
         return description.map(d -> new SectionImpl(title, d, duration)).orElseGet(() -> new SectionImpl(title, duration));
     }
 
+    /**
+     * {@inheritDoc}
+     * @param time a position in the timeline that is associated with the section that needs removing.
+     * @throws NoSuchElementException {@inheritDoc}
+     */
     @Override
     public void removeSection(final Double time) throws NoSuchElementException {
         if (this.timeline.getSection(time).isEmpty()) {
@@ -508,12 +572,19 @@ public final class Manager implements RPManager {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Override
     @JsonIgnore
     public Set<Map.Entry<Double, RPSection>> getSections() {
         return this.timeline.getAllSections();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateProjectLength() {
         try {
@@ -545,6 +616,11 @@ public final class Manager implements RPManager {
                 .getClipTimeOut(this.getClipTime(clip.getTitle(), channel));
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @return {@inheritDoc}
+     */
     @Override
     public String getClipChannel(final String clip) {
         for (final var r : this.getRoles()) {
@@ -557,21 +633,40 @@ public final class Manager implements RPManager {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     * @param id a numeric value representing the speaker.
+     * @param firstName the speaker's first name.
+     * @param lastName the speaker's last name.
+     * @return {@inheritDoc}
+     */
     @Override
     public Speaker createSpeaker(final int id, final String firstName, final String lastName) {
         return new SimpleSpeaker.Builder(id).firstName(firstName).lastName(lastName).build();
     }
 
+    /**
+     * {@inheritDoc}
+     * @param speaker a {@link Speaker}.
+     */
     @Override
     public void addSpeakerToRubric(final Speaker speaker) {
         this.rubric.addSpeaker(speaker);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param speaker a {@link Speaker}.
+     */
     @Override
     public void removeSpeakerFromRubric(final Speaker speaker) {
         this.rubric.removeSpeaker(speaker);
     }
 
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Override
     public List<Speaker> getSpeakersInRubric() {
         return this.rubric.getSpeakers();
