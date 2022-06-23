@@ -35,11 +35,11 @@ public final class EffectsPane extends ScrollPane {
 		App.getData().getChannel(channel).addFxListListener(c -> {
 			c.next();
 			if(c.wasAdded()) {
-				c.getAddedSubList().forEach(e -> addEffect(new Effect(e.getType())));
+				c.getAddedSubList().forEach(e -> addEffect(new Effect(e.getType()), c.getList().indexOf(e)));
 			}
 
 			if(c.wasRemoved()) {
-				c.getAddedSubList().forEach(this::removeEffect);
+				c.getAddedSubList().forEach(e -> removeEffect(e));
 			}
 
 			if(c.wasPermutated()) {
@@ -77,12 +77,12 @@ public final class EffectsPane extends ScrollPane {
 		return effects;
 	}
 	
-	private void addEffect(final Effect effect) {
+	private void addEffect(final Effect effect, final int index) {
 		try {
 			final EffectPane newPane = new EffectPane(effectsType.get(effect.getType()).getDeclaredConstructor(String.class).
 										newInstance(effect.getType()));
 			effects.put(effect, newPane);
-			effectsRoot.getChildren().add(newPane);
+			effectsRoot.getChildren().add(index, newPane);
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
@@ -91,7 +91,6 @@ public final class EffectsPane extends ScrollPane {
 	
 	private void removeEffect(final Effect effect) {
 		this.getChildren().remove(effects.get(effect));
-		Starter.getController().removeEffectAtPosition(channel, this.getChildren().indexOf(effects.get(effect)));
 		effects.remove(effect);
 	}
 	
@@ -106,7 +105,7 @@ public final class EffectsPane extends ScrollPane {
 			firstRow.setAlignment(Pos.CENTER);
 			final Button remove = new Button("X");
 			remove.setOnMouseClicked(e -> {
-				effectsRoot.getChildren().remove(this);	//try
+				Starter.getController().removeEffectAtPosition(channel, effectsRoot.getChildren().indexOf(this));
 			});
 			remove.setShape(new Circle(1.5));
 			final Button moveLeft = new Button("<");
@@ -127,6 +126,9 @@ public final class EffectsPane extends ScrollPane {
 				menu.getItems().add(item);
 			});
 			add.setOnMouseClicked(e -> menu.show(this.getScene().getWindow(), e.getScreenX(), e.getScreenY()));
+			menu.setOnAction(e -> {
+				Starter.getController().addEffectAtPosition(channel, ((MenuItem)e.getTarget()).getText(), effectsRoot.getChildren().indexOf(this) + 1);
+			});
 			
 			firstRow.getChildren().addAll(moveLeft, moveRight, remove);
 			

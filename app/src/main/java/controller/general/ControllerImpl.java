@@ -729,6 +729,7 @@ public final class ControllerImpl implements Controller {
     @Override
     public void removeEffectAtPosition(final String channel, final int index) {
         this.getProcessingUnit(channel).removeEffectAtPosition(index);
+        App.getData().getChannel(channel).getFxList().remove(index);
     }
 
     @Override
