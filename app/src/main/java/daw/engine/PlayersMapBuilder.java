@@ -1,8 +1,6 @@
 package daw.engine;
 
 import java.util.Optional;
-
-import daw.core.clip.RPClipPlayer;
 import daw.manager.ChannelLinker;
 
 /**

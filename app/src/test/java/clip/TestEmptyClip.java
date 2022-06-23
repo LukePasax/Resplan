@@ -1,10 +1,12 @@
 package clip;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
-import daw.core.clip.*;
+import daw.core.clip.EmptyClip;
+import daw.core.clip.RPClip;
 
 class TestEmptyClip {
 
@@ -25,9 +27,9 @@ class TestEmptyClip {
 	@Test
 	void testEmptyClipExceptions() {
 		RPClip<?> clip = new EmptyClip("ciao");
-		assertThrows(UnsupportedOperationException.class, ()->clip.setContentPosition(10));
-		assertThrows(UnsupportedOperationException.class, ()->clip.getContentPosition());
-		assertThrows(UnsupportedOperationException.class, ()->clip.getContent());
+		assertThrows(UnsupportedOperationException.class, () -> clip.setContentPosition(10));
+		assertThrows(UnsupportedOperationException.class, () -> clip.getContentPosition());
+		assertThrows(UnsupportedOperationException.class, () -> clip.getContent());
 	}
 
 }

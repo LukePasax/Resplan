@@ -2,7 +2,6 @@ package daw.engine;
 
 import java.util.Optional;
 
-import daw.core.channel.RPChannel;
 import daw.core.clip.ClipPlayerFactory;
 import daw.core.clip.SampleClip;
 import daw.core.clip.SampleClipPlayerFactory;
