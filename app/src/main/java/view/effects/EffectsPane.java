@@ -35,7 +35,7 @@ public final class EffectsPane extends ScrollPane {
 		App.getData().getChannel(channel).addFxListListener(c -> {
 			c.next();
 			if(c.wasAdded()) {
-				c.getAddedSubList().forEach(this::addEffect);
+				c.getAddedSubList().forEach(e -> addEffect(new Effect(e.getType())));
 			}
 
 			if(c.wasRemoved()) {
@@ -60,13 +60,7 @@ public final class EffectsPane extends ScrollPane {
 		});
 		add.setOnMouseClicked(e -> menu.show(this.getScene().getWindow(), e.getScreenX(), e.getScreenY()));
 		menu.setOnAction(e -> {
-			if(((MenuItem)e.getTarget()).getText().equals("Compressor")) {	//Try
-				Effect newEffect = new Effect("Compressor");
-				addEffect(newEffect);
-			} else if(((MenuItem)e.getTarget()).getText().equals("Limiter")) {	//Try
-				Effect newEffect = new Effect("Limiter");
-				addEffect(newEffect);
-			}
+			Starter.getController().addEffectAtPosition(channel, ((MenuItem)e.getTarget()).getText(), 0);
 		});
 		root.getChildren().add(effectsRoot);
 		this.setContent(root);
@@ -89,7 +83,6 @@ public final class EffectsPane extends ScrollPane {
 										newInstance(effect.getType()));
 			effects.put(effect, newPane);
 			effectsRoot.getChildren().add(newPane);
-			Starter.getController().addEffectAtPosition(channel, effect.getType(), effectsRoot.getChildren().indexOf(newPane));
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 				| NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
@@ -106,7 +99,7 @@ public final class EffectsPane extends ScrollPane {
 		this.getChildren().set(newPos, effects.get(effect));
 	}
 	
-	public final static class EffectPane extends BorderPane {
+	public final class EffectPane extends BorderPane {
 		
 		public EffectPane(final Node effect) {
 			final HBox firstRow = new HBox();
