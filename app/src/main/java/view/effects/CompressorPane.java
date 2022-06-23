@@ -28,7 +28,6 @@ public final class CompressorPane extends BorderPane {
 	private String channel;
 	private int index;
 	
-
 	public CompressorPane(final String title, final String channel, final int index) {
 		this.index = index;
 		this.channel = channel;
@@ -153,8 +152,8 @@ public final class CompressorPane extends BorderPane {
 			stage.show();
 		}
 		
-		private void setParameters(String par, Float value) {
-			Map<String, Float> values = new HashMap<>();
+		private final void setParameters(String par, Float value) {
+			final Map<String, Float> values = new HashMap<>();
 			values.put(par, value);
 			Starter.getController().setEffectParameters(channel, index, values);
 		}

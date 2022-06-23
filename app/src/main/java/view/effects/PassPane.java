@@ -1,5 +1,8 @@
 package view.effects;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,13 +12,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import resplan.Starter;
 
 public final class PassPane extends BorderPane {
 	
 	final private Label frequencyValue = new Label("10.0");
 	final private VBox effects = new VBox();
+	private String channel;
+	private int index;
 
-	public PassPane(final String title) {
+	public PassPane(final String title, final String channel, final int index) {
 		final HBox titlebox = new HBox();
 		titlebox.setAlignment(Pos.CENTER);
 		final Label ltitle = new Label(title);
@@ -58,6 +64,9 @@ public final class PassPane extends BorderPane {
 			final HBox titlebox = new HBox(new Label(title));
 			titlebox.setAlignment(Pos.CENTER);
 			final ContinuousKnobPane frequency = new ContinuousKnobPane(10.0, 20000.0, currentFrequency, 3, "FREQUENCY");
+			frequency.getValueProperty().addListener((ch, old, n) -> {
+				setParameters("frequency", n.floatValue());
+			});
 			HBox firstcolumn = new HBox(frequency);
 			firstcolumn.setAlignment(Pos.CENTER);
 			root.setCenter(firstcolumn);
@@ -86,6 +95,12 @@ public final class PassPane extends BorderPane {
 			scene.getStylesheets().add(css);
 			stage.setScene(scene);
 			stage.show();
+		}
+		
+		private final void setParameters(String par, Float value) {
+			final Map<String, Float> values = new HashMap<>();
+			values.put(par, value);
+			Starter.getController().setEffectParameters(channel, index, values);
 		}
 	}
 }
