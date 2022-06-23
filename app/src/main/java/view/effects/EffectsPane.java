@@ -1,7 +1,9 @@
 package view.effects;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import resplan.Starter;
 import javafx.collections.ObservableList;
@@ -22,11 +24,12 @@ import view.common.ViewDataImpl.Effect;
 
 public final class EffectsPane extends ScrollPane {
 	
-	private final static Map<String, Class<? extends Pane>> effectsType = createEffects();
+	private final Map<String, Class<? extends Pane>> effectsType = createEffects();
 	private final Map<Effect, Node> effects = new HashMap<>();
+	private final Map<Class<? extends Pane>, String> paneTypes = createPaneTypes();
 	private final String channel;
 	
-	private final static HBox effectsRoot = new HBox();
+	private final HBox effectsRoot = new HBox();
 
 	public EffectsPane(final String channel) {
 		this.channel = channel;
@@ -61,7 +64,7 @@ public final class EffectsPane extends ScrollPane {
 		});
 		add.setOnMouseClicked(e -> menu.show(this.getScene().getWindow(), e.getScreenX(), e.getScreenY()));
 		menu.setOnAction(e -> {
-			Starter.getController().addEffectAtPosition(channel, ((MenuItem)e.getTarget()).getText(), 0);
+			Starter.getController().addEffectAtPosition(channel, ((MenuItem) e.getTarget()).getText(), 0);
 		});
 		root.getChildren().add(effectsRoot);
 		this.setContent(root);
@@ -75,6 +78,16 @@ public final class EffectsPane extends ScrollPane {
 		effects.put("Low pass", PassPane.class);
 		effects.put("High pass", PassPane.class);
 		effects.put("Reverb", ReverbPane.class);
+		return effects;
+	}
+	
+	private static Map<Class<? extends Pane>, String> createPaneTypes(){
+		Map<Class<? extends Pane>, String> effects = new HashMap<>();
+		effects.put(CompressorPane.class, "Compressor");
+		effects.put(LimiterPane.class, "Limiter");
+		effects.put(PassPane.class, "Low pass");
+		effects.put(PassPane.class, "High pass");
+		effects.put(ReverbPane.class, "Reverb");
 		return effects;
 	}
 	
@@ -121,9 +134,30 @@ public final class EffectsPane extends ScrollPane {
 			final Button moveLeft = new Button("<");
 			moveLeft.setShape(new Circle(1.5));
 			moveLeft.setOnMouseClicked(e -> {
-				//if(effectsRoot.getChildren().contains(effectsRoot.getChildren().get(0)
-				Starter.getController().swapEffects(channel, 
-						effectsRoot.getChildren().indexOf(this), effectsRoot.getChildren().indexOf(this)-1);
+				final List<EffectPane> effectPanes = new ArrayList<>();
+				effectsRoot.getChildren().forEach(eff -> {
+					effectPanes.add((EffectPane) eff);
+				});
+				var firstPos = effectsRoot.getChildren().indexOf(this);
+				var secondPos = effectsRoot.getChildren().indexOf(this)-1;
+				var firstElement = effectsRoot.getChildren().get(firstPos);
+				var secondElement = effectsRoot.getChildren().get(secondPos);
+				effectPanes.set(firstPos, (EffectPane) secondElement);
+				effectPanes.set(secondPos, (EffectPane) firstElement);
+				/*effectsRoot.getChildren().forEach(eff -> {
+					Starter.getController().removeEffectAtPosition(channel, effectsRoot.getChildren().indexOf(eff));
+				});*/
+				for(int i = 0; i < effectPanes.size(); i++) {
+					Starter.getController().removeEffectAtPosition(channel, 0);
+				}
+				effectPanes.forEach(ep -> {
+					//effectsRoot.getChildren().add((EffectPane) ep);
+					var current = ep.getChildren().get(2).getClass();
+					paneTypes.forEach((p, s) -> {
+						if(p.equals(current))
+						Starter.getController().addEffectAtPosition(channel, s, effectPanes.indexOf(ep));												
+					});
+				});
 			});
 			final Button moveRight = new Button(">");
 			moveRight.setShape(new Circle(1.5));

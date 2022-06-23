@@ -22,6 +22,8 @@ public final class PassPane extends BorderPane {
 	private int index;
 
 	public PassPane(final String title, final String channel, final int index) {
+		this.index = index;
+		this.channel = channel;
 		final HBox titlebox = new HBox();
 		titlebox.setAlignment(Pos.CENTER);
 		final Label ltitle = new Label(title);

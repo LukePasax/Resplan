@@ -1,5 +1,7 @@
 package view.effects;
 
+import java.util.HashMap;
+import java.util.Map;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import resplan.Starter;
 
 public final class ReverbPane extends BorderPane {
 	
@@ -20,8 +23,12 @@ public final class ReverbPane extends BorderPane {
 	final private Label lateValue = new Label("0.0");
 	final private Label dryValue = new Label("0.0");
 	final private Label wetValue = new Label("0.0");
+	private String channel;
+	private int index;
 	
-	public ReverbPane(final String title) {
+	public ReverbPane(final String title, final String channel, final int index) {
+		this.index = index;
+		this.channel = channel;
 		final HBox titlebox = new HBox();
 		titlebox.setAlignment(Pos.CENTER);
 		final Label ltitle = new Label(title);
@@ -97,11 +104,23 @@ public final class ReverbPane extends BorderPane {
 			final VBox firstcolumn = new VBox();
 			
 			final ContinuousKnobPane damping = new ContinuousKnobPane(0.0, 100.0, currentDamping, 3, "DAMPING");
+			damping.getValueProperty().addListener((ch, old, n) -> {
+				setParameters("damping", n.floatValue());
+			});
 			final ContinuousKnobPane roomsize = new ContinuousKnobPane(0.0, 100.0, currentRoomsize, 3, "ROOMSIZE");
+			roomsize.getValueProperty().addListener((ch, old, n) -> {
+				setParameters("roomSize", n.floatValue());
+			});
 			firstrow.getChildren().addAll(damping, roomsize);
 			
 			final ContinuousKnobPane early = new ContinuousKnobPane(0.0, 100.0, currentEarly, 3, "EARLY REF");
+			early.getValueProperty().addListener((ch, old, n) -> {
+				setParameters("earlyReflectionsLevel", n.floatValue());
+			});
 			final ContinuousKnobPane late = new ContinuousKnobPane(0.0, 100.0, currentLate, 3, "LATE REF");
+			late.getValueProperty().addListener((ch, old, n) -> {
+				setParameters("lateReverbLevel", n.floatValue());
+			});
 			secondrow.getChildren().addAll(early, late);
 			
 			final ContinuousKnobPane dry = new ContinuousKnobPane(0.0, 100.0, currentDry, 3, "DRY");
@@ -138,6 +157,12 @@ public final class ReverbPane extends BorderPane {
 			scene.getStylesheets().add(css);
 			stage.setScene(scene);
 			stage.show();
+		}
+		
+		private final void setParameters(String par, Float value) {
+			final Map<String, Float> values = new HashMap<>();
+			values.put(par, value);
+			Starter.getController().setEffectParameters(channel, index, values);
 		}
 	}
 }
