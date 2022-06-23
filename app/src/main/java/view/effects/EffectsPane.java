@@ -35,11 +35,11 @@ public final class EffectsPane extends ScrollPane {
 		App.getData().getChannel(channel).addFxListListener(c -> {
 			c.next();
 			if(c.wasAdded()) {
-				c.getAddedSubList().forEach(e -> addEffect(new Effect(e.getType()), c.getList().indexOf(e)));
+				c.getAddedSubList().forEach(e -> addEffect(e, c.getList().indexOf(e)));
 			}
 
 			if(c.wasRemoved()) {
-				c.getAddedSubList().forEach(e -> removeEffect(e));
+				c.getRemoved().forEach(e -> removeEffect(e));
 			}
 
 			if(c.wasPermutated()) {
@@ -90,12 +90,12 @@ public final class EffectsPane extends ScrollPane {
 	}
 	
 	private void removeEffect(final Effect effect) {
-		this.getChildren().remove(effects.get(effect));
+		effectsRoot.getChildren().remove(effects.get(effect));
 		effects.remove(effect);
 	}
 	
 	private void setEffect(final int newPos, Effect effect) {
-		this.getChildren().set(newPos, effects.get(effect));
+		effectsRoot.getChildren().set(newPos, effects.get(effect));
 	}
 	
 	public final class EffectPane extends BorderPane {
@@ -110,6 +110,9 @@ public final class EffectsPane extends ScrollPane {
 			remove.setShape(new Circle(1.5));
 			final Button moveLeft = new Button("<");
 			moveLeft.setShape(new Circle(1.5));
+			moveLeft.setOnMouseClicked(e -> {
+				
+			});
 			final Button moveRight = new Button(">");
 			moveRight.setShape(new Circle(1.5));
 			HBox.setMargin(remove, new Insets(0,0,0,10));
