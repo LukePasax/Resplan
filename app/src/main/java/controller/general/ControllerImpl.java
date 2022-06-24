@@ -32,6 +32,7 @@ import view.common.ViewDataImpl.Effect;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,7 @@ public final class ControllerImpl implements Controller {
     private final Set<String> mutedChannels = new HashSet<>();
     private final Set<String> soloChannels = new HashSet<>();
     private boolean solo;
+    private final Map<Class<? extends RPEffect>, String> effectsMap = createEffectsMap();
 
     /**
      * Sets up the application.
@@ -78,6 +80,17 @@ public final class ControllerImpl implements Controller {
     public void setApp(final App app) {
         this.app = app;
     }
+    
+    private final Map<Class<? extends RPEffect>, String> createEffectsMap(){
+		Map<Class<? extends RPEffect>, String> effects = new HashMap<>();
+		effects.put(Compression.class, "Compressor");
+		effects.put(Limiter.class, "Limiter");
+		effects.put(LowPassFilter.class, "Low pass");
+		effects.put(HighPassFilter.class, "High pass");
+		effects.put(DigitalReverb.class, "Reverb");
+		effects.put(Gate.class, "Gate");
+		return effects;
+	}
 
     /**
      * {@inheritDoc}
@@ -240,6 +253,13 @@ public final class ControllerImpl implements Controller {
         final Optional<String> desc = "".equals(description) ? Optional.empty() : Optional.of(description);
         this.manager.addChannel(roleType, title, desc);
         App.getData().addChannel(new ViewDataImpl.Channel(title, type));
+        
+        var ch = manager.getChannelFromTitle(title);
+        if(ch.getProcessingUnit().isPresent()) {
+        	ch.getProcessingUnit().get().getEffects().forEach(e -> {
+        		App.getData().getChannel(title).getFxList().add(getProcessingUnit(title).getEffects().indexOf(e), new Effect(effectsMap.get(e.getClass())));
+        	});
+        }
     }
 
     /**

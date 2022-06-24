@@ -5,13 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import daw.core.audioprocessing.Compression;
-import daw.core.audioprocessing.DigitalReverb;
-import daw.core.audioprocessing.Gate;
-import daw.core.audioprocessing.HighPassFilter;
-import daw.core.audioprocessing.Limiter;
-import daw.core.audioprocessing.LowPassFilter;
-import daw.core.audioprocessing.RPEffect;
 import resplan.Starter;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -34,7 +27,6 @@ public final class EffectsPane extends ScrollPane {
 	private final Map<String, Class<? extends Pane>> effectsType = createEffects();
 	private final Map<Effect, Node> effects = new HashMap<>();
 	private final Map<Class<? extends Pane>, String> paneTypes = createPaneTypes();
-	private final Map<Class<? extends RPEffect>, Class<? extends Pane>> translate = createTranslation();
 	private final String channel;
 	
 	private final HBox effectsRoot = new HBox();
@@ -75,19 +67,6 @@ public final class EffectsPane extends ScrollPane {
 			Starter.getController().addEffectAtPosition(channel, ((MenuItem) e.getTarget()).getText(), 0);
 		});
 		root.getChildren().add(effectsRoot);
-		Starter.getController().getProcessingUnit(channel).getEffects().forEach(e -> {
-			//try {
-				var newEffect = new Effect(paneTypes.get(translate.get(e.getClass())));//translate.get(e.getClass()).getDeclaredConstructor(String.class, String.class, int.class).
-						//newInstance(paneTypes.get(translate.get(e.getClass())), channel, Starter.getController().getProcessingUnit(channel).getEffects().indexOf(e)); 
-				//effects.put(new Effect(paneTypes.get(translate.get(e.getClass()))), newEffect);
-				/*effectsRoot.getChildren().add(new EffectPane(newEffect));
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e1) {}*/
-			addEffect(newEffect, Starter.getController().getProcessingUnit(channel).getEffects().indexOf(e));
-		});
-		System.out.println(effectsRoot.getChildren().get(0));
-		System.out.println(effectsRoot.getChildren().get(1));
-		System.out.println(effects);
 		this.setContent(root);
 	}
 	
@@ -113,20 +92,8 @@ public final class EffectsPane extends ScrollPane {
 		return effects;
 	}
 	
-	private final Map<Class<? extends RPEffect>, Class<? extends Pane>> createTranslation(){
-		Map<Class<? extends RPEffect>, Class<? extends Pane>> effects = new HashMap<>();
-		effects.put(Compression.class, CompressorPane.class);
-		effects.put(Limiter.class, LimiterPane.class);
-		effects.put(LowPassFilter.class, PassPane.class);
-		effects.put(HighPassFilter.class, PassPane.class);
-		effects.put(DigitalReverb.class, ReverbPane.class);
-		effects.put(Gate.class, GatePane.class);
-		return effects;
-	}
-	
 	private final void addEffect(final Effect effect, final int index) {
 		try {
-			System.out.println(effect + "-" + index);
 			final EffectPane newPane = new EffectPane(effectsType.get(effect.getType()).getDeclaredConstructor(String.class, String.class, int.class).
 										newInstance(effect.getType(), channel, index));
 			effects.put(effect, newPane);
@@ -168,7 +135,7 @@ public final class EffectsPane extends ScrollPane {
 			final Button moveLeft = new Button("<");
 			moveLeft.setShape(new Circle(1.5));
 			moveLeft.setOnMouseClicked(e -> {
-				final List<EffectPane> effectPanes = new ArrayList<>();
+				/*final List<EffectPane> effectPanes = new ArrayList<>();
 				effectsRoot.getChildren().forEach(eff -> {
 					effectPanes.add((EffectPane) eff);
 				});
@@ -184,13 +151,21 @@ public final class EffectsPane extends ScrollPane {
 						Starter.getController().removeEffectAtPosition(channel, 0);
 					}
 					effectPanes.forEach(ep -> {
-						var current = ep.getChildren().get(2).getClass();
+						final var current = ep.getChildren().get(2).getClass();
 						paneTypes.forEach((p, s) -> {
 							if(p.equals(current))
 								Starter.getController().addEffectAtPosition(channel, s, effectPanes.indexOf(ep));												
 						});
 					});
-				}
+				}*/
+				final var firstPos = effectsRoot.getChildren().indexOf(this);
+				final var secondPos = effectsRoot.getChildren().indexOf(this)-1;
+				final var firstElement = effectsRoot.getChildren().get(firstPos);
+				final var secondElement = effectsRoot.getChildren().get(secondPos);
+				Starter.getController().removeEffectAtPosition(channel, firstPos);
+				Starter.getController().removeEffectAtPosition(channel, secondPos);
+				Starter.getController().addEffectAtPosition(channel, paneTypes.get(secondElement.getClass()), firstPos);
+				Starter.getController().addEffectAtPosition(channel, paneTypes.get(firstElement.getClass()), secondPos);
 			});
 			final Button moveRight = new Button(">");
 			moveRight.setOnMouseClicked(e -> {
@@ -201,8 +176,8 @@ public final class EffectsPane extends ScrollPane {
 				final var firstPos = effectsRoot.getChildren().indexOf(this);
 				final var secondPos = effectsRoot.getChildren().indexOf(this)+1;
 				if(secondPos < effectPanes.size()) {
-					var firstElement = effectsRoot.getChildren().get(firstPos);
-					var secondElement = effectsRoot.getChildren().get(secondPos);
+					final var firstElement = effectsRoot.getChildren().get(firstPos);
+					final var secondElement = effectsRoot.getChildren().get(secondPos);
 					effectPanes.set(firstPos, (EffectPane) secondElement);
 					effectPanes.set(secondPos, (EffectPane) firstElement);
 					
@@ -210,7 +185,7 @@ public final class EffectsPane extends ScrollPane {
 						Starter.getController().removeEffectAtPosition(channel, 0);
 					}
 					effectPanes.forEach(ep -> {
-						var current = ep.getChildren().get(2).getClass();
+						final var current = ep.getChildren().get(2).getClass();
 						paneTypes.forEach((p, s) -> {
 							if(p.equals(current))
 								Starter.getController().addEffectAtPosition(channel, s, effectPanes.indexOf(ep));												

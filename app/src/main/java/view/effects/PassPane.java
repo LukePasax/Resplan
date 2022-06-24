@@ -53,7 +53,6 @@ public final class PassPane extends BorderPane {
 		
 		effects.setAlignment(Pos.CENTER);
 
-		
 		this.setPadding(new Insets(10));
 		this.setStyle("-fx-border-color: black");
 		String css = this.getClass().getResource("/stylesheets/resplan.css").toExternalForm();
