@@ -6,7 +6,7 @@ import daw.core.clip.ClipPlayerFactory;
 import daw.core.clip.SampleClip;
 import daw.core.clip.SampleClipPlayerFactory;
 import daw.core.clip.TapeChannel;
-import daw.manager.ChannelLinker;
+import daw.manager.RPChannelLinker;
 
 /**
  * Implementation of {@link PlayersMapBuilder}.
@@ -21,7 +21,7 @@ public final class PlayersMapBuilderImpl implements PlayersMapBuilder {
 	/**
 	 * The channel linker.
 	 */
-	private Optional<ChannelLinker> channelLinker = Optional.empty();
+	private Optional<RPChannelLinker> channelLinker = Optional.empty();
 	
 	/**
 	 * The sample player factory.
@@ -36,7 +36,7 @@ public final class PlayersMapBuilderImpl implements PlayersMapBuilder {
 	}
 
 	@Override
-	public PlayersMapBuilder setChannelLinker(final ChannelLinker channelLinker) {
+	public PlayersMapBuilder setChannelLinker(final RPChannelLinker channelLinker) {
 		this.channelLinker = Optional.of(channelLinker);
 		return this;
 	}

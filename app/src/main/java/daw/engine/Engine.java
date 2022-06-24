@@ -1,7 +1,7 @@
 package daw.engine;
 
 import java.util.Optional;
-import daw.manager.ChannelLinker;
+import daw.manager.RPChannelLinker;
 
 /**
  * Implementation of {@link RPEngine}.
@@ -23,7 +23,7 @@ public final class Engine implements RPEngine {
 	/**
 	 * The ChannelLinker to get the channels and clips from.
 	 */
-	private final ChannelLinker channelLinker;
+	private final RPChannelLinker channelLinker;
 	
 	/**
 	 * The clock.
@@ -40,7 +40,7 @@ public final class Engine implements RPEngine {
 	 */
 	private Optional<Conductor> conductor;
 
-	public Engine(final ChannelLinker channelLinker) {
+	public Engine(final RPChannelLinker channelLinker) {
 		this.channelLinker = channelLinker;
 		this.conductor = Optional.empty();
 		this.clock = new Clock();

@@ -1,7 +1,7 @@
 package daw.engine;
 
 import java.util.Optional;
-import daw.manager.ChannelLinker;
+import daw.manager.RPChannelLinker;
 
 /**
  * Build an {@link RPPlayersMap} step by step.
@@ -22,7 +22,7 @@ public interface PlayersMapBuilder {
 	 * 
 	 * @return  This builder
 	 */
-	PlayersMapBuilder setChannelLinker(ChannelLinker channelLinker);
+	PlayersMapBuilder setChannelLinker(RPChannelLinker channelLinker);
 	
 	/**
 	 * Get the sample clips between the given times and creates a {@link RPClipPlayer} for each.
