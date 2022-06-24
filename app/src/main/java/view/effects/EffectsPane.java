@@ -78,6 +78,7 @@ public final class EffectsPane extends ScrollPane {
 		effects.put("Low pass", PassPane.class);
 		effects.put("High pass", PassPane.class);
 		effects.put("Reverb", ReverbPane.class);
+		effects.put("Gate", GatePane.class);
 		return effects;
 	}
 	
@@ -88,6 +89,7 @@ public final class EffectsPane extends ScrollPane {
 		effects.put(PassPane.class, "Low pass");
 		effects.put(PassPane.class, "High pass");
 		effects.put(ReverbPane.class, "Reverb");
+		effects.put(GatePane.class, "Gate");
 		return effects;
 	}
 	
