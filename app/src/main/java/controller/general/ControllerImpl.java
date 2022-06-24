@@ -119,6 +119,8 @@ public final class ControllerImpl implements Controller {
     @Override
     public void newProject() {
         this.startApp();
+        this.manager.getMixer().connectToSystem();
+        this.engine = new Engine((ChannelLinker) this.manager.getChannelLinker());
         this.loadViewData();
     }
 
