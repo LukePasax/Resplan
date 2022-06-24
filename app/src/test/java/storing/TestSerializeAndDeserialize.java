@@ -5,9 +5,7 @@ import controller.storing.Reader;
 import controller.storing.RPFileReader;
 import controller.storing.Writer;
 import controller.storing.RPFileWriter;
-import controller.storing.deserialization.AbstractJacksonDeserializer;
 import controller.storing.deserialization.ManagerDeserializer;
-import controller.storing.serialization.AbstractJacksonSerializer;
 import controller.storing.serialization.ManagerSerializer;
 import daw.core.audioprocessing.BasicProcessingUnitBuilder;
 import daw.manager.ImportException;
@@ -26,41 +24,23 @@ public class TestSerializeAndDeserialize {
     @Test
     public void simpleSerializationAndDeserialization() {
         final Manager man = new Manager();
-        AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer();
+        ManagerSerializer serializer = new ManagerSerializer();
         Writer writer = new RPFileWriter(new File(FILENAME));
-        AbstractJacksonDeserializer<Manager> deserializer = new ManagerDeserializer();
+        ManagerDeserializer deserializer = new ManagerDeserializer();
         Reader reader = new RPFileReader(new File(FILENAME));
         try {
             writer.write(serializer.serialize(man));
             final var manAfterRead = deserializer.deserialize(reader.read());
-            System.out.println(serializer.serialize(manAfterRead));
-            //assertEquals(man, manAfterRead);
+            assertEquals(new ManagerSerializer().serialize(man),
+                    new ManagerSerializer().serialize(manAfterRead));
         } catch (IOException e) {
             fail();
         }
     }
 
     @Test
-    public void simpleRead() {
-        Manager man = new Manager();
-        try {
-            man = new ManagerDeserializer()
-                    .deserialize(new RPFileReader(new File(FILENAME))
-                    .read());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            System.out.println(new ManagerSerializer().serialize(man));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Test
-    public void serializationAndDeserializationWithNewClip() {
+    public void complexSerializationAndDeserialization() {
         final Manager man = new Manager();
-        RPRole role = new EffectsRole("claps");
         man.addChannel(RPRole.RoleType.EFFECTS, "claps", Optional.of("ciao"));
         man.addChannel(RPRole.RoleType.EFFECTS, "myStuff", Optional.of("what do i know"));
         man.getChannelFromTitle("myStuff").addProcessingUnit(new BasicProcessingUnitBuilder()
@@ -87,9 +67,9 @@ public class TestSerializeAndDeserialize {
         } catch (ImportException e) {
             e.printStackTrace();
         }
-        AbstractJacksonSerializer<Manager> serializer = new ManagerSerializer();
+        ManagerSerializer serializer = new ManagerSerializer();
         Writer writer = new RPFileWriter(new File(FILENAME));
-        AbstractJacksonDeserializer<Manager> deserializer = new ManagerDeserializer();
+        ManagerDeserializer deserializer = new ManagerDeserializer();
         Reader reader = new RPFileReader(new File(FILENAME));
         try {
             writer.write(serializer.serialize(man));
