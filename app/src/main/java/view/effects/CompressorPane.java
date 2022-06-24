@@ -3,7 +3,6 @@ package view.effects;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -23,7 +22,7 @@ public final class CompressorPane extends BorderPane {
 	
 	final private Label thresholdValue = new Label("0.0");
 	final private Label attackValue = new Label("0.2");
-	final private Label ratioValue = new Label("1:1");
+	final private Label ratioValue = new Label("2:1");
 	final private Label decayValue = new Label("0.2");
 	private String channel;
 	private int index;
@@ -113,7 +112,21 @@ public final class CompressorPane extends BorderPane {
 			
 			final JerkyKnobPane ratio = new JerkyKnobPane(List.of("1:1", "2:1", "4:1", "8:1"), "RATIO");
 			ratio.getValueProperty().addListener((ch, old, n) -> {
-				//setParameters("ratio", n.chars()); TODO
+				switch (n) {
+				case "1:1":
+					setParameters("ratio", 1f);
+					break;
+				case "2:1":
+					setParameters("ratio", 2f);
+					break;
+				
+				case "4:1":
+					setParameters("ratio", 4f);
+					break;
+				case "8:1":
+					setParameters("ratio", 8f);
+					break;
+				}
 			});
 			final ContinuousKnobPane decay = new ContinuousKnobPane(0.2, 40.0, currentDecay, 3, "DECAY");
 			decay.getValueProperty().addListener((ch, old, n) -> {
