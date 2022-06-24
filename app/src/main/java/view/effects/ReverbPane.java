@@ -17,11 +17,11 @@ public final class ReverbPane extends BorderPane {
 	
 	final private VBox effects = new VBox();
 	
-	final private Label dampingValue = new Label("0.0");
-	final private Label roomsizeValue = new Label("0.0");
-	final private Label earlyValue = new Label("0.0");
-	final private Label lateValue = new Label("0.0");
-	final private Label dryWetValue = new Label("0.0");
+	final private Label dampingValue = new Label("70.0");
+	final private Label roomsizeValue = new Label("50.0");
+	final private Label earlyValue = new Label("100.0");
+	final private Label lateValue = new Label("100.0");
+	final private Label dryWetValue = new Label("50.0");
 	private String channel;
 	private int index;
 	
@@ -97,26 +97,31 @@ public final class ReverbPane extends BorderPane {
 			final VBox firstcolumn = new VBox();
 			
 			final ContinuousKnobPane damping = new ContinuousKnobPane(0.0, 100.0, currentDamping, 3, "DAMPING");
+			damping.setValue(70.0);
 			damping.getValueProperty().addListener((ch, old, n) -> {
 				setParameters("damping", (n.floatValue()/100));
 			});
 			final ContinuousKnobPane roomsize = new ContinuousKnobPane(0.0, 100.0, currentRoomsize, 3, "ROOMSIZE");
+			roomsize.setValue(50.0);
 			roomsize.getValueProperty().addListener((ch, old, n) -> {
 				setParameters("roomSize", (n.floatValue()/100));
 			});
 			firstrow.getChildren().addAll(damping, roomsize);
 			
 			final ContinuousKnobPane early = new ContinuousKnobPane(0.0, 100.0, currentEarly, 3, "EARLY REF");
+			early.setValue(100.0);
 			early.getValueProperty().addListener((ch, old, n) -> {
 				setParameters("earlyReflectionsLevel", (n.floatValue()/100));
 			});
 			final ContinuousKnobPane late = new ContinuousKnobPane(0.0, 100.0, currentLate, 3, "LATE REF");
+			late.setValue(100.0);
 			late.getValueProperty().addListener((ch, old, n) -> {
 				setParameters("lateReverbLevel", (n.floatValue()/100));
 			});
 			secondrow.getChildren().addAll(early, late);
 			
 			final ContinuousKnobPane dryWet = new ContinuousKnobPane(0.0, 100.0, currentDryWet, 3, "DRYWET");
+			dryWet.setValue(50.0);
 			dryWet.getValueProperty().addListener((ch, old, n) -> {
 				setParameters("dryWet", (n.floatValue()/100));
 			});
