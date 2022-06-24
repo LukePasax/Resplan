@@ -1,9 +1,7 @@
 package view.effects;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import resplan.Starter;
 import javafx.collections.ObservableList;
@@ -26,7 +24,6 @@ public final class EffectsPane extends ScrollPane {
 	
 	private final Map<String, Class<? extends Pane>> effectsType = createEffects();
 	private final Map<Effect, Node> effects = new HashMap<>();
-	private final Map<Class<? extends Pane>, String> paneTypes = createPaneTypes();
 	private final String channel;
 	
 	private final HBox effectsRoot = new HBox();
@@ -44,10 +41,6 @@ public final class EffectsPane extends ScrollPane {
 
 			if(c.wasRemoved()) {
 				c.getRemoved().forEach(e -> removeEffect(e));
-			}
-			
-			if(c.wasReplaced()) {
-				this.setEffect(c.getList());
 			}
 		});
 		final HBox root = new HBox();
@@ -81,17 +74,6 @@ public final class EffectsPane extends ScrollPane {
 		return effects;
 	}
 	
-	private final Map<Class<? extends Pane>, String> createPaneTypes(){
-		Map<Class<? extends Pane>, String> effects = new HashMap<>();
-		effects.put(CompressorPane.class, "Compressor");
-		effects.put(LimiterPane.class, "Limiter");
-		effects.put(PassPane.class, "Low pass");
-		effects.put(PassPane.class, "High pass");
-		effects.put(ReverbPane.class, "Reverb");
-		effects.put(GatePane.class, "Gate");
-		return effects;
-	}
-	
 	private final void addEffect(final Effect effect, final int index) {
 		try {
 			final EffectPane newPane = new EffectPane(effectsType.get(effect.getType()).getDeclaredConstructor(String.class, String.class, int.class).
@@ -109,19 +91,6 @@ public final class EffectsPane extends ScrollPane {
 		effects.remove(effect);
 	}
 	
-	private final void setEffect(ObservableList<? extends Effect> list) {
-		effectsRoot.getChildren().clear();
-		list.forEach(e -> {
-			try {
-				effectsRoot.getChildren().add(new EffectPane(effectsType.get(e.getType()).getDeclaredConstructor(String.class, String.class, int.class).
-						newInstance(e.getType(), channel, list.indexOf(e))));
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
-				e1.printStackTrace();
-			}
-		});
-	}
-	
 	public final class EffectPane extends BorderPane {
 		
 		public EffectPane(final Node effect) {
@@ -134,21 +103,7 @@ public final class EffectsPane extends ScrollPane {
 			remove.setShape(new Circle(1.5));
 			final Button moveLeft = new Button("<");
 			moveLeft.setShape(new Circle(1.5));
-			moveLeft.setOnMouseClicked(e -> {
-				final var firstPos = effectsRoot.getChildrenUnmodifiable().indexOf(this);
-				final var secondPos = effectsRoot.getChildrenUnmodifiable().indexOf(this) - 1;
-				if(secondPos >= 0) {
-					Starter.getController().swapEffects(channel, secondPos, firstPos);					
-				}
-			});
 			final Button moveRight = new Button(">");
-			moveRight.setOnMouseClicked(e -> {
-				final var firstPos = effectsRoot.getChildrenUnmodifiable().indexOf(this);
-				final var secondPos = effectsRoot.getChildrenUnmodifiable().indexOf(this) + 1;
-				if(secondPos < effectsRoot.getChildren().size()) {
-					Starter.getController().swapEffects(channel, firstPos, secondPos);					
-				}
-			});
 			moveRight.setShape(new Circle(1.5));
 			HBox.setMargin(remove, new Insets(0,0,0,10));
 			
