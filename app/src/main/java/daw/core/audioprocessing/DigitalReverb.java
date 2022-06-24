@@ -16,6 +16,9 @@ import java.util.Map;
  */
 public class DigitalReverb extends RPEffect {
 
+    private static final float DEFAULT_WET_VALUE = 1.0f;
+    private static final float DEFAULT_DRY_VALUE = 0.0f;
+
     private final Reverb rev;
     private final Gain wet;
     private final Gain dry;
@@ -29,8 +32,8 @@ public class DigitalReverb extends RPEffect {
     public DigitalReverb(@JsonProperty("ins") final int channels) {
         super(channels);
         this.rev = new Reverb(AudioContextManager.getAudioContext(), channels);
-        this.wet = new Gain(AudioContextManager.getAudioContext(), 2, 1.0f);
-        this.dry = new Gain(AudioContextManager.getAudioContext(), 2, 1.0f);
+        this.wet = new Gain(AudioContextManager.getAudioContext(), 2, DEFAULT_WET_VALUE);
+        this.dry = new Gain(AudioContextManager.getAudioContext(), 2, DEFAULT_DRY_VALUE);
         this.initializeStructure();
     }
 
