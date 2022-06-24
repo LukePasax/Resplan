@@ -104,6 +104,8 @@ public interface RPClip<X> {
 	/**
 	 * Generate an exact copy of this RPClip.
 	 * 
+	 * @param  title  The title of the new clip.
+	 * 
 	 * @return  a duplicate of this RPClip.
 	 * 
 	 * @throws  IOException  If some I/O exception has occurred.
@@ -112,7 +114,7 @@ public interface RPClip<X> {
 	 * 
 	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
-	RPClip<X> duplicate() throws IOException, OperationUnsupportedException, FileFormatException;
+	RPClip<X> duplicate(String title) throws IOException, OperationUnsupportedException, FileFormatException;
 
 	
 }

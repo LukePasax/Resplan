@@ -155,8 +155,8 @@ public final class FileClip implements RPClip<File> {
 	 * @throws IOException 
 	 */
 	@Override
-	public RPClip<File> duplicate() throws IOException, OperationUnsupportedException, FileFormatException {
-		RPClip<File> newClip = new FileClip(this.content, this.clip.duplicate());
+	public RPClip<File> duplicate(final String title) throws IOException, OperationUnsupportedException, FileFormatException {
+		RPClip<File> newClip = new FileClip(this.content, this.clip.duplicate(title));
 		newClip.setContentPosition(this.contentPosition);
 		return newClip;
 	}

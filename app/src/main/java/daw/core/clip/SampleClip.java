@@ -182,8 +182,8 @@ public final class SampleClip implements RPClip<Sample> {
 	 * @throws  FileFormatException  If the file format isn't a supported audio format.
 	 */
 	@Override
-	public RPClip<Sample> duplicate() throws IOException, OperationUnsupportedException, FileFormatException {
-			return new SampleClip(this.clip.duplicate());
+	public RPClip<Sample> duplicate(final String title) throws IOException, OperationUnsupportedException, FileFormatException {
+			return new SampleClip(this.clip.duplicate(title));
 	}
 
 	@Override

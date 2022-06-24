@@ -172,7 +172,11 @@ public final class TapeChannel implements RPTapeChannel {
 		}
 		RPClip<?> duplicate;
 		try {
-			duplicate = clip.duplicate();
+			String newTitle = clip.getTitle();
+			for (int n = 1; this.titleExists(newTitle); n++) {
+				newTitle = clip.getTitle() + "(" + n + ")";
+			}
+			duplicate = clip.duplicate(newTitle);
 			this.setTimeIn(initialClipTimeIn, splittingTime);
 			duplicate.setDuration(splittingTime - initialClipTimeIn);
 			this.insertRPClip(duplicate, initialClipTimeIn);
@@ -180,6 +184,10 @@ public final class TapeChannel implements RPTapeChannel {
 			e.printStackTrace();
 		}
 	}	
+	
+	private boolean titleExists(final String title) {
+		return this.timeline.values().stream().map(c -> c.getTitle()).anyMatch(t -> t.equals(title));
+	}
 	
 	/**
 	 * {@inheritDoc}
