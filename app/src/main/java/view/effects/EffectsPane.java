@@ -5,6 +5,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import daw.core.audioprocessing.Compression;
+import daw.core.audioprocessing.DigitalReverb;
+import daw.core.audioprocessing.Gate;
+import daw.core.audioprocessing.HighPassFilter;
+import daw.core.audioprocessing.Limiter;
+import daw.core.audioprocessing.LowPassFilter;
+import daw.core.audioprocessing.RPEffect;
 import resplan.Starter;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -27,6 +34,7 @@ public final class EffectsPane extends ScrollPane {
 	private final Map<String, Class<? extends Pane>> effectsType = createEffects();
 	private final Map<Effect, Node> effects = new HashMap<>();
 	private final Map<Class<? extends Pane>, String> paneTypes = createPaneTypes();
+	private final Map<Class<? extends RPEffect>, Class<? extends Pane>> translate = createTranslation();
 	private final String channel;
 	
 	private final HBox effectsRoot = new HBox();
@@ -67,11 +75,18 @@ public final class EffectsPane extends ScrollPane {
 			Starter.getController().addEffectAtPosition(channel, ((MenuItem) e.getTarget()).getText(), 0);
 		});
 		root.getChildren().add(effectsRoot);
+		Starter.getController().getProcessingUnit(channel).getEffects().forEach(e -> {
+			try {
+				effectsRoot.getChildren().add(new EffectPane(translate.get(e.getClass()).getDeclaredConstructor(String.class, String.class, int.class).
+											newInstance(paneTypes.get(translate.get(e.getClass())), channel, Starter.getController().getProcessingUnit(channel).getEffects().indexOf(e))));
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e1) {}
+		});
 		this.setContent(root);
 		
 	}
 	
-	private static Map<String, Class<? extends Pane>> createEffects(){
+	private Map<String, Class<? extends Pane>> createEffects(){
 		Map<String, Class<? extends Pane>> effects = new HashMap<>();
 		effects.put("Compressor", CompressorPane.class);
 		effects.put("Limiter", LimiterPane.class);
@@ -82,7 +97,7 @@ public final class EffectsPane extends ScrollPane {
 		return effects;
 	}
 	
-	private static Map<Class<? extends Pane>, String> createPaneTypes(){
+	private Map<Class<? extends Pane>, String> createPaneTypes(){
 		Map<Class<? extends Pane>, String> effects = new HashMap<>();
 		effects.put(CompressorPane.class, "Compressor");
 		effects.put(LimiterPane.class, "Limiter");
@@ -90,6 +105,17 @@ public final class EffectsPane extends ScrollPane {
 		effects.put(PassPane.class, "High pass");
 		effects.put(ReverbPane.class, "Reverb");
 		effects.put(GatePane.class, "Gate");
+		return effects;
+	}
+	
+	private Map<Class<? extends RPEffect>, Class<? extends Pane>> createTranslation(){
+		Map<Class<? extends RPEffect>, Class<? extends Pane>> effects = new HashMap<>();
+		effects.put(Compression.class, CompressorPane.class);
+		effects.put(Limiter.class, LimiterPane.class);
+		effects.put(LowPassFilter.class, PassPane.class);
+		effects.put(HighPassFilter.class, PassPane.class);
+		effects.put(DigitalReverb.class, ReverbPane.class);
+		effects.put(Gate.class, GatePane.class);
 		return effects;
 	}
 	
