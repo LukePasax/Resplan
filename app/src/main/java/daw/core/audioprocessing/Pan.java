@@ -29,8 +29,8 @@ public class Pan extends UGen implements AudioElement {
         super(AudioContextManager.getAudioContext());
         this.gainIn = new Gain(AudioContextManager.getAudioContext(), 2, 1.0f);
         this.gainOut = new Gain(AudioContextManager.getAudioContext(), 2, 1.0f);
-        this.left = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
-        this.right = new Gain(AudioContextManager.getAudioContext(), 1, 1.0f);
+        this.left = new Gain(AudioContextManager.getAudioContext(), 1, (float) (1 / Math.sqrt(2.0)));
+        this.right = new Gain(AudioContextManager.getAudioContext(), 1, (float) (1 / Math.sqrt(2.0)));
         this.initializeStructure();
     }
 
