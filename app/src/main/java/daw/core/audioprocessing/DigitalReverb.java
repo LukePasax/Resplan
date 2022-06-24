@@ -63,10 +63,12 @@ public class DigitalReverb extends RPEffect {
     public final void setParameters(final Map<String, Float> parameters) {
         final DataBead db = new DataBead();
         db.putAll(parameters);
-        this.dryWetValue = parameters.get("dryWet");
         this.dry.setGain((float) Math.cos(Math.PI * this.dryWetValue / 2));
         this.wet.setGain((float) Math.sin(Math.PI * this.dryWetValue / 2));
         this.rev.sendData(db);
+        if (parameters.containsKey("dryWet")) {
+            this.dryWetValue = parameters.get("dryWet");
+        }
     }
 
     /**
