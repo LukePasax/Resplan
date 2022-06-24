@@ -10,7 +10,6 @@ import daw.core.clip.RPRecorder;
 import daw.core.clip.Recorder;
 import daw.engine.Engine;
 import daw.engine.RPEngine;
-import daw.manager.ChannelLinker;
 import daw.manager.ImportException;
 import daw.manager.Manager;
 import daw.utilities.AudioContextManager;
@@ -69,7 +68,7 @@ public final class ControllerImpl implements Controller {
         this.downloader = new ProjectDownloaderImpl();
         this.startApp();
         this.manager.getMixer().connectToSystem();
-        this.engine = new Engine((ChannelLinker) this.manager.getChannelLinker());
+        this.engine = new Engine(this.manager.getChannelLinker());
     }
 
     /**
@@ -120,7 +119,7 @@ public final class ControllerImpl implements Controller {
     public void newProject() {
         this.startApp();
         this.manager.getMixer().connectToSystem();
-        this.engine = new Engine((ChannelLinker) this.manager.getChannelLinker());
+        this.engine = new Engine(this.manager.getChannelLinker());
         this.loadViewData();
     }
 
@@ -207,7 +206,7 @@ public final class ControllerImpl implements Controller {
             this.manager = this.loader.load(file);
             this.currentProject = file;
             this.manager.getMixer().connectToSystem();
-            this.engine = new Engine((ChannelLinker) this.manager.getChannelLinker());
+            this.engine = new Engine(this.manager.getChannelLinker());
             this.loadViewData();
         } catch (IOException | FileFormatException e) {
             throw new LoadingException(e.getMessage());
