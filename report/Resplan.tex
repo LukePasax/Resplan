@@ -12,7 +12,7 @@
 \usepackage[italian]{babel}
 \usepackage[italian]{cleveref}
 
-\title{Meta-relazione per\\``Programmazione ad Oggetti''}
+\title{Resplan \\ \large Record, edit \& plan}
 
 \author{Alessandro Antonini, Gabriele Menghi, Luca Pasini, Giacomo Sirri}
 \date{\today}
@@ -519,6 +519,13 @@ L’applicazione è stata testata su diversi sistemi operativi (Windows, OSX, Li
 Alcuni problemi emersi riguardano la scelta del dispositivo di input audio. Non sempre il dispositivo di default per l’input audio rilevato dalla Java Sound API si rivela essere funzionante. Purtroppo non è stata trovata soluzione al problema, se non quella di forzare dal sistema operativo l’utilizzo del dispositivo desiderato come dispositivo di default. Tuttavia anche questa metodologia non sempre si rivela funzionante.
 
 \section{Metodologia di lavoro}
+La metodologia di lavoro con cui si è affrontato lo sviluppo di nuove features è stata la seguente: per ogni nuova componente del software da sviluppare è stato analizzato nei dettagli il comportamento atteso.
+In seguito è stata creata una prima versione della nuova componente cercando di riutilizzare il più possibile il codice già scritto.
+Per ogni tentativo venivano eseguiti test per verificare il corretto funzionamento dell’entità creata. 
+Una volta ottenuta una prima versione funzionante sono state eseguite rifattorizzazioni per migliorare la qualità del codice scritto e suddividere le singole responsabilità tra oggetti diversi. Quando è stata individuata la possibilità di utilizzare qualche pattern di design questo è stato applicato.
+Se emergevano dipendenze tra le varie classi si cercava di scioglierle, così come, per ogni classe, si è cercato di prevedere quali potessero essere le possibili evoluzioni future in modo da riadattare il codice per renderlo facilmente estendibile in futuro, senza dover modificare quello già scritto.
+Infine l’ultimo step rimaneva sempre quello di verificare il comportamento delle componenti sviluppate nei casi più complicati.
+
 Per coordinare il lavoro del gruppo sono stati divisi i compiti in modo da assegnare alla stessa persona lo sviluppo di classi riguardanti concetti simili. Nello specifico, a Menghi sono state assegnate le classi di planning, ad Antonini quelle che gestiscono le clip audio e gli elementi necessari a registrarle e riprodurle, Sirri si è occupato delle componenti audio a basso livello e Pasini ha gestito la logica generale dell'applicazione.
 
 Dopo di che, è stato necessario definire le interfacce principali necessarie all’interazione tra le diverse parti dell’applicazione.
@@ -640,103 +647,186 @@ src/main/resources/stylesheets/resplan.css & CSS & V & - \\
 Il codice della classe ResizeHelper è stato preso e modificato da un thread di Stack Overflow: 
 \hyperlink{https://stackoverflow.com/questions/19455059/allow-user-to-resize-an-undecorated-stage}{https://stackoverflow.com/questions/19455059/allow-user-to-resize-an-undecorated-stage}
 \endsubsubsection
+\subsubsection{Giacomo Sirri}
+\begin{center}
+\begin{longtable}{| m{23em} | m{1.5cm}| m{1cm} | m{2.5cm} |} 
+ \hline
+  Nome & Tipologia & MVC & Collaboratori \\ [0.5ex] 
+ \hline
+  daw.core.channel & package & M & - \\
+  \hline
+daw.core.audioprocessing & package & M & - \\
+\hline
+controller.storing & package & C & - \\
+\hline
+controller.storing.deserialization & package & C & - \\
+\hline
+controller.storing.serialization & package & C & - \\
+\hline
+controller.general.LoadingException & class & C & - \\
+\hline
+controller.general.DownloadingException & class & C & - \\
+\hline
+controller.general.ProjectDownloader & class & C & - \\
+\hline
+controller.general.ProjectDownloaderImpl & class & C & - \\
+\hline
+controller.general.ProjectLoader & class & C & - \\
+\hline
+controller.general.ProjectLoaderImpl & class & C & - \\
+\hline
+view.planning.ChannelDescriptionEditorController & class & V & - \\
+\hline
+view.planning.ClipDescriptionEditorController & class & V & - \\
+\hline
+view.planning.ClipTextEditorController & class & V & - \\
+\hline
+view.planning.RubricController & class & V & - \\
+\hline
+view.planning.TextEditorController & class & V & Luca Pasini \\
+\hline
+src/main/resources/view/TextEditorView.fxml & FXML & V & Luca Pasini \\
+\hline
+src/main/resources/view/RubricView.fxml & FXML & V & - \\
+\hline
+\end{longtable}
+\end{center}
+Il codice di RubricView.fxml è stato tratto in gran parte da un tutorial di Oracle:
+\hyperlink{https://docs.oracle.com/javase/8/javafx/fxml-tutorial/fxml\_tutorial\_intermediate.htm}{https://docs.oracle.com/javase/8/javafx/fxml-tutorial/fxml\_tutorial\_intermediate.htm}
+\endsubsubsection
 \endsubsection
 
-
 \section{Note di sviluppo}
-
-Questa sezione, come quella riguardante il design dettagliato va svolta \textbf{singolarmente da ogni membro del gruppo}.
-
-Ciascuno dovrà mettere in evidenza eventuali particolarità del suo metodo di sviluppo, ed in particolare:
+\subsection{Scelta della libreria audio}
+La scelta della libreria audio è stata fondamentale per lo sviluppo di Resplan.
+Java mette a disposizione la Java Sound API, una libreria di basso livello che permette di controllare l’Input/Output audio e MIDI di sistema. 
+Tuttavia analizzando meglio la libreria sono emerse alcune limitazioni tra cui:
 \begin{itemize}
-	\item \textbf{Elencare} (fare un semplice elenco per punti, non un testo!) le feature \textit{avanzate} del linguaggio e dell'ecosistema Java che sono state
-utilizzate. Le feature di interesse sono:
-	\begin{itemize}
-		\item Progettazione con generici, ad esempio costruzione di nuovi tipi generici, e uso di generici bounded. Uso di classi generiche di libreria non è considerato avanzato.
-		\item Uso di lambda expressions
-		\item Uso di \texttt{Stream}, di \texttt{Optional} o di altri costrutti funzionali
-		\item Uso della reflection
-		\item Definizione ed uso di nuove annotazioni
-		\item Uso del Java Platform Module System
-		\item Uso di parti di libreria non spiegate a lezione (networking, compressione, parsing XML, eccetera...)
-		\item Uso di librerie di terze parti (incluso JavaFX): Google Guava, Apache Commons...
-		\item Uso di build systems
-	\end{itemize}
-	Si faccia molta attenzione a non scrivere banalità, elencando qui features di tipo ``core'', come le eccezioni, le enumerazioni, o le inner class: nessuna di queste è considerata avanzata.
-	\item Descrivere \textit{molto brevemente} le librerie utilizzate nella propria parte di progetto, se non trattate a lezione (ossia, se librerie di terze parti e/o se componenti del JDK non visti, come le socket). Si ricorda che l'utilizzo di librerie è valutato \emph{positivamente}.
-	\item Sviluppo di algoritmi particolarmente interessanti \emph{non forniti da alcuna libreria} (spesso può convenirvi chiedere sul forum se ci sia una libreria per fare una certa cosa, prima di gettarvi a capofitto per scriverla voi stessi).
+    \item Impossibilità di scegliere quale canale di I/O dell’interfaccia audio utilizzare (la libreria permette di utilizzare solo quello impostato di default nel sistema operativo).
+    \item La somma di varie sorgenti audio digitali in un unico stream audio non è implementata nella libreria.
+    \item Non vengono fornite classi o metodi per processare l’audio.
 \end{itemize}
-%
-In questa sezione, \textit{dopo l'elenco}, è anche bene evidenziare eventuali pezzi di codice ``riadattati'' (o scopiazzati...) da Internet o da altri progetti, pratica che tolleriamo ma che non raccomandiamo.
-%
-I pattern di design, invece \textbf{non} vanno messi qui.
-%
-L'uso di pattern di design (come suggerisce il nome) è un aspetto avanzato di design, non di implementazione,
-e non va in questa sezione.
+Abbiamo quindi scelto di utilizzare una libreria audio di più alto livello: Beads.
 
-\subsection*{Elementi positivi}
+Questa libreria si appoggia sulla Java Sound API, ma fornisce la possibilità di processare l’audio ed effettuarne il routing tramite catene di dispositivi chiamati UGen.
+Questi possono essere sia generatori di audio (oscillatori, lettori di file audio, ecc…), che effetti che processano l’audio che vi passa all’interno.
+Gli UGen funzionano scrivendo e leggendo dati da un buffer audio (array di byte contenenti i sample dell’audio digitale). Questo buffer viene elaborato in tempo reale e passato di UGen in UGen fino ad arrivare all’output dell’AudioContext. Quest’ultimo prende il buffer in uscita dall’ultimo UGen della catena e lo passa alla Java Sound API, la quale lo riproduce tramite l’output audio di sistema.
 
+Purtroppo, essendo imposta dalla Java Sound API, rimane la limitazione di non poter scegliere il canale da utilizzare per l’I/O Audio. Tuttavia, Beads permette la somma dell’audio di diverse sorgenti e fornisce UGen già implementati per il processing dell’audio, features che altrimenti sarebbero dovute essere sviluppate da zero, formulando algoritmi di basso livello per modificare il buffer audio nel modo desiderato.
+\endsubsection
+\subsection{JavaFX, FXML}
+Per lo sviluppo della parte di View è stata utilizzata la libreria esterna JavaFX.
+Sono state realizzate alcune parti in linguaggio FXML, mentre altre componenti di view sono state scritte direttamente in linguaggio Java.
+\subsection{Gradle}
+È stato utilizzato Gradle come Build Automation Tool per gestire le dipendenze delle librerie (JavaFX, Beads, ed altre) e per creare il JAR eseguibile.
+\endsubsection
+\subsection{Features avanzate}
+\subsubsection{Alessandro Antonini}
+Si riporta l’utilizzo delle seguenti features avanzate del linguaggio Java:
 \begin{itemize}
-	\item Si elencano gli aspetti avanzati di linguaggio che sono stati impiegati
-	\item Si elencano le librerie che sono state utilizzate
-	\item Si descrivono aspetti particolarmente complicati o rilevanti relativi all'implementazione,
-ad esempio, in un'applicazione performance critical, un uso particolarmente avanzato di meccanismi
-di caching, oppure l'implementazione di uno specifico algoritmo.
-	\item Se si è utilizzato un particolare algoritmo, se ne cita la fonte originale. Ad esempio, se
-si è usato Mersenne Twister per la generazione dei numeri pseudo-random, si cita \cite{mersenne}.
-	\item Si identificano parti di codice prese da altri progetti, dal web, o comunque scritte in forma originale da altre persone. In tal senso, si ricorda che agli ingegneri non è richiesto di re-inventare la ruota continuamente: se si cita debitamente la sorgente è tollerato fare uso di di snippet di codice per risolvere velocemente problemi non banali. Nel caso in cui si usino snippet di codice di qualità discutibile, oltre a menzionarne l'autore originale si invitano gli studenti ad adeguare tali parti di codice agli standard e allo stile del progetto. Contestualmente, si fa presente che è largamente meglio fare uso di una libreria che copiarsi pezzi di codice: qualora vi sia scelta (e tipicamente c'è), si preferisca la prima via.
-\end{itemize}
-
-\subsection*{Elementi negativi}
-\begin{itemize}
-	\item Si elencano feature core del linguaggio invece di quelle segnalate. Esempi di feature
-core da non menzionare sono:
+    \item Sviluppo delle interfacce o classi generiche:
     \begin{itemize}
-        \item eccezioni;
-        \item classi innestate;
-        \item enumerazioni;
-        \item interfacce.
+        \item MapToSet\begin{math}<\end{math}X,Y\begin{math}>\end{math}
+        \item HashMapToSet\begin{math}<\end{math}X,Y\begin{math}>\end{math}
+        \item RPClip\begin{math}<\end{math}X\begin{math}>\end{math}
     \end{itemize}
-	\item Si elencano applicazioni di terze parti (peggio se per usarle occorre licenza, e lo
-studente ne è sprovvisto) che non c'entrano nulla con lo sviluppo, ad esempio:
+    \item Utilizzo degli stream e delle lambda in diverse classi quali:
     \begin{itemize}
-        \item Editor di grafica vettoriale come Inkscape o Adobe Illustrator;
-        \item Editor di grafica scalare come GIMP o Adobe Photoshop;
-        \item Editor di audio come Audacity;
-        \item Strumenti di design dell'interfaccia grafica come SceneBuilder: il codice è in ogni caso inteso come sviluppato da voi.
+        \item TapeChannel
+        \item PlayersMapBuilder
+        \item ClipPlayerNotifier
+        \item Action Listeners della view
     \end{itemize}
-	\item Si descrivono aspetti di scarsa rilevanza, o si scende in dettagli inutili.
-	\item Sono presenti parti di codice sviluppate originalmente da altri che non vengono
-debitamente segnalate. In tal senso, si ricorda agli studenti che i docenti hanno accesso a tutti i
-progetti degli anni passati, a Stack Overflow, ai principali blog di sviluppatori ed esperti Java (o sedicenti tali), ai blog dedicati allo sviluppo di soluzioni e applicazioni (inclusi blog dedicati ad Android e allo sviluppo di videogame), nonché ai social network. Conseguentemente, è \emph{molto} conveniente \emph{citare} una fonte ed usarla invece di tentare di spacciare per proprio il lavoro di altri.
-	\item Si elencano design pattern
+    \item Utilizzo di Optional in: 
+    \begin{itemize}
+        \item PlayersMapBuilder
+        \item Engine
+        \item ViewDataImpl
+    \end{itemize}
+    \item Concorrenza e multithread:
+    \begin{itemize}
+        \item Conductor
+    \end{itemize}
 \end{itemize}
+\endsubsubsection
+\subsubsection{Gabriele Menghi}
+Features avanzate utilizzate:
+\begin{itemize}
+    \item Lambda expressions 
+    \item Method reference
+    \item Interfacce funzionali
+    \item Stream
+    \item Optional
+\end{itemize}
+Nella mia parte di progetto, di librerie non approfondite a lezione, ho utilizzato prevalentemente JavaFX, per la realizzazione della parte grafica. È stata poi utilizzata la classe “URL” del package java.net, utilizzata come parametri del metodo “setLocation()” della classe “FXMLLoader”, utilizzato per identificare le risorse da utilizzare sempre nell’interfaccia.
+Un algoritmo degno di nota, implementato nel metodo “getOverallDuration()” nella classe “TimelineImpl”, che calcola la durata totale della timeline analizzando tutte le sezioni in essa presenti, prendendo quella con tempo di inizio maggiore e domandandone la relativa durata, ottenendo così appunto la durata totale.
+\endsubsubsection
+
+\subsubsection{Luca Pasini}
+Si riporta l’utilizzo delle seguenti funzioni avanzate:
+\begin{itemize}
+    \item Utilizzo di lambda e stream nelle seguenti classi:
+    \begin{itemize}
+        \item ClipLinker
+        \item ChannelLinker
+        \item Manager
+        \item ControllerImpl
+    \end{itemize}
+    \item Method reference
+    \begin{itemize}
+        \item RPManager
+        \item Controller
+    \end{itemize}
+    \item Concorrenza e ScheduledExcutor
+    \begin{itemize}
+        \item ExportViewController
+    \end{itemize}
+    \item Utilizzo di properties e listeners
+    \begin{itemize}
+        \item WindowBar
+        \item ResizeHelper
+    \end{itemize}
+\end{itemize}
+\subsubsection{Giacomo Sirri}
+Si riporta l’utilizzo delle seguenti funzionalità avanzate del linguaggio Java:
+\begin{itemize}
+    \item Utilizzo di lambda e stream in:
+    \begin{itemize}
+        \item ControllerImpl
+    \end{itemize}
+    \item Utilizzo di Optional in:
+    \begin{itemize}
+        \item BasicChannel
+    \end{itemize}
+    \item Utilizzo di reflection nei test sulla processing unit.
+    \item Utilizzo della libreria open-source Jackson per la serializzazione e deserializzazione del progetto in file JSON. Jackson è un processore JSON ad alte prestazioni che permette di serializzare e deserializzare il codice in maniera semi-automatizzata. Si era inizialmente considerato l’utilizzo di Gson, ma si è poi optato per Jackson in virtù della sua maggior facilità di utilizzo.
+    \item Utilizzo della libreria open-source Beads per l’implementazione degli effetti.
+\end{itemize}
+\endsubsubsection
+\endsubsection
+\endsection
 
 \chapter{Commenti finali}
-
-In quest'ultimo capitolo si tirano le somme del lavoro svolto e si delineano eventuali sviluppi
-futuri.
-
-\textit{Nessuna delle informazioni incluse in questo capitolo verrà utilizzata per formulare la valutazione finale}, a meno che non sia assente o manchino delle sezioni obbligatorie.
-%
-Al fine di evitare pregiudizi involontari, l'intero capitolo verrà letto dai docenti solo dopo aver formulato la valutazione.
-
 \section{Autovalutazione e lavori futuri}
+\subsection{Alessandro Antonini}
+\endsubsection
+\subsection{Gabriele Menghi}
+Come analizzato anche nella sezione del design di dettaglio, il mio compito fondamentale è stato quello di realizzare la parte di digital audio workspace di più alto livello, quella di organizzazione, slegata dalla parte relativa all’audio. Ho quindi realizzato tutti gli aspetti che tipicamente costituiscono una DAW, però sotto il lato organizzativo e dio gestione. Ho inoltre implementato i concetti di speaker, che può partecipare ad un progetto, di rubrica di speaker, e di testo, da associare a certe tipologie di parti (clip); tutti elementi quindi legati alla sfera organizzativa, mantenendo quindi questa sezione isolata il più possibile dal resto del programma che invece è incentrato sull’audio.
+Per quanto riguarda invece la parte di interfaccia grafica, il mio ruolo riguardava lo sviluppo dell’interfaccia principale di editing. Essendo però questa parte molto complessa ed articolata ho diviso il lavoro insieme al mio collega Alessandro Antonini. Abbiamo deciso quindi di dividerci il lavoro come segue: lui si è concentrato più sulla parte di gestione di clip, canali e timeline; io d’altra parte mi sono focalizzato sulla gestione degli effetti e sul volume. Tramite l’applicazione è possibile fare passare l’audio attraverso alcuni effetti, che vanno a modificare opportuni parametri, seguendo un certo ordine: io mi sono occupato proprio di consentire di effettuare queste operazioni a livello grafico.
+Per quanto riguarda l’utilizzo del Distributed Version Control System (DVCS), in questo caso git, l’utilizzo che ne per la maggior parte quello di collaborazione con i miei colleghi, tramite comandi commit, push e pull. In questo modo ci siamo sempre tenuti tutti al passo ed aggiornati sullo stesso stato del progetto. Altro utilizzo fondamentale è stato quello dei branch, creandone svariati a seconda della persona che sviluppava una parte e a seconda del contenuto della parte stessa. In questo modo lavoravamo allo stesso progetto, ma come se avessimo ognuno il proprio, ponendo ovviamente estrema attenzione a non modificare file appartenenti ad altri, per non generare merge conflict. Altro aspetto estremamente comodo di git è stato quello di poter verificare tutti i cambiamenti effettuati ad ogni commit, semplicemente per verificare quando fosse stata fatta una data modifica, o cosa fosse stato modificato, ma anche, in caso di necessità, poter tornare indietro fino a quello stato. Infine, un uso tanto banale quanto importante di git, è stato quello di servire come “cloud”, cioè avere sempre la tranquillità di avere una copia del codice al sicuro su GitHub. Ma l’aspetto secondo me più rilevante è stata la possibilità di svolgere il progetto in team, cosa resa molto semplice ed intuitiva proprio grazie a git, cosa che senza questo strumento sarebbe praticamente impossibile da compiere.
+\endsubsection
+\subsection{Luca Pasini}
+La realizzazione di questo progetto mi ha portato allo sviluppo di nuove competenze, tra cui il lavoro di gruppo e l’utilizzo di un DVCS.  Ho espanso inoltre le mie conoscenze del linguaggio java e della libreria JavaFX che ho usato molto per la creazione della View dandomi inoltre un infarinatura generale di CSS. Ritengo che il gruppo abbia lavorato bene nello sviluppo del progetto, per quanto probabilmente abbiamo preso un approccio complicato, decidendo di non partire da un'applicazione di base con poche funzionalità da espandere ma partendo implementando tutte le funzionalità che sembravano adeguate.
+Le parti per me più difficili sono state la creazione della logica dei gruppi dei canali che, nella sua versione finale, è stata molto semplificata dalla pianificazione originale e la gestione di una finestra UNDECORATED, il che significa senza il “contorno” fornito dal sistema operativo quindi senza la possibilità di muovere e ridimensionare la finestra in maniera automatica.
+Ritengo che l’applicazione possa beneficiare di un futuro sviluppo e la prima cosa di cui mi occuperei nel caso, sarebbe l’implementazione di un sistema di gruppi dei canali più completo e libero all’utente.
+\endsubsection
+\subsection{Giacomo Sirri}
+Ritengo che questo progetto sia stato estremamente utile sia per apprendere l’utilizzo di strumenti tecnici, come il DVCS, ma anche per migliorare alcune skill di carattere più generale e in particolare la capacità di lavorare in team. Credo inoltre che, considerando la complessità del dominio e la grande quantità di feature che l’applicazione mette a disposizione dell’utente, il gruppo abbia lavorato bene, affrontando in maniera piuttosto coesa i vari ostacoli incontrati nello sviluppo. 
+Una fonte di criticità è stata la metodologia di lavoro: invece di puntare a scrivere per prima cosa una versione semplificata ma funzionante del software, che poi sarebbe stata oggetto di miglioramenti incrementali (come si era pensato di fare all’inizio), abbiamo aggiunto sempre nuove feature fino a quando non ci siamo trovati a dover ultimare tutto per la consegna.
+Per quanto mi riguarda, penso di essere cresciuto molto come sviluppatore: ho dovuto affrontare compiti di design non banali, che hanno richiesto più di un ripensamento, e tutto sommato ritengo che il prodotto finale (specialmente nella parte di model) sia ben fatto. Ciò che più mi ha messo in difficoltà è stata la serializzazione e deserializzazione della logica dell’applicazione, in quanto ho dovuto utilizzare un formato testuale e una libreria per me completamente nuovi. 
 
-\textbf{È richiesta una sezione per ciascun membro del gruppo, obbligatoriamente}.
-%
-Ciascuno dovrà autovalutare il proprio lavoro, elencando i punti di forza e di debolezza in quanto prodotto.
-Si dovrà anche cercare di descrivere \emph{in modo quanto più obiettivo possibile} il proprio ruolo all'interno del gruppo.
-Si ricorda, a tal proposito, che ciascuno studente è responsabile solo della propria sezione: non è un problema se ci sono opinioni contrastanti, a patto che rispecchino effettivamente l'opinione di chi le scrive.
-Nel caso in cui si pensasse di portare avanti il progetto, ad esempio perché effettivamente impiegato, o perché sufficientemente ben riuscito da poter esser usato come dimostrazione di esser capaci progettisti, si descriva brevemente verso che direzione portarlo.
-
-\section{Difficoltà incontrate e commenti per i docenti}
-
-Questa sezione, \textbf{opzionale}, può essere utilizzata per segnalare ai docenti eventuali problemi o difficoltà incontrate nel corso o nello svolgimento del progetto, può essere vista come una seconda possibilità di valutare il corso (dopo quella offerta dalle rilevazioni della didattica) avendo anche conoscenza delle modalità e delle difficoltà collegate all'esame, cosa impossibile da fare usando le valutazioni in aula per ovvie ragioni.
-%
-È possibile che alcuni dei commenti forniti vengano utilizzati per migliorare il corso in futuro: sebbene non andrà a vostro beneficio, potreste fare un favore ai vostri futuri colleghi.
-%
-Ovviamente \textit{il contenuto della sezione non impatterà il voto finale}.
+\endsubsection
+\endsection
 
 \appendix
 \chapter{Guida utente}
