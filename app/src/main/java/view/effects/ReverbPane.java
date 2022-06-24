@@ -98,25 +98,28 @@ public final class ReverbPane extends BorderPane {
 			
 			final ContinuousKnobPane damping = new ContinuousKnobPane(0.0, 100.0, currentDamping, 3, "DAMPING");
 			damping.getValueProperty().addListener((ch, old, n) -> {
-				setParameters("damping", n.floatValue());
+				setParameters("damping", (n.floatValue()/100));
 			});
 			final ContinuousKnobPane roomsize = new ContinuousKnobPane(0.0, 100.0, currentRoomsize, 3, "ROOMSIZE");
 			roomsize.getValueProperty().addListener((ch, old, n) -> {
-				setParameters("roomSize", n.floatValue());
+				setParameters("roomSize", (n.floatValue()/100));
 			});
 			firstrow.getChildren().addAll(damping, roomsize);
 			
 			final ContinuousKnobPane early = new ContinuousKnobPane(0.0, 100.0, currentEarly, 3, "EARLY REF");
 			early.getValueProperty().addListener((ch, old, n) -> {
-				setParameters("earlyReflectionsLevel", n.floatValue());
+				setParameters("earlyReflectionsLevel", (n.floatValue()/100));
 			});
 			final ContinuousKnobPane late = new ContinuousKnobPane(0.0, 100.0, currentLate, 3, "LATE REF");
 			late.getValueProperty().addListener((ch, old, n) -> {
-				setParameters("lateReverbLevel", n.floatValue());
+				setParameters("lateReverbLevel", (n.floatValue()/100));
 			});
 			secondrow.getChildren().addAll(early, late);
 			
 			final ContinuousKnobPane dryWet = new ContinuousKnobPane(0.0, 100.0, currentDryWet, 3, "DRYWET");
+			dryWet.getValueProperty().addListener((ch, old, n) -> {
+				setParameters("dryWet", (n.floatValue()/100));
+			});
 			thirdrow.getChildren().addAll(dryWet);
 			
 			firstcolumn.getChildren().addAll(titlebox, firstrow, secondrow, thirdrow);
