@@ -46,7 +46,7 @@ public final class WindowBar {
     public WindowBar(final AnchorPane pane) {
         super();
         this.pane = pane;
-        pane.getStylesheets().add("/stylesheets/planning.css");
+        pane.getStylesheets().add("/stylesheets/resplan.css");
         pane.setPrefHeight(ICON_SIZE);
         pane.setMaxHeight(USE_PREF_SIZE);
         final ImageView resplanIcon = new ImageView("/icons/icon.png");

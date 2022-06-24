@@ -56,7 +56,7 @@ public final class PassPane extends BorderPane {
 		
 		this.setPadding(new Insets(10));
 		this.setStyle("-fx-border-color: black");
-		String css = this.getClass().getResource("/stylesheets/planning.css").toExternalForm(); 
+		String css = this.getClass().getResource("/stylesheets/resplan.css").toExternalForm();
 		this.getStylesheets().add(css);
 	}
 	
@@ -93,7 +93,7 @@ public final class PassPane extends BorderPane {
 			});
 			
 			Scene scene = new Scene(root);
-			String css = scene.getClass().getResource("/stylesheets/planning.css").toExternalForm(); 
+			String css = scene.getClass().getResource("/stylesheets/resplan.css").toExternalForm();
 			scene.getStylesheets().add(css);
 			stage.setScene(scene);
 			stage.show();

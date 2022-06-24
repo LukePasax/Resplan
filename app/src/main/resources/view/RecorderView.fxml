@@ -21,7 +21,7 @@
       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" style="-fx-border-color: #000000;" stylesheets="@../stylesheets/planning.css">
+      <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" style="-fx-border-color: #000000;" stylesheets="@../stylesheets/resplan.css">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Recorder" textAlignment="CENTER" VBox.vgrow="ALWAYS">
                <font>
