@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public class DigitalReverb extends RPEffect {
 
-    private static final float DEFAULT_WET_VALUE = 1.0f;
-    private static final float DEFAULT_DRY_VALUE = 0.0f;
+    private static final float DEFAULT_WET_VALUE = (float) (1 / Math.sqrt(2.0));
+    private static final float DEFAULT_DRY_VALUE = (float) (1 / Math.sqrt(2.0));
 
     private final Reverb rev;
     private final Gain wet;
