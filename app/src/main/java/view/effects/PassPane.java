@@ -16,12 +16,19 @@ import resplan.Starter;
 
 public final class PassPane extends BorderPane {
 	
-	final private Label frequencyValue = new Label("10.0");
+	final private Label frequencyValue;
 	final private VBox effects = new VBox();
 	private String channel;
 	private int index;
 
 	public PassPane(final String title, final String channel, final int index) {
+		if(title.equals("High pass")) {
+			frequencyValue = new Label("90.0");
+		} else if(title.equals("Low pass")) {
+			frequencyValue = new Label("18000.0");
+		} else {
+			frequencyValue = new Label("10.0");
+		}
 		this.index = index;
 		this.channel = channel;
 		final HBox titlebox = new HBox();
@@ -65,6 +72,13 @@ public final class PassPane extends BorderPane {
 			final HBox titlebox = new HBox(new Label(title));
 			titlebox.setAlignment(Pos.CENTER);
 			final ContinuousKnobPane frequency = new ContinuousKnobPane(10.0, 20000.0, currentFrequency, 3, "FREQUENCY");
+			if(title.equals("High pass")) {
+				frequency.setValue(90.0);
+			} else if(title.equals("Low pass")) {
+				frequency.setValue(18000.0);
+			} else {
+				frequency.setValue(10.0);
+			}
 			frequency.getValueProperty().addListener((ch, old, n) -> {
 				setParameters("frequency", n.floatValue());
 			});
