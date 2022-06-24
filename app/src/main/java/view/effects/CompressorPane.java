@@ -111,6 +111,7 @@ public final class CompressorPane extends BorderPane {
 			firstrow.getChildren().addAll(threshold, attack);
 			
 			final JerkyKnobPane ratio = new JerkyKnobPane(List.of("1:1", "2:1", "4:1", "8:1"), "RATIO");
+			ratio.setValue("2:1");
 			ratio.getValueProperty().addListener((ch, old, n) -> {
 				switch (n) {
 				case "1:1":

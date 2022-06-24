@@ -120,6 +120,7 @@ public final class ReverbPane extends BorderPane {
 			dryWet.getValueProperty().addListener((ch, old, n) -> {
 				setParameters("dryWet", (n.floatValue()/100));
 			});
+			thirdrow.setAlignment(Pos.CENTER);
 			thirdrow.getChildren().addAll(dryWet);
 			
 			firstcolumn.getChildren().addAll(titlebox, firstrow, secondrow, thirdrow);
