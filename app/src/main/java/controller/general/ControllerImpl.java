@@ -781,7 +781,8 @@ public final class ControllerImpl implements Controller {
      * @param channel
      * @return {@inheritDoc}
      */
-    private ProcessingUnit getProcessingUnit(final String channel) {
+    @Override
+    public ProcessingUnit getProcessingUnit(final String channel) {
         return this.manager.getChannelFromTitle(channel).getProcessingUnit().orElseThrow();
     }
 
@@ -896,7 +897,7 @@ public final class ControllerImpl implements Controller {
         return this.manager.getSpeakersInRubric();
     }
 
-    // ONLY FOR TEMPORARY TESTING PURPOSES
+    // ONLY FOR TESTING PURPOSES
     public Manager getManager() {
         return this.manager;
     }

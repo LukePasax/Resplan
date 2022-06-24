@@ -1,5 +1,6 @@
 package controller.general;
 
+import daw.core.audioprocessing.ProcessingUnit;
 import daw.core.channel.RPChannel;
 import daw.core.clip.ClipNotFoundException;
 import daw.manager.ImportException;
@@ -347,6 +348,14 @@ public interface Controller {
      * @param value the -1.0 - 1.0 float representation of the pan.
      */
     void setPan(String channel, float value);
+
+    /**
+     * Gets the processing unit of the given channel.
+     * @param channel the name of a channel.
+     * @return a {@link ProcessingUnit}.
+     * @throws java.util.NoSuchElementException if the given channel does not possess a processing unit.
+     */
+    ProcessingUnit getProcessingUnit(String channel);
 
     /**
      * Adds text to the given clip.
