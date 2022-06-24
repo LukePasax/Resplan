@@ -324,11 +324,21 @@ public final class ControllerImpl implements Controller {
         return this.manager.getRoles().stream().map(Element::getTitle).collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     * @param channel the name of a channel.
+     * @return {@inheritDoc}
+     */
     @Override
     public List<String> getClipList(final String channel) {
         return this.manager.getPartList(channel).stream().map(Element::getTitle).collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @return {@inheritDoc}
+     */
     @Override
     public Optional<Sample> getClipSample(final String clip) {
         try {
@@ -339,11 +349,22 @@ public final class ControllerImpl implements Controller {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @param channel the name of the channel that contains the given clip.
+     * @return {@inheritDoc}
+     */
     @Override
     public Double getClipTime(final String clip, final String channel) {
         return this.manager.getClipTime(clip, channel);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @return {@inheritDoc}
+     */
     @Override
     public Double getClipDuration(final String clip) {
         return this.manager.getClipDuration(clip);
@@ -422,6 +443,10 @@ public final class ControllerImpl implements Controller {
         return this.manager.getProjectLength();
     }
 
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Override
     public double getProjectTimeOut() {
         return this.manager.getProjectTimeOut();
@@ -546,6 +571,10 @@ public final class ControllerImpl implements Controller {
         App.getData().addSection(new ViewDataImpl.Section(title, initialTime));
     }
 
+    /**
+     * {@inheritDoc}
+     * @param time a position in the timeline.
+     */
     @Override
     public void deleteSection(final Double time) {
         this.manager.removeSection(time);
@@ -698,6 +727,12 @@ public final class ControllerImpl implements Controller {
                 });
     }
 
+    /**
+     * {@inheritDoc}
+     * @param channel the name of a channel.
+     * @param effect the name of an effect.
+     * @param index the position in the processing unit where to add the effect.
+     */
     @Override
     public void addEffectAtPosition(final String channel, final String effect, final int index) {
         try {
@@ -725,17 +760,32 @@ public final class ControllerImpl implements Controller {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @param channel the name of a channel.
+     * @param index the position in the processing unit where to remove the effect.
+     */
     @Override
     public void removeEffectAtPosition(final String channel, final int index) {
         this.getProcessingUnit(channel).removeEffectAtPosition(index);
         App.getData().getChannel(channel).getFxList().remove(index);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param channel the name of a channel.
+     */
     @Override
     public void removeProcessingUnit(final String channel) {
         this.manager.getChannelFromTitle(channel).removeProcessingUnit();
     }
 
+    /**
+     * {@inheritDoc}
+     * @param channel the name of a channel.
+     * @param index1 the position of the first effect to swap.
+     * @param index2 the position of the second effect to swap.
+     */
     @Override
     public void swapEffects(final String channel, final int index1, final int index2) {
         this.getProcessingUnit(channel).swapEffects(index1, index2);
@@ -745,11 +795,23 @@ public final class ControllerImpl implements Controller {
         App.getData().getChannel(channel).getFxList().set(index1, oldSecond);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param channel the name of a channel.
+     * @param index the position of the effect in the processing unit.
+     * @param parameters a {@link Map} representing the new values of the effect.
+     */
     @Override
     public void setEffectParameters(final String channel, final int index, final Map<String, Float> parameters) {
         this.getProcessingUnit(channel).getEffectAtPosition(index).setParameters(parameters);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param channel the name of a channel.
+     * @param index the position of the effect in the processing unit.
+     * @return {@inheritDoc}
+     */
     @Override
     public Map<String, Float> getEffectParameters(final String channel, final int index) {
         return this.getProcessingUnit(channel).getEffectAtPosition(index).getParameters();
@@ -800,7 +862,7 @@ public final class ControllerImpl implements Controller {
      * {@inheritDoc}
      * @param clipTitle the name of a clip.
      * @param fileName the name of the file the text has to be read from.
-     * @throws IOException
+     * @throws IOException {@inheritDoc}
      */
     @Override
     public void setClipTextFromFile(final String clipTitle, final String fileName) throws IOException {
@@ -835,11 +897,21 @@ public final class ControllerImpl implements Controller {
        }
     }
 
+    /**
+     * {@inheritDoc}
+     * @param title the name of a clip.
+     * @param text the new description.
+     */
     @Override
     public void setClipDescription(final String title, final String text) {
         this.manager.getClipLinker().getPartFromClip(this.manager.getClipFromTitle(title)).addDescription(text);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param clip the name of a clip.
+     * @return {@inheritDoc}
+     */
     @Override
     public Optional<String> getClipDescription(final String clip) {
         return this.manager.getClipLinker().getPart(clip).getDescription();
@@ -865,6 +937,11 @@ public final class ControllerImpl implements Controller {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @param title the name of a channel.
+     * @param text the new description.
+     */
     @Override
     public void setChannelDescription(final String title, final String text) {
         this.manager.getRoles().stream()
@@ -874,6 +951,11 @@ public final class ControllerImpl implements Controller {
                 .addDescription(text);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param title the name of a channel.
+     * @return {@inheritDoc}
+     */
     @Override
     public Optional<String> getChannelDescription(final String title) {
         return this.manager.getRoles().stream()
@@ -882,16 +964,32 @@ public final class ControllerImpl implements Controller {
                 .flatMap(Element::getDescription);
     }
 
+    /**
+     * {@inheritDoc}
+     * @param code an integer value representing the speaker.
+     * @param firstName the first name of the speaker.
+     * @param lastName the last name of the speaker.
+     */
     @Override
     public void addSpeakerToRubric(final int code, final String firstName, final String lastName) {
         this.manager.addSpeakerToRubric(this.manager.createSpeaker(code, firstName, lastName));
     }
 
+    /**
+     * {@inheritDoc}
+     * @param code an integer value representing the speaker.
+     * @param firstName the first name of the speaker.
+     * @param lastName the last name of the speaker.
+     */
     @Override
     public void removeSpeakerFromRubric(final int code, final String firstName, final String lastName) {
         this.manager.removeSpeakerFromRubric(this.manager.createSpeaker(code, firstName, lastName));
     }
 
+    /**
+     * {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Override
     public List<Speaker> getSpeakers() {
         return this.manager.getSpeakersInRubric();

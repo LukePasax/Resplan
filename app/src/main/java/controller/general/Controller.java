@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -145,12 +146,33 @@ public interface Controller {
      */
     List<String> getChannelList();
 
+    /**
+     * Gets all the clips contained in the given channel.
+     * @param channel the name of a channel.
+     * @return a {@link List} of names of clips.
+     */
     List<String> getClipList(String channel);
 
+    /**
+     * Gets the sample connected to the given clip, if present, otherwise returns an empty {@link Optional}.
+     * @param clip the name of a clip.
+     * @return an {@link Optional}.
+     */
     Optional<Sample> getClipSample(String clip);
 
+    /**
+     * Gets the position in timeline that is the starting point of the given clip.
+     * @param clip the name of a clip.
+     * @param channel the name of the channel that contains the given clip.
+     * @return the starting time in milliseconds of the clip.
+     */
     Double getClipTime(String clip, String channel);
 
+    /**
+     * Gets the duration of the given clip.
+     * @param clip the name of a clip.
+     * @return the duration in milliseconds of the given clip.
+     */
     Double getClipDuration(String clip);
 
     /**
@@ -194,13 +216,18 @@ public interface Controller {
     boolean isPaused();
 
     /**
-     * Gets the current project length. Project length is defined as the furthest timeout position of a clip, plus
-     * an eventual minimum spacing for visual purposes.
+     * Gets the current project length. Project length is defined as the highest value between the
+     * furthest timeout position of a clip and the minimum length of a project.
      * @return the length of the projects in milliseconds.
      */
     double getProjectLength();
 
-
+    /**
+     * Gets the furthest clip timeout position of a clip in the timeline.
+     * It is different from {@link #getProjectLength()} since the return value of this method does not depend on
+     * a minimum project length.
+     * @return the project timeout in milliseconds.
+     */
     double getProjectTimeOut();
 
     /**
@@ -267,6 +294,10 @@ public interface Controller {
      */
     void newSection(String title, String description, Double initialTime, Double duration);
 
+    /**
+     * Deletes the section at the given time.
+     * @param time a position in the timeline.
+     */
     void deleteSection(Double time);
 
     /**
@@ -323,16 +354,49 @@ public interface Controller {
      */
     void setSolo(String channel);
 
+    /**
+     * Adds a new instance of the given effect to the processing unit of the given channel, at the given index.
+     * @param channel the name of a channel.
+     * @param effect the name of an effect.
+     * @param index the position in the processing unit where to add the effect.
+     */
     void addEffectAtPosition(String channel, String effect, int index);
 
+    /**
+     * Removes the effect at the given position from the processing unit of the given channel.
+     * @param channel the name of a channel.
+     * @param index the position in the processing unit where to remove the effect.
+     */
     void removeEffectAtPosition(String channel, int index);
 
+    /**
+     * Removes the processing unit from the given channel.
+     * @param channel the name of a channel.
+     */
     void removeProcessingUnit(String channel);
 
+    /**
+     * Swaps the effects at the given indexes in the processing unit of the given channel.
+     * @param channel the name of a channel.
+     * @param index1 the position of the first effect to swap.
+     * @param index2 the position of the second effect to swap.
+     */
     void swapEffects(String channel, int index1, int index2);
 
+    /**
+     * Sets the parameters of the effect at the given position in the processing unit of the given channel.
+     * @param channel the name of a channel.
+     * @param index the position of the effect in the processing unit.
+     * @param parameters a {@link Map} representing the new values of the effect.
+     */
     void setEffectParameters(String channel, int index, Map<String, Float> parameters);
 
+    /**
+     * Gets the parameters of the effect at the given position in the processing unit of the given channel.
+     * @param channel the name of a channel.
+     * @param index the position of the effect in the processing unit.
+     * @return a {@link Map} representing the current values of the effect.
+     */
     Map<String, Float> getEffectParameters(String channel, int index);
 
     /**
@@ -353,7 +417,7 @@ public interface Controller {
      * Gets the processing unit of the given channel.
      * @param channel the name of a channel.
      * @return a {@link ProcessingUnit}.
-     * @throws java.util.NoSuchElementException if the given channel does not possess a processing unit.
+     * @throws NoSuchElementException if the given channel does not possess a processing unit.
      */
     ProcessingUnit getProcessingUnit(String channel);
 
@@ -386,8 +450,19 @@ public interface Controller {
      */
     String getClipType(String clip);
 
+    /**
+     * Sets the description of the given clip. If there was already a description associated to it, that
+     * description gets overwritten.
+     * @param title the name of a clip.
+     * @param text the new description.
+     */
     void setClipDescription(String title, String text);
 
+    /**
+     * Gets the description of the given clip, if present, otherwise it returns an empty {@link Optional}.
+     * @param clip the name of a clip.
+     * @return an {@link Optional}.
+     */
     Optional<String> getClipDescription(String clip);
 
     /**
@@ -397,14 +472,41 @@ public interface Controller {
      */
     String getChannelType(String channel);
 
+    /**
+     * Sets the description of the given channel. If there was already a description associated to it, that
+     * description gets overwritten.
+     * @param title the name of a channel.
+     * @param text the new description.
+     */
     void setChannelDescription(String title, String text);
 
+    /**
+     * Gets the description of the given channel, if present, otherwise it returns an empty {@link Optional}.
+     * @param title the name of a channel.
+     * @return an {@link Optional}.
+     */
     Optional<String> getChannelDescription(String title);
 
+    /**
+     * Adds a new speaker with the given code, first name and last name in the rubric.
+     * @param code an integer value representing the speaker.
+     * @param firstName the first name of the speaker.
+     * @param lastName the last name of the speaker.
+     */
     void addSpeakerToRubric(int code, String firstName, String lastName);
 
+    /**
+     * Removes the speaker with the given code, first name and last name from the rubric.
+     * @param code an integer value representing the speaker.
+     * @param firstName the first name of the speaker.
+     * @param lastName the last name of the speaker.
+     */
     void removeSpeakerFromRubric(int code, String firstName, String lastName);
 
+    /**
+     * Gets all the speakers in the rubric.
+     * @return a {@link List} of speakers.
+     */
     List<Speaker> getSpeakers();
 
 }
