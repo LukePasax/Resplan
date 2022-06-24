@@ -81,7 +81,7 @@ public final class ControllerImpl implements Controller {
         this.app = app;
     }
     
-    private final Map<Class<? extends RPEffect>, String> createEffectsMap(){
+    private Map<Class<? extends RPEffect>, String> createEffectsMap() {
 		Map<Class<? extends RPEffect>, String> effects = new HashMap<>();
 		effects.put(Compression.class, "Compressor");
 		effects.put(Limiter.class, "Limiter");
@@ -129,7 +129,17 @@ public final class ControllerImpl implements Controller {
     public void loadViewData() {
         App.getData().clearData();
         this.manager.getRoles().forEach(c -> {
+            // loads all the channels
+            final var channel = this.manager.getChannelFromTitle(c.getTitle());
             App.getData().addChannel(new ViewDataImpl.Channel(c.getTitle(), c.getType().name()));
+            // loads all the effects
+            if (channel.getProcessingUnit().isPresent()) {
+                channel.getProcessingUnit().get().getEffects().forEach(e -> App.getData()
+                        .getChannel(c.getTitle()).getFxList()
+                        .add(getProcessingUnit(c.getTitle()).getEffects().indexOf(e),
+                                new Effect(effectsMap.get(e.getClass()))));
+            }
+            // loads all the clips
             this.manager.getPartList(c.getTitle()).forEach(p -> {
                 final var clip = this.manager.getClipFromTitle(p.getTitle());
                 if (clip.isEmpty()) {
@@ -139,12 +149,15 @@ public final class ControllerImpl implements Controller {
                 } else {
                     App.getData().addClip(App.getData().getChannel(c.getTitle()), new ViewDataImpl.Clip(
                             p.getTitle(), this.manager.getClipTime(p.getTitle(), c.getTitle()), clip.getDuration(),
-                            Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration()), Optional.of(new File(((Sample) clip.getContent()).getFileName()).getName())));
+                            Optional.of(clip.getContentPosition()), Optional.of(clip.getContentDuration()),
+                            Optional.of(new File(((Sample) clip.getContent()).getFileName()).getName())));
                 }
             });
         });
+        // loads all the sections
         this.manager.getSections()
                 .forEach(s -> App.getData().addSection(new ViewDataImpl.Section(s.getValue().getTitle(), s.getKey())));
+        // sets the project length
         App.getData().setProjectLenght(this.getProjectLength());
     }
 
@@ -255,10 +268,10 @@ public final class ControllerImpl implements Controller {
         App.getData().addChannel(new ViewDataImpl.Channel(title, type));
         
         var ch = manager.getChannelFromTitle(title);
-        if(ch.getProcessingUnit().isPresent()) {
-        	ch.getProcessingUnit().get().getEffects().forEach(e -> {
-        		App.getData().getChannel(title).getFxList().add(getProcessingUnit(title).getEffects().indexOf(e), new Effect(effectsMap.get(e.getClass())));
-        	});
+        if (ch.getProcessingUnit().isPresent()) {
+        	ch.getProcessingUnit().get().getEffects().forEach(e -> App.getData()
+                    .getChannel(title).getFxList()
+                    .add(getProcessingUnit(title).getEffects().indexOf(e), new Effect(effectsMap.get(e.getClass()))));
         }
     }
 

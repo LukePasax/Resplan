@@ -47,6 +47,9 @@ public final class ManagerDeserializer extends AbstractJacksonDeserializer<Manag
             final var ch = man.getChannelLinker().getChannel(r);
             final var newCh = finalMan.getChannelLinker().getChannel(r);
             if (ch.isProcessingUnitPresent()) {
+                if (newCh.isProcessingUnitPresent()) {
+                    newCh.removeProcessingUnit();
+                }
                 newCh.addProcessingUnit(new BasicProcessingUnit(ch.getProcessingUnit().get().getEffects()));
             }
         });
