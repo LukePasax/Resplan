@@ -76,17 +76,22 @@ public final class EffectsPane extends ScrollPane {
 		});
 		root.getChildren().add(effectsRoot);
 		Starter.getController().getProcessingUnit(channel).getEffects().forEach(e -> {
-			try {
-				effectsRoot.getChildren().add(new EffectPane(translate.get(e.getClass()).getDeclaredConstructor(String.class, String.class, int.class).
-											newInstance(paneTypes.get(translate.get(e.getClass())), channel, Starter.getController().getProcessingUnit(channel).getEffects().indexOf(e))));
+			//try {
+				var newEffect = new Effect(paneTypes.get(translate.get(e.getClass())));//translate.get(e.getClass()).getDeclaredConstructor(String.class, String.class, int.class).
+						//newInstance(paneTypes.get(translate.get(e.getClass())), channel, Starter.getController().getProcessingUnit(channel).getEffects().indexOf(e)); 
+				//effects.put(new Effect(paneTypes.get(translate.get(e.getClass()))), newEffect);
+				/*effectsRoot.getChildren().add(new EffectPane(newEffect));
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NoSuchMethodException | SecurityException e1) {}
+					| InvocationTargetException | NoSuchMethodException | SecurityException e1) {}*/
+			addEffect(newEffect, Starter.getController().getProcessingUnit(channel).getEffects().indexOf(e));
 		});
+		System.out.println(effectsRoot.getChildren().get(0));
+		System.out.println(effectsRoot.getChildren().get(1));
+		System.out.println(effects);
 		this.setContent(root);
-		
 	}
 	
-	private Map<String, Class<? extends Pane>> createEffects(){
+	private final Map<String, Class<? extends Pane>> createEffects(){
 		Map<String, Class<? extends Pane>> effects = new HashMap<>();
 		effects.put("Compressor", CompressorPane.class);
 		effects.put("Limiter", LimiterPane.class);
@@ -97,7 +102,7 @@ public final class EffectsPane extends ScrollPane {
 		return effects;
 	}
 	
-	private Map<Class<? extends Pane>, String> createPaneTypes(){
+	private final Map<Class<? extends Pane>, String> createPaneTypes(){
 		Map<Class<? extends Pane>, String> effects = new HashMap<>();
 		effects.put(CompressorPane.class, "Compressor");
 		effects.put(LimiterPane.class, "Limiter");
@@ -108,7 +113,7 @@ public final class EffectsPane extends ScrollPane {
 		return effects;
 	}
 	
-	private Map<Class<? extends RPEffect>, Class<? extends Pane>> createTranslation(){
+	private final Map<Class<? extends RPEffect>, Class<? extends Pane>> createTranslation(){
 		Map<Class<? extends RPEffect>, Class<? extends Pane>> effects = new HashMap<>();
 		effects.put(Compression.class, CompressorPane.class);
 		effects.put(Limiter.class, LimiterPane.class);
@@ -119,8 +124,9 @@ public final class EffectsPane extends ScrollPane {
 		return effects;
 	}
 	
-	private void addEffect(final Effect effect, final int index) {
+	private final void addEffect(final Effect effect, final int index) {
 		try {
+			System.out.println(effect + "-" + index);
 			final EffectPane newPane = new EffectPane(effectsType.get(effect.getType()).getDeclaredConstructor(String.class, String.class, int.class).
 										newInstance(effect.getType(), channel, index));
 			effects.put(effect, newPane);
@@ -131,12 +137,12 @@ public final class EffectsPane extends ScrollPane {
 		}
 	}
 	
-	private void removeEffect(final Effect effect) {
+	private final void removeEffect(final Effect effect) {
 		effectsRoot.getChildren().remove(effects.get(effect));
 		effects.remove(effect);
 	}
 	
-	private void setEffect(ObservableList<? extends Effect> list) {
+	private final void setEffect(ObservableList<? extends Effect> list) {
 		effectsRoot.getChildren().forEach(e -> effectsRoot.getChildren().remove(e));
 		list.forEach(e -> {
 			try {
@@ -166,11 +172,11 @@ public final class EffectsPane extends ScrollPane {
 				effectsRoot.getChildren().forEach(eff -> {
 					effectPanes.add((EffectPane) eff);
 				});
-				var firstPos = effectsRoot.getChildren().indexOf(this);
-				var secondPos = effectsRoot.getChildren().indexOf(this)-1;
+				final var firstPos = effectsRoot.getChildren().indexOf(this);
+				final var secondPos = effectsRoot.getChildren().indexOf(this)-1;
 				if(secondPos >= 0) {
-					var firstElement = effectsRoot.getChildren().get(firstPos);
-					var secondElement = effectsRoot.getChildren().get(secondPos);
+					final var firstElement = effectsRoot.getChildren().get(firstPos);
+					final var secondElement = effectsRoot.getChildren().get(secondPos);
 					effectPanes.set(firstPos, (EffectPane) secondElement);
 					effectPanes.set(secondPos, (EffectPane) firstElement);
 					
@@ -192,8 +198,8 @@ public final class EffectsPane extends ScrollPane {
 				effectsRoot.getChildren().forEach(eff -> {
 					effectPanes.add((EffectPane) eff);
 				});
-				var firstPos = effectsRoot.getChildren().indexOf(this);
-				var secondPos = effectsRoot.getChildren().indexOf(this)+1;
+				final var firstPos = effectsRoot.getChildren().indexOf(this);
+				final var secondPos = effectsRoot.getChildren().indexOf(this)+1;
 				if(secondPos < effectPanes.size()) {
 					var firstElement = effectsRoot.getChildren().get(firstPos);
 					var secondElement = effectsRoot.getChildren().get(secondPos);
@@ -215,8 +221,8 @@ public final class EffectsPane extends ScrollPane {
 			moveRight.setShape(new Circle(1.5));
 			HBox.setMargin(remove, new Insets(0,0,0,10));
 			
-			VBox right = new VBox();
-			Button add = new Button("+");
+			final VBox right = new VBox();
+			final Button add = new Button("+");
 			right.getChildren().add(add);
 			right.setAlignment(Pos.CENTER);
 
