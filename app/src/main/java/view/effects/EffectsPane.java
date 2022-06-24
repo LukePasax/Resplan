@@ -110,11 +110,11 @@ public final class EffectsPane extends ScrollPane {
 	}
 	
 	private final void setEffect(ObservableList<? extends Effect> list) {
-		effectsRoot.getChildren().forEach(e -> effectsRoot.getChildren().remove(e));
+		effectsRoot.getChildren().clear();
 		list.forEach(e -> {
 			try {
-				effectsRoot.getChildren().add(new EffectPane(effectsType.get(e.getType()).getDeclaredConstructor(String.class).
-						newInstance(e.getType())));
+				effectsRoot.getChildren().add(new EffectPane(effectsType.get(e.getType()).getDeclaredConstructor(String.class, String.class, int.class).
+						newInstance(e.getType(), channel, list.indexOf(e))));
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | NoSuchMethodException | SecurityException e1) {
 				e1.printStackTrace();
@@ -135,62 +135,18 @@ public final class EffectsPane extends ScrollPane {
 			final Button moveLeft = new Button("<");
 			moveLeft.setShape(new Circle(1.5));
 			moveLeft.setOnMouseClicked(e -> {
-				/*final List<EffectPane> effectPanes = new ArrayList<>();
-				effectsRoot.getChildren().forEach(eff -> {
-					effectPanes.add((EffectPane) eff);
-				});
-				final var firstPos = effectsRoot.getChildren().indexOf(this);
-				final var secondPos = effectsRoot.getChildren().indexOf(this)-1;
+				final var firstPos = effectsRoot.getChildrenUnmodifiable().indexOf(this);
+				final var secondPos = effectsRoot.getChildrenUnmodifiable().indexOf(this) - 1;
 				if(secondPos >= 0) {
-					final var firstElement = effectsRoot.getChildren().get(firstPos);
-					final var secondElement = effectsRoot.getChildren().get(secondPos);
-					effectPanes.set(firstPos, (EffectPane) secondElement);
-					effectPanes.set(secondPos, (EffectPane) firstElement);
-					
-					for(int i = 0; i < effectPanes.size(); i++) {
-						Starter.getController().removeEffectAtPosition(channel, 0);
-					}
-					effectPanes.forEach(ep -> {
-						final var current = ep.getChildren().get(2).getClass();
-						paneTypes.forEach((p, s) -> {
-							if(p.equals(current))
-								Starter.getController().addEffectAtPosition(channel, s, effectPanes.indexOf(ep));												
-						});
-					});
-				}*/
-				final var firstPos = effectsRoot.getChildren().indexOf(this);
-				final var secondPos = effectsRoot.getChildren().indexOf(this)-1;
-				final var firstElement = effectsRoot.getChildren().get(firstPos);
-				final var secondElement = effectsRoot.getChildren().get(secondPos);
-				Starter.getController().removeEffectAtPosition(channel, firstPos);
-				Starter.getController().removeEffectAtPosition(channel, secondPos);
-				Starter.getController().addEffectAtPosition(channel, paneTypes.get(secondElement.getClass()), firstPos);
-				Starter.getController().addEffectAtPosition(channel, paneTypes.get(firstElement.getClass()), secondPos);
+					Starter.getController().swapEffects(channel, secondPos, firstPos);					
+				}
 			});
 			final Button moveRight = new Button(">");
 			moveRight.setOnMouseClicked(e -> {
-				final List<EffectPane> effectPanes = new ArrayList<>();
-				effectsRoot.getChildren().forEach(eff -> {
-					effectPanes.add((EffectPane) eff);
-				});
-				final var firstPos = effectsRoot.getChildren().indexOf(this);
-				final var secondPos = effectsRoot.getChildren().indexOf(this)+1;
-				if(secondPos < effectPanes.size()) {
-					final var firstElement = effectsRoot.getChildren().get(firstPos);
-					final var secondElement = effectsRoot.getChildren().get(secondPos);
-					effectPanes.set(firstPos, (EffectPane) secondElement);
-					effectPanes.set(secondPos, (EffectPane) firstElement);
-					
-					for(int i = 0; i < effectPanes.size(); i++) {
-						Starter.getController().removeEffectAtPosition(channel, 0);
-					}
-					effectPanes.forEach(ep -> {
-						final var current = ep.getChildren().get(2).getClass();
-						paneTypes.forEach((p, s) -> {
-							if(p.equals(current))
-								Starter.getController().addEffectAtPosition(channel, s, effectPanes.indexOf(ep));												
-						});
-					});
+				final var firstPos = effectsRoot.getChildrenUnmodifiable().indexOf(this);
+				final var secondPos = effectsRoot.getChildrenUnmodifiable().indexOf(this) + 1;
+				if(secondPos < effectsRoot.getChildren().size()) {
+					Starter.getController().swapEffects(channel, firstPos, secondPos);					
 				}
 			});
 			moveRight.setShape(new Circle(1.5));
