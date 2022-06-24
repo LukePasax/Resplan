@@ -21,7 +21,7 @@ public final class CompressorPane extends BorderPane {
 	final private VBox effects = new VBox();
 	
 	final private Label thresholdValue = new Label("0.5");
-	final private Label attackValue = new Label("1");
+	final private Label attackValue = new Label("1.0");
 	final private Label ratioValue = new Label("2:1");
 	final private Label decayValue = new Label("0.5");
 	private String channel;

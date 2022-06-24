@@ -20,9 +20,9 @@ public final class LimiterPane extends BorderPane {
 	
 	final private VBox effects = new VBox();
 	
-	final private Label thresholdValue = new Label("0.0");
-	final private Label attackValue = new Label("0.2");
-	final private Label decayValue = new Label("0.2");
+	final private Label thresholdValue = new Label("0.5");
+	final private Label attackValue = new Label("1.0");
+	final private Label decayValue = new Label("0.5");
 	private String channel;
 	private int index;
 	
@@ -95,16 +95,19 @@ public final class LimiterPane extends BorderPane {
 			final VBox secondcolumn = new VBox(20);
 			
 			final ContinuousKnobPane threshold = new ContinuousKnobPane(Double.NEGATIVE_INFINITY, 0.0, currentThreshold, 3, "THRESHOLD");
+			threshold.setValue(0.5);
 			threshold.getValueProperty().addListener((ch, old, n) -> {
 				setParameters("threshold", n.floatValue());
 			});
 			final ContinuousKnobPane attack = new ContinuousKnobPane(0.2, 20.0, currentAttack, 3, "ATTACK");
+			attack.setValue(1.0);
 			attack.getValueProperty().addListener((ch, old, n) -> {
 				setParameters("attack", n.floatValue());
 			});
 			firstrow.getChildren().addAll(threshold, attack);
 			
 			final ContinuousKnobPane decay = new ContinuousKnobPane(0.2, 40.0, currentDecay, 3, "DECAY");
+			decay.setValue(0.5);
 			decay.getValueProperty().addListener((ch, old, n) -> {
 				setParameters("decay", n.floatValue());
 			});
