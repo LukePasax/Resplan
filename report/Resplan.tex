@@ -34,7 +34,7 @@ Sebbene sul mercato esistano altri applicativi che svolgono parte di queste funz
 
 \section{Requisiti}
 
-Come descritto nell’analisi, in una prima fase, l’applicazione supporterà l’utente nella pianificazione del contenuto da realizzare, organizzando il progetto in tracce separate per ogni persona o tipologia di sorgente audio.
+Come descritto nell’analisi, in una prima fase l’applicazione supporterà l’utente nella pianificazione del contenuto da realizzare, organizzando il progetto in tracce separate per ogni persona o tipologia di sorgente audio.
 
 Sarà possibile dividere la timeline in sezioni e poi creare per ogni canale delle clip vuote corrispondenti alle varie parti audio da realizzare.
 Le parti potranno essere riempite importando nell’applicazione file preesistenti, oppure direttamente all’interno di Resplan acquisendo da un'interfaccia audio collegata al sistema.
@@ -82,7 +82,7 @@ Di seguito sono riportati i requisiti in forma compatta e suddivisi per tipologi
 
 \subsubsection{Requisiti non funzionali}
 \begin{itemize}
-    \item L’applicazione prevede una grafica interattiva, con la possibilità di fare il Drag & Drop per spostare e ridimensionare le clip.
+    \item L’applicazione prevede una grafica interattiva, con la possibilità di fare il Drag \& Drop per spostare e ridimensionare le clip.
 \end{itemize}
 
 \section{Analisi e modello del dominio}
@@ -95,18 +95,18 @@ Resplan è una Digital Audio Workstation, ovvero un software che permette di reg
 Prima che venissero adottate le Digital Audio Workstation, la registrazione in studio avveniva per mezzo di hardware analogici come mixers, registratori, processori di segnale.
 Gli artisti svolgevano la loro performance e registravano le varie parti (voce, chitarra, batteria, basso, ecc…) in tracce separate con l’ausilio di registratori a nastro multitraccia.
 Ogni traccia audio registrata poteva essere riprodotta e inviata ad un canale del mixer, dove veniva processata individualmente ed eventualmente inviata a processori esterni (come equalizzatori, compressori, saturatori, ecc…).
-Il mixer sommava tutte le tracce in un unico canale master, che veniva poi registrato in una unica traccia stereo per essere finalizzato, stampato sui vari supporti audio e distribuito nei punti vendita.
+Il mixer sommava tutte le tracce in un unico canale master, che veniva poi registrato in un'unica traccia stereo per essere finalizzato, stampato sui vari supporti audio e distribuito nei punti vendita.
 La digitalizzazione di questo processo ha permesso di abbattere alcuni vincoli che la registrazione analogica imponeva, permettendo una maggior flessibilità e libertà nell’incisione dei prodotti audio, oltre che la riduzione dei costi dovuti all’attrezzatura hardware.
 Una delle facilitazioni che le D.A.W. forniscono è quella di poter traslare nel tempo parti di un'unica registrazione, che potrà quindi essere tagliata, scomposta e riarrangiata nella timeline a piacimento. Questo è stato possibile introducendo il concetto di “clip” audio, che rappresenta un segmento di audio indipendente. 
 Un altro vantaggio di lavorare con l’audio in digitale è quello di poter cambiare progetto rapidamente. Infatti lavorando in analogico è necessario effettuare il cosiddetto “recall”, ovvero il ripristino a mano della posizione di tutti i knob e fader dei dispositivi analogici utilizzati. Operazione che può richiedere ore di lavoro.
 
-Ovviamente nel passaggio da analogico a digitale si è dovuto far fronte a varie limitazioni o problematiche come quella della rappresentazione di un segnale analogico continuo (quindi composto da infiniti valori) in un dominio digitale che memorizza solo valori finiti. Viene introdotto il sampling audio, pratica che permette la conversione di audio analogico in digitale tramite il campionamento del segnale originale, seguito da una quantizzazione dei valori campionati in ogni istante.
+Ovviamente nel passaggio da analogico a digitale si è dovuto far fronte a varie limitazioni o problematiche, come quella della rappresentazione di un segnale analogico continuo (quindi composto da infiniti valori) in un dominio digitale che memorizza solo valori finiti. Viene introdotto il sampling audio, pratica che permette la conversione di audio analogico in digitale tramite il campionamento del segnale originale, seguito da una quantizzazione dei valori campionati in ogni istante.
 Il segnale audio in digitale è quindi rappresentato in samples dove per ogni istante di tempo viene assegnato un valore preciso corrispondente all’ampiezza dell’onda in quell’istante.
 
 \begin{figure}[H]
 \centering{}
 \includegraphics[scale=1.7]{img/domain.png}
-\caption{Schema UML dell'analisi del problema, con rappresentate le entità principali ed i rapporti fra loro.}
+\caption{Schema UML dell'analisi del problema, con rappresentate le entità principali ed i rapporti fra loro. In rosso viene rappresentato il flusso del segnale audio.}
 \end{figure}
 
 \subsection{Glossario termini}
@@ -118,31 +118,29 @@ Il segnale audio in digitale è quindi rappresentato in samples dove per ogni is
  mono & A/D & Segnale audio unico che viene inviato sia al diffusore destro che al sinistro. \\ 
  \hline
  stereo & A/D & Segnale audio che contiene informazioni separate per il diffusore destro rispetto al sinistro.
-Abbiamo quindi due segnali distinti. \\
+Si hanno quindi due segnali distinti. \\
  \hline
  mixer & A/D & Oggetto che riceve vari input audio e gestisce il percorso dei vari segnali  per poi sommarli assieme in uno o più uscite.
 Un mixer può anche fornire all’utente equalizzatori, compressori o altri processori di segnale. \\
  \hline
  channel, canale & A/D & Un canale è una porzione del mixer che prende un input audio (mono o stereo), eventualmente lo processa, e poi fornisce l’audio ottenuto al mixer per sommarlo ad altri canali o indirizzare il segnale da qualche parte. \\
  \hline
- traccia & A/D & È comune pratica parlare di “traccia” per identificare un canale di un mixer. Con il termine traccia in realtà possiamo riferirci anche ad un file audio, per esempio nel caso del djing traccia = canzone. Nel caso di un mixer, la corretta dicitura è “canale”. \\ 
+ traccia & A/D & È pratica comune parlare di “traccia” per identificare un canale di un mixer. Con il termine traccia in realtà possiamo riferirci anche ad un file audio, per esempio nel caso del DJing si ha traccia = canzone. Nel caso di un mixer, la corretta dicitura è “canale”. \\ 
  \hline
- master & A/D & Canale del mixer che prende in input la somma dell’audio di tutti gli altri canali. L’out del master corrisponde all’uscita principale dell’audio del mixer. \\
+ master & A/D & Canale del mixer che prende in input la somma dell’audio di tutti gli altri canali. L’out del master corrisponde all’uscita principale del mixer. \\
  \hline 
- canale di ritorno, send/return, ausiliario, aux & A/D & Canale del mixer ausiliario che prende in input la duplicazione dell’uscita di altri canale principali allo scopo di processare il segnale in parallelo. \\
+ canale di ritorno, send/return, ausiliario, aux & A/D & Canale del mixer ausiliario che prende in input la duplicazione dell’uscita di altri canali principali, allo scopo di processare il segnale in parallelo. \\
  \hline
  routing & A/D & Descrizione delle modalità di indirizzamento del segnale audio all’interno di un mixer. Più precisamente il percorso che il segnale percorre nel mixer. \\
  \hline
- clip & D & Porzione di contenuto di un canale modificabile singolarmente e posizionabile nella timeline. \\
+ clip & D & Porzione di contenuto di un canale modificabile autonomamente. \\
  \hline
  timeline & D & Linea del tempo su cui posizionare le varie clip/contenuti. \\
  \hline
  MIDI & A/D & Musical Instrument Digital Interface.
 Protocollo standard per l’interazione degli strumenti elettronici anche tramite computer. \\
 \hline
-clock & A/D & Un clock è un segnale che consente di sincronizzare il bitrate (il trasferimento dei singoli bit) di diverse macchine.
-N.B.
-Nel software l’oggetto Clock non scandisce il bitrate, ma il tempo per sincronizzare la riproduzione delle varie clip. \\
+clock & A/D & Un clock è un segnale che consente di sincronizzare il bitrate (il trasferimento dei singoli bit) di diverse macchine. \\
 \hline
 \end{longtable}
 \end{center}
@@ -150,15 +148,15 @@ Nel software l’oggetto Clock non scandisce il bitrate, ma il tempo per sincron
 \chapter{Design}
 Nella fase di design è stato necessario individuare i vari compiti e responsabilità da assegnare alle varie entità del modello.
 
-Innanzitutto occorre distinguere le entità che lavorano con audio registrato da quelle che processano audio in tempo reale.
-Le prime rappresentano i contenuti audio con tutte le informazioni necessarie al posizionamento nella timeline. Le seconde invece lavorano in tempo reale accettando uno stream audio in ingresso e processando i dati in tempo reale.
+Innanzitutto, occorre distinguere le entità che lavorano con audio registrato da quelle che processano audio in tempo reale.
+Le prime rappresentano i contenuti audio con tutte le informazioni necessarie al posizionamento nella timeline. Le seconde invece lavorano in tempo reale, accettando uno stream audio in ingresso e processando i dati in real-time.
 Se si vuole fare un parallelismo con il dominio analogico, il nastro memorizza in modo statico l’informazione audio, mentre i processori di segnale o il mixer ricevono un flusso audio e lo modificano in tempo reale fornendo poi in output il risultato.
 
-Una seconda distinzione è quella tra entità che lavorano informazioni di alto livello rispetto a quelle che lavorano con informazioni di basso livello.
+Una seconda distinzione è quella tra le entità che lavorano con informazioni di alto livello e quelle che lavorano con informazioni di basso livello.
 Infatti, per consentire all’applicazione di prendere decisioni e suggerire all’utente i corretti parametri o la corretta organizzazione del progetto, è necessario memorizzare informazioni aggiuntive a quelle strettamente necessarie per la gestione dell’audio.
 Si distinguono le entità di basso livello che fanno parte dell’editing da quelle di alto livello che fanno parte del planning. Le seconde saranno utili al software per analizzare il progetto e fare scelte in modo consapevole.
 Vi sono anche entità che hanno il compito di coordinare tra loro le entità di alto livello e quelle di basso livello, per esempio il Manager.
-Quest’ultima è un'entità “intelligente”, che ha il compito di interpretare le informazioni disponibili ad alto e basso livello al fine di comandare le varie parti del modello e portare a termine le azioni richieste dall’utente in modi diversi in base allo stato corrente del progetto.
+Quest’ultima è un'entità “intelligente”, che ha il compito di interpretare le informazioni disponibili ad alto e basso livello, al fine di comandare le varie parti del modello e portare a termine le azioni richieste dall’utente in modi diversi in base allo stato corrente del progetto.
 
 \parskip 0.8in
 Vengono quindi introdotti alcuni concetti chiave per il modello:
@@ -173,7 +171,7 @@ Vengono quindi introdotti alcuni concetti chiave per il modello:
  \hline
  Tape channel & Rappresenta la timeline per un canale audio. Memorizza le clip e la loro posizione nella timeline e controlla che non vi siano più clip sovrapposte nel tempo. \\
  \hline
- Clip player & Riproduce una clip fornendo in output un audio in tempo reale. \\
+ Clip player & Riproduce una clip, fornendo in output un audio in tempo reale. \\
  \hline
  Recorder & Registra un flusso audio in ingresso in tempo reale (per esempio da un microfono). \\
  \hline
@@ -239,7 +237,7 @@ Segue un elenco con la classificazione delle entità appena descritte:
 \end{center}
 
 \section{Architettura}
-Per il software si è scelto un pattern architetturale di tipo MVC, opportunamente modificato per assecondare l’utilizzo di JavaFX che prevede l’utilizzo di classi controller “intermedie”. La classe del Manager nel model, che rappresenta l’applicazione in sé, viene interpellata dal Controller, che comunica con i controller di JavaFX. Ogni file FXML è associato ad un controller con i rispettivi listener. Questi controller chiamano il Controller principale che effettua le azioni sul manager e poi aggiorna la View. Dato che la view dell’applicazione è divisa in due parti, una di Planning e una di Edit, ed entrambe devono lavorare sullo stesso set di dati, è stata creata una classe ViewData che contiene tutti i dati che vanno rappresentati nella view stessa. Quindi il controller invece di aggiornare direttamente la view aggiorna i dati dentro ViewData e la view, tramite listener, si aggiorna in base ai dati presenti dentro di essa.
+Per il software si è scelto un pattern architetturale di tipo MVC, opportunamente modificato per assecondare l’utilizzo di JavaFX, che prevede l’utilizzo di classi controller “intermedie”. La classe del Manager nel model, che rappresenta l’applicazione in sé, viene interpellata dal Controller, che comunica con i controller di JavaFX. Ogni file FXML è associato ad un controller con i rispettivi listener. Questi ultimi chiamano il Controller principale, il quale effettua le azioni sul manager e poi aggiorna la View. Dato che la view dell’applicazione è divisa in due parti, una di Planning e una di Edit, ed entrambe devono lavorare sullo stesso set di dati, è stata creata una classe ViewData, che contiene tutti i dati che vanno rappresentati nella view stessa. Quindi il controller invece di aggiornare direttamente la view aggiorna i dati dentro ViewData e la view, tramite listener, si aggiorna in base ai dati presenti dentro di essa.
 
 \begin{figure}[h]
 \centering{}
@@ -254,7 +252,7 @@ Per il software si è scelto un pattern architetturale di tipo MVC, opportunamen
 Ogni qualvolta l’utente richieda un’azione sul modello, la richiesta viene accolta dal manager. Questo analizza lo stato corrente dell’applicazione per identificare la modalità migliore per portare a termine il compito. A questo punto il manager può istanziare o modificare elementi di alto e basso livello.
 Per mantenere i riferimenti tra gli oggetti di alto e basso livello vengono introdotti il ChannelLinker ed il ClipLinker. 
 Per ogni canale vengono mantenuti dal ChannelLinker i riferimenti al Channel, al TapeChannel e al Role.
-Il primo gestisce il flusso audio e il processing in tempo reale dell’audio che passa nel canale. Il secondo agisce come un nastro salvando le posizioni delle varie clip del canale nella timeline. Il terzo invece mantiene le informazioni di alto livello del canale, utili al manager per prendere decisioni.
+Il primo gestisce il flusso audio e il processing in tempo reale dell’audio che passa nel canale. Il secondo agisce come un nastro, salvando le posizioni delle varie clip del canale nella timeline. Il terzo invece mantiene le informazioni di alto livello del canale, utili al manager per prendere decisioni.
 Per ogni clip il ClipLinker mantiene unita la Clip di basso livello con la Part di alto livello.
 
 \subsubsection{Non Real Time}
@@ -262,7 +260,7 @@ Viene istanziato un TapeChannel per ogni canale del mixer. Il tape channel gesti
 
 \subsubsection{Real time}
 Quando si vuole ascoltare in real time o renderizzare l’audio del progetto occorre azionare l’Engine. 
-L’Engine per ogni clip del canale istanzia un ClipPlayer il cui output viene collegato all’input del corrispettivo Channel. Il canale indirizza l’audio all’interno della sua ProcessingUnit dove vari Effects processano l’audio. Infine il Mixer si occupa del routing tra i vari canali sommando l’audio in uscita in un unico canale master. L’output del canale master viene poi inviato all’uscita audio di sistema per la riproduzione.
+L’Engine per ogni clip del canale istanzia un ClipPlayer il cui output viene collegato all’input del corrispettivo Channel. Il canale indirizza l’audio all’interno della sua ProcessingUnit dove vari Effects processano l’audio. Infine il Mixer si occupa del routing tra i vari canali, sommando l’audio in uscita in un unico canale master. L’output del canale master viene poi inviato all’uscita audio di sistema per la riproduzione.
 Una volta azionato, l’Engine si occuperà di azionare i clip player nel momento opportuno facendo di fatto partire la riproduzione delle clip nell’istante corrispondente alla loro posizione nella timeline.
 
 \subsection{Alessandro Antonini}
@@ -280,8 +278,8 @@ Inizialmente per le clip sono stati individuati i seguenti requisiti:
 
 Dopo un’attenta analisi è emerso che alcune di queste responsabilità potevano essere trasferite ad oggetti diversi. 
 Si nota infatti che i metodi relativi alla riproduzione verranno chiamati dall’Engine, mentre quelli per il posizionamento nella timeline verranno chiamati dal Manager.
-I metodi inerenti alla Clip sono invece quelli riguardanti la propria durata e il contenuto.
-Sono state create interfacce diverse per i vari “client” e sono state separate le responsabilità per non violare il single responsibility principle.
+I metodi inerenti alla Clip sono invece quelli riguardanti la propria durata e contenuto.
+Sono state create interfacce diverse per i vari “client” e sono state separate le responsabilità per non violare il Single Responsibility Principle.
 Con la nuova suddivisione dei compiti l’interfaccia RPTapeChannel permette di posizionare degli oggetti RPClip ed effettuare controlli riguardanti la sovrapposizione nella timeline.
 L’interfaccia RPClipPlayer conterrà invece i metodi per riprodurre il contenuto della clip.
 Oggetti di tipo RPTapeChannel verranno utilizzati dal Manager, mentre gli RPClipPlayer saranno utilizzati dall’Engine.
@@ -295,10 +293,10 @@ Oggetti di tipo RPTapeChannel verranno utilizzati dal Manager, mentre gli RPClip
 \subsubsection{Clip proxy}
 Per le Clip un requisito necessario è quello di lavorare con tipi diversi di contenuto. In particolare Resplan prevede la possibilità di lavorare con clip di file audio oppure con clip vuote, quindi senza contenuto. Si vuole lasciare però la possibilità di aggiungere in futuro nuovi tipi di contenuto, per esempio clip di file MIDI.
 
-Una prima idea è stata quella di utilizzare i generici nell’interfaccia RPClip. Tuttavia questa soluzione risolve solo in parte il problema in quanto per diversi contenuti sarebbero stati necessari controlli diversi, mentre parte del codice sarebbe stato duplicato per clip di tipologie differenti.
+Una prima idea è stata quella di utilizzare i generici nell’interfaccia RPClip. Tuttavia questa soluzione risolve solo in parte il problema, in quanto per diversi contenuti sarebbero stati necessari controlli diversi, mentre parte del codice sarebbe stato duplicato per clip di tipologie differenti.
 La necessità di effettuare controlli in base al tipo di contenuto ha fatto preferire l’utilizzo del pattern proxy.
 L’EmptyClip diventa l’implementazione base dell’RPClip, mentre SampleClip “wrappa” l’EmptyClip per effettuare i controlli sulla durata del contenuto audio (il file audio non può essere più breve della clip).
-Tuttavia sarebbe stato anche necessario controllare che il file assegnato alla clip fosse un file esistente, pertanto, anche ai fini di facilitare l’implementazione futura di nuove tipologie, è stato introdotto un nuovo stadio di proxy con l’aggiunta della classe FileClip che rappresenta una clip con un qualsiasi file come contenuto.
+Tuttavia sarebbe stato anche necessario controllare che il file assegnato alla clip fosse un file esistente, pertanto, anche ai fini di facilitare l’implementazione futura di nuove tipologie, è stato introdotto un nuovo stadio di proxy con l’aggiunta della classe FileClip, che rappresenta una clip con un qualsiasi file come contenuto.
 In seguito l’interfaccia RPClip è stata comunque resa generica per poter lavorare con il contenuto della clip della classe giusta.
 
 \begin{figure}[H]
@@ -318,7 +316,7 @@ I ClipPlayers sono stati concepiti come oggetti usa e getta che vengono creati a
 
 Per quanto riguarda i players è stato necessario introdurre il “cut time”:
 il punto della clip da cui un player deve far partire la riproduzione.
-Il cut time non corrisponde alla content position, infatti quest’ultima definisce il punto da cui deve iniziare la riproduzione del contenuto della clip in corrispondenza del suo inizio. Il cut time invece viene utilizzato dall’Engine che quando crea i player vuole momentaneamente spostare il punto in cui far partire la riproduzione della clip, per esempio quando l’utente vuole far partire la riproduzione da un tempo della timeline che taglia a metà una clip.
+Il cut time non corrisponde alla content position, infatti quest’ultima definisce il punto da cui deve iniziare la riproduzione del contenuto della clip in corrispondenza del suo inizio. Il cut time invece viene utilizzato dall’Engine, che quando crea i player vuole momentaneamente spostare il punto in cui far partire la riproduzione della clip, per esempio quando l’utente vuole far partire la riproduzione da un tempo della timeline che taglia a metà una clip.
 
 \begin{figure}[H]
 \centering{}
@@ -348,38 +346,38 @@ L’interfaccia RPEngine pertanto avrà i seguenti metodi:
 Anche nell’Engine, così come per le Clip, sono state trovate responsabilità diverse, che sono state pertanto divise tra varie sottoclassi.
 Si rende necessario un Clock generale che scandisce il tempo per sincronizzare la riproduzione delle varie clip.
 Il Clock va avanti a step interi ed ogni step equivale a un intervallo di tempo trascorso (CLOCK\_STEP\_UNIT).
-Il Clock avrà un metodo per incrementare uno step alla volta e per settare il tempo ad un time specifico oltre a quelli per ottenere il tempo corrente.
+Il Clock avrà un metodo per incrementare uno step alla volta e per settare il tempo ad un time specifico, oltre a quelli per ottenere il tempo corrente.
 È stata poi creata Clock.Utility, una classe di utility innestata statica, che dovrà occuparsi della conversione da time a step e viceversa.
-Inoltre serve un ClipPlayerNotifier che tramite il pattern observer notifica i vari player nel momento in cui devono partire o fermarsi.
+Inoltre, serve un ClipPlayerNotifier che tramite il pattern observer notifica i vari player nel momento in cui devono partire o fermarsi.
 La creazione e registrazione dei vari player al ClipPlayerNotifier avviene grazie al PlayersMapBuilder, il quale tramite la SamplePlayerFactory e il ChannelLinker crea una mappa in cui per ogni “time in” di una SampleClip viene creato e associato il SamplePlayer corrispondente.
 Come spiegato nella sezione relativa ai ClipPlayer, qualora vengano introdotti nuovi tipi di clip sarà possibile filtrare le diverse tipologie ed utilizzare la giusta factory per istanziare l’implementazione corretta dei player.
 Ovviamente serve una componente attiva che si occupi di aggiornare il clock ad ogni CLOCK\_STEP\_UNIT. Il compito viene affidato ad una nuova classe che estende Thread: Conductor.
 
 \subsubsection{Risoluzione delle problematiche relative all’implementazione dell’Engine}
-L’Engine è stato uno degli elementi del modello più complessi da implementare. Infatti sviluppare un Engine efficiente si traduce nel dover gestire concetti relativi al tempo, all’interazione tra thread, e alla sincronizzazione di vari oggetti.
+L’Engine è stato uno degli elementi del modello più complessi da implementare. Infatti, sviluppare un Engine efficiente si traduce nel dover gestire concetti relativi al tempo, all’interazione tra thread e alla sincronizzazione di vari oggetti.
 
 La prima considerazione da fare è che il clock deve avanzare a step. Infatti non è possibile gestire un aggiornamento continuo nel tempo, ma la classe Conductor può aggiornare il clock solo in maniera periodica, chiamando il metodo step() ad intervalli regolari di tempo.
 \paragraph{N.B.}
-In realtà anche nei TapeChannel non vi sono infiniti valori a cui le clip possono essere registrate, in quanto la precisione rimane al millesimo di secondo. Tuttavia non è comunque possibile aggiornare ogni millesimo di secondo il Clock in quanto il lavoro richiederebbe un utilizzo eccessivo di risorse da parte del thread.
+In realtà anche nei TapeChannel non vi sono infiniti valori a cui le clip possono essere registrate, in quanto la precisione rimane al millesimo di secondo. Tuttavia, non è comunque possibile aggiornare ogni millesimo di secondo il Clock, in quanto il lavoro richiederebbe un utilizzo eccessivo di risorse da parte del thread.
 \parskip 0.2in
 
 La soluzione più naturale è stata quella di introdurre la CLOCK\_STEP\_UNIT, che è la quantità di tempo corrispondente ad ogni step. In questo modo al passare di ogni CLOCK\_STEP\_UNIT il thread Conductor deve aggiornare il clock.
 Inoltre per ottenere una riproduzione il più fedele possibile il tempo corrispondente alla CLOCK\_STEP\_UNIT verrà calcolato in base al sample rate utilizzato dal dispositivo audio in uso.
 \parskip 0in
 
-Questa soluzione introduce però alcune problematiche. La prima riguarda il pattern observer responsabile di azionare i ClipPlayers. Infatti i ClipPlayers vengono associati nella PlayersMap a chiavi corrispondenti al tempo di inizio della relativa Clip nella timeline. Tuttavia il clock non copre tutte le possibili chiavi della mappa in quanto avanza a step superiori al millisecondo, e quindi salta alcuni tempi.
+Questa soluzione introduce però alcune problematiche. La prima riguarda il pattern observer responsabile di azionare i ClipPlayers. Infatti i ClipPlayers vengono associati nella PlayersMap a chiavi corrispondenti al tempo di inizio della relativa Clip nella timeline. Tuttavia, il clock non copre tutte le possibili chiavi della mappa in quanto avanza a step superiori al millisecondo, e quindi salta alcuni tempi.
 Il rischio è che alcuni ClipPlayers non vengano notificati e non inizino la riproduzione della propria Clip.
 Le soluzioni per tale problematica possono essere multiple. Considerando che non è possibile cambiare il metodo di aggiornamento del clock in uno che copra tutti i tempi, le possibili soluzioni sono: 
 \begin{itemize}
-    \item cambiare il PlayersMapBuilder per far si che i ClipPlayers vengano registrati su step esistenti,
+    \item cambiare il PlayersMapBuilder per far sì che i ClipPlayers vengano registrati su step esistenti,
     \item modificare il ClipPlayerNotifier in modo che vengano notificati tutti i ClipPlayers che sono registrati a tempi tra lo step precedente e quello attuale.
 \end{itemize}
-Dato che la classe Clock.Utility fornisce già metodi per la conversione da tempo a step esistenti, è stato scelto il primo approccio. Le PlayersMap non mappano più i players a dei tempi, ma ai corrispettivi step.
-Tale soluzione sembra migliore anche analizzando il modello con una visione di alto livello, infatti grazie a questa modifica tutto l’Engine viene sincronizzato sulla base degli step, mentre il concetto di tempo viene eliminato dal meccanismo per il playback. La conversione in tempo rimane solamente per consentire l'interazione con la timeline e la posizione delle clip.
+Dato che la classe Clock.Utility fornisce già metodi per la conversione da tempo a step esistenti, è stato scelto il primo approccio. Le PlayersMap non mappano più i players su dei tempi, bensì sui corrispettivi step.
+Tale soluzione sembra migliore anche analizzando il modello con una visione di alto livello; infatti, grazie a questa modifica tutto l’Engine viene sincronizzato sulla base degli step, mentre il concetto di tempo viene eliminato dal meccanismo per il playback. La conversione in tempo rimane solamente per consentire l'interazione con la timeline e la posizione delle clip.
 
 La seconda problematica emersa riguarda la conversione da Double in Long, che sono i tipi di dati utilizzati per memorizzare rispettivamente i tempi e gli step.
 Quando ci si avvicina a numeri molto grandi di step, si rischia di non poter convertire i Long in un valore compreso nel range del dato Double. Per il dominio del programma non è necessario lavorare con numeri vicini ai limiti del range del dato Long (che interpretati come millisecondi superano il secolo). Viene quindi introdotto un CLOCK\_MAX\_TIME. 
-Per il CLOCK\_MAX\_TIME è stato deciso un valore vicino a quello della durata di un anno. In questo modo l’utente non percepirà alcuna limitazione visto che nessun contenuto audio si avvicina a tale durata, al tempo stesso si rimane lontani dai valori Double/Long problematici.
+Per il CLOCK\_MAX\_TIME è stato deciso un valore vicino a quello della durata di un anno. In questo modo l’utente non percepirà alcuna limitazione visto che nessun contenuto audio si avvicina a tale durata e al tempo stesso si rimane lontani dai valori Double/Long problematici.
 
 Se sulla carta le problematiche dovevano essere risolte, nel momento del testing sono stati individuati ulteriori “bug” dell’Engine.
 Il problema in questo caso persiste nel tempo di aggiornamento del clock. 
@@ -396,7 +394,7 @@ Nella versione ultimata vengono introdotte la MapToSet e la PlayersMap.
 La prima è un potenziamento della java.util.Map. Questa nuova interfaccia generica che lavora con tipi di dati \begin{math}<\end{math}X,Y\begin{math}>\end{math} permette di mappare per ogni key di tipo X un Set \begin{math}<\end{math}Y\begin{math}>\end{math} di elementi.
 La PlayersMap invece non è altro che un “wrapping” di una MapToSet dove le chiavi rappresentano degli step e per ogni step sono mappati i players di cui avviare la riproduzione.
 Ogni volta che viene richiesto di far partire il playback l’Engine crea un nuovo ClipPlayerNotifier a cui passa nel costruttore una PlayersMap aggiornata.
-Il compito di creare la PlayersMap viene affidato al PlayersMapBuilder, il quale grazie al pattern creazionale builder è in grado di riempire la nuova PlayersMap passo passo creando e inserendo tutti i ClipPlayers necessari e della corretta tipologia.
+Il compito di creare la PlayersMap viene affidato al PlayersMapBuilder, il quale grazie al pattern creazionale builder è in grado di riempire la nuova PlayersMap passo passo, creando e inserendo tutti i ClipPlayers necessari e della corretta tipologia.
 
 \begin{figure}[H]
 \centering{}
@@ -420,7 +418,7 @@ Il mio compito all’interno del gruppo è stato quello di rappresentare all’i
 
 Per prima cosa ho notato subito la similarità tra gran parte degli elementi che avrei dovuto realizzare. Per quanto fossero concettualmente diversi, presentavano diversi aspetti in comune. Per risolvere nella maniera migliore questo problema ho deciso quindi di utilizzare il pattern “Strategy”, in modo da semplificare ed alleggerire il codice, ma soprattutto in modo da renderlo estensibile e riutilizzabile, dato che avendo un’interfaccia madre (“Element”), in caso di aggiunte, sarebbe stato necessario soltanto effettuare le opportune modifiche nell’interfaccia madre e successivamente implementare i nuovi metodi delle classi che implementano le interfacce che estendono da quella comune.
 
-Non si è deciso invece di implementare prima i metodi  comuni e poi estendere una classe concreta comune, perché nonostante alleggerisse ancora di più il codice non sarebbe stata in grado di accettare piccole differenze nelle varie implementazioni in classi diverse, cosa che invece è possibile fare con la strategia adottata, rispettando comunque il contratto espresso dai metodi. 
+Non si è deciso invece di implementare prima i metodi  comuni e poi estendere una classe concreta comune, perché nonostante alleggerisse ancora di più il codice, non sarebbe stata in grado di accettare piccole differenze nelle varie implementazioni in classi diverse, cosa che invece è possibile fare con la strategia adottata, rispettando comunque il contratto espresso dai metodi. 
 
 \begin{figure}[h]
 \centering{}
@@ -429,23 +427,23 @@ Non si è deciso invece di implementare prima i metodi  comuni e poi estendere u
 \end{figure}
 
 \subsubsection{Parti e ruoli con aspetti in comune ed altri che li differenziano}
-Addentrandoci più nello specifico, il problema successivo è costituito dalla rappresentazione di alcuni elementi che possiedono tipi. Gli elementi sono comuni tra loro, eccetto che a seconda della tipologia possiedono alcuni comportamenti distinti (e.g. una parte, che rappresenta una clip di alto livello, può contenere del testo solo se di tipo “speech”, ma come gli altri tipi di parti devono possedere un titolo ed una descrizione).
+Addentrandoci più nello specifico, il problema successivo è costituito dalla rappresentazione di alcuni elementi che possiedono tipi. Gli elementi sono comuni tra loro, ma a seconda della tipologia possiedono alcuni comportamenti distinti (e.g. una parte, che rappresenta una clip di alto livello, può contenere del testo solo se di tipo “speech”, ma come gli altri tipi di parti deve possedere un titolo ed una descrizione).
 
-La mia decisione è stata quindi quella di rappresentare per prima cosa una generica parte attraverso un’interfaccia, ed in seguito di sfruttare il “Template Method” per realizzare una classe astratta che implementa i metodi comuni a tutte le tipologie di parti, e lascia invece l’implementazione dei metodi specifici alle classi concrete che estendono da lei.
+La decisione è stata quindi quella di rappresentare per prima cosa una generica parte attraverso un’interfaccia, ed in seguito di sfruttare il “Template Method” per realizzare una classe astratta che implementa i metodi comuni a tutte le tipologie di parti, e lascia invece l’implementazione dei metodi specifici alle classi concrete che estendono da essa.
 
-Sfruttando questa soluzione, risultano più metodi template, ma si ottiene come risultato finale un codice più compatto, mano ripetitivo e più chiaro, e facilmente estensibile con nuove classi concrete che si basino su quella astratta comune.
+Sfruttando questa soluzione, risultano più metodi template, ma si ottiene come risultato finale un codice più compatto, meno ripetitivo e più chiaro, e facilmente estensibile con nuove classi concrete che si basino su quella astratta comune.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering{}
-\includegraphics[width=\textwidth,scale=1]{img/part.png}
+\includegraphics[scale=0.85]{img/part.png}
 \caption{UML rappresentante Template Method sulla classe astratta “PartImpl”.}
 \end{figure}
 
-Discorso analogo si può effettuare per l’elemento RPRole, che di nuovo, a seconda della tipologia, presenta o meno certe caratteristiche. Questa volta, se il role, che rappresenta un canale di alto livello, è della tipologia “Speech”, gli può essere associato uno speaker.
+Discorso analogo si può effettuare per l’elemento RPRole, che di nuovo, a seconda della tipologia, presenta o meno certe caratteristiche. Questa volta, se il role che rappresenta un canale di alto livello è della tipologia “Speech”, gli può essere associato uno speaker.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering{}
-\includegraphics[width=\textwidth,scale=1]{img/role.png}
+\includegraphics[scale=0.85]{img/role.png}
 \caption{UML rappresentante Template Method sulla classe astratta “RoleImpl”.}
 \end{figure}
 
@@ -455,44 +453,44 @@ Un altro elemento con una situazione simile è “RPProject”, l’entità che 
 \subsubsection{Composizione tra timeline e tante section}
 Gli ultimi due elementi portati dal basso all’alto livello sono “RPSection” e “RPTimeline”. In questo caso il problema è rappresentato dal fatto che una RPTimeline è costituita da più RPSection, che però non si possono sovrapporre in termini di tempo. La soluzione adottata consiste nel realizzare una composizione (i.e. una RPTimeline si compone di più RPSection), messa in atto attraverso una Map (struttura dati messa a disposizione dal package java.util), che mappa una RPSection alla sua durata. In questo modo è possibile effettuare, internamente a RPTimeline, controlli per evitare che le sue sezioni si possano sovrapporre.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering{}
-\includegraphics[width=\textwidth,scale=1]{img/timeline.png}
+\includegraphics[scale=0.9]{img/timeline.png}
 \caption{UML rappresentante Timeline che si compone di più RPSection.}
 \end{figure}
 
 \subsubsection{Molteplici costruzioni di speaker}
-Una figura “esterna” alla DAW è quella di uno speaker, cioè quell’entità che può essere associata ad un RPRole di tipo Speech. La creazione di queste entità avviene per mezzo del relativo costruttore, ma per semplificare il procedimento, è stato realizzato un opportuno builder, tramite classe innestata all’interno di uno spekaer. In questo modo si ritiene più semplice la creazione di un oggetto di questo tipo, che secondo le stime potrà avvenire piuttosto di frequente.
+Una figura “esterna” alla DAW è quella di uno speaker, cioè quell’entità che può essere associata ad un RPRole di tipo Speech. La creazione di queste entità avviene per mezzo del relativo costruttore, ma per semplificare il procedimento è stato realizzato un opportuno builder, tramite classe innestata all’interno di uno spekaer. In questo modo si ritiene più semplice la creazione di un oggetto di questo tipo, che secondo le stime potrà avvenire piuttosto di frequente.
 
 \begin{figure}[h]
 \centering{}
-\includegraphics[width=\textwidth,scale=1]{img/speaker.png}
+\includegraphics[scale=0.9]{img/speaker.png}
 \caption{UML rappresentante Speaker e builder di speaker.}
 \end{figure}
 
 \subsubsection{Costruzione di una singola rubrica}
 In seguito si è resa necessaria la creazione di una rubrica di speaker (“SpeakerRubric”), in modo che se lo stesso speaker debba partecipare ad un nuovo progetto, non si debbano inserire nuovamente i suoi dati, ma che questi li si abbiano già a disposizione. La rubrica è quindi composta da tanti speaker. In questo caso si è deciso di non usufruire di pattern creazionali, in quanto la rubrica va creata una tantum, e farlo attraverso pattern costituirebbe l’inserimento di un livello di complessità maggiore. Si sceglie quindi la strada più semplice, cioè la creazione della rubrica tramite costruttore vuoto.
 
-\begin{figure}[h]
-\centering{}
-\includegraphics[width=\textwidth,scale=1]{img/text.png}
-\caption{UML rappresentante Factory Method su Text.}
-\end{figure}
-
 \subsubsection{Costruzione di un elevato numero di testi}
 Discorso completamente diverso è invece quello che riguarda l’ultima entità, costituita dal testo. In questo caso si prevede che spesso ci sarà necessità di associare un testo ad una RPPart di tipo Speech, che costituiranno la maggior parte dei progetti realizzati tramite l’applicativo. 
 
-In questo caso costruire testi tramite costruttore risulterebbe poco pratico, poco riutilizzabile e piuttosto complesso, data anche la necessità di generare testo a partire da sorgenti diverse. Questa analisi mi ha portato quindi a fare ricorso ad un pattern creazionale, ed in particolare al Factory Method. In questo modo sono riuscito a separare quindi il concetto di testo nel senso stretto dalla sua creazione, ottenendo codice meglio organizzato e più facilmente leggibile. In questo modo in più, l’interfaccia del Factory Method semplifica l’aggiunta di nuove modalità di creazione in caso di future necessità. 
+In questo caso costruire testi tramite costruttore risulterebbe poco pratico, poco riutilizzabile e piuttosto complesso, data anche la necessità di generare testo a partire da sorgenti diverse. Questa analisi ha portato quindi a fare ricorso ad un pattern creazionale, ed in particolare al Factory Method. In questo modo sono riuscito a separare quindi il concetto di testo nel senso stretto dalla sua creazione, ottenendo codice meglio organizzato e più facilmente leggibile. In questo modo, in più, l’interfaccia del Factory Method semplifica l’aggiunta di nuove modalità di creazione in caso di future necessità. 
 
-All’interno della famiglia delle Factories si è scelto proprio questo pattern in quanto fosse il più adeguato a realizzare la mia necessità: ho escluso Abstact Factory in quanto gli oggetti creati devono essere indipendenti, mentre Static Factory e Simple Factory avrebbero garantito meno estensibilità e più rigidità nel modificare il codice ed infine minor leggibilità.
+All’interno della famiglia delle Factories si è scelto proprio questo pattern in quanto è il più adeguato a realizzare la mia necessità: ho escluso Abstact Factory in quanto gli oggetti creati devono essere indipendenti, mentre Static Factory e Simple Factory avrebbero garantito meno estensibilità e più rigidità nel modificare il codice ed infine minor leggibilità.
+
+\begin{figure}[H]
+\centering{}
+\includegraphics[scale=0.85]{img/text.png}
+\caption{UML rappresentante Factory Method su Text.}
+\end{figure}
 
 \subsection{Luca Pasini}
 \subsubsection{Manager}
-La seguente parte di model serve ad unire le diverse componenti del software create dagli altri componenti del gruppo. Per fare ciò è stata creata una “centralina” che prendesse tutti gli elementi del programma e li unisse in strutture dati. 
+La seguente parte di model serve ad unire le diverse componenti del software create dagli altri componenti del gruppo. Per fare ciò è stata creata una “centralina” che prende tutti gli elementi del programma e li unisce in strutture dati. 
 
-La classe designata è il Manager che, oltre a salvare i dati, funge da finestra di accesso al software, fornendo i metodi necessari per interagire con il resto del programma. Il Manager inoltre prende decisioni per l’utente, come quella di raggruppare i canali che vengono creati. I gruppi sono canali “invisibili” all’utente che sono collegati al master. Tutti i canali creati dall’utente fanno parte di un gruppo quindi il loro output è collegato al gruppo e non direttamente al master.
+La classe designata è il Manager che, oltre a salvare i dati, funge da finestra di accesso al software, fornendo i metodi necessari per interagire con il resto del programma. Il Manager, inoltre, prende decisioni per l’utente, come quella di raggruppare i canali che vengono creati. I gruppi sono canali collegati al master e “invisibili” all’utente. Tutti i canali creati dall’utente fanno parte di un gruppo, quindi il loro output è collegato al gruppo e non direttamente al master.
 
-I gruppi sono speaker, soundtrack ed effects. Il gruppo soundtrack ha un effetto di sidechaining al gruppo speaker (vedi sezione su RPEffect per saperne di più) mentre il gruppo effects è scollegato dagli altri due. In una prima implementazione all’utente era possibile scambiare elementi fra i gruppi, crearne di nuovi e anche avere canali in nessun gruppo, tuttavia è stata scartata in favore di una più semplice implementazione che comprende solo i gruppi sopra citati e che impedisce lo spostamento e la rimozione dai gruppi; in una futura implementazione è pianificato di aggiungere queste funzionalità. Il Manager si occupa anche della creazione e gestione di Clip e Sezioni. Le Clip vengono create specificando anche il canale a cui appartengono, il loro tempo di inizio all’interno di suddetto canale e la loro durata dipendente anche dalla presenza o assenza di contenuto. Alle Clip è possibile rimuovere o aggiungere contenuto dopo la creazione ed è inoltre possibile muoverle all’interno del canale, alterarne la durata e anche “splittarle”. Il Manager tiene inoltre conto della durata complessiva della timeline, con una durata minima di 10 minuti e che viene aggiornata dinamicamente all’aggiunta e alla modifica delle Clip. Infine il Manager si occupa anche della creazione di Sezioni e Rubrica, che aiutano l’utente nella gestione di un progetto. Per semplificare il compito del manager sono state create le classi RPClipLinker e RPChannelLinker che si occupano del collegamento fra alto e basso livello.
+I gruppi sono speaker, soundtrack ed effects. Il gruppo soundtrack ha un effetto di sidechaining al gruppo speaker (vedi sezione su RPEffect per saperne di più), mentre il gruppo effects è scollegato dagli altri due. In una prima implementazione, all’utente era possibile scambiare elementi fra i gruppi, crearne di nuovi e anche avere canali in nessun gruppo. Tuttavia, questa implementazione è stata scartata in favore di una più semplice, che comprende solo i gruppi sopra citati e che impedisce lo spostamento e la rimozione dagli stessi; in una futura implementazione è pianificato di aggiungere queste funzionalità. Il Manager si occupa anche della creazione e gestione di Clip e Sezioni. Le Clip vengono create specificando anche il canale a cui appartengono, il loro tempo di inizio all’interno di suddetto canale e la loro durata, dipendente anche dalla presenza o assenza di contenuto. Alle Clip è possibile rimuovere o aggiungere contenuto dopo la creazione ed è inoltre possibile muoverle all’interno del canale, alterarne la durata e anche “splittarle”. Il Manager tiene inoltre conto della durata complessiva della timeline, con una durata minima di 10 minuti, che viene aggiornata dinamicamente all’aggiunta e alla modifica delle Clip. Infine, il Manager si occupa anche della creazione di Sezioni e Rubrica, che aiutano l’utente nella gestione di un progetto. Per semplificare il compito del manager sono state create le classi RPClipLinker e RPChannelLinker, che si occupano del collegamento fra alto e basso livello.
 
 \begin{figure}[H]
 \centering{}
@@ -501,16 +499,16 @@ I gruppi sono speaker, soundtrack ed effects. Il gruppo soundtrack ha un effetto
 \end{figure}
 
 \subsubsection{Mixer}
-Il Mixer è la classe utilizzata dal Manager per creari canali e gestire i collegamenti coi gruppi e con il master. Il Mixer utilizza una ChannelFactory per creare i canali e poi effettua il collegamento con il canale master creato e collegato all'Audio Context all’istanziazione della classe. Il Mixer inoltre include i metodi per collegare canali ad un gruppo.
+Il Mixer è la classe utilizzata dal Manager per creari canali e gestire i collegamenti coi gruppi e con il master. Il Mixer utilizza una ChannelFactory per creare i canali e poi effettua il collegamento con il canale master creato e collegato all'Audio Context di sistema all’istanziazione della classe. Il Mixer inoltre include i metodi per collegare i canali ad un gruppo.
 
 \begin{figure}[H]
 \centering{}
-\includegraphics[scale=0.8]{img/mixer.png}
+\includegraphics[scale=0.75]{img/mixer.png}
 \caption{UML che illustra l'uso di Channel Factory da parte del Mixer.}
 \end{figure}
 
 \subsubsection{Channel Linker}
-Il compito del Channel Linker è quello di collegare le varie parti che compongono un canale. Un canale è modellato da un RPRole che lo rappresenta ad alto livello, un RPChannel che lo rappresenta a basso livello ed un RPTapeChannel che è il “contenitore” delle Clip del canale. La struttura dati scelta per assecondare questo design è una mappa in cui le chiavi sono gli RPRole mentre i valori sono coppie di RPChannel e RPTapeChannel. Questo rende gli RPRole univoci ed identificabili dal titolo. La scelta di RPRole come chiave è stata fatta perché non è possibile garantire l’univocità di RPChannel e RPTapeChannel mentre per RPRole ciò è assicurato dalla presenza del titolo.
+Il compito del Channel Linker è quello di collegare le varie parti che compongono un canale. Un canale è modellato da un RPRole che lo rappresenta ad alto livello, un RPChannel che lo rappresenta a basso livello ed un RPTapeChannel che è il “contenitore” delle Clip del canale. La struttura dati scelta per assecondare questo design è una mappa in cui le chiavi sono gli RPRole mentre i valori sono coppie di RPChannel e RPTapeChannel. Questo rende gli RPRole univoci ed identificabili dal titolo. La scelta di RPRole come chiave è stata fatta perché non è possibile garantire l’univocità di RPChannel e RPTapeChannel, mentre per RPRole ciò è assicurato dalla presenza del titolo.
 
 \begin{figure}[H]
 \centering{}
@@ -519,7 +517,7 @@ Il compito del Channel Linker è quello di collegare le varie parti che compongo
 \end{figure}
 
 \subsubsection{Clip Linker}
-Il compito del Clip Linker è quello di collegare la parte ad alto livello e quella a basso livello delle Clip. Come nel caso del channel linker la struttura dati scelta è una mappa con chiavi RPPart, identificati dal loro titolo, e con valori RPClip. Per problemi di implementazione abbiamo successivamente scelto di aggiungere un campo titolo anche nelle RPClip, identico al titolo della rispettiva RPPart, così da rendere possibile ottenere una RPPart a partire da una RPClip, creando così un associazione 1:1 fra RPClip e RPPart.
+Il compito del Clip Linker è quello di collegare la parte ad alto livello e quella a basso livello delle Clip. Come nel caso del Channel Linker la struttura dati scelta è una mappa con chiavi RPPart, identificati dal loro titolo, e con valori RPClip. Per problemi di implementazione abbiamo successivamente scelto di aggiungere un campo titolo anche nelle RPClip, identico al titolo della rispettiva RPPart, così da rendere possibile ottenere una RPPart a partire da una RPClip, creando in questo modo un'associazione 1:1 fra RPClip e RPPart.
 
 \begin{figure}[H]
 \centering{}
@@ -540,22 +538,22 @@ Si giunge quindi allo schema UML in figura:
 
 \begin{figure}[H]
 \centering{}
-\includegraphics[width=\textwidth,scale=1]{img/channel.png}
+\includegraphics[scale=0.6]{img/channel.png}
 \caption{UML di RPChannel e BasicChannel.}
 \end{figure}
 
 \subsubsection{Processing Unit}
-Processare l’audio importato o registrato in un canale è una delle feature più importanti che le DAW commerciali mettono a disposizione degli utenti. Per questo motivo, sebbene il concetto di canale presentato nell’analisi del dominio venga retto già da questa prima implementazione, si è deciso di dotare i canali della possibilità di avere una processing unit. Per processing unit si intende una sequenza di effetti audio che elaborano e modificano il segnale in ingresso, producendo un output che dipende dal tipo e dall’ordine degli effetti. 
+Processare l’audio importato o registrato in un canale è una delle feature più importanti che le DAW commerciali mettono a disposizione degli utenti. Per questo motivo, sebbene il concetto di canale presentato nell’analisi del dominio venga retto già dall'implementazione appena discussa, si è deciso di dotare i canali della possibilità di avere una processing unit. Per processing unit si intende una sequenza di effetti audio che elaborano e modificano il segnale in ingresso, producendo un output che dipende dal tipo e dall’ordine degli effetti. 
 L’ingresso della processing unit viene collegato all’ingresso del canale, mentre l’uscita viene collegata all’uscita del canale (quest’ultima in realtà è preceduta da altri device opzionali di manipolazione audio che gestiscono volume, muteness e panning del canale).
 
 Per evitare ambiguità tra un canale dotato di processing unit vuota e un canale senza processing unit, si è optato per imporre la presenza di almeno un effetto all’interno di una processing unit, dal momento della sua creazione a quello della sua eventuale rimozione dal canale di appartenenza.
 La scelta si è basata sul fatto che la presenza di una processing unit all’interno di un canale è meramente opzionale, in quanto il concetto di canale è già modellato senza la necessità di inserirvi una processing unit.
 
-Questa feature fa sì che i canali possano essere distinti non più solo dal tipo, bensì anche dalla processing unit di cui sono dotati e si può addirittura pensare di mettere a disposizione dell’utente delle configurazioni ready-to-use di canali. Ciò risulta particolarmente utile per differenziare già dalla creazione i canali riservati agli speaker da quelli destinati a contenuti musicali.
+Questa feature fa sì che i canali possano essere distinti non più solo dal tipo, bensì anche dalla processing unit di cui sono dotati (o non dotati) e si può addirittura pensare di mettere a disposizione dell’utente delle configurazioni ready-to-use di canali. Ciò risulta particolarmente utile per differenziare già dalla creazione i canali riservati agli speaker da quelli destinati a contenuti musicali.
 Per automatizzare la creazione dei canali preimpostati, il mixer utilizza i metodi dell’interfaccia ChannelFactory, la quale aderisce al pattern Factory Method. In sostanza, i metodi della factory ritornano canali che si distinguono per il loro tipo e/o processing unit. Oltre ai canali di ritorno e al master, la factory fornisce metodi per creare canali basic, gated e sidechained. I primi si distinguono per l’assenza della processing unit, i secondi sono quelli più indicati per il processing della voce, mentre gli ultimi sono pensati per i contenuti musicali, come ad esempio la sigla di un podcast (si veda la sezione su RPEffect per saperne di più).
 
-Per rendere il design ancora più facilmente aggiornabile ed espandibile, la factory si appoggia su ProcessingUnitBuilder, un’interfaccia Builder dotata dei metodi necessari ad aggiungere effetti alla processing unit in costruzione. In questo modo, se si decidesse di modificare l’implementazione a basso livello degli effetti, la factory non subirebbe cambiamenti, poiché a cambiare sarebbe l’implementazione dei metodi del builder.
-Schematizzando quanto detto si ottiene l’UML sottostante:
+Per rendere il design ancora più facilmente aggiornabile ed estensibile, la factory si appoggia su ProcessingUnitBuilder, un’interfaccia Builder dotata dei metodi necessari ad aggiungere effetti alla processing unit in costruzione. In questo modo, se si decidesse di modificare l’implementazione a basso livello degli effetti, la factory non subirebbe cambiamenti, poiché a cambiare sarebbe l’implementazione dei metodi del builder.
+Schematizzando quanto detto si ottiene il seguente UML:
 
 \begin{figure}[H]
 \centering{}
@@ -563,11 +561,14 @@ Schematizzando quanto detto si ottiene l’UML sottostante:
 \caption{UML che mostra l'interazione tra ProcessingUnit e RPChannel, con pattern FactoryMethod e Builder.}
 \end{figure}
 
+\paragraph{N.B.}: La creazione dei return channel è completamente supportata dal mixer e dalla factory. Tuttavia, non c’è stato il tempo sufficiente per implementare la loro 
+gestione ad alto livello nel model e tantomeno nella view. Un’eventuale release futura potrà provvedere a colmare questa lacuna con facilità.
+
 \subsubsection{RPEffect}
 E’ necessario ora modellare tutte quelle entità che fino ad ora sono state menzionate con il generico termine “effetti”. Come già detto, gli effetti elaborano un segnale audio, restituendo in output una versione modificata del segnale in ingresso. 
 
 Si rende quindi indispensabile lavorare a basso livello su buffer contenenti i dati che rappresentano digitalmente l’audio. Implementare i metodi per il processing del segnale (uno per ogni effetto) sarebbe stato un compito molto gravoso, nonché decisamente inadeguato a future estensioni.
-Si è pertanto cercata una libreria che fornisse una API per la gestione dell’audio a basso livello. La scelta è ricaduta su Beads, una libreria open-source “for programming audio in Java for musical and other creative sound applications”. 
+Si è pertanto cercata una libreria che fornisse una API per la gestione dell’audio a basso livello. La scelta è ricaduta su Beads\footnote[1]{\url{http://www.beadsproject.net/}}, una libreria open-source “for programming audio in Java for musical and other creative sound applications”. 
 
 L’elemento centrale della libreria è la classe astratta UGen (Unit Generator), che modella “subroutines that take input, do something to it, then send the results out of their outputs”.
 Un esempio fondamentale di sottoclasse di UGen è la classe Gain, che serve a controllare il volume di un segnale audio. A livello implementativo, ogni qualvolta è necessario un elemento per rappresentare l’ingresso o l’uscita di una parte del sistema (canale, processing unit, effetti), tale posizione viene occupata da un oggetto di tipo Gain.
@@ -589,12 +590,12 @@ Una caratteristica importante di questa modellazione è che gli effetti che fann
 
 Si descrivono ora brevemente i vari effetti:
 \begin{itemize}
-    \item Compressore e limiter: attenuano (eliminano nel caso del limiter) le porzioni del segnale in ingresso per le quali l’ampiezza del segnale supera una certa soglia. Compongono la categoria detta dinamica del suono, modellata dalla classe astratta Dynamics.
+    \item Compressore e limiter: attenuano (eliminano nel caso del limiter) le porzioni del segnale in ingresso per le quali l’ampiezza del segnale supera una certa soglia. Compongono la categoria detta "dinamica del suono", modellata dalla classe astratta Dynamics.
     \item Riverbero: simula l’omonimo fenomeno fisico (anche detto eco), che si ottiene ad esempio battendo le mani in una stanza vuota.
-    \item Low e high pass filter: impediscono il passaggio di tutte le frequenze che si trovano al di sopra (sotto) di una certa soglia. Compongono la categoria detta equalizzazione, modellata dalla classe astratta Equalization.
+    \item Low e high pass filter: impediscono il passaggio di tutte le frequenze che si trovano al di sopra (sotto) di una certa soglia. Compongono la categoria detta "equalizzazione", modellata dalla classe astratta Equalization.
     \item Gate: attenua o elimina le porzioni del segnale in ingresso per le quali l’ampiezza del segnale è inferiore ad un certa soglia.
 \end{itemize}
-Un discorso a parte va fatto per il sidechaining. Nell’ambito del processing audio, un compressore si dice sidechained quando la sorgente da esso utilizzata per calcolare il livello di compressione è esterna, cioè non coincide con la sorgente sulla quale il compressore agisce. La tecnica del sidechaining è molto usata nei podcast. infatti, è piuttosto frequente che la sigla di un podcast cominci prima che il conduttore abbia finito l’introduzione; per evitare la sovrapposizione tra musica e voce, nel canale in cui si trova la sigla viene posto un compressore sidechained verso la voce, così il volume della sigla venga attenuato fino a quando il conduttore non finisce di parlare. 
+Un discorso a parte va fatto per il sidechaining. Nell’ambito del processing audio, un compressore si dice sidechained quando la sorgente da esso utilizzata per calcolare il livello di compressione è esterna, cioè non coincide con la sorgente sulla quale il compressore agisce. La tecnica del sidechaining è molto usata nei podcast. Infatti, è piuttosto frequente che la sigla di un podcast cominci prima che il conduttore abbia finito l’introduzione; per evitare la sovrapposizione tra musica e voce, nel canale in cui si trova la sigla viene posto un compressore sidechained verso la voce, così che il volume della sigla venga attenuato fino a quando il conduttore non finisce di parlare. 
 
 Per quanto il sidechaining sia un sottotipo di RPEffect, in particolare della categoria di dinamica, esso presenta qualche peculiarità. Un effetto di tipo sidechaining, infatti, non può essere posizionato in un punto qualsiasi della processing unit come accade per gli altri effetti, bensì solo in prima posizione (cioè riceve l’input direttamente dal canale). In altre parole, una processing unit o è sidechained verso un’altra sorgente, e quindi ha in prima posizione un effetto di tipo sidechaining, oppure non lo è. Per poter far rispettare questi vincoli lato processing unit, si è pensato di introdurre la tag interface Sidechaining. Il fatto che la classe che rappresenta il sidechaining implementi tale interfaccia fa sì che il sidechaining abbia un tratto distintivo rispetto agli altri effetti, proprio come nella realtà modellata.
 
@@ -623,11 +624,11 @@ Non è invece stato possibile testare in modo automatizzato alcune classi dell�
 Per lo stesso motivo, il ClipPlayerNotifier ha un test automatizzato che prima di essere eseguito deve creare una PlayersMap su cui eseguire il test.
 Per le classi su cui non è stato possibile eseguire test automatizzati è stato necessario effettuare vari test manuali.
 L’applicazione è stata testata su diversi sistemi operativi (Windows, OSX, Linux) e su schermi di diverse risoluzioni (Full HD, 2K, 4K).
-Alcuni problemi emersi riguardano la scelta del dispositivo di input audio. Non sempre il dispositivo di default per l’input audio rilevato dalla Java Sound API si rivela essere funzionante. Purtroppo non è stata trovata soluzione al problema, se non quella di forzare dal sistema operativo l’utilizzo del dispositivo desiderato come dispositivo di default. Tuttavia anche questa metodologia non sempre si rivela funzionante.
+Alcuni problemi emersi riguardano la scelta del dispositivo di input audio. Non sempre il dispositivo di default per l’input audio rilevato dalla Java Sound API si rivela essere funzionante. Purtroppo non è stata trovata soluzione al problema, se non quella di forzare dal sistema operativo l’utilizzo del dispositivo desiderato come dispositivo di default. Tuttavia anche questa metodologia non sempre funziona.
 
 \section{Metodologia di lavoro}
 La metodologia di lavoro con cui si è affrontato lo sviluppo di nuove features è stata la seguente: per ogni nuova componente del software da sviluppare è stato analizzato nei dettagli il comportamento atteso.
-In seguito è stata creata una prima versione della nuova componente cercando di riutilizzare il più possibile il codice già scritto.
+In seguito è stata creata una prima versione della nuova componente, cercando di riutilizzare il più possibile il codice già scritto.
 Per ogni tentativo venivano eseguiti test per verificare il corretto funzionamento dell’entità creata. 
 Una volta ottenuta una prima versione funzionante sono state eseguite rifattorizzazioni per migliorare la qualità del codice scritto e suddividere le singole responsabilità tra oggetti diversi. Quando è stata individuata la possibilità di utilizzare qualche pattern di design questo è stato applicato.
 Se emergevano dipendenze tra le varie classi si cercava di scioglierle, così come, per ogni classe, si è cercato di prevedere quali potessero essere le possibili evoluzioni future in modo da riadattare il codice per renderlo facilmente estendibile in futuro, senza dover modificare quello già scritto.
@@ -639,7 +640,7 @@ Dopo di che, è stato necessario definire le interfacce principali necessarie al
 In una prima fase è stato necessario confrontarsi per spiegare e definire alcuni concetti riguardanti la produzione audio e le relative tecnologie. Infatti, non tutti i membri del gruppo possedevano conoscenze approfondite del dominio applicativo in questione. 
 Una volta iniziata la fase individuale di sviluppo del codice, non sono comunque mancate interazioni tra i membri del gruppo, utili a confrontarsi e aggiornarsi sui progressi e sulle difficoltà incontrate.
 
-Git e GitHub sono stati strumenti fondamentali per unificare e organizzare il lavoro di ogni membro del gruppo. Per ogni feature da sviluppare, infatti, è stato creato un branch di sviluppo indipendente, nel quale il responsabile ha a termine il proprio lavoro per poi unificarlo con il codice degli altri. 
+Git e GitHub sono stati strumenti fondamentali per unificare e organizzare il lavoro di ogni membro del gruppo. Per ogni feature da sviluppare, infatti, è stato creato un branch di sviluppo indipendente, nel quale il responsabile ha portato a termine il proprio lavoro, per poi unificarlo (merge) con il codice degli altri. 
 
 Solo nell'ultima fase di sviluppo si è utilizzato un unico branch, in modo tale che tutti i componenti avessero a disposizione la stessa implementazione delle classi comuni di view e controller.
 
@@ -902,13 +903,13 @@ Features avanzate utilizzate:
         \item JerkyKnobPane
         \item EffectsPane
     \end{itemize}
-    \item Uso della libreria JavaFX nelle classi del package. “view.effects”
+    \item Uso della libreria JavaFX nelle classi del package “view.effects”
 \end{itemize}
 Nella mia parte di progetto, di librerie non approfondite a lezione, ho utilizzato prevalentemente JavaFX, per la realizzazione della parte grafica. È stata poi utilizzata la classe “URL” del package java.net, utilizzata come parametri del metodo “setLocation()” della classe “FXMLLoader”, utilizzato per identificare le risorse da utilizzare sempre nell’interfaccia.
-Un algoritmo degno di nota, implementato nel metodo “getOverallDuration()” nella classe “TimelineImpl”, che calcola la durata totale della timeline analizzando tutte le sezioni in essa presenti, prendendo quella con tempo di inizio maggiore e domandandone la relativa durata, ottenendo così appunto la durata totale.
+Un algoritmo degno di nota, implementato nel metodo “getOverallDuration()” nella classe “TimelineImpl”, calcola la durata totale della timeline analizzando tutte le sezioni in essa presenti, prendendo quella con tempo di inizio maggiore e domandandone la relativa durata, ottenendo così appunto la durata totale.
 
 \subsubsection{Luca Pasini}
-Si riporta l’utilizzo delle seguenti funzioni avanzate:
+Si riporta l’utilizzo delle seguenti funzionalità avanzate:
 \begin{itemize}
     \item Utilizzo di lambda e stream nelle seguenti classi:
     \begin{itemize}
@@ -945,7 +946,7 @@ Si riporta l’utilizzo delle seguenti funzionalità avanzate del linguaggio Jav
     \end{itemize}
     \item Utilizzo di reflection nei test sulla processing unit.
     \item Tag interface (Sidechaining).
-    \item Utilizzo della libreria open-source Jackson per la serializzazione e deserializzazione del progetto in file JSON. Jackson è un processore JSON ad alte prestazioni che permette di serializzare e deserializzare il codice in maniera semi-automatizzata. Si era inizialmente considerato l’utilizzo di Gson, ma si è poi optato per Jackson in virtù della sua maggior facilità di utilizzo.
+    \item Utilizzo della libreria open-source Jackson\footnote[2]{\url{https://github.com/FasterXML/jackson}} per la serializzazione e deserializzazione del progetto in file JSON. Jackson è un processore JSON ad alte prestazioni che permette di serializzare e deserializzare il codice in maniera semi-automatizzata. Si era inizialmente considerato l’utilizzo di Gson, ma si è poi optato per Jackson in virtù della sua maggior facilità di utilizzo.
     \item Utilizzo della libreria open-source Beads per l’implementazione degli effetti.
 \end{itemize}
 
@@ -961,7 +962,7 @@ Sono comunque soddisfatto del lavoro svolto, in particolare per quanto riguarda 
 Mi piacerebbe in futuro completare l’applicazione con tutte le features previste, magari dopo aver trovato una soluzione ai problemi imposti dalla libreria audio.
 
 \subsection{Gabriele Menghi}
-A mio parere i punti di forza della parte di software prodotta da me, sono la chiarezza del codice, la sua corretta organizzazione e l’uso degli adeguati pattern per rendere il tutto più comprensibile, ed anche estendibile. Un ulteriore punto di forza è la scelta efficace di nomi di metodi e campi. 
+A mio parere i punti di forza della parte di software prodotta da me sono la chiarezza del codice, la sua corretta organizzazione e l’uso degli adeguati pattern per rendere il tutto più comprensibile ed anche estendibile. Un ulteriore punto di forza è la scelta efficace di nomi di metodi e campi. 
 
 I punti di debolezza maggiori sono la scarsa complessità del codice scritto, scelta fatta però per favorire la chiarezza, e, soprattutto nella parte dell’interfaccia grafica, il fatto che in certi punti si hanno blocchi di codice confusionari, che sarebbero potuti essere scritti in maniera più ordinata stilisticamente parlando, anche se ho cercando di rispettare sempre le convenzioni.
 
@@ -970,11 +971,11 @@ Riguardo il mio ruolo all’interno del gruppo, prima di sottomettere la propost
 Infine, sono lasciate a sviluppi futuri le implementazioni del movimento del pannello di un effetto verso destra o verso sinistra (swap tra effetti) e l’aggiornamento in tempo reale dei vu-meter componenti alcuni effetti, indicanti la compressione corrente.
 
 \subsection{Luca Pasini}
-La realizzazione di questo progetto mi ha portato allo sviluppo di nuove competenze, tra cui il lavoro di gruppo e l’utilizzo di un DVCS.  Ho espanso inoltre le mie conoscenze del linguaggio java e della libreria JavaFX che ho usato molto per la creazione della View dandomi inoltre un infarinatura generale di CSS. 
+La realizzazione di questo progetto mi ha portato allo sviluppo di nuove competenze, tra cui il lavoro di gruppo e l’utilizzo di un DVCS.  Ho espanso inoltre le mie conoscenze del linguaggio Java e della libreria JavaFX, che ho usato molto per la creazione della View dandomi inoltre un infarinatura generale di CSS. 
 
 Ritengo che il gruppo abbia lavorato bene nello sviluppo del progetto, per quanto probabilmente abbiamo preso un approccio complicato, decidendo di non partire da un'applicazione di base con poche funzionalità da espandere ma partendo implementando tutte le funzionalità che sembravano adeguate.
 
-Le parti per me più difficili sono state la creazione della logica dei gruppi dei canali che, nella sua versione finale, è stata molto semplificata dalla pianificazione originale e la gestione di una finestra UNDECORATED, il che significa senza il “contorno” fornito dal sistema operativo quindi senza la possibilità di muovere e ridimensionare la finestra in maniera automatica.
+Le parti per me più difficili sono state la creazione della logica dei gruppi dei canali che, nella sua versione finale, è stata molto semplificata dalla pianificazione originale e la gestione di una finestra UNDECORATED, il che significa senza il “contorno” fornito dal sistema operativo e quindi senza la possibilità di muovere e ridimensionare la finestra in maniera automatica.
 Ritengo che l’applicazione possa beneficiare di un futuro sviluppo e la prima cosa di cui mi occuperei nel caso, sarebbe l’implementazione di un sistema di gruppi dei canali più completo e libero all’utente.
 
 \subsection{Giacomo Sirri}
